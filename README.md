@@ -21,6 +21,8 @@ scripts/                    Herramientas para mantener la web (ver abajo)
 .github/workflows/          Revisión automática en cada subida
 ```
 
+**Direcciones sin `.html`:** GitHub Pages abre `acerca.html` también como `/acerca`. Todos los enlaces, los canonical y el sitemap usan esa forma, y `scripts/check.py` avisa si algún enlace vuelve a terminar en `.html`. Los archivos siguen llamándose igual.
+
 ## Publicar en GitHub Pages
 
 1. **Creá el repositorio.** Si querés que la web quede en la raíz de `https://TU-USUARIO.github.io`, llamalo exactamente `TU-USUARIO.github.io`. Si tenés dominio propio, cualquier nombre sirve.
