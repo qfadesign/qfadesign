@@ -11,12 +11,12 @@
 
 /* NAV: fija al scrollear, con efecto vidrio */
 html{scroll-padding-top:84px}
-nav{position:sticky;top:0;z-index:50;background:rgba(10,92,192,.8);backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid rgba(255,255,255,.32);box-shadow:0 8px 28px rgba(3,20,60,.22),inset 0 1px 0 rgba(255,255,255,.3);display:flex;justify-content:space-between;align-items:center;gap:10px 24px;padding:14px clamp(16px,2vw,28px)}
+nav{position:sticky;top:0;z-index:50;background:rgba(0,0,0,.55);backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid rgba(255,255,255,.2);box-shadow:0 8px 28px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.16);display:flex;justify-content:space-between;align-items:center;gap:10px 24px;padding:14px clamp(16px,2vw,28px)}
 nav img{height:30px;width:auto}
 nav ul{display:flex;gap:clamp(14px,2.4vw,36px);list-style:none;padding:0;font-size:clamp(18.7px,1.5vw,22px);font-weight:700;font-style:italic}
 nav ul a{text-underline-offset:6px;text-decoration-thickness:2px}
 nav ul a:hover,nav a[aria-current]{text-decoration:underline}
-.burger{display:none;width:46px;height:46px;border-radius:14px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.14);cursor:pointer;padding:0;position:relative;color:#fff}
+.burger{display:none;width:46px;height:46px;border-radius:14px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);cursor:pointer;padding:0;position:relative;color:#fff}
 .burger span{position:absolute;left:12px;right:12px;height:2.5px;border-radius:2px;background:currentColor;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .2s,top .35s cubic-bezier(.2,.8,.2,1)}
 .burger span:nth-child(1){top:15px}.burger span:nth-child(2){top:22px}.burger span:nth-child(3){top:29px}
 .burger[aria-expanded=true] span:nth-child(1){top:22px;transform:rotate(45deg)}
@@ -27,7 +27,7 @@ nav ul a:hover,nav a[aria-current]{text-decoration:underline}
  nav{padding-block:9px}
  nav img{height:26px}
  .burger{display:block}
- nav ul{position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;padding:8px clamp(16px,4vw,28px) 18px;font-size:clamp(24px,7vw,32px);background:rgba(6,33,77,.97);border-bottom:1px solid rgba(255,255,255,.25);box-shadow:0 24px 40px rgba(0,0,0,.35);clip-path:inset(0 0 100% 0);visibility:hidden;pointer-events:none;transition:clip-path .45s cubic-bezier(.65,0,.35,1),visibility 0s .45s}
+ nav ul{position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;padding:8px clamp(16px,4vw,28px) 18px;font-size:clamp(24px,7vw,32px);background:rgba(0,0,0,.92);border-bottom:1px solid rgba(255,255,255,.2);box-shadow:0 24px 40px rgba(0,0,0,.35);clip-path:inset(0 0 100% 0);visibility:hidden;pointer-events:none;transition:clip-path .45s cubic-bezier(.65,0,.35,1),visibility 0s .45s}
  nav.abierto ul{clip-path:inset(0 0 -90px 0);visibility:visible;pointer-events:auto;transition:clip-path .6s cubic-bezier(.16,.9,.2,1),visibility 0s}
  nav ul li{opacity:0;translate:0 -14px;filter:blur(4px);transition:opacity .2s,translate .2s,filter .2s}
  nav.abierto ul li{opacity:1;translate:0 0;filter:blur(0);transition:opacity .45s cubic-bezier(.2,.8,.2,1) calc(.14s + var(--k)*.065s),translate .6s cubic-bezier(.16,.9,.2,1) calc(.14s + var(--k)*.065s),filter .45s calc(.14s + var(--k)*.065s)}
