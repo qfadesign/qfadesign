@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- SEO:start -->
+<title>Ahorcado de diseño: conceptos de diseño | qfadesign</title>
+<meta name="description" content="El clásico ahorcado con conceptos de diseño gráfico. Un juego rápido para practicar vocabulario del oficio, por qfadesign.">
+<link rel="canonical" href="https://qfadesign.com/juegos/ahorcado.html">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="author" content="Facundo">
+<meta name="theme-color" content="#0a5cc0">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="icon" href="../favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../favicon-16x16.png" type="image/png" sizes="16x16">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="qfadesign">
+<meta property="og:locale" content="es_LA">
+<meta property="og:url" content="https://qfadesign.com/juegos/ahorcado.html">
+<meta property="og:title" content="Ahorcado de diseño: conceptos de diseño | qfadesign">
+<meta property="og:description" content="El clásico ahorcado con conceptos de diseño gráfico. Un juego rápido para practicar vocabulario del oficio, por qfadesign.">
+<meta property="og:image" content="https://qfadesign.com/img/og/og-jueguitos.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ahorcado de diseño, un jueguito de qfadesign">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ahorcado de diseño: conceptos de diseño | qfadesign">
+<meta name="twitter:description" content="El clásico ahorcado con conceptos de diseño gráfico. Un juego rápido para practicar vocabulario del oficio, por qfadesign.">
+<meta name="twitter:image" content="https://qfadesign.com/img/og/og-jueguitos.jpg">
+<meta name="twitter:image:alt" content="Ahorcado de diseño, un jueguito de qfadesign">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Ahorcado de diseño","description":"El clásico ahorcado con conceptos de diseño gráfico. Un juego rápido para practicar vocabulario del oficio, por qfadesign.","url":"https://qfadesign.com/juegos/ahorcado.html","applicationCategory":"GameApplication","operatingSystem":"Web","inLanguage":"es","image":"https://qfadesign.com/img/og/og-jueguitos.jpg","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@id":"https://qfadesign.com/#facundo"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://qfadesign.com/"},{"@type":"ListItem","position":2,"name":"Jueguitos","item":"https://qfadesign.com/jueguitos.html"},{"@type":"ListItem","position":3,"name":"Ahorcado de diseño","item":"https://qfadesign.com/juegos/ahorcado.html"}]},{"@type":"Person","@id":"https://qfadesign.com/#facundo","name":"Facundo","alternateName":"qfadesign","jobTitle":"Diseñador en Comunicación Visual","url":"https://qfadesign.com/","image":"https://qfadesign.com/img/perfil.jpg","email":"mailto:qfadesignn@gmail.com","knowsAbout":["Branding","Identidad visual","Motion graphics","Diseño editorial","Social media","Diseño de logos"],"sameAs":["https://www.instagram.com/qfadesign/","https://www.tiktok.com/@qfadesign","https://www.behance.net/facundocruz5","https://www.linkedin.com/in/facundo-cruz-19a581303/"]}]}</script>
+<!-- SEO:end -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --blue:#0b75f4;
+      --blue-dark:#0b75f4;
+      --blue-light:#0b75f4;
+      --black:#ffffff;
+      --muted:#b7b7b7;
+      --bg:#000000;
+      --white:#111111;
+      --line:#ffffff;
+      --key:#ffffff;
+      --wrong:#ffffff;
+      --danger:#0b75f4;
+    }
+
+    *{box-sizing:border-box}
+
+    html,body{
+      margin:0;
+      min-height:100%;
+      background:var(--bg);
+      color:var(--black);
+      font-family:"Montserrat",Arial,sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+    }
+
+    button{
+      font:inherit;
+      font-family:"Montserrat",Arial,sans-serif;
+      border:0;
+      cursor:pointer;
+    }
+
+    .app{
+      width:100%;
+      max-width:760px;
+      min-height:100vh;
+      padding:30px 18px 40px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    .header{
+      text-align:center;
+      margin-bottom:22px;
+    }
+
+    .eyebrow{
+      color:var(--blue);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+      margin-bottom:7px;
+    }
+
+    h1{
+      color:var(--blue);
+      margin:0;
+      font-size:clamp(27px,5vw,38px);
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-.055em;
+    }
+
+    .subtitle{
+      margin:9px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .game-card{
+      width:100%;
+      max-width:650px;
+      background:var(--white);
+      border:1px solid var(--line);
+      border-radius:24px;
+      box-shadow:0 18px 45px rgba(36,48,80,.09);
+      padding:27px 25px 25px;
+    }
+
+    .top-info{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:600;
+      margin-bottom:16px;
+    }
+
+    .top-info strong{
+      color:var(--black);
+    }
+
+    .score{
+      color:var(--blue-dark);
+      font-weight:800;
+    }
+
+    .hangman-area{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:145px;
+      margin:0 auto 15px;
+    }
+
+    .hangman{
+      width:180px;
+      height:145px;
+      position:relative;
+    }
+
+    .gallows{
+      position:absolute;
+      left:17px;
+      bottom:10px;
+      width:115px;
+      height:4px;
+      border-radius:4px;
+      background:#ffffff;
+    }
+
+    .gallows::before{
+      content:"";
+      position:absolute;
+      left:18px;
+      bottom:0;
+      width:4px;
+      height:125px;
+      background:#ffffff;
+      border-radius:4px;
+    }
+
+    .gallows::after{
+      content:"";
+      position:absolute;
+      left:18px;
+      top:0;
+      width:82px;
+      height:4px;
+      background:#ffffff;
+      border-radius:4px;
+    }
+
+    .rope{
+      position:absolute;
+      left:100px;
+      top:0;
+      width:4px;
+      height:18px;
+      background:#ffffff;
+      border-radius:4px;
+    }
+
+    .part{
+      position:absolute;
+      display:none;
+      background:var(--blue);
+    }
+
+    .part.show{
+      display:block;
+    }
+
+    .head{
+      left:88px;
+      top:15px;
+      width:29px;
+      height:29px;
+      border:4px solid var(--blue);
+      border-radius:50%;
+      background:#ffffff;
+    }
+
+    .body{
+      left:100px;
+      top:43px;
+      width:5px;
+      height:47px;
+      border-radius:5px;
+    }
+
+    .arm-left{
+      left:74px;
+      top:51px;
+      width:31px;
+      height:5px;
+      transform:rotate(-28deg);
+      transform-origin:right center;
+      border-radius:5px;
+    }
+
+    .arm-right{
+      left:101px;
+      top:51px;
+      width:31px;
+      height:5px;
+      transform:rotate(28deg);
+      transform-origin:left center;
+      border-radius:5px;
+    }
+
+    .leg-left{
+      left:98px;
+      top:85px;
+      width:5px;
+      height:34px;
+      transform:rotate(35deg);
+      transform-origin:top center;
+      border-radius:5px;
+    }
+
+    .leg-right{
+      left:102px;
+      top:85px;
+      width:5px;
+      height:34px;
+      transform:rotate(-35deg);
+      transform-origin:top center;
+      border-radius:5px;
+    }
+
+
+    .timer-wrap{
+      width:100%;
+      max-width:430px;
+      margin:0 auto 17px;
+    }
+    .timer-line{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+    .timer-number{
+      color:var(--black);
+      font-size:13px;
+      font-weight:800;
+    }
+    .timer-bar{
+      width:100%;
+      height:7px;
+      background:#ffffff;
+      border-radius:99px;
+      overflow:hidden;
+    }
+    .timer-fill{
+      width:100%;
+      height:100%;
+      background:var(--blue);
+      border-radius:99px;
+      transition:width .1s linear;
+    }
+    .timer-fill.warning{background:var(--blue-light)}
+    .timer-fill.danger{background:var(--blue-dark)}
+
+    .lives{
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+      margin-bottom:20px;
+    }
+
+    .hearts{
+      color:var(--blue);
+      letter-spacing:3px;
+      font-size:14px;
+      margin-left:5px;
+    }
+
+    .hearts .lost{
+      color:#ffffff;
+    }
+
+    .word{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:0 auto 17px;
+      max-width:580px;
+    }
+
+    .letter{
+      width:38px;
+      height:46px;
+      border-bottom:3px solid #ffffff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:20px;
+      font-weight:800;
+      text-transform:uppercase;
+    }
+
+    .letter.space{
+      width:18px;
+      border-bottom:0;
+    }
+
+    .letter.revealed{
+      color:var(--blue-dark);
+      border-bottom-color:var(--blue-dark);
+    }
+
+    .hint{
+      text-align:center;
+      min-height:21px;
+      margin-bottom:16px;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:600;
+    }
+
+    .message{
+      min-height:23px;
+      text-align:center;
+      margin-bottom:13px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .message.success{color:var(--blue-dark)}
+    .message.error{color:#ffffff}
+
+    .keyboard{
+      width:100%;
+      max-width:550px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .key-row{
+      display:flex;
+      gap:5px;
+      justify-content:center;
+    }
+
+    .key{
+      flex:1;
+      min-width:0;
+      height:47px;
+      border-radius:8px;
+      background:var(--key);
+      color:var(--blue);
+      font-size:12px;
+      font-weight:800;
+      transition:.12s ease;
+    }
+
+    .key:hover:not(:disabled){
+      background:#ffffff;
+    }
+
+    .key.correct{
+      background:var(--blue-dark);
+      color:#fff;
+    }
+
+    .key.wrong{
+      background:var(--wrong);
+      color:#0b75f4;
+      text-decoration:line-through;
+    }
+
+    .key:disabled{
+      cursor:default;
+    }
+
+
+    .start-screen{text-align:center;padding:10px 5px 5px;}
+    .start-screen[hidden]{display:none}
+    .start-label{color:var(--blue);font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;}
+    .start-title{color:var(--blue);margin:9px 0 8px;font-size:30px;line-height:1.05;font-weight:800;letter-spacing:-.05em;}
+    .start-copy{max-width:460px;margin:0 auto 22px;color:var(--muted);font-size:12px;line-height:1.6;}
+    .how-to{max-width:460px;margin:0 auto 24px;padding:16px;background:#111111;border:1px solid #ffffff;border-radius:14px;text-align:left;}
+    .how-to strong{display:block;margin-bottom:6px;font-size:12px;}
+    .how-to p{margin:0;color:var(--muted);font-size:11px;line-height:1.55;}
+    .difficulty-title{margin:0 0 12px;font-size:12px;font-weight:800;}
+    .difficulty-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:460px;margin:0 auto;}
+    .difficulty-btn{min-height:88px;padding:14px 12px;border:1px solid var(--line);border-radius:12px;background:var(--white);color:var(--black);text-align:left;transition:.12s ease;}
+    .difficulty-btn:hover{border-color:var(--blue);transform:translateY(-1px);}
+    .difficulty-btn strong{display:block;color:var(--blue-dark);font-size:12px;margin-bottom:6px;}
+    .difficulty-btn span{display:block;color:var(--muted);font-size:10px;line-height:1.45;font-weight:600;}
+    @media(max-width:520px){.difficulty-grid{grid-template-columns:1fr;}}
+
+    .final-screen{
+      display:none;
+      text-align:center;
+      padding:15px 5px 5px;
+    }
+
+    .final-screen.show{
+      display:block;
+    }
+
+    .final-label{
+      color:var(--blue);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+    }
+
+    .final-title{
+      margin:9px 0 5px;
+      font-size:30px;
+      line-height:1.05;
+      font-weight:800;
+      letter-spacing:-.05em;
+    }
+
+    .final-score{
+      color:var(--blue);
+      font-size:54px;
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-.06em;
+      margin:14px 0 8px;
+    }
+
+    .final-copy{
+      color:var(--muted);
+      font-size:12px;
+      margin:0 0 22px;
+    }
+
+    .play-again{
+      background:var(--blue);
+      color:#fff;
+      border-radius:10px;
+      padding:13px 22px;
+      font-size:12px;
+      font-weight:800;
+      box-shadow:0 7px 16px rgba(69,105,232,.18);
+    }
+
+    .play-again:hover{
+      background:var(--blue-dark);
+    }
+
+    @media(max-width:520px){
+      .app{
+        padding:22px 12px 28px;
+      }
+
+      .game-card{
+        padding:22px 13px 20px;
+        border-radius:20px;
+      }
+
+      .hangman-area{
+        min-height:125px;
+      }
+
+      .hangman{
+        transform:scale(.88);
+      }
+
+      .letter{
+        width:31px;
+        height:42px;
+        font-size:18px;
+      }
+
+      .word{
+        gap:6px;
+      }
+
+      .key{
+        height:45px;
+        font-size:10px;
+      }
+    }
+  </style>
+<script>if(self!==top){document.write('<style>html,body{background:transparent!important}#volver{display:none!important}</style>')}</script>
+<style>
+@font-face{font-family:"Articulat CF";src:url(../fonts/ArticulatCF-BoldItalic.ttf);font-weight:700;font-style:italic;font-display:swap}
+body{padding-top:64px!important}
+#volver{position:absolute!important;top:16px!important;left:16px!important;background:#0b75f4!important;font:italic 700 15px "Articulat CF",Montserrat,sans-serif!important;padding:10px 18px!important;border-radius:99px!important;box-shadow:0 6px 18px rgba(11,117,244,.35);transition:transform .2s,background .2s}
+#volver:hover{transform:translateX(-3px);background:#0a5cc0!important}
+#volver:focus-visible{outline:3px solid #fff;outline-offset:3px}
+</style>
+</head>
+
+<body><a id="volver" href="../jueguitos.html" style="position:fixed;top:12px;left:12px;z-index:99;background:#0a5cc0;color:#fff;font:700 13px Montserrat,sans-serif;padding:9px 14px;border-radius:99px;text-decoration:none">← Jueguitos</a>
+  <main class="app">
+    <header class="header">
+      <div class="eyebrow">JUEGO DE DISEÑO</div>
+      <h1>El ahorcado del diseño</h1>
+      <p class="subtitle">Adiviná conceptos de diseño gráfico letra por letra.</p>
+    </header>
+
+    <section class="game-card">
+      <div class="start-screen" id="startScreen">
+        <div class="start-label">¿LISTO PARA JUGAR?</div>
+        <div class="start-title">El ahorcado del diseño</div>
+        <p class="start-copy">Adiviná conceptos, movimientos y escuelas de diseño letra por letra.</p>
+        <div class="how-to"><strong>¿Cómo se juega?</strong><p>Descubrí la palabra antes de quedarte sin vidas. Cada letra incorrecta agrega una parte al ahorcado.</p></div>
+        <div class="difficulty-title">Elegí la dificultad</div>
+        <div class="difficulty-grid">
+          <button class="difficulty-btn" type="button" id="timedMode"><strong>⏱ CON TIEMPO</strong><span>Tenés 25 segundos por ronda para descubrir la palabra.</span></button>
+          <button class="difficulty-btn" type="button" id="untimedMode"><strong>∞ SIN TIEMPO</strong><span>Jugá a tu ritmo. No hay límite de tiempo.</span></button>
+        </div>
+      </div>
+      <div id="gameContent" style="display:none;">
+        <div class="top-info">
+          <span id="roundText">Ronda 1 / 5</span>
+          <span class="score" id="scoreText">0 pts</span>
+        </div>
+
+        <div class="hangman-area">
+          <div class="hangman" aria-label="Ahorcado">
+            <div class="gallows"></div>
+            <div class="rope"></div>
+            <div class="part head" data-part="1"></div>
+            <div class="part body" data-part="2"></div>
+            <div class="part arm-left" data-part="3"></div>
+            <div class="part arm-right" data-part="4"></div>
+            <div class="part leg-left" data-part="5"></div>
+            <div class="part leg-right" data-part="6"></div>
+          </div>
+        </div>
+
+        <div class="timer-wrap">
+          <div class="timer-line">
+            <span>Tiempo</span>
+            <span class="timer-number" id="timerText">25s</span>
+          </div>
+          <div class="timer-bar">
+            <div class="timer-fill" id="timerFill"></div>
+          </div>
+        </div>
+
+        <div class="lives">
+          Vidas:
+          <span class="hearts" id="hearts">● ● ● ● ● ●</span>
+        </div>
+
+        <div class="word" id="word"></div>
+
+        <div class="hint" id="hint">
+          Pista: concepto, escuela o movimiento de diseño
+        </div>
+
+        <div class="message" id="message">
+          Elegí una letra.
+        </div>
+
+        <div class="keyboard" id="keyboard"></div>
+      </div>
+
+      <div class="final-screen" id="finalScreen">
+        <div class="final-label">Partida terminada</div>
+        <div class="final-title">¡Terminaste las 5 rondas!</div>
+        <div class="final-score" id="finalScore">0 pts</div>
+        <p class="final-copy">Tu puntaje total en el ahorcado del diseño.</p>
+        <button class="play-again" id="playAgain">Jugar de nuevo</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /*
+      Conceptos de diseño gráfico.
+      Se usan palabras sin tildes para que el teclado sea sencillo.
+    */
+    const CONCEPTS = [
+      {word:"tipografia", hint:"Sistema y elección de letras en una pieza."},
+      {word:"contraste", hint:"Diferencia visual entre elementos."},
+      {word:"reticula", hint:"Estructura que organiza una composición."},
+      {word:"jerarquia", hint:"Orden de importancia visual de los elementos."},
+      {word:"paleta", hint:"Conjunto de colores usados en un diseño."},
+      {word:"textura", hint:"Cualidad visual o táctil de una superficie."},
+      {word:"logotipo", hint:"Representación gráfica basada principalmente en letras."},
+      {word:"vector", hint:"Gráfico definido mediante formas y trazados matemáticos."},
+      {word:"composicion", hint:"Organización de los elementos dentro de una pieza."},
+      {word:"proporcion", hint:"Relación de tamaño entre diferentes elementos."},
+      {word:"alineacion", hint:"Forma en que se ordenan y relacionan los elementos."},
+      {word:"simetria", hint:"Correspondencia equilibrada entre partes de una composición."},
+      {word:"grilla", hint:"Sistema de líneas que ayuda a estructurar una composición."},
+      {word:"espacio", hint:"Área vacía que ayuda a organizar los elementos."},
+      {word:"ritmo", hint:"Repetición y variación que genera movimiento visual."},
+      {word:"escala", hint:"Relación de tamaño entre elementos o respecto de un formato."},
+      {word:"forma", hint:"Elemento visual definido por contorno, superficie o volumen."},
+      {word:"linea", hint:"Elemento gráfico fundamental que construye formas y direcciones."},
+      {word:"modulo", hint:"Unidad que puede repetirse para construir una composición."},
+      {word:"patron", hint:"Repetición organizada de elementos visuales."},
+      {word:"croma", hint:"Característica relacionada con la intensidad o pureza de un color."},
+      {word:"icono", hint:"Signo visual que representa una idea, objeto o acción."},
+      {word:"signo", hint:"Elemento que comunica o representa un significado."},
+      {word:"marca", hint:"Identidad visual que distingue una organización o producto."},
+      {word:"identidad", hint:"Sistema visual que construye el reconocimiento de una marca."},
+      {word:"afiche", hint:"Pieza gráfica destinada principalmente a comunicar un mensaje."},
+      {word:"editorial", hint:"Área del diseño relacionada con publicaciones y contenidos."},
+
+      {word:"bauhaus", hint:"Escuela alemana fundada en 1919 que integró arte, diseño y arquitectura."},
+      {word:"ulm", hint:"Escuela alemana de diseño fundada en 1953, vinculada al diseño racional y sistemático."},
+      {word:"destijl", hint:"Movimiento neerlandés asociado a la abstracción geométrica."},
+      {word:"vkhutemas", hint:"Escuela soviética de arte y diseño activa en Moscú durante la década de 1920."},
+      {word:"memphis", hint:"Grupo italiano de diseño surgido en 1981, conocido por formas y colores expresivos."},
+      {word:"cranbrook", hint:"Academia estadounidense vinculada a importantes desarrollos del diseño moderno."},
+      {word:"artscrafts", hint:"Movimiento británico que defendió la artesanía frente a la industrialización."},
+      {word:"artnouveau", hint:"Movimiento de fines del siglo XIX caracterizado por líneas orgánicas y ornamentación."},
+      {word:"artdeco", hint:"Estilo de las décadas de 1920 y 1930 asociado a geometría y ornamentación."},
+      {word:"constructivismo", hint:"Vanguardia rusa con gran influencia en la gráfica y la comunicación visual."},
+      {word:"futurismo", hint:"Vanguardia italiana que influyó en la tipografía y composición gráfica."},
+      {word:"dadaismo", hint:"Movimiento de vanguardia que cuestionó las convenciones artísticas y visuales."},
+      {word:"internacional", hint:"Estilo gráfico asociado a claridad, retículas y tipografía sans serif."}
+    ];
+
+    const MAX_LIVES = 6;
+    const TOTAL_ROUNDS = 5;
+
+    const KEY_ROWS = [
+      ["Q","W","E","R","T","Y","U","I","O","P"],
+      ["A","S","D","F","G","H","J","K","L","Ñ"],
+      ["Z","X","C","V","B","N","M"]
+    ];
+
+    let answer = "";
+    let hint = "";
+    let guessed = new Set();
+    let wrongLetters = new Set();
+    let lives = MAX_LIVES;
+    let round = 1;
+    let score = 0;
+    let locked = false;
+    let previousWords = [];
+    let timedMode = true;
+    let timer = null;
+    let roundStart = 0;
+    const ROUND_TIME = 25;
+
+    const startScreen = document.getElementById("startScreen");
+    const timedModeBtn = document.getElementById("timedMode");
+    const untimedModeBtn = document.getElementById("untimedMode");
+    const gameContent = document.getElementById("gameContent");
+    const finalScreen = document.getElementById("finalScreen");
+    const wordEl = document.getElementById("word");
+    const hintEl = document.getElementById("hint");
+    const messageEl = document.getElementById("message");
+    const keyboardEl = document.getElementById("keyboard");
+    const heartsEl = document.getElementById("hearts");
+    const scoreEl = document.getElementById("scoreText");
+    const roundEl = document.getElementById("roundText");
+    const finalScoreEl = document.getElementById("finalScore");
+    const timerText = document.getElementById("timerText");
+    const timerFill = document.getElementById("timerFill");
+    const playAgain = document.getElementById("playAgain");
+
+    function normalize(value){
+      return value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function chooseConcept(){
+      let available = CONCEPTS.filter(c => !previousWords.includes(c.word));
+
+      if(!available.length){
+        previousWords = [];
+        available = CONCEPTS;
+      }
+
+      const concept = available[Math.floor(Math.random() * available.length)];
+
+      previousWords.push(concept.word);
+      answer = normalize(concept.word);
+      hint = concept.hint;
+    }
+
+    function createKeyboard(){
+      keyboardEl.innerHTML = "";
+
+      KEY_ROWS.forEach(row => {
+        const rowEl = document.createElement("div");
+        rowEl.className = "key-row";
+
+        row.forEach(letter => {
+          const key = document.createElement("button");
+          key.className = "key";
+          key.textContent = letter;
+          key.dataset.letter = normalize(letter);
+
+          key.addEventListener("click", () => guessLetter(normalize(letter)));
+
+          rowEl.appendChild(key);
+        });
+
+        keyboardEl.appendChild(rowEl);
+      });
+    }
+
+    function renderWord(){
+      wordEl.innerHTML = "";
+
+      for(let i = 0; i < answer.length; i++){
+        const char = answer[i];
+        const letter = document.createElement("div");
+
+        if(char === " "){
+          letter.className = "letter space";
+        }else{
+          letter.className = "letter";
+
+          if(guessed.has(char)){
+            letter.textContent = char.toUpperCase();
+            letter.classList.add("revealed");
+          }
+        }
+
+        wordEl.appendChild(letter);
+      }
+    }
+
+    function updateLives(){
+      let html = "";
+
+      for(let i = 0; i < MAX_LIVES; i++){
+        html += i < lives
+          ? "● "
+          : '<span class="lost">●</span> ';
+      }
+
+      heartsEl.innerHTML = html.trim();
+    }
+
+    function updateHangman(){
+      document.querySelectorAll(".part").forEach(part => {
+        const number = Number(part.dataset.part);
+        part.classList.toggle("show", number <= (MAX_LIVES - lives));
+      });
+    }
+
+    function updateKeyboard(letter, state){
+      const key = keyboardEl.querySelector(`[data-letter="${letter}"]`);
+
+      if(!key) return;
+
+      key.disabled = true;
+      key.classList.remove("correct","wrong");
+
+      if(state === "correct"){
+        key.classList.add("correct");
+      }else{
+        key.classList.add("wrong");
+      }
+    }
+
+    function showMessage(text, type = ""){
+      messageEl.textContent = text;
+      messageEl.className = "message";
+
+      if(type){
+        messageEl.classList.add(type);
+      }
+    }
+
+    function allLettersFound(){
+      return [...new Set(answer.replace(/[^a-zñ]/g, ""))]
+        .every(letter => guessed.has(letter));
+    }
+
+    function calculateRoundPoints(){
+      // Más puntos si se acierta con más vidas restantes.
+      return 100 + lives * 25;
+    }
+
+
+    function startTimer(){
+      clearInterval(timer);
+      if(!timedMode){
+        timerText.textContent = "∞";
+        timerFill.style.width = "100%";
+        timerFill.classList.remove("warning","danger");
+        return;
+      }
+      roundStart = performance.now();
+      timerText.textContent = `${ROUND_TIME}s`;
+      timerFill.style.width = "100%";
+      timerFill.classList.remove("warning","danger");
+      timer = setInterval(() => {
+        const elapsed = (performance.now() - roundStart) / 1000;
+        const remaining = Math.max(0, ROUND_TIME - elapsed);
+        timerText.textContent = `${Math.ceil(remaining)}s`;
+        timerFill.style.width = `${(remaining / ROUND_TIME) * 100}%`;
+        timerFill.classList.toggle("warning", remaining <= 12 && remaining > 6);
+        timerFill.classList.toggle("danger", remaining <= 6);
+        if(remaining <= 0){ clearInterval(timer); timeOut(); }
+      }, 50);
+    }
+
+    function timeOut(){
+      if(!timedMode || locked) return;
+      locked = true;
+      revealAnswer();
+      showMessage(`Se acabó el tiempo. Era ${answer.toUpperCase()}.`, "error");
+      setTimeout(nextRound, 1300);
+    }
+
+    function guessLetter(letter){
+      if(locked || guessed.has(letter) || wrongLetters.has(letter)) return;
+
+      if(answer.includes(letter)){
+        guessed.add(letter);
+        updateKeyboard(letter, "correct");
+        renderWord();
+
+        if(allLettersFound()){
+          locked = true;
+          const points = calculateRoundPoints();
+          score += points;
+          scoreEl.textContent = `${score} pts`;
+          showMessage(`¡Correcto! +${points} puntos`, "success");
+
+          setTimeout(nextRound, 1100);
+        }else{
+          showMessage("¡Está! No perdés ninguna vida.", "success");
+        }
+      }else{
+        wrongLetters.add(letter);
+        lives--;
+
+        updateKeyboard(letter, "wrong");
+        updateLives();
+        updateHangman();
+
+        if(lives <= 0){
+          locked = true;
+          revealAnswer();
+
+          showMessage(
+            `Te quedaste sin vidas. Era ${answer.toUpperCase()}.`,
+            "error"
+          );
+
+          setTimeout(nextRound, 1400);
+        }else{
+          showMessage(`La letra ${letter.toUpperCase()} no está.`, "error");
+        }
+      }
+    }
+
+    function revealAnswer(){
+      answer.split("").forEach(letter => {
+        if(letter !== " "){
+          guessed.add(letter);
+        }
+      });
+
+      renderWord();
+    }
+
+    function nextRound(){
+      if(round >= TOTAL_ROUNDS){
+        finishGame();
+        return;
+      }
+
+      round++;
+      startRound();
+    }
+
+    function startRound(){
+      locked = false;
+      guessed = new Set();
+      wrongLetters = new Set();
+      lives = MAX_LIVES;
+
+      chooseConcept();
+
+      roundEl.textContent = `Ronda ${round} / ${TOTAL_ROUNDS}`;
+      scoreEl.textContent = `${score} pts`;
+      hintEl.textContent = `Pista: ${hint}`;
+
+      createKeyboard();
+      renderWord();
+      updateLives();
+      updateHangman();
+      showMessage("Elegí una letra.");
+      startTimer();
+    }
+
+    function finishGame(){
+      gameContent.style.display = "none";
+      finalScreen.classList.add("show");
+      finalScoreEl.textContent = `${score} pts`;
+    }
+
+    function restartGame(){
+      round = 1;
+      score = 0;
+      previousWords = [];
+      clearInterval(timer);
+      finalScreen.classList.remove("show");
+      startScreen.hidden = true;
+      gameContent.style.display = "";
+      startRound();
+    }
+
+    document.addEventListener("keydown", event => {
+      if(locked) return;
+
+      const key = normalize(event.key);
+
+      if(/^[a-zñ]$/.test(key)){
+        guessLetter(key);
+      }
+    });
+
+    playAgain.addEventListener("click", restartGame);
+
+    function startGame(mode){
+      timedMode = mode;
+      startScreen.hidden = true;
+      gameContent.style.display = "";
+      finalScreen.classList.remove("show");
+      round = 1;
+      score = 0;
+      previousWords = [];
+      startRound();
+    }
+
+    timedModeBtn.addEventListener("click", () => startGame(true));
+    untimedModeBtn.addEventListener("click", () => startGame(false));
+  </script>
+<style id="embebido">.embebido html,html.embebido,html.embebido body{background:transparent!important;min-height:0!important;height:auto!important}html.embebido body>*{min-height:0!important}html.embebido .volver{display:none!important}</style>
+<script>if(top!==self){document.documentElement.classList.add('embebido');const s=()=>parent.postMessage({altoJuego:document.body.getBoundingClientRect().height+16},'*');addEventListener('load',()=>{s();new ResizeObserver(s).observe(document.body)})}</script>
+</body>
+</html>
