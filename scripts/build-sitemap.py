@@ -32,7 +32,7 @@ for p in paginas:
     html = ruta.read_text(encoding="utf-8")
     if re.search(r'<meta name="robots" content="[^"]*noindex', html):
         continue
-    url = f"{dominio}/" if p == "index.html" else f"{dominio}/{p}"
+    url = f"{dominio}/" if p == "index.html" else f"{dominio}/{p.removesuffix('.html')}"  # URLs sin .html
     prio = "1.0" if p == "index.html" else "0.9" if p == "portfolio.html" else "0.8" if p.startswith("proyecto-") else "0.6"
     img = ""
     if p.startswith("proyecto-"):

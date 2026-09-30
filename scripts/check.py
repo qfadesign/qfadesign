@@ -15,7 +15,11 @@ def local(ruta_html, ref):
     if re.match(r"(https?:|mailto:|tel:|data:|javascript:|#)", ref): return None
     ref = ref.split("#")[0].split("?")[0]
     if not ref: return None
-    return (raiz / ref.lstrip("/")) if ref.startswith("/") else (ruta_html.parent / ref)
+    destino = (raiz / ref.lstrip("/")) if ref.startswith("/") else (ruta_html.parent / ref)
+    # GitHub Pages sirve /acerca desde acerca.html: las URLs van sin extensión
+    if not destino.exists() and destino.with_name(destino.name + ".html").exists():
+        return destino.with_name(destino.name + ".html")
+    return destino
 
 for p in htmls:
     rel = p.relative_to(raiz).as_posix()
@@ -26,6 +30,8 @@ for p in htmls:
         destino = local(p, ref)
         if destino is not None and not destino.exists():
             errores.append(f"{rel}: no existe {ref}")
+        if ref.split("#")[0].split("?")[0].endswith(".html") and not re.match(r"https?:", ref):
+            errores.append(f"{rel}: el enlace {ref} debe ir sin .html")
     if es404: continue
     # SEO básico
     t = re.search(r"<title>(.*?)</title>", s, re.S)
@@ -35,7 +41,7 @@ for p in htmls:
     if not d: errores.append(f"{rel}: falta meta description")
     elif not 70 <= len(d.group(1)) <= 165: avisos.append(f"{rel}: descripción de {len(d.group(1))} caracteres")
     can = re.search(r'<link rel="canonical" href="([^"]+)"', s)
-    esperado = f"{dominio}/" if rel == "index.html" else f"{dominio}/{rel}"
+    esperado = f"{dominio}/" if rel == "index.html" else f"{dominio}/{rel.removesuffix('.html')}"
     if not can: errores.append(f"{rel}: falta canonical")
     elif can.group(1) != esperado: errores.append(f"{rel}: canonical {can.group(1)} (esperado {esperado})")
     if len(re.findall(r"<h1[\s>]", s)) != 1: errores.append(f"{rel}: debe tener exactamente un <h1>")
@@ -57,7 +63,8 @@ if sm.exists():
         if not u.startswith(dominio): errores.append(f"sitemap: {u} no usa el dominio {dominio}")
         else:
             rel = u[len(dominio) + 1:] or "index.html"
-            if not (raiz / rel).exists(): errores.append(f"sitemap: no existe {rel}")
+            if not (raiz / rel).exists() and not (raiz / (rel + ".html")).exists(): errores.append(f"sitemap: no existe {rel}")
+            if u.endswith(".html"): errores.append(f"sitemap: {u} debe ir sin .html")
 else: errores.append("falta sitemap.xml")
 if not (raiz / "robots.txt").exists(): errores.append("falta robots.txt")
 elif "Sitemap:" not in (raiz / "robots.txt").read_text(encoding="utf-8"): avisos.append("robots.txt no enlaza el sitemap")
