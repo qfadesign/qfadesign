@@ -12,7 +12,7 @@ acerca.html · portfolio.html · herramientas.html · jueguitos.html · contacto
 proyecto-*.html             Una página por proyecto (Árbol, Bleko, Dulcemente, Miga, ROS.exe, Trazo, F1)
 juegos/                     Los tres jueguitos
 404.html                    Página de error
-css/ · js/ · fonts/         Estilos, scripts y tipografías
+css/ · js/                 Estilos y scripts
 img/                        Portadas, imágenes de proyectos (img/proyectos) e imágenes para compartir (img/og)
 video/                      Video de ROS.exe
 favicon.* · icon-*.png · apple-touch-icon.png · site.webmanifest     Íconos de pestaña, Google y celular
@@ -81,7 +81,7 @@ python3 scripts/build-sitemap.py   # regenera sitemap.xml después de agregar o 
 ### Consejos
 - Las imágenes de proyecto están en WebP de 1800 px de ancho. Mantené ese formato para que la web cargue rápido.
 - GitHub limita los archivos a 100 MB. El video actual pesa unos 5 MB: si agregás más, comprimilos.
-- Las tipografías de `fonts/` tienen sus propias licencias. Confirmá que la tuya permita usarlas en web.
+- **Tipografías (Adobe Fonts):** Articulat CF y Podium Soft se cargan desde el proyecto web de Adobe Fonts (`https://use.typekit.net/ftd7ahn.css`, enlazado en el `<head>` de cada página). Es la forma que permite la licencia: no se pueden subir los archivos de fuente al sitio. El proyecto sigue funcionando mientras la suscripción a Creative Cloud esté activa. Si agregás una nueva página, copiá ese `<link>`. En el CSS los nombres son `articulat-cf`, `articulat-heavy-cf` (Heavy, 900) y `podium-soft-variable`.
 
 ## Contacto
 

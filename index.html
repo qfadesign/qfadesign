@@ -33,13 +33,12 @@
 <meta name="twitter:description" content="Portfolio de Facundo, diseñador en Comunicación Visual: identidades de marca, motion graphics y diseño editorial, más recursos y juegos de diseño.">
 <meta name="twitter:image" content="https://qfadesign.com/img/og/og-home.jpg">
 <meta name="twitter:image:alt" content="qfadesign: Facundo, diseñador en Comunicación Visual">
-<link rel="preload" href="fonts/ArticulatCF-HeavyItalic.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="img/hero-mano.jpg" as="image" fetchpriority="high">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://qfadesign.com/#website","url":"https://qfadesign.com/","name":"qfadesign","inLanguage":"es","publisher":{"@id":"https://qfadesign.com/#facundo"}},{"@type":"Person","@id":"https://qfadesign.com/#facundo","name":"Facundo","alternateName":"qfadesign","jobTitle":"Diseñador en Comunicación Visual","url":"https://qfadesign.com/","image":"https://qfadesign.com/img/perfil.jpg","email":"mailto:qfadesignn@gmail.com","knowsAbout":["Branding","Identidad visual","Motion graphics","Diseño editorial","Social media","Diseño de logos"],"sameAs":["https://www.instagram.com/qfadesign/","https://www.tiktok.com/@qfadesign","https://www.behance.net/facundocruz5","https://www.linkedin.com/in/facundo-cruz-19a581303/"]},{"@type":"WebPage","@id":"https://qfadesign.com/#webpage","url":"https://qfadesign.com/","name":"qfadesign — Facundo, diseñador en Comunicación Visual","description":"Portfolio de Facundo, diseñador en Comunicación Visual: identidades de marca, motion graphics y diseño editorial, más recursos y juegos de diseño.","inLanguage":"es","isPartOf":{"@id":"https://qfadesign.com/#website"},"about":{"@id":"https://qfadesign.com/#facundo"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://qfadesign.com/img/og/og-home.jpg","width":1200,"height":630}}]}</script>
 <!-- SEO:end -->
-<link rel="stylesheet" href="css/shared.css">
+<link rel="preconnect" href="https://use.typekit.net" crossorigin><link rel="preconnect" href="https://p.typekit.net" crossorigin><link rel="stylesheet" href="https://use.typekit.net/ftd7ahn.css"><link rel="stylesheet" href="css/shared.css">
 <style>
-:root{--azul:#0b75f4;--azul-f:#0a5cc0;--negro:#000;--blanco:#fff;--f:"Articulat CF",system-ui,sans-serif}
+:root{--azul:#0b75f4;--azul-f:#0a5cc0;--negro:#000;--blanco:#fff;--f:"articulat-cf",system-ui,sans-serif}
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--f);font-weight:400;background:#0847a3;color:var(--blanco);line-height:1.35}
@@ -53,7 +52,7 @@ img{display:block;max-width:100%}
 .marca img{width:100%}
 .intro{position:absolute;z-index:3;right:clamp(16px,3.5vw,56px);bottom:clamp(24px,6vh,72px);width:min(380px,44vw);color:#fff;background:rgba(10,30,70,.42);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border:1px solid rgba(255,255,255,.35);box-shadow:0 12px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.4);padding:20px;border-radius:24px}
 .intro p{font-style:italic;font-weight:400;font-size:clamp(17px,1.7vw,24px);margin-bottom:16px}
-.btn{display:block;text-align:center;font-family:"Podium Soft","Articulat CF",sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(12px,1.1vw,15px);letter-spacing:.03em;padding:13px 18px;border-radius:14px;margin-top:8px;background:var(--azul-f);color:#fff;transition:transform .15s}
+.btn{display:block;text-align:center;font-family:"podium-soft-variable","articulat-cf",sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(12px,1.1vw,15px);letter-spacing:.03em;padding:13px 18px;border-radius:14px;margin-top:8px;background:var(--azul-f);color:#fff;transition:transform .15s}
 .btn:hover{transform:translateY(-2px)}
 .btn.claro{background:#fff;color:var(--azul-f);box-shadow:inset 0 0 0 2px var(--azul-f)}
 .btn.negro{background:#fff;color:var(--azul-f);display:inline-block;padding:13px 34px;box-shadow:inset 0 0 0 2px var(--azul-f)}
@@ -61,7 +60,7 @@ img{display:block;max-width:100%}
 /* marquesina infinita */
 .cinta{background:#000;overflow:hidden;white-space:nowrap;padding:14px 0}
 .pista{display:flex;width:max-content;animation:mover var(--dur,26s) linear infinite;will-change:transform}
-.tanda{display:flex;flex:none;color:var(--azul);font-weight:900;font-style:italic;font-size:clamp(18px,2vw,26px)}
+.tanda{display:flex;flex:none;color:var(--azul);font-weight:900;font-style:italic;font-size:clamp(18px,2vw,26px);font-family:var(--fh)}
 .tanda span{padding:0 .7em}
 @keyframes mover{to{transform:translateX(-50%)}}
 
@@ -69,7 +68,7 @@ img{display:block;max-width:100%}
 .cuerpo{background:radial-gradient(70vw 50vw at 92% 3%,rgba(120,190,255,.5),transparent 62%),radial-gradient(60vw 45vw at -6% 34%,rgba(3,40,120,.7),transparent 60%),radial-gradient(55vw 40vw at 104% 66%,rgba(70,160,255,.36),transparent 60%),linear-gradient(#0a5cc0 0,#0847a3 100%);padding-bottom:0}
 .sobre{display:grid;grid-template-columns:1.1fr 1fr;gap:5vw;align-items:center;max-width:1200px;margin:auto;padding:clamp(48px,8vw,110px) clamp(20px,4vw,48px) 40px}
 .sobre .txt{text-align:center;max-width:460px;margin:auto}
-h2{font-weight:900;font-style:italic;font-size:clamp(28px,3.4vw,46px);line-height:1.05}
+h2{font-weight:900;font-style:italic;font-size:clamp(28px,3.4vw,46px);line-height:1.05;font-family:var(--fh)}
 .sobre .sub{font-size:clamp(17px,1.7vw,22px);margin:6px 0 20px}
 .sobre .txt p:last-child{font-size:clamp(14px,1.2vw,16px)}
 .sobre img{border-radius:28px;width:100%;aspect-ratio:1;object-fit:cover;max-width:460px;justify-self:end}
@@ -77,16 +76,16 @@ h2{font-weight:900;font-style:italic;font-size:clamp(28px,3.4vw,46px);line-heigh
 
 /* trabajos */
 .trabajos{background:#fff;color:var(--azul-f);border-radius:28px;margin:0 clamp(12px,2vw,32px);display:flex;gap:20px;align-items:center;padding:20px}
-.trabajos h3{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:900;font-style:italic;font-size:clamp(24px,2.6vw,36px);white-space:nowrap}
+.trabajos h3{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:900;font-style:italic;font-size:clamp(24px,2.6vw,36px);white-space:nowrap;font-family:var(--fh)}
 .card span{position:absolute;left:14px;bottom:12px;background:rgba(255,255,255,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);color:#06214d;padding:5px 12px;border-radius:99px;font-size:14px}
 .rail-wrap{flex:1;min-width:0;position:relative;container-type:inline-size;--cw:clamp(250px,62cqw,460px)}
 .rail{display:flex;gap:clamp(14px,2vw,26px);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:22px calc(50cqw - var(--cw)/2) 44px;cursor:grab;overscroll-behavior-x:contain;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .rail::-webkit-scrollbar{display:none}
 .rail.arrastrando{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
 .rail.arrastrando .card{pointer-events:none}
-.card{flex:0 0 var(--cw);aspect-ratio:4/3;border-radius:22px;scroll-snap-align:center;display:flex;align-items:flex-end;padding:16px;color:#fff;font-weight:900;font-style:italic;font-size:20px;background-size:cover;background-position:center;position:relative;overflow:hidden;scale:var(--s,1);opacity:var(--o,1);box-shadow:0 18px 36px rgba(6,33,77,.28);user-select:none;-webkit-user-drag:none}
+.card{flex:0 0 var(--cw);aspect-ratio:4/3;border-radius:22px;scroll-snap-align:center;display:flex;align-items:flex-end;padding:16px;color:#fff;font-weight:900;font-style:italic;font-size:20px;background-size:cover;background-position:center;position:relative;overflow:hidden;scale:var(--s,1);opacity:var(--o,1);box-shadow:0 18px 36px rgba(6,33,77,.28);user-select:none;-webkit-user-drag:none;font-family:var(--fh)}
 .ctrl{display:flex;align-items:center;justify-content:center;gap:18px;padding-bottom:4px}
-.flecha{width:46px;height:46px;border-radius:50%;border:1px solid rgba(10,92,192,.35);background:rgba(10,92,192,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--azul-f);font:900 20px var(--f);cursor:pointer;display:grid;place-items:center;transition:background .25s,color .25s,scale .25s}
+.flecha{width:46px;height:46px;border-radius:50%;border:1px solid rgba(10,92,192,.35);background:rgba(10,92,192,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--azul-f);font:900 20px var(--fh);cursor:pointer;display:grid;place-items:center;transition:background .25s,color .25s,scale .25s}
 .flecha:hover{background:var(--azul-f);color:#fff;scale:1.08}
 .flecha:disabled{opacity:.3;cursor:default;scale:1;background:rgba(10,92,192,.12);color:var(--azul-f)}
 .puntos{display:flex;gap:8px}
@@ -101,7 +100,7 @@ h2{font-weight:900;font-style:italic;font-size:clamp(28px,3.4vw,46px);line-heigh
 .c7{background-image:url(img/f1.jpg)}
 .mas{text-align:center;margin:26px 0 70px}
 .ayuda{text-align:center;padding:0 20px 28px}
-.ayuda h3{font-weight:900;font-style:italic;font-size:clamp(20px,2vw,26px)}
+.ayuda h3{font-weight:900;font-style:italic;font-size:clamp(20px,2vw,26px);font-family:var(--fh)}
 .ayuda p{font-size:clamp(18px,2vw,26px);margin:8px 0 22px}
 
 @media(max-width:760px){
