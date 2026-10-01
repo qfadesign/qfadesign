@@ -35,13 +35,12 @@ nav ul a:hover,nav a[aria-current]{text-decoration:underline}
 footer{position:relative;z-index:1;background:none;color:#fff;overflow:hidden}
 .gran{line-height:0;overflow:hidden;padding:clamp(6px,1.5vw,20px) clamp(16px,2vw,28px) 0}
 .gran img{width:100%;transform:translateY(38%)}
-.pie{position:relative;background:none;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px 26px;padding:22px clamp(16px,2vw,28px);font-weight:900;font-style:italic;font-size:clamp(16px,1.6vw,22px);font-family:var(--fh)}
-.pie img{height:26px;width:auto}
+.pie{position:relative;background:none;display:flex;justify-content:center;align-items:center;gap:14px 26px;padding:22px clamp(16px,2vw,28px);font-weight:900;font-style:italic;font-size:clamp(16px,1.6vw,22px);font-family:var(--fh)}
 .redes{display:flex;flex-wrap:wrap;gap:8px 26px}
 .redes a{text-underline-offset:6px;text-decoration-thickness:2px}
 .redes a:hover{text-decoration:underline}
 .firma{background:none;color:rgba(255,255,255,.72);text-align:center;font-style:italic;font-weight:400;font-size:14px;padding:0 16px 22px}
-@media(max-width:700px){.pie{flex-direction:column;text-align:center}}
+@media(max-width:700px){.redes{gap:6px 18px;justify-content:center}}
 
 /* texto solo para lectores de pantalla y buscadores */
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
