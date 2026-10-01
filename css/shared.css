@@ -1,13 +1,5 @@
-/* qfadesign — fuentes, nav y pie compartidos por TODAS las páginas */
-@font-face{font-family:"Podium Soft";src:url(../fonts/PodiumSoft.ttf);font-weight:400;font-display:swap}
-@font-face{font-family:"Articulat CF";src:url(../fonts/ArticulatCF-Light.ttf);font-weight:300;font-style:normal;font-display:swap}
-@font-face{font-family:"Articulat CF";src:url(../fonts/ArticulatCF-LightItalic.ttf);font-weight:300;font-style:italic;font-display:swap}
-@font-face{font-family:"Articulat CF";src:url(../fonts/ArticulatCF-Regular.ttf);font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:"Articulat CF";src:url(../fonts/ArticulatCF-Italic.ttf);font-weight:400;font-style:italic;font-display:swap}
-@font-face{font-family:"Articulat CF";src:url(../fonts/ArticulatCF-BoldItalic.ttf);font-weight:700;font-style:italic;font-display:swap}
-@font-face{font-family:"Articulat CF";src:url(../fonts/ArticulatCF-Heavy.ttf);font-weight:900;font-style:normal;font-display:swap}
-@font-face{font-family:"Articulat CF";src:url(../fonts/ArticulatCF-HeavyItalic.ttf);font-weight:900;font-style:italic;font-display:swap}
-:root{--azul:#0b75f4;--azul-f:#0a5cc0;--fondo:#0847a3;--nav:#06214d}
+/* qfadesign — nav y pie compartidos por TODAS las páginas. Tipografías: Adobe Fonts (use.typekit.net/ftd7ahn.css), se carga en el <head> de cada página */
+:root{--f:"articulat-cf",system-ui,sans-serif;--fh:"articulat-heavy-cf","articulat-cf",system-ui,sans-serif;--fp:"podium-soft-variable","articulat-cf",sans-serif;--azul:#0b75f4;--azul-f:#0a5cc0;--fondo:#0847a3;--nav:#06214d}
 
 /* NAV: fija al scrollear, con efecto vidrio */
 html{scroll-padding-top:84px}
@@ -43,7 +35,7 @@ nav ul a:hover,nav a[aria-current]{text-decoration:underline}
 footer{position:relative;z-index:1;background:none;color:#fff;overflow:hidden}
 .gran{line-height:0;overflow:hidden;padding:clamp(6px,1.5vw,20px) clamp(16px,2vw,28px) 0}
 .gran img{width:100%;transform:translateY(38%)}
-.pie{position:relative;background:none;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px 26px;padding:22px clamp(16px,2vw,28px);font-weight:900;font-style:italic;font-size:clamp(16px,1.6vw,22px)}
+.pie{position:relative;background:none;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px 26px;padding:22px clamp(16px,2vw,28px);font-weight:900;font-style:italic;font-size:clamp(16px,1.6vw,22px);font-family:var(--fh)}
 .pie img{height:26px;width:auto}
 .redes{display:flex;flex-wrap:wrap;gap:8px 26px}
 .redes a{text-underline-offset:6px;text-decoration-thickness:2px}
