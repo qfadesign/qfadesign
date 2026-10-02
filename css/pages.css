@@ -123,6 +123,7 @@ h2{font-weight:900;font-style:italic;line-height:1;font-family:var(--fh)}
 .pr-info{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(14px,2vw,26px);margin-top:clamp(14px,2vw,26px)}
 .pr-info h2{font-size:clamp(22px,2.3vw,32px);margin-bottom:14px}
 .pr-info p{font-size:clamp(16px,1.4vw,20px);max-width:62ch}
+.pr-links{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(14px,2vw,26px)}
 .pr-tags{display:flex;flex-wrap:wrap;gap:10px;list-style:none;padding:0}
 .pr-tags li{padding:9px 18px;border-radius:99px;font-weight:900;font-style:italic;font-size:15px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);font-family:var(--fh)}
 .pr-gal{display:grid;gap:clamp(14px,2vw,26px);margin-top:clamp(14px,2vw,26px)}
