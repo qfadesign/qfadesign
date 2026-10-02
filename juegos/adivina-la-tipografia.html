@@ -447,7 +447,7 @@ button{cursor:pointer}
 </style>
 <script>if(self!==top){document.write('<style>html,body{background:transparent!important}#volver{display:none!important}</style>')}</script>
 <link rel="preconnect" href="https://use.typekit.net" crossorigin><link rel="preconnect" href="https://p.typekit.net" crossorigin><link rel="stylesheet" href="https://use.typekit.net/ftd7ahn.css">
-<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script>
+<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script>
 </head>
 
 <body><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca">Acerca de</a></li><li><a href="../portfolio">Portfolio</a></li><li><a href="../herramientas">Herramientas</a></li><li><a href="../jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../contacto">Contacto</a></li></ul></nav>
@@ -485,6 +485,8 @@ button{cursor:pointer}
     <div class="label">Resultado final</div>
     <h2 class="big-title">Tu resultado</h2>
     <div class="end-score" id="finalScore">0 pts</div>
+
+    <div id="shareBox" class="share-box"></div>
 
     <p class="intro">
       Dejá tu nombre para aparecer en el ranking de este navegador.
@@ -715,6 +717,17 @@ function finishGame(){
   finalScore.textContent = `${score} pts`;
   showScreen(endScreen);
   renderRanking();
+
+  const shareBox = document.getElementById("shareBox");
+  shareBox.innerHTML = "";
+  if(window.QFAResultado){
+    QFAResultado.montar(shareBox, () => ({
+      juego:"Adivina la tipografía",
+      puntos:score,
+      dificultad:"Estándar",
+      detalle:[["RONDAS", String(TOTAL_ROUNDS)], ["ACIERTOS", `${correctCount} de ${TOTAL_ROUNDS}`], ["TIEMPO POR RONDA", `${ROUND_TIME} s`]]
+    }));
+  }
 }
 
 function getRanking(){

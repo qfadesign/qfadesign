@@ -533,7 +533,7 @@
   </style>
 <script>if(self!==top){document.write('<style>html,body{background:transparent!important}#volver{display:none!important}</style>')}</script>
 <link rel="preconnect" href="https://use.typekit.net" crossorigin><link rel="preconnect" href="https://p.typekit.net" crossorigin><link rel="stylesheet" href="https://use.typekit.net/ftd7ahn.css">
-<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script>
+<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script>
 </head>
 
 <body><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca">Acerca de</a></li><li><a href="../portfolio">Portfolio</a></li><li><a href="../herramientas">Herramientas</a></li><li><a href="../jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../contacto">Contacto</a></li></ul></nav>
@@ -609,6 +609,7 @@
         <div class="final-title">¡Terminaste las 5 rondas!</div>
         <div class="final-score" id="finalScore">0 pts</div>
         <p class="final-copy">Tu puntaje total en el ahorcado del diseño.</p>
+        <div id="shareBox" class="share-box"></div>
         <button class="play-again" id="playAgain">Jugar de nuevo</button>
       </div>
     </section>
@@ -683,6 +684,7 @@
     let previousWords = [];
     let timedMode = true;
     let timer = null;
+    let solved = 0;
     let roundStart = 0;
     const ROUND_TIME = 25;
 
@@ -864,6 +866,7 @@
 
         if(allLettersFound()){
           locked = true;
+          solved++;
           const points = calculateRoundPoints();
           score += points;
           scoreEl.textContent = `${score} pts`;
@@ -941,11 +944,23 @@
       gameContent.style.display = "none";
       finalScreen.classList.add("show");
       finalScoreEl.textContent = `${score} pts`;
+
+      const shareBox = document.getElementById("shareBox");
+      shareBox.innerHTML = "";
+      if(window.QFAResultado){
+        QFAResultado.montar(shareBox, () => ({
+          juego:"El ahorcado del diseño",
+          puntos:score,
+          dificultad:timedMode ? "Con tiempo" : "Sin tiempo",
+          detalle:[["RONDAS", String(TOTAL_ROUNDS)], ["PALABRAS ADIVINADAS", `${solved} de ${TOTAL_ROUNDS}`], ["TIEMPO POR RONDA", timedMode ? `${ROUND_TIME} s` : "Libre"]]
+        }));
+      }
     }
 
     function restartGame(){
       round = 1;
       score = 0;
+      solved = 0;
       previousWords = [];
       clearInterval(timer);
       finalScreen.classList.remove("show");
@@ -973,6 +988,7 @@
       finalScreen.classList.remove("show");
       round = 1;
       score = 0;
+      solved = 0;
       previousWords = [];
       startRound();
     }
