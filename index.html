@@ -50,8 +50,14 @@ img{display:block;max-width:100%}
 .hero{position:relative;margin-top:calc(-1*var(--navh,58px));background:#05070d url(img/hero-mano.jpg) 40% 40%/cover;min-height:100svh;overflow:hidden}
 .marca{position:relative;z-index:2;margin-top:calc(-11.15vw + var(--navh,58px));padding:0}
 .marca img{width:100%}
-.intro{position:absolute;z-index:3;right:clamp(16px,3.5vw,56px);bottom:clamp(24px,6vh,72px);width:min(380px,44vw);color:#fff;background:rgba(10,30,70,.42);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border:1px solid rgba(255,255,255,.35);box-shadow:0 12px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.4);padding:20px;border-radius:24px}
-.intro p{font-style:italic;font-weight:400;font-size:clamp(17px,1.7vw,24px);margin-bottom:16px}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:46%;z-index:1;pointer-events:none;background:linear-gradient(to top,rgba(2,8,22,.62),rgba(2,8,22,0))}
+.intro{position:absolute;z-index:3;left:0;right:0;margin-inline:auto;bottom:clamp(22px,5.5vh,64px);width:min(1080px,calc(100% - 2*clamp(16px,3.5vw,56px)));display:flex;align-items:center;justify-content:space-between;gap:clamp(16px,2.4vw,36px);color:#fff;padding:12px 12px 12px clamp(24px,3vw,40px);border-radius:999px;background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.06) 55%,rgba(255,255,255,.12));backdrop-filter:blur(22px) saturate(1.6) brightness(1.08);-webkit-backdrop-filter:blur(22px) saturate(1.6) brightness(1.08);border:1px solid rgba(255,255,255,.34);box-shadow:0 18px 50px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 0 rgba(255,255,255,.12)}
+.intro p{flex:1;min-width:0;font-style:italic;font-weight:400;font-size:clamp(15px,1.45vw,20px);line-height:1.3;margin:0;text-shadow:0 1px 14px rgba(0,0,0,.35)}
+.intro .acciones{display:flex;gap:10px;flex:none}
+.intro .btn{margin:0;white-space:nowrap;border-radius:99px;padding:15px clamp(18px,2vw,28px);background:#fff;color:var(--azul-f);box-shadow:none;transition:transform .2s,background .25s,color .25s}
+.intro .btn.claro{background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7)}
+.intro .btn:hover{transform:translateY(-2px)}
+.intro .btn.claro:hover{background:#fff;color:var(--azul-f)}
 .btn{display:block;text-align:center;font-family:"podium-soft-variable","articulat-cf",sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(12px,1.1vw,15px);letter-spacing:.03em;padding:13px 18px;border-radius:14px;margin-top:8px;background:var(--azul-f);color:#fff;transition:transform .15s}
 .btn:hover{transform:translateY(-2px)}
 .btn.claro{background:#fff;color:var(--azul-f);box-shadow:inset 0 0 0 2px var(--azul-f)}
@@ -105,7 +111,10 @@ h2{font-weight:900;font-style:italic;font-size:clamp(28px,3.4vw,46px);line-heigh
 
 @media(max-width:760px){
  .hero{min-height:88svh}
- .intro{width:auto;left:16px;right:16px}
+ .intro{width:auto;left:14px;right:14px;flex-direction:column;align-items:stretch;gap:14px;padding:20px 16px 16px;border-radius:30px}
+ .intro p{font-size:clamp(16px,4.4vw,19px)}
+ .intro .acciones{flex-direction:column}
+ .intro .btn{text-align:center}
  .sobre{grid-template-columns:1fr}.sobre img{justify-self:center}
  .trabajos{flex-direction:column;align-items:stretch;padding:18px 8px 14px}.trabajos h3{writing-mode:horizontal-tb;transform:none;padding-left:12px}
  .rail-wrap{--cw:clamp(230px,74cqw,420px)}
@@ -127,8 +136,7 @@ h2{font-weight:900;font-style:italic;font-size:clamp(28px,3.4vw,46px);line-heigh
  <div class="marca"><img src="img/Marca_qfadesign_azul.svg" alt=""></div>
  <div class="intro">
   <p>Soy Facundo, diseñador en Comunicación Visual. Me gusta transformar ideas en imágenes, marcas y piezas que comuniquen de verdad.</p>
-  <a class="btn" href="portfolio">Ver trabajos</a>
-  <a class="btn claro" href="acerca">Un poco sobre mí</a>
+  <div class="acciones"><a class="btn" href="portfolio">Ver trabajos</a><a class="btn claro" href="acerca">Un poco sobre mí</a></div>
  </div>
 </header>
 
