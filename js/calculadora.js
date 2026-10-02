@@ -43,7 +43,7 @@
       { id: "web-codigo", name: "Sitio web a medida", desc: "Hasta 5 páginas diseñadas y programadas a medida, para que tu marca funcione online tal como la pensaste.", unit: "por proyecto", baseArs: 780000 },
       { id: "mantenimiento-web", name: "Mantenimiento de tu web", desc: "Cambios de contenido, ajustes y actualizaciones de tu web con código.", unit: "por mes", baseArs: 90000, qty: true }
     ] },
-    { id: "extras", name: "Extras", cerrada: true, items: [
+    { id: "extras", name: "Extras", items: [
       { id: "consultoria", name: "Consultoría por hora", desc: "Revisión, feedback o asesoría puntual sobre tu marca o tu proyecto.", unit: "por hora", baseArs: 54000, qty: true },
       { id: "revision-extra", name: "Ronda de revisión extra", desc: "Una tanda adicional de cambios fuera de las incluidas.", unit: "por unidad", baseArs: 38000, qty: true }
     ] }
@@ -88,7 +88,7 @@
   function armarCategorias() {
     var wrap = $("cpCats");
     CATEGORIAS.forEach(function (cat) {
-      var abierta = !cat.cerrada;
+      var abierta = false; // todas las secciones arrancan cerradas
       var box = el("div", "cp-cat" + (abierta ? " open" : ""));
       var hd = el("h4", "cp-chd");
       var btn = el("button", "cp-ch",
