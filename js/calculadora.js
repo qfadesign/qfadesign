@@ -11,35 +11,40 @@
   var RECARGO_URGENTE = 0.3;
 
   var CLIENTES = [
-    { id: "emprendimiento", label: "Emprendimiento / ONG", hint: "Recién empezando o sin fines de lucro", mult: 1 },
-    { id: "pyme", label: "Pyme", hint: "Equipo chico, facturación estable", mult: 1.4 },
-    { id: "empresa", label: "Empresa", hint: "Estructura grande, varias áreas", mult: 2 }
+    { id: "emprendimiento", label: "Emprendimiento / ONG", hint: "Estás arrancando o es un proyecto sin fines de lucro", mult: 1 },
+    { id: "pyme", label: "Pyme", hint: "Un equipo chico y una marca que ya camina", mult: 1.4 },
+    { id: "empresa", label: "Empresa", hint: "Varias áreas y una marca con más estructura", mult: 2 }
   ];
 
   var CATEGORIAS = [
     { id: "marca", name: "Identidad de marca", items: [
-      { id: "branding-emprendedores", name: "Branding para emprendedores", desc: "Logotipo, paleta y tipografías, patrones básicos, mini guía de marca y archivos editables finales. Para proyectos que están empezando pero quieren verse profesionales.", unit: "por proyecto", baseArs: 460000 },
-      { id: "rediseno-imagen", name: "Rediseño de imagen", desc: "Logo e isotipo, manual de identidad, análisis de competencia y aplicaciones listas para redes. Para marcas que crecieron y ya no se sienten representadas.", unit: "por proyecto", baseArs: 610000 },
-      { id: "identidad-completa", name: "Identidad visual completa", desc: "Rediseño de imagen, aplicaciones de marca, plantillas para redes y usos correctos e incorrectos. Para proyectos que están consolidados.", unit: "por proyecto", baseArs: 870000 }
+      { id: "branding-emprendedores", name: "Branding para emprendedores", desc: "Logotipo, paleta y tipografías, patrones básicos, mini guía de marca y archivos editables. Para ideas que están arrancando y quieren verse profesionales desde el primer día.", unit: "por proyecto", baseArs: 460000 },
+      { id: "rediseno-imagen", name: "Rediseño de imagen", desc: "Logo e isotipo, manual de identidad, análisis de competencia y aplicaciones listas para redes. Para marcas que crecieron y ya no se ven reflejadas en su imagen.", unit: "por proyecto", baseArs: 610000 },
+      { id: "identidad-completa", name: "Identidad visual completa", desc: "Rediseño de imagen, aplicaciones de marca, plantillas para redes y usos correctos e incorrectos. Para marcas consolidadas que quieren ser coherentes en todos lados.", unit: "por proyecto", baseArs: 870000 }
     ] },
     { id: "grafica", name: "Diseño gráfico y comunicación", items: [
-      { id: "kit-redes", name: "Kit de plantillas para redes", desc: "Plantillas editables para feed, historias y destacadas.", unit: "por proyecto", baseArs: 250000 },
-      { id: "pieza-unica", name: "Pieza gráfica única", desc: "Flyer, invitación, placa u otra pieza suelta.", unit: "por pieza", baseArs: 34000, qty: true },
-      { id: "pitch-deck", name: "Presentación / pitch deck", desc: "Hasta 15 diapositivas con diseño a medida.", unit: "por proyecto", baseArs: 230000 },
-      { id: "papeleria", name: "Papelería institucional", desc: "Tarjetas, membrete y firma de email con una identidad ya diseñada.", unit: "por proyecto", baseArs: 150000 }
+      { id: "kit-redes", name: "Kit de plantillas para redes", desc: "Plantillas editables para feed, historias y destacadas, para que publiques con coherencia.", unit: "por proyecto", baseArs: 250000 },
+      { id: "pieza-unica", name: "Pieza gráfica única", desc: "Flyer, invitación, placa u otra pieza suelta, pensada para comunicar de verdad.", unit: "por pieza", baseArs: 34000, qty: true },
+      { id: "pitch-deck", name: "Presentación / pitch deck", desc: "Hasta 15 diapositivas diseñadas a medida para contar tu idea con claridad.", unit: "por proyecto", baseArs: 230000 },
+      { id: "papeleria", name: "Papelería institucional", desc: "Tarjetas, membrete y firma de email, sobre una identidad que ya existe.", unit: "por proyecto", baseArs: 150000 }
     ] },
     { id: "cm", name: "Community management", items: [
-      { id: "cm-basica", name: "Gestión básica de redes", desc: "8 piezas al mes, calendario de contenido y subida de contenido a redes.", unit: "por mes", baseArs: 340000, qty: true },
-      { id: "cm-estandar", name: "Gestión estándar de redes", desc: "12 piezas al mes, calendario, copy y subida de contenido a redes.", unit: "por mes", baseArs: 490000, qty: true },
-      { id: "cm-intensiva", name: "Gestión intensiva de redes", desc: "20 piezas al mes, historias, copywriting y subida de contenido a redes.", unit: "por mes", baseArs: 710000, qty: true },
-      { id: "planificacion", name: "Planificación de contenido", desc: "Solo calendario editorial y copy, sin diseño de piezas ni subida de contenido.", unit: "por mes", baseArs: 145000, qty: true }
+      { id: "cm-basica", name: "Gestión básica de redes", desc: "8 piezas al mes, calendario de contenido y subida a redes.", unit: "por mes", baseArs: 340000, qty: true },
+      { id: "cm-estandar", name: "Gestión estándar de redes", desc: "12 piezas al mes, calendario, copy y subida a redes.", unit: "por mes", baseArs: 490000, qty: true },
+      { id: "cm-intensiva", name: "Gestión intensiva de redes", desc: "20 piezas al mes, historias, copywriting y subida a redes.", unit: "por mes", baseArs: 710000, qty: true },
+      { id: "planificacion", name: "Planificación de contenido", desc: "Solo calendario editorial y copy: te ordeno qué decir y cuándo, sin diseño de piezas ni subida a redes.", unit: "por mes", baseArs: 145000, qty: true }
     ] },
-    { id: "web", name: "Web (no-code)", items: [
-      { id: "landing", name: "Landing page", desc: "Una página, diseño y publicación en plataforma no-code.", unit: "por proyecto", baseArs: 290000 },
-      { id: "ecommerce", name: "E-commerce", desc: "Tienda online en Tiendup, Tienda Nube o Empretienda: diseño, configuración y carga inicial de productos.", unit: "por proyecto", baseArs: 600000 }
+    { id: "web", name: "Web sin código", items: [
+      { id: "landing", name: "Landing page", desc: "Una página con diseño y publicación en una plataforma sin código.", unit: "por proyecto", baseArs: 290000 },
+      { id: "ecommerce", name: "E-commerce", desc: "Tu tienda online en Tiendup, Tienda Nube o Empretienda: diseño, configuración y carga inicial de productos.", unit: "por proyecto", baseArs: 600000 }
+    ] },
+    { id: "webcode", name: "Web con código", items: [
+      { id: "landing-codigo", name: "Landing page con código", desc: "Una página hecha a mano en HTML, CSS y JavaScript: clara, rápida y pensada para verse bien en cualquier pantalla. Incluye diseño, desarrollo y publicación.", unit: "por proyecto", baseArs: 460000 },
+      { id: "web-codigo", name: "Sitio web a medida", desc: "Hasta 5 páginas diseñadas y programadas a medida, para que tu marca funcione online tal como la pensaste.", unit: "por proyecto", baseArs: 780000 },
+      { id: "mantenimiento-web", name: "Mantenimiento de tu web", desc: "Cambios de contenido, ajustes y actualizaciones de tu web con código.", unit: "por mes", baseArs: 90000, qty: true }
     ] },
     { id: "extras", name: "Extras", cerrada: true, items: [
-      { id: "consultoria", name: "Consultoría por hora", desc: "Revisión, feedback o asesoría puntual.", unit: "por hora", baseArs: 54000, qty: true },
+      { id: "consultoria", name: "Consultoría por hora", desc: "Revisión, feedback o asesoría puntual sobre tu marca o tu proyecto.", unit: "por hora", baseArs: 54000, qty: true },
       { id: "revision-extra", name: "Ronda de revisión extra", desc: "Una tanda adicional de cambios fuera de las incluidas.", unit: "por unidad", baseArs: 38000, qty: true }
     ] }
   ];
@@ -161,7 +166,7 @@
     var urg = el("div", "cp-cat cp-urg");
     urg.innerHTML =
       '<div class="cp-row"><input type="checkbox" id="cpUrgente">' +
-      '<div class="cp-inf"><label for="cpUrgente">Entrega urgente</label><p>Menos de 5 días hábiles.</p></div>' +
+      '<div class="cp-inf"><label for="cpUrgente">Entrega urgente</label><p>Para cuando lo necesitás en menos de 5 días hábiles.</p></div>' +
       '<div class="cp-pr"><b>+' + Math.round(RECARGO_URGENTE * 100) + '%</b></div></div>';
     urg.querySelector("input").addEventListener("change", function (e) { estado.urgente = e.target.checked; actualizar(); });
     urg.querySelector(".cp-row").addEventListener("click", function (e) {
@@ -212,7 +217,7 @@
     lineas.innerHTML = "";
 
     if (!elegidos.length) {
-      lineas.appendChild(el("p", "cp-vacio", "Todavía no elegiste ningún servicio. Tildá lo que necesites y el total aparece acá."));
+      lineas.appendChild(el("p", "cp-vacio", "Todavía no elegiste nada. Tildá lo que necesites y el total aparece acá."));
     } else {
       elegidos.forEach(function (f) {
         var q = cantidad(f.item), t = precio(f.item) * q;
