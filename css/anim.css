@@ -53,3 +53,9 @@ h1{animation:track .9s cubic-bezier(.2,.8,.2,1) .15s both}
 
 /* foco visible sobre cualquier fondo */
 a:focus-visible,button:focus-visible{outline:3px solid #000!important;outline-offset:3px;box-shadow:0 0 0 6px #fff}
+
+/* PANTALLA DE ENTRADA (js/intro.js): azul de la marca con qfadesign recortado + zoom */
+.carga{position:fixed;inset:0;z-index:10000;cursor:pointer}
+.carga svg{display:block;width:100%;height:100%}
+html.cargando{overflow:hidden}
+html.pausa *,html.pausa *::before,html.pausa *::after{animation-play-state:paused!important}
