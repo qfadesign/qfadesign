@@ -51,7 +51,7 @@
 :root{--azul:#0b75f4;--azul-f:#0a5cc0;--negro:#000;--blanco:#fff;--f:"articulat-cf",system-ui,sans-serif}
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--f);font-weight:400;background:#0847a3;color:var(--blanco);line-height:1.35}
+body{font-family:var(--f);font-weight:400;background:#000;color:var(--blanco);line-height:1.35}
 a{color:inherit;text-decoration:none}
 a:focus-visible,button:focus-visible{outline:3px solid var(--blanco);outline-offset:3px}
 img{display:block;max-width:100%}
@@ -90,8 +90,11 @@ h2{font-weight:900;font-style:italic;font-size:clamp(28px,3.4vw,46px);line-heigh
 .sobre img{border-radius:28px;width:100%;aspect-ratio:1;object-fit:cover;max-width:460px;justify-self:end}
 .lema{text-align:center;font-weight:700;font-style:italic;font-size:clamp(17px,1.7vw,22px);max-width:640px;margin:20px auto 48px;padding:0 20px}
 
+/* zona oscura: el degradé azul se apaga hasta negro y la sección de trabajos vive adentro */
+.oscuro{padding-top:clamp(70px,10vw,150px);background:radial-gradient(55vw 32vw at 100% 38%,rgba(11,117,244,.2),transparent 66%),radial-gradient(42vw 18vw at 0% 52%,rgba(8,71,163,.3),transparent 70%),linear-gradient(180deg,rgba(0,0,0,0) 0,rgba(0,0,0,.55) clamp(70px,10vw,150px),#000 clamp(260px,34vw,460px))}
+.oscuro .mas{margin-top:34px}
 /* trabajos */
-.trabajos{background:#fff;color:var(--azul-f);border-radius:28px;margin:0 clamp(12px,2vw,32px);display:flex;gap:20px;align-items:center;padding:20px}
+.trabajos{background:none;color:#fff;margin:0 clamp(12px,2vw,32px);display:flex;gap:20px;align-items:center;padding:20px}
 .trabajos h3{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:900;font-style:italic;font-size:clamp(24px,2.6vw,36px);white-space:nowrap;font-family:var(--fh)}
 .card span{position:absolute;left:14px;bottom:12px;background:rgba(255,255,255,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);color:#06214d;padding:5px 12px;border-radius:99px;font-size:14px}
 .rail-wrap{flex:1;min-width:0;position:relative;container-type:inline-size;--cw:clamp(250px,62cqw,460px)}
@@ -99,14 +102,14 @@ h2{font-weight:900;font-style:italic;font-size:clamp(28px,3.4vw,46px);line-heigh
 .rail::-webkit-scrollbar{display:none}
 .rail.arrastrando{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
 .rail.arrastrando .card{pointer-events:none}
-.card{flex:0 0 var(--cw);aspect-ratio:4/3;border-radius:22px;scroll-snap-align:center;display:flex;align-items:flex-end;padding:16px;color:#fff;font-weight:900;font-style:italic;font-size:20px;background-size:cover;background-position:center;position:relative;overflow:hidden;scale:var(--s,1);opacity:var(--o,1);box-shadow:0 18px 36px rgba(6,33,77,.28);user-select:none;-webkit-user-drag:none;font-family:var(--fh)}
+.card{flex:0 0 var(--cw);aspect-ratio:4/3;border-radius:22px;scroll-snap-align:center;display:flex;align-items:flex-end;padding:16px;color:#fff;font-weight:900;font-style:italic;font-size:20px;background-size:cover;background-position:center;position:relative;overflow:hidden;scale:var(--s,1);opacity:var(--o,1);box-shadow:0 22px 44px rgba(0,0,0,.5);user-select:none;-webkit-user-drag:none;font-family:var(--fh)}
 .ctrl{display:flex;align-items:center;justify-content:center;gap:18px;padding-bottom:4px}
-.flecha{width:46px;height:46px;border-radius:50%;border:1px solid rgba(10,92,192,.35);background:rgba(10,92,192,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--azul-f);font:900 20px var(--fh);cursor:pointer;display:grid;place-items:center;transition:background .25s,color .25s,scale .25s}
-.flecha:hover{background:var(--azul-f);color:#fff;scale:1.08}
-.flecha:disabled{opacity:.3;cursor:default;scale:1;background:rgba(10,92,192,.12);color:var(--azul-f)}
+.flecha{width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font:900 20px var(--fh);cursor:pointer;display:grid;place-items:center;transition:background .25s,color .25s,scale .25s}
+.flecha:hover{background:#fff;color:var(--azul-f);scale:1.08}
+.flecha:disabled{opacity:.3;cursor:default;scale:1;background:rgba(255,255,255,.12);color:#fff}
 .puntos{display:flex;gap:8px}
-.puntos button{width:10px;height:10px;padding:0;border:0;border-radius:99px;background:rgba(10,92,192,.28);cursor:pointer;transition:width .35s cubic-bezier(.2,.8,.2,1),background .25s}
-.puntos button[aria-current=true]{width:30px;background:var(--azul-f)}
+.puntos button{width:10px;height:10px;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.3);cursor:pointer;transition:width .35s cubic-bezier(.2,.8,.2,1),background .25s}
+.puntos button[aria-current=true]{width:30px;background:#fff}
 .c1{background-image:url(img/arbol.jpg)}
 .c2{background-image:url(img/bleko.jpg)}
 .c3{background-image:url(img/dulcemente.jpg)}
@@ -118,6 +121,12 @@ h2{font-weight:900;font-style:italic;font-size:clamp(28px,3.4vw,46px);line-heigh
 .ayuda{text-align:center;padding:0 20px 28px}
 .ayuda h3{font-weight:900;font-style:italic;font-size:clamp(20px,2vw,26px);font-family:var(--fh)}
 .ayuda p{font-size:clamp(18px,2vw,26px);margin:8px 0 22px}
+
+/* botones: vidrio con borde fino, integrados al fondo (la barra de navegación queda igual) */
+body .btn,body .intro .btn,body .btn.claro,body .btn.negro,body .intro .btn.claro{background:rgba(255,255,255,.1);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5),0 8px 24px rgba(0,0,0,.18);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4)}
+body .intro .btn:not(.claro){background:rgba(255,255,255,.24)}
+body .btn::after,body .btn.claro::after,body .btn.negro::after{background:#fff}
+body .btn.btn.btn:hover,body .btn.btn.btn:focus-visible{background:#fff;color:var(--azul-f)}
 
 @media(max-width:760px){
  .hero{min-height:88svh}
@@ -162,6 +171,7 @@ h2{font-weight:900;font-style:italic;font-size:clamp(28px,3.4vw,46px);line-heigh
  </section>
  <p class="lema" id="herramientas">Acá vas a encontrar proyectos, recursos y algunas cosas para jugar. Ojalá algo te inspire o te ayude a mirar lo cotidiano de otra manera.</p>
 
+ <div class="oscuro">
  <section class="trabajos" id="portfolio" aria-label="Últimos trabajos">
   <h3>Últimos trabajos</h3>
   <div class="rail-wrap"><div class="rail" tabindex="-1">
@@ -176,6 +186,7 @@ h2{font-weight:900;font-style:italic;font-size:clamp(28px,3.4vw,46px);line-heigh
   <p>¿Tenés una idea y no sabés por dónde empezar?</p>
   <a class="btn negro" href="contacto">Hablemos de tu proyecto</a>
  </section>
+</div>
 </main>
 
 <footer>
