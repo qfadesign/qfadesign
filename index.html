@@ -57,13 +57,16 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--blanco);outline-off
 img{display:block;max-width:100%}
 
 /* hero */
-.hero{position:relative;margin-top:calc(-1*var(--navh,58px));background:#05070d url(img/hero-mano.jpg) 40% 40%/cover;min-height:100svh;overflow:hidden}
-.marca{position:relative;z-index:2;margin-top:calc(-11.15vw + var(--navh,58px));padding:0}
+.hero{position:relative;margin-top:calc(-1*var(--navh,58px));background:#05070d url(img/hero-mano.jpg) 40% 40%/cover;min-height:100svh;overflow:hidden;display:flex;flex-direction:column}
+.marca{position:relative;z-index:2;flex:none;margin-top:calc(-11.15vw + var(--navh,58px));margin-bottom:clamp(28px,5vh,56px);padding:0}
 .marca img{width:100%}
 .hero::after{content:"";position:absolute;inset:auto 0 0 0;height:46%;z-index:1;pointer-events:none;background:linear-gradient(to top,rgba(2,8,22,.62),rgba(2,8,22,0))}
-.intro{position:absolute;z-index:3;right:clamp(16px,3.5vw,56px);bottom:clamp(24px,6vh,72px);width:min(400px,44vw);display:flex;flex-direction:column;align-items:stretch;gap:16px;color:#fff;padding:22px;border-radius:28px;background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.06) 55%,rgba(255,255,255,.12));backdrop-filter:blur(22px) saturate(1.6) brightness(1.08);-webkit-backdrop-filter:blur(22px) saturate(1.6) brightness(1.08);border:1px solid rgba(255,255,255,.34);box-shadow:0 18px 50px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 0 rgba(255,255,255,.12)}
-.intro p{flex:none;min-width:0;font-style:italic;font-weight:400;font-size:clamp(17px,1.6vw,23px);line-height:1.3;margin:0;text-shadow:0 1px 14px rgba(0,0,0,.35)}
-.intro .acciones{display:flex;flex-direction:column;gap:8px;flex:none}
+.intro{position:relative;z-index:3;align-self:flex-end;margin:auto clamp(16px,3.5vw,56px) clamp(24px,6vh,72px) 0;width:min(560px,43vw);container-type:inline-size;display:flex;flex-direction:column;align-items:stretch;gap:14px;color:#fff;padding:clamp(20px,2vw,28px);border-radius:28px}
+.intro::before{content:"";position:absolute;inset:-110px -130px -90px -150px;z-index:-1;pointer-events:none;background:radial-gradient(closest-side,rgba(2,8,22,.74),rgba(2,8,22,.5) 62%,rgba(2,8,22,.18) 86%,rgba(2,8,22,0) 100%)}
+.intro p{flex:none;min-width:0;margin:0}
+.intro .titular{font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(26px,8cqw,44px);line-height:1.05;text-wrap:balance;text-shadow:0 2px 20px rgba(0,0,0,.4)}
+.intro .bajada{font-style:italic;font-weight:400;font-size:clamp(15px,1.3vw,19px);line-height:1.35;color:rgba(255,255,255,.9);text-shadow:0 1px 14px rgba(0,0,0,.35)}
+.intro .acciones{display:flex;flex-direction:column;gap:8px;flex:none;margin-top:4px}
 .intro .btn{margin:0;white-space:nowrap;border-radius:14px;padding:15px clamp(18px,2vw,28px);background:#fff;color:var(--azul-f);box-shadow:none;transition:transform .2s,background .25s,color .25s}
 .intro .btn.claro{background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7)}
 .intro .btn:hover{transform:translateY(-2px)}
@@ -128,14 +131,32 @@ body .intro .btn:not(.claro){background:rgba(255,255,255,.24)}
 body .btn::after,body .btn.claro::after,body .btn.negro::after{background:#fff}
 body .btn.btn.btn:hover,body .btn.btn.btn:focus-visible{background:#fff;color:var(--azul-f)}
 
+@media(min-width:761px) and (max-width:1000px){
+ .intro{width:min(580px,72vw)}
+ .intro .bajada{font-size:clamp(16px,2.2vw,20px)}
+}
 @media(max-width:760px){
  .hero{min-height:88svh}
- .intro{width:auto;left:14px;right:14px;bottom:clamp(22px,5.5vh,64px);gap:14px;padding:20px 16px 16px;border-radius:24px}
- .intro p{font-size:clamp(16px,4.4vw,19px)}
+ .intro{align-self:stretch;width:auto;margin:auto 14px clamp(22px,5vh,48px);gap:12px;padding:20px 16px 16px;border-radius:24px}
+ .intro .titular{font-size:clamp(26px,9cqw,38px)}
+ .intro .bajada{font-size:clamp(15px,4.2vw,17px)}
  .intro .btn{text-align:center}
  .sobre{grid-template-columns:1fr}.sobre img{justify-self:center}
  .trabajos{flex-direction:column;align-items:stretch;padding:18px 8px 14px}.trabajos h3{writing-mode:horizontal-tb;transform:none;padding-left:12px}
  .rail-wrap{--cw:clamp(230px,74cqw,420px)}
+}
+@media(max-height:700px) and (min-width:761px),(max-height:560px) and (min-width:481px){
+ .intro{width:min(580px,56vw);gap:10px;padding:16px 20px;margin-bottom:16px}
+ .intro .titular{font-size:clamp(22px,min(7cqw,4.8vh),34px)}
+ .intro .bajada{font-size:clamp(14px,2.4vh,17px)}
+ .intro .acciones{flex-direction:row;margin-top:2px}.intro .acciones .btn{flex:1;padding:12px 14px}
+ .marca{margin-bottom:16px}
+}
+@media(max-width:480px) and (max-height:700px){
+ .intro{gap:10px;padding:16px 16px 14px}
+ .intro .titular{font-size:clamp(24px,8.6cqw,30px)}
+ .intro .bajada{font-size:clamp(14px,4vw,16px)}
+ .intro .acciones{flex-direction:row;margin-top:2px}.intro .acciones .btn{flex:1;white-space:normal;line-height:1.15;padding:12px 8px;font-size:11.5px}
 }
 @media(prefers-reduced-motion:reduce){.pista{animation:none}html{scroll-behavior:auto}}
 </style>
@@ -154,7 +175,8 @@ body .btn.btn.btn:hover,body .btn.btn.btn:focus-visible{background:#fff;color:va
  <h1 class="sr-only">qfadesign: Facundo, diseñador en Comunicación Visual</h1>
  <div class="marca"><img src="img/Marca_qfadesign_azul.svg" alt=""></div>
  <div class="intro">
-  <p>Soy Facundo, diseñador en Comunicación Visual. Me gusta transformar ideas en imágenes, marcas y piezas que comuniquen de verdad.</p>
+  <p class="titular">Soy Facundo, diseñador en Comunicación Visual.</p>
+  <p class="bajada">Me gusta transformar ideas en imágenes, marcas y piezas que comuniquen de verdad.</p>
   <div class="acciones"><a class="btn" href="portfolio">Ver trabajos</a><a class="btn claro" href="acerca">Un poco sobre mí</a></div>
  </div>
 </header>
