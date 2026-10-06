@@ -22,7 +22,7 @@
     '<mask id="qfa-m" maskUnits="userSpaceOnUse" x="0" y="0" width="'+vw+'" height="'+vh+'"><rect width="'+vw+'" height="'+vh+'" fill="#fff"/>'+
     '<g id="qfa-g">'+PATHS.map(d=>'<path d="'+d+'" fill="#000"/>').join('')+'</g></mask></defs>'+
     '<rect width="'+vw+'" height="'+vh+'" fill="#0b75f4" mask="url(#qfa-m)"/></svg>';
-  root.classList.add('cargando','pausa');
+  root.classList.add('cargando','pausa','con-intro');
   root.appendChild(c);
   const g=c.querySelector('#qfa-g');
   // z = zoom alrededor del punto (cx,cy)
