@@ -11,10 +11,12 @@
 .hero{background:#05070d!important;--py:0px}
 .hero::before{content:"";position:absolute;inset:clamp(70px,13vw,210px) 0 0 0;background:url(../img/hero-mano.jpg) 40% 28%/cover;z-index:0;translate:0 var(--py);animation:zoom 2.2s cubic-bezier(.16,.8,.2,1) both;will-change:translate,scale;-webkit-mask-image:linear-gradient(transparent,#000 24%);mask-image:linear-gradient(transparent,#000 24%)}
 /* secuencia del inicio: 1) solo la foto del hero (zoom)  2) barra de navegación + marca  3) cuadro de texto.
-   --d0 = espera antes de la barra: con la pantalla de entrada (js/intro.js) no hace falta (0s); sin ella, espera a que termine el zoom de la foto */
-:root{--d0:1.6s}
+   --d0 = espera antes de la barra: en páginas internas y con la pantalla de entrada (js/intro.js) es 0s; en el inicio sin pantalla de entrada, .35s */
+:root{--d0:0s}
 html.con-intro{--d0:0s}
-nav{animation:drop .8s cubic-bezier(.2,.8,.2,1) var(--d0) both}
+/* inicio sin pantalla de entrada: apenas un respiro para que se vea el zoom de la foto */
+html:not(.con-intro):has(.hero){--d0:.35s}
+nav{animation:drop .4s cubic-bezier(.2,.8,.2,1) var(--d0) both}
 .marca{overflow:hidden}
 .marca img{animation:wordmark 1.2s cubic-bezier(.16,.9,.2,1) calc(var(--d0) + .2s) both}
 .intro{animation:rise .9s cubic-bezier(.2,.8,.2,1) calc(var(--d0) + .6s) both}
@@ -24,12 +26,16 @@ nav{animation:drop .8s cubic-bezier(.2,.8,.2,1) var(--d0) both}
 /* mientras dura la pantalla de entrada, la barra, la marca y el cuadro de texto esperan: solo trabaja la foto */
 html.cargando nav,html.cargando .marca img,html.cargando .intro,html.cargando .intro *{animation-play-state:paused!important}
 
-/* botones: barrido de color al pasar */
-.btn{position:relative;overflow:hidden;isolation:isolate;transition:transform .2s,color .3s!important}
-.btn::after{content:"";position:absolute;inset:0;background:#000;z-index:-1;translate:-101% 0;transition:translate .4s cubic-bezier(.2,.8,.2,1)}
+/* botones: vivos al pasar el mouse (barrido de color + agrandan + brillo + se mueven hacia el cursor) y al tocarlos (se hunden y sale una onda) */
+.btn{position:relative;overflow:hidden;isolation:isolate;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .18s ease-out,scale .35s cubic-bezier(.34,1.56,.64,1),color .25s,background-color .3s,box-shadow .35s!important}
+.btn::after{content:"";position:absolute;inset:0;background:#000;z-index:-1;translate:-101% 0;transition:translate .32s cubic-bezier(.2,.8,.2,1)}
 .btn.claro::after,.btn.negro::after{background:var(--azul-f)}
 .btn:hover::after,.btn:focus-visible::after{translate:0 0}
 .btn:hover,.btn:focus-visible,.btn.negro:hover{color:#fff}
+.btn:hover,.btn:focus-visible{scale:1.07}
+html body .btn.btn:hover,html body .btn.btn:focus-visible{box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),0 14px 32px rgba(11,117,244,.55),0 0 0 4px rgba(255,255,255,.12)}
+.btn:active{scale:.92;transition-duration:.08s,.12s,.25s,.3s,.35s!important}
+html body .btn.btn:active{box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),0 4px 10px rgba(11,117,244,.45)}
 
 /* cinta: se frena al pasar el mouse */
 .cinta:hover .pista{animation-play-state:paused}

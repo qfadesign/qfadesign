@@ -5,9 +5,12 @@
 html{scroll-padding-top:84px}
 nav{position:sticky;top:0;z-index:50;background:rgba(0,0,0,.55);backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid rgba(255,255,255,.2);box-shadow:0 8px 28px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.16);display:flex;justify-content:space-between;align-items:center;gap:10px 24px;padding:14px clamp(16px,2vw,28px)}
 nav img{height:30px;width:auto}
-nav ul{display:flex;gap:clamp(14px,2.4vw,36px);list-style:none;padding:0;font-size:clamp(18.7px,1.5vw,22px);font-weight:700;font-style:italic}
-nav ul a{text-underline-offset:6px;text-decoration-thickness:2px}
-nav ul a:hover,nav a[aria-current]{text-decoration:underline}
+nav ul{display:flex;gap:clamp(14px,2.4vw,36px);list-style:none;padding:0;font-size:clamp(18.7px,1.5vw,22px);font-weight:300;font-style:italic}
+nav ul a{display:inline-block;color:#fff;font-weight:300;transition:color .18s ease,font-weight .18s ease,transform .18s ease}
+/* reserva el ancho de la versión bold para que el menú no se corra al pasar el mouse */
+nav ul a::after{content:attr(data-t);display:block;height:0;overflow:hidden;visibility:hidden;font-weight:700;pointer-events:none}
+nav ul a:hover,nav ul a:focus-visible{font-weight:700;color:var(--azul);transform:translateY(-1px)}
+nav ul a[aria-current],nav ul a[aria-current]:hover{font-weight:700;color:#fff;transform:none}
 .burger{display:none;width:46px;height:46px;border-radius:14px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);cursor:pointer;padding:0;position:relative;color:#fff}
 .burger span{position:absolute;left:12px;right:12px;height:2.5px;border-radius:2px;background:currentColor;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .2s,top .35s cubic-bezier(.2,.8,.2,1)}
 .burger span:nth-child(1){top:15px}.burger span:nth-child(2){top:22px}.burger span:nth-child(3){top:29px}
@@ -27,9 +30,14 @@ nav ul a:hover,nav a[aria-current]{text-decoration:underline}
  .burger{transition:background .3s,border-color .3s,transform .45s cubic-bezier(.16,.9,.2,1)}
  .burger[aria-expanded=true]{background:rgba(255,255,255,.3);transform:rotate(90deg)}
  nav ul li+li{border-top:1px solid rgba(255,255,255,.16)}
- nav ul a{display:block;padding:14px 4px;text-decoration:none!important}
- nav ul a[aria-current]{color:#8fc2ff}
+ nav ul a{display:block;padding:14px 4px}
+ nav ul a:hover{transform:none}
 }
+
+/* onda al tocar un botón (js/anim.js) */
+.rip{position:absolute;border-radius:50%;background:currentColor;opacity:.3;pointer-events:none;transform:scale(0);animation:rip .6s ease-out forwards}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+@media(prefers-reduced-motion:reduce){.rip{display:none}}
 
 /* PIE: sin fondo propio, se ve el fondo de cada página */
 footer{position:relative;z-index:1;background:none;color:#fff;overflow:hidden}
