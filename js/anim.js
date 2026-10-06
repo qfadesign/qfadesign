@@ -16,10 +16,17 @@ addEventListener('DOMContentLoaded',()=>{
   // parallax del hero
   const hero=document.querySelector('.hero');
   if(hero){let t=false;addEventListener('scroll',()=>{if(t)return;t=true;requestAnimationFrame(()=>{hero.style.setProperty('--py',Math.min(scrollY,600)*.15+'px');t=false})},{passive:true})}
-  // botones magnéticos
-  document.querySelectorAll('.btn').forEach(b=>{
-    b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.12}px,${(e.clientY-r.top-r.height/2)*.25}px)`});
+  // botones: se acercan un poco al cursor (con elevación) y sale una onda al tocarlos
+  document.querySelectorAll('.btn,.primary,.play-again').forEach(b=>{
+    b.addEventListener('mousemove',e=>{if(b.disabled)return;const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.14}px,${(e.clientY-r.top-r.height/2)*.28-3}px)`});
     b.addEventListener('mouseleave',()=>b.style.transform='');
+    b.addEventListener('pointerdown',e=>{
+      if(b.disabled||e.button>0)return;
+      const r=b.getBoundingClientRect(),d=Math.hypot(r.width,r.height)*2,o=document.createElement('span');
+      o.className='rip';o.setAttribute('aria-hidden','true');
+      o.style.cssText=`width:${d}px;height:${d}px;left:${e.clientX-r.left-d/2}px;top:${e.clientY-r.top-d/2}px`;
+      b.appendChild(o);setTimeout(()=>o.remove(),650);
+    });
   });
 });
 
