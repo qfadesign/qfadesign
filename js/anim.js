@@ -1,4 +1,48 @@
 document.documentElement.classList.add('js');
+
+/* transición entre páginas (estilos en css/shared.css): la página que se va se desvanece, la nueva aparece de a poco */
+(()=>{
+  const root=document.documentElement;
+  if(self!==top||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  const OSCURAS=['','index','portfolio','jueguitos','ahorcado','adivina-el-color','adivina-la-tipografia']; // fondo base negro
+  const AZULES=['acerca','herramientas','contacto','404','proyecto-arbol','proyecto-bleko','proyecto-dulcemente','proyecto-miga','proyecto-ros','proyecto-trazo','proyecto-f1']; // fondo base azul
+  const seg=p=>p.replace(/\/+$/,'').split('/').pop().replace(/\.html$/,'');
+  const flag=(k,v)=>{try{v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){}};
+
+  // 1) página que llega: arranca invisible (la barra no) y, cuando está lista, el degradé y el contenido aparecen suave
+  let vino=false;try{vino=!!sessionStorage.getItem('qfa-t')}catch(e){}
+  flag('qfa-t',null);
+  if(vino&&!root.classList.contains('con-intro')){
+    root.classList.add('vino','t-in','t-wait');
+    let listo=false;
+    const abrir=()=>{if(listo)return;listo=true;root.classList.remove('t-in','t-wait')};
+    addEventListener('DOMContentLoaded',()=>{
+      Promise.race([document.fonts?document.fonts.ready:0,new Promise(r=>setTimeout(r,600))]).then(()=>requestAnimationFrame(abrir));
+    });
+    setTimeout(abrir,2500); // por las dudas
+  }
+
+  // 2) página que se va: al tocar un link interno se desvanece y recién ahí cambia de página
+  document.addEventListener('click',e=>{
+    if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    const a=e.target.closest&&e.target.closest('a[href]');
+    if(!a||(a.target&&a.target!=='_self')||a.hasAttribute('download')||a.origin!==location.origin||a.pathname===location.pathname)return;
+    const s=seg(a.pathname),oscura=OSCURAS.includes(s);
+    if(!oscura&&!AZULES.includes(s))return;
+    if(root.classList.contains('sale')){e.preventDefault();return}
+    if(s===''||s==='index'){ // al inicio, la primera vez de la visita, va la pantalla de entrada: sin transición
+      let vista=false;try{vista=!!sessionStorage.getItem('qfa-intro')}catch(_){}
+      if(!vista&&!a.hash)return;
+    }
+    e.preventDefault();
+    root.classList.add('sale');
+    if(document.body)document.body.style.setProperty('--fondo',oscura?'#000':'#0847a3');
+    flag('qfa-t','1');
+    setTimeout(()=>{location.href=a.href},320);
+  });
+  // volver con el botón "atrás" (página guardada en memoria): devolver la página a su estado normal
+  addEventListener('pageshow',e=>{if(e.persisted){root.classList.remove('sale','t-in','t-wait');if(document.body)document.body.style.removeProperty('--fondo');flag('qfa-t',null)}});
+})();
 addEventListener('DOMContentLoaded',()=>{const n=document.querySelector('nav');if(!n)return;const set=()=>document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');set();new ResizeObserver(set).observe(n)});
 addEventListener('DOMContentLoaded',()=>{
   const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
