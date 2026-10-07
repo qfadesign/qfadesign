@@ -1,24 +1,50 @@
 /* qfadesign — nav y pie compartidos por TODAS las páginas. Tipografías: Adobe Fonts (use.typekit.net/ftd7ahn.css), se carga en el <head> de cada página */
-:root{--f:"articulat-cf",system-ui,sans-serif;--fh:"articulat-heavy-cf","articulat-cf",system-ui,sans-serif;--fp:"podium-soft-variable","articulat-cf",sans-serif;--azul:#0b75f4;--azul-f:#0a5cc0;--fondo:#0847a3;--nav:#06214d}
+:root{--f:"articulat-cf",system-ui,sans-serif;--fh:"articulat-heavy-cf","articulat-cf",system-ui,sans-serif;--fp:"podium-soft-variable","articulat-cf",sans-serif;--azul:#0b75f4;--azul-f:#0a5cc0;--fondo:#0847a3;--nav:#06214d;--crema:#f9fbf2;--plato:0 1px 0 rgba(0,0,0,.22),0 6px 14px rgba(0,0,0,.28);--st-sombra:drop-shadow(0 1px 0 rgba(0,0,0,.3)) drop-shadow(0 4px 6px rgba(0,0,0,.38))}
 
 /* NAV: fija al scrollear, con efecto vidrio */
 html{scroll-padding-top:84px}
 nav{position:sticky;top:0;z-index:50;background:rgba(0,0,0,.55);backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid rgba(255,255,255,.2);box-shadow:0 8px 28px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.16);display:flex;justify-content:space-between;align-items:center;gap:10px 24px;padding:14px clamp(16px,2vw,28px)}
 nav img{height:30px;width:auto}
-nav ul{display:flex;gap:clamp(14px,2.4vw,36px);list-style:none;padding:0;font-size:clamp(18.7px,1.5vw,22px);font-weight:300;font-style:italic}
-nav ul a{position:relative;display:inline-block;color:#fff;font-weight:300;-webkit-tap-highlight-color:transparent;transition:color .2s ease,font-weight .2s ease,text-shadow .3s ease,scale .25s ease,translate .25s ease}
+nav ul{--fs:clamp(18.7px,1.5vw,22px);--k:1.22;align-items:center;display:flex;gap:clamp(14px,2.4vw,36px);list-style:none;padding:0;font-size:var(--fs);font-weight:300;font-style:italic}
+nav ul a{position:relative;isolation:isolate;display:inline-block;color:#fff;font-weight:300;-webkit-tap-highlight-color:transparent;transition:color .2s ease,font-weight .2s ease,text-shadow .3s ease,scale .25s ease,translate .25s ease}
 /* reserva el ancho de la versión bold para que el menú no se corra al pasar el mouse */
 nav ul a::after{content:attr(data-t);display:block;height:0;overflow:hidden;visibility:hidden;font-weight:700;pointer-events:none}
-/* brillo sutil integrado a la barra: el texto se ilumina apenas y una línea fina aparece desde el centro */
-nav ul a::before{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;border-radius:1px;background:currentColor;opacity:0;transform:scaleX(0);transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
-nav ul a:hover,nav ul a:focus-visible{font-weight:700;color:#fff;text-shadow:0 0 12px rgba(255,255,255,.28)}
-nav ul a:hover::before,nav ul a:focus-visible::before{opacity:.6;transform:scaleX(1)}
+/* ESTÉTICA STICKER
+   · al pasar el mouse, el link se "pega" como una etiqueta crema con el texto en azul, apenas torcida
+   · en la página donde estás, el link es el sticker de esa sección (img/stickers/*.svg), pegado a la barra
+   Los stickers se dimensionan en "em" de la tipografía del menú (--fs), así escalan igual que el texto. */
+nav ul a::before{content:"";position:absolute;left:50%;top:50%;translate:-50% -50%;width:calc(var(--sw)*var(--fs)*var(--k));height:calc(var(--sh)*var(--fs)*var(--k));z-index:1;background:var(--tt) center/contain no-repeat;filter:var(--st-sombra);opacity:0;scale:.8;pointer-events:none;transition:opacity .15s ease,scale .3s cubic-bezier(.34,1.56,.64,1)}
+nav ul a:hover,nav ul a:focus-visible{color:transparent;text-shadow:none}
+nav ul a:hover::before,nav ul a:focus-visible::before{opacity:1;scale:1}
 nav ul a:active{scale:.97;transition-duration:.2s,.2s,.2s,.1s,.2s}
-nav ul a[aria-current],nav ul a[aria-current]:hover{font-weight:700;color:var(--azul);text-shadow:none}
-nav ul a[aria-current]::before{opacity:.7;transform:scaleX(1)}
-nav ul a[aria-current]:hover{color:#fff;text-shadow:0 0 12px rgba(255,255,255,.28)}
-@media(prefers-reduced-motion:reduce){nav ul a,nav ul a::before{transition:none}}
-.burger{display:none;width:46px;height:46px;border-radius:14px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);cursor:pointer;padding:0;position:relative;color:#fff}
+nav ul a:focus-visible{outline:2px solid #fff;outline-offset:6px}
+nav ul a{--sw:5.8;--sh:1.2}
+nav ul a[href*="acerca"]{--tt:url(../img/stickers/titulo-acerca.svg);--sw:5.82;--sh:1.21}
+nav ul a[href*="portfolio"]{--tt:url(../img/stickers/titulo-portfolio.svg);--sw:5.25;--sh:1.47}
+nav ul a[href*="herramientas"]{--tt:url(../img/stickers/titulo-herramientas.svg);--sw:7.93;--sh:1.27}
+nav ul a[href*="jueguitos"]{--tt:url(../img/stickers/titulo-jueguitos.svg);--sw:5.77;--sh:1.5}
+nav ul a[href*="contacto"]{--tt:url(../img/stickers/titulo-contacto.svg);--sw:5.35;--sh:1.16}
+nav ul a[aria-current]{vertical-align:middle;width:calc(var(--sw)*var(--fs)*var(--k));height:calc(var(--fs)*1.3);font-size:0;color:transparent;text-shadow:none;font-weight:400}
+nav ul a[aria-current][href*="acerca"]{--st:url(../img/stickers/acerca.svg);--sw:5.82;--sh:1.21}
+nav ul a[aria-current][href*="portfolio"]{--st:url(../img/stickers/portfolio.svg);--sw:5.25;--sh:1.47}
+nav ul a[aria-current][href*="herramientas"]{--st:url(../img/stickers/herramientas.svg);--sw:7.93;--sh:1.27}
+nav ul a[aria-current][href*="jueguitos"]{--st:url(../img/stickers/jueguitos.svg);--sw:5.77;--sh:1.5}
+nav ul a[aria-current][href*="contacto"]{--st:url(../img/stickers/contacto.svg);--sw:5.35;--sh:1.16}
+nav ul a[aria-current]::before,nav ul a[aria-current]:hover::before{display:none}
+nav ul a[aria-current]::after{content:"";position:absolute;left:0;top:50%;translate:0 -50%;display:block;height:calc(var(--sh)*var(--fs)*var(--k));width:100%;visibility:visible;overflow:visible;background:var(--st) center/contain no-repeat;filter:var(--st-sombra);font-weight:400;transition:scale .35s cubic-bezier(.34,1.56,.64,1);animation:pegar .75s cubic-bezier(.2,.8,.2,1) .2s backwards}
+nav ul a[aria-current]:hover::after,nav ul a[aria-current]:focus-visible::after{scale:1.07}
+nav ul a[aria-current]:active::after{scale:.95}
+/* el sticker llega desde arriba, se aplasta contra la barra y se asienta */
+@keyframes pegar{
+ 0%{opacity:0;transform:translateY(-18px) scale(1.7) rotate(-14deg);filter:drop-shadow(0 18px 10px rgba(0,0,0,.45))}
+ 45%{opacity:1}
+ 62%{transform:translateY(1px) scale(.9) rotate(2deg);filter:drop-shadow(0 0 1px rgba(0,0,0,.5))}
+ 80%{transform:scale(1.04) rotate(-.5deg)}
+ 100%{transform:none;filter:var(--st-sombra)}
+}
+@media(min-width:761px) and (max-width:980px){nav ul{--k:1}}
+@media(prefers-reduced-motion:reduce){nav ul a,nav ul a::before,nav ul a::after{transition:none!important}nav ul a[aria-current]::after{animation:none}}
+.burger{display:none;width:46px;height:46px;border-radius:14px;border:0;background:var(--crema);box-shadow:var(--plato);cursor:pointer;padding:0;position:relative;color:var(--azul-f)}
 .burger span{position:absolute;left:12px;right:12px;height:2.5px;border-radius:2px;background:currentColor;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .2s,top .35s cubic-bezier(.2,.8,.2,1)}
 .burger span:nth-child(1){top:15px}.burger span:nth-child(2){top:22px}.burger span:nth-child(3){top:29px}
 .burger[aria-expanded=true] span:nth-child(1){top:22px;transform:rotate(45deg)}
@@ -29,15 +55,17 @@ nav ul a[aria-current]:hover{color:#fff;text-shadow:0 0 12px rgba(255,255,255,.2
  nav{padding-block:9px}
  nav img{height:26px}
  .burger{display:block}
- nav ul{position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;padding:8px clamp(16px,4vw,28px) 18px;font-size:clamp(24px,7vw,32px);background:rgba(0,0,0,.92);border-bottom:1px solid rgba(255,255,255,.2);box-shadow:0 24px 40px rgba(0,0,0,.35);clip-path:inset(0 0 100% 0);visibility:hidden;pointer-events:none;transition:clip-path .45s cubic-bezier(.65,0,.35,1),visibility 0s .45s}
+ nav ul{--fs:clamp(24px,7vw,32px);--k:1;align-items:stretch;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;padding:8px clamp(16px,4vw,28px) 18px;font-size:var(--fs);background:rgba(0,0,0,.92);border-bottom:1px solid rgba(255,255,255,.2);box-shadow:0 24px 40px rgba(0,0,0,.35);clip-path:inset(0 0 100% 0);visibility:hidden;pointer-events:none;transition:clip-path .45s cubic-bezier(.65,0,.35,1),visibility 0s .45s}
  nav.abierto ul{clip-path:inset(0 0 -90px 0);visibility:visible;pointer-events:auto;transition:clip-path .6s cubic-bezier(.16,.9,.2,1),visibility 0s}
  nav ul li{opacity:0;translate:0 -14px;filter:blur(4px);transition:opacity .2s,translate .2s,filter .2s}
  nav.abierto ul li{opacity:1;translate:0 0;filter:blur(0);transition:opacity .45s cubic-bezier(.2,.8,.2,1) calc(.14s + var(--k)*.065s),translate .6s cubic-bezier(.16,.9,.2,1) calc(.14s + var(--k)*.065s),filter .45s calc(.14s + var(--k)*.065s)}
  nav ul li:nth-child(1){--k:0}nav ul li:nth-child(2){--k:1}nav ul li:nth-child(3){--k:2}nav ul li:nth-child(4){--k:3}nav ul li:nth-child(5){--k:4}
- .burger{transition:background .3s,border-color .3s,transform .45s cubic-bezier(.16,.9,.2,1)}
- .burger[aria-expanded=true]{background:rgba(255,255,255,.3);transform:rotate(90deg)}
+ .burger{transition:background .3s,color .3s,transform .45s cubic-bezier(.16,.9,.2,1)}
+ .burger[aria-expanded=true]{background:var(--azul);color:var(--crema);box-shadow:0 0 0 3px var(--crema),var(--plato);transform:rotate(90deg)}
  nav ul li+li{border-top:1px solid rgba(255,255,255,.16)}
  nav ul a{display:block;padding:14px 4px}
+ nav ul a[aria-current]{width:auto;height:auto}
+ nav ul a[aria-current]::after{position:static;translate:none;width:calc(var(--sw)*var(--fs));height:calc(var(--sh)*var(--fs))}
  nav ul a:hover{scale:1;translate:none}
  nav ul a::before{display:none}
  nav ul a:active{scale:.97}
