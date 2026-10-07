@@ -19,6 +19,10 @@
   };
   var LOGO = "img/pdf-logo-azul.png";
   var LOGO_RATIO = 223 / 1000;
+  var TITULO = "img/pdf-titulo-presupuesto.png";     /* sticker del título de la portada */
+  var TITULO_RATIO = 290 / 1600;
+  var STICKER = "img/pdf-sticker-qfadesign.png";     /* sticker de la marca, arriba a la derecha */
+  var STICKER_RATIO = 184 / 700;
   var SITIO = "qfadesign.com";
   var EMAIL = "qfadesignn@gmail.com";
   var INSTAGRAM = "https://www.instagram.com/qfadesign/";
@@ -59,7 +63,7 @@
   var cacheRecursos = null;
   function cargarRecursos() {
     if (cacheRecursos) return cacheRecursos;
-    var rec = { fonts: null, logo: null };
+    var rec = { fonts: null, logo: null, titulo: null, sticker: null };
     var tareas = [];
     var fuentes = {}, pend = [];
     Object.keys(FUENTES_TTF).forEach(function (fam) {
@@ -72,6 +76,8 @@
     });
     tareas.push(Promise.all(pend).then(function () { rec.fonts = fuentes; }).catch(function () { rec.fonts = null; }));
     tareas.push(pedir(BASE + LOGO).then(function (buf) { rec.logo = "data:image/png;base64," + aBase64(buf); }).catch(function () { rec.logo = null; }));
+    tareas.push(pedir(BASE + TITULO).then(function (buf) { rec.titulo = "data:image/png;base64," + aBase64(buf); }).catch(function () { rec.titulo = null; }));
+    tareas.push(pedir(BASE + STICKER).then(function (buf) { rec.sticker = "data:image/png;base64," + aBase64(buf); }).catch(function () { rec.sticker = null; }));
     cacheRecursos = Promise.all(tareas).then(function () { return rec; });
     return cacheRecursos;
   }
@@ -171,10 +177,15 @@
       return lines.length * lh;
     }
 
+    /* sticker de la marca pegado al borde derecho; si no cargó, cae al logo azul */
+    function marcaDer(yy, w) {
+      if (rec && rec.sticker) { doc.addImage(rec.sticker, "PNG", PW - ML - w, yy, w, w * STICKER_RATIO); return true; }
+      return logo(PW - ML - w, yy, w);
+    }
     function cabeceraInterna() {
-      logo(ML, 30, 70);
+      marcaDer(26, 76);
       f("p", 7, C.gris);
-      doc.text(mayus("Presupuesto estimado · " + d.ref), PW - ML, 42, { align: "right", charSpace: 0.7 });
+      doc.text(mayus("Presupuesto estimado · " + d.ref), ML, 42, { charSpace: 0.7 });
       trazo(C.linea, 0.75);
       doc.line(ML, 58, PW - ML, 58);
       y = 80;
@@ -183,22 +194,27 @@
     function asegurar(h) { if (y + h > BOT) nuevaPagina(); }
 
     /* ===== Portada: marca, título y datos ===== */
-    if (!logo(ML, TOP - 2, 118)) { f("h", 20, C.azulV); doc.text("qfadesign", ML, TOP + 18); }
+    if (!marcaDer(TOP, 120)) { f("h", 20, C.azulV); doc.text("qfadesign", PW - ML, TOP + 18, { align: "right" }); }
     f("p", 8, C.azul);
-    doc.text(mayus("Presupuesto estimado"), PW - ML, TOP + 10, { align: "right", charSpace: 1.2 });
+    doc.text(mayus("Presupuesto estimado"), ML, TOP + 10, { charSpace: 1.2 });
     f("b", 8.5, C.gris);
-    doc.text("N.º " + d.ref, PW - ML, TOP + 24, { align: "right" });
+    doc.text("N.º " + d.ref, ML, TOP + 24);
     trazo(C.linea, 0.75);
     doc.line(ML, TOP + 40, PW - ML, TOP + 40);
 
     /* título: la mitad rellena y la otra "hueca", como en el sitio */
     y = TOP + P.ty;
     var TS = P.ts, cs = -TS * 0.03;
-    f("h", TS, C.azul);
-    doc.text("Presu", ML, y, { charSpace: cs });
-    var w1 = doc.getTextWidth("Presu") + cs * 5;
-    trazo(C.azul, 1.3);
-    doc.text("puesto", ML + w1, y, { renderingMode: "stroke", charSpace: cs });
+    if (rec && rec.titulo) {
+      var th = TS * 1.15, tw = th / TITULO_RATIO;           /* sticker del título (con su borde negro) */
+      doc.addImage(rec.titulo, "PNG", ML - 3, y - TS * 1.0, tw, th);
+    } else {
+      f("h", TS, C.azul);
+      doc.text("Presu", ML, y, { charSpace: cs });
+      var w1 = doc.getTextWidth("Presu") + cs * 5;
+      trazo(C.azul, 1.3);
+      doc.text("puesto", ML + w1, y, { renderingMode: "stroke", charSpace: cs });
+    }
     f("b", 11, C.gris);
     doc.text("Detalle de lo seleccionado y fundamentos de cada valor.", ML, y + P.sub);
     y += P.gapT;
