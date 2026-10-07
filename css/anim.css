@@ -27,18 +27,18 @@ html.cargando nav,html.cargando .marca img,html.cargando .intro,html.cargando .i
 
 /* botones: vivos al pasar el mouse (barrido de color + agrandan + brillo + se mueven hacia el cursor) y al tocarlos (se hunden y sale una onda) */
 .btn{position:relative;overflow:hidden;isolation:isolate;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .18s ease-out,scale .35s cubic-bezier(.34,1.56,.64,1),color .25s,background-color .3s,box-shadow .35s!important}
-.btn::after{content:"";position:absolute;inset:0;background:var(--azul);z-index:-1;translate:-101% 0;transition:translate .32s cubic-bezier(.2,.8,.2,1)}
-.btn.claro::after,.btn.negro::after{background:var(--crema)}
+.btn::after{content:"";position:absolute;inset:0;background:rgba(11,117,244,.9);z-index:-1;translate:-101% 0;transition:translate .32s cubic-bezier(.2,.8,.2,1)}
+.btn.claro::after,.btn.negro::after{background:rgba(249,251,242,.92)}
 .btn:hover::after,.btn:focus-visible::after{translate:0 0}
 /* al pasar el mouse el sticker se "despega" y se endereza: la placa cambia de color (crema ↔ azul) */
 .btn:hover,.btn:focus-visible{color:var(--crema)}
 .btn.claro:hover,.btn.claro:focus-visible,.btn.negro:hover,.btn.negro:focus-visible{color:var(--azul-f)}
 .btn:hover,.btn:focus-visible{scale:1.06}
 .btn.negro:hover,.btn.negro:focus-visible{}
-html body .btn.btn:hover,html body .btn.btn:focus-visible{box-shadow:0 1px 0 rgba(0,0,0,.2),0 14px 28px rgba(0,0,0,.38)}
-html body .btn.btn.negro:hover,html body .btn.btn.negro:focus-visible{box-shadow:0 0 0 3px var(--crema),0 14px 28px rgba(0,0,0,.38)}
+html body .btn.btn:hover,html body .btn.btn:focus-visible{box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 14px 30px rgba(0,0,0,.34)}
+html body .btn.btn.negro:hover,html body .btn.btn.negro:focus-visible{box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 14px 30px rgba(0,0,0,.34)}
 .btn:active{scale:.94;transition-duration:.08s,.12s,.2s,.25s,.3s,.35s!important}
-html body .btn.btn:active{box-shadow:0 1px 0 rgba(0,0,0,.2),0 3px 8px rgba(0,0,0,.35)}
+html body .btn.btn:active{box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 3px 8px rgba(0,0,0,.3)}
 
 /* cinta: se frena al pasar el mouse */
 .cinta:hover .pista{animation-play-state:paused}

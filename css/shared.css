@@ -1,5 +1,5 @@
 /* qfadesign — nav y pie compartidos por TODAS las páginas. Tipografías: Adobe Fonts (use.typekit.net/ftd7ahn.css), se carga en el <head> de cada página */
-:root{--f:"articulat-cf",system-ui,sans-serif;--fh:"articulat-heavy-cf","articulat-cf",system-ui,sans-serif;--fp:"podium-soft-variable","articulat-cf",sans-serif;--azul:#0b75f4;--azul-f:#0a5cc0;--fondo:#0847a3;--nav:#06214d;--crema:#f9fbf2;--plato:0 1px 0 rgba(0,0,0,.22),0 6px 14px rgba(0,0,0,.28);--st-sombra:drop-shadow(0 1px 0 rgba(0,0,0,.3)) drop-shadow(0 4px 6px rgba(0,0,0,.38))}
+:root{--f:"articulat-cf",system-ui,sans-serif;--fh:"articulat-heavy-cf","articulat-cf",system-ui,sans-serif;--fp:"podium-soft-variable","articulat-cf",sans-serif;--azul:#0b75f4;--azul-f:#0a5cc0;--fondo:#0847a3;--nav:#06214d;--crema:#f9fbf2;--plato:0 1px 0 rgba(0,0,0,.22),0 6px 14px rgba(0,0,0,.28);--st-sombra:drop-shadow(0 1px 0 rgba(0,0,0,.3)) drop-shadow(0 4px 6px rgba(0,0,0,.38));--v-fondo:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06));--v-borde:rgba(255,255,255,.26);--v-blur:blur(14px) saturate(1.5);--v-luz:inset 0 1px 0 rgba(255,255,255,.48),inset 0 -1px 0 rgba(255,255,255,.07),0 8px 20px rgba(0,0,0,.16);--v-btn:inset 0 1px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(255,255,255,.25),0 10px 24px rgba(0,0,0,.22);--v-btn-azul:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(0,0,0,.14),0 10px 24px rgba(0,30,100,.4)}
 
 /* NAV: fija al scrollear, con efecto vidrio */
 html{scroll-padding-top:84px}
@@ -24,7 +24,7 @@ nav ul a[href*="portfolio"]{--tt:url(../img/stickers/titulo-portfolio.svg);--sw:
 nav ul a[href*="herramientas"]{--tt:url(../img/stickers/titulo-herramientas.svg);--sw:7.93;--sh:1.27}
 nav ul a[href*="jueguitos"]{--tt:url(../img/stickers/titulo-jueguitos.svg);--sw:5.77;--sh:1.5}
 nav ul a[href*="contacto"]{--tt:url(../img/stickers/titulo-contacto.svg);--sw:5.35;--sh:1.16}
-nav ul a[aria-current]{vertical-align:middle;width:calc(var(--sw)*var(--fs)*var(--k));height:calc(var(--fs)*1.3);font-size:0;color:transparent;text-shadow:none;font-weight:400}
+nav ul a[aria-current]{vertical-align:middle;flex:none;width:calc(var(--sw)*var(--fs)*var(--k));height:calc(var(--fs)*1.3);font-size:0;color:transparent;text-shadow:none;font-weight:400}
 nav ul a[aria-current][href*="acerca"]{--st:url(../img/stickers/acerca.svg);--sw:5.82;--sh:1.21}
 nav ul a[aria-current][href*="portfolio"]{--st:url(../img/stickers/portfolio.svg);--sw:5.25;--sh:1.47}
 nav ul a[aria-current][href*="herramientas"]{--st:url(../img/stickers/herramientas.svg);--sw:7.93;--sh:1.27}
@@ -42,9 +42,24 @@ nav ul a[aria-current]:active::after{scale:.95}
  80%{transform:scale(1.04) rotate(-.5deg)}
  100%{transform:none;filter:var(--st-sombra)}
 }
+@media(min-width:761px){nav ul li{display:flex;align-items:center}}
 @media(min-width:761px) and (max-width:980px){nav ul{--k:1}}
 @media(prefers-reduced-motion:reduce){nav ul a,nav ul a::before,nav ul a::after{transition:none!important}nav ul a[aria-current]::after{animation:none}}
-.burger{display:none;width:46px;height:46px;border-radius:14px;border:0;background:var(--crema);box-shadow:var(--plato);cursor:pointer;padding:0;position:relative;color:var(--azul-f)}
+/* LOGO de la barra: al pasar el mouse se "pega" el sticker azul (img/stickers/logo-hover.svg), igual que los links del menú */
+nav>a:first-child{--lh:30px;position:relative;isolation:isolate;display:inline-block;line-height:0;-webkit-tap-highlight-color:transparent}
+nav>a:first-child img{display:block;height:var(--lh);transition:opacity .12s ease}
+nav>a:first-child::before{content:"";position:absolute;left:50%;top:50%;translate:-50% -50%;width:calc(var(--lh)*4.93);height:calc(var(--lh)*1.3);background:url(../img/stickers/logo-hover.svg) center/contain no-repeat;filter:var(--st-sombra);opacity:0;scale:.82;rotate:-4deg;pointer-events:none;z-index:1;transition:opacity .15s ease,scale .35s cubic-bezier(.34,1.56,.64,1),rotate .35s cubic-bezier(.34,1.56,.64,1)}
+nav>a:first-child:focus-visible{outline-offset:8px}
+@media(hover:hover){
+ nav>a:first-child:hover img{opacity:0}
+ nav>a:first-child:hover::before{opacity:1;scale:1;rotate:-1.5deg}
+ nav>a:first-child:active::before{scale:.94}
+}
+nav>a:first-child:focus-visible img{opacity:0}
+nav>a:first-child:focus-visible::before{opacity:1;scale:1;rotate:-1.5deg}
+@media(max-width:760px){nav>a:first-child{--lh:26px}}
+@media(prefers-reduced-motion:reduce){nav>a:first-child::before,nav>a:first-child img{transition:none!important}}
+.burger{display:none;width:46px;height:46px;border-radius:14px;border:1px solid rgba(255,255,255,.55);background:rgba(249,251,242,.8);-webkit-backdrop-filter:var(--v-blur);backdrop-filter:var(--v-blur);box-shadow:var(--v-btn);cursor:pointer;padding:0;position:relative;color:var(--azul-f)}
 .burger span{position:absolute;left:12px;right:12px;height:2.5px;border-radius:2px;background:currentColor;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .2s,top .35s cubic-bezier(.2,.8,.2,1)}
 .burger span:nth-child(1){top:15px}.burger span:nth-child(2){top:22px}.burger span:nth-child(3){top:29px}
 .burger[aria-expanded=true] span:nth-child(1){top:22px;transform:rotate(45deg)}
@@ -61,7 +76,7 @@ nav ul a[aria-current]:active::after{scale:.95}
  nav.abierto ul li{opacity:1;translate:0 0;filter:blur(0);transition:opacity .45s cubic-bezier(.2,.8,.2,1) calc(.14s + var(--k)*.065s),translate .6s cubic-bezier(.16,.9,.2,1) calc(.14s + var(--k)*.065s),filter .45s calc(.14s + var(--k)*.065s)}
  nav ul li:nth-child(1){--k:0}nav ul li:nth-child(2){--k:1}nav ul li:nth-child(3){--k:2}nav ul li:nth-child(4){--k:3}nav ul li:nth-child(5){--k:4}
  .burger{transition:background .3s,color .3s,transform .45s cubic-bezier(.16,.9,.2,1)}
- .burger[aria-expanded=true]{background:var(--azul);color:var(--crema);box-shadow:0 0 0 3px var(--crema),var(--plato);transform:rotate(90deg)}
+ .burger[aria-expanded=true]{background:rgba(11,117,244,.7);border-color:rgba(255,255,255,.35);color:var(--crema);box-shadow:var(--v-btn-azul);transform:rotate(90deg)}
  nav ul li+li{border-top:1px solid rgba(255,255,255,.16)}
  nav ul a{display:block;padding:14px 4px}
  nav ul a[aria-current]{width:auto;height:auto}
