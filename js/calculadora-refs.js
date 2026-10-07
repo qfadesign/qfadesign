@@ -1,6 +1,7 @@
 /* qfadesign — referencias de mercado de la calculadora (justificación de los valores).
    Acá se editan las FUENTES y los rangos con los que se compara cada servicio. Los precios propios siguen en js/calculadora.js.
    - mon: "ARS" o "USD" (los USD se pasan a pesos con el dólar MEP del día).
+   - c: nombre corto de la referencia (lo usa el PDF de una hoja; si falta, usa l).
    - p: periodicidad que se muestra junto al rango ("por mes", "por hora").
    - minimo: true  → la fuente publica una "banda mínima": estar por encima es lo esperable.
    - mas: true     → el máximo es abierto ("5.000 o más").
@@ -54,37 +55,37 @@ window.QFA_REFS = {
   },
   /* Tarifas por hora: se usan cuando un servicio no tiene una referencia directa */
   porHora: [
-    { f: "s1", min: 20650, max: 25350, mon: "ARS", minimo: true, p: "por hora", l: "Diseño, asesoramiento y consultoría" },
-    { f: "s2", min: 20, max: 60, mon: "USD", p: "por hora", l: "Freelance en proyectos puntuales" }
+    { f: "s1", min: 20650, max: 25350, mon: "ARS", minimo: true, p: "por hora", c: "Consultoría de diseño", l: "Diseño, asesoramiento y consultoría" },
+    { f: "s2", min: 20, max: 60, mon: "USD", p: "por hora", c: "Freelance en proyectos puntuales", l: "Freelance en proyectos puntuales" }
   ],
   servicios: {
-    "branding-emprendedores": [{ f: "s5", min: 65, max: 2010, mon: "USD", l: "Servicios de branding en marketplace" }],
-    "rediseno-imagen": [{ f: "s5", min: 65, max: 2010, mon: "USD", l: "Servicios de branding en marketplace" }],
-    "identidad-completa": [{ f: "s6", min: 500, max: 5000, mon: "USD", l: "Identidad visual completa con un freelance" }],
-    "pieza-unica": [{ f: "s1", min: 40000, max: 40000, mon: "ARS", l: "Ejemplo de flyer del tarifario" }],
-    "pitch-deck": [{ f: "s1", min: 276750, max: 483000, mon: "ARS", minimo: true, l: "Referencia análoga: 15 páginas de diseño editorial ($ 18.450 la simple, $ 32.200 la compuesta)" }],
+    "branding-emprendedores": [{ f: "s5", min: 65, max: 2010, mon: "USD", c: "Branding en marketplace", l: "Servicios de branding en marketplace" }],
+    "rediseno-imagen": [{ f: "s5", min: 65, max: 2010, mon: "USD", c: "Branding en marketplace", l: "Servicios de branding en marketplace" }],
+    "identidad-completa": [{ f: "s6", min: 500, max: 5000, mon: "USD", c: "Identidad completa con freelance", l: "Identidad visual completa con un freelance" }],
+    "pieza-unica": [{ f: "s1", min: 40000, max: 40000, mon: "ARS", c: "Flyer de tarifario", l: "Ejemplo de flyer del tarifario" }],
+    "pitch-deck": [{ f: "s1", min: 276750, max: 483000, mon: "ARS", minimo: true, c: "15 páginas de diseño editorial", l: "Referencia análoga: 15 páginas de diseño editorial ($ 18.450 la simple, $ 32.200 la compuesta)" }],
     "cm-basica": [
-      { f: "s1", min: 172400, max: 229800, mon: "ARS", minimo: true, p: "por mes", l: "Gestión mensual de una red social" },
-      { f: "s2", min: 325, max: 750, mon: "USD", p: "por mes", l: "Community manager freelance en Argentina" }
+      { f: "s1", min: 172400, max: 229800, mon: "ARS", minimo: true, p: "por mes", c: "Gestión de una red social", l: "Gestión mensual de una red social" },
+      { f: "s2", min: 325, max: 750, mon: "USD", p: "por mes", c: "CM freelance en Argentina", l: "Community manager freelance en Argentina" }
     ],
     "cm-estandar": [
-      { f: "s1", min: 172400, max: 229800, mon: "ARS", minimo: true, p: "por mes", l: "Gestión mensual de una red social" },
-      { f: "s2", min: 325, max: 750, mon: "USD", p: "por mes", l: "Community manager freelance en Argentina" }
+      { f: "s1", min: 172400, max: 229800, mon: "ARS", minimo: true, p: "por mes", c: "Gestión de una red social", l: "Gestión mensual de una red social" },
+      { f: "s2", min: 325, max: 750, mon: "USD", p: "por mes", c: "CM freelance en Argentina", l: "Community manager freelance en Argentina" }
     ],
     "cm-intensiva": [
-      { f: "s1", min: 172400, max: 229800, mon: "ARS", minimo: true, p: "por mes", l: "Gestión mensual de una red social" },
-      { f: "s2", min: 325, max: 750, mon: "USD", p: "por mes", l: "Community manager freelance en Argentina" }
+      { f: "s1", min: 172400, max: 229800, mon: "ARS", minimo: true, p: "por mes", c: "Gestión de una red social", l: "Gestión mensual de una red social" },
+      { f: "s2", min: 325, max: 750, mon: "USD", p: "por mes", c: "CM freelance en Argentina", l: "Community manager freelance en Argentina" }
     ],
-    "landing": [{ f: "s4", min: 500, max: 1500, mon: "USD", l: "Landing básica con un freelance" }],
-    "landing-codigo": [{ f: "s4", min: 2500, max: 5000, mas: true, mon: "USD", l: "Landing programada a medida" }],
-    "web-codigo": [{ f: "s3", min: 1500, max: 5000, mon: "USD", l: "Web corporativa profesional" }],
+    "landing": [{ f: "s4", min: 500, max: 1500, mon: "USD", c: "Landing básica con freelance", l: "Landing básica con un freelance" }],
+    "landing-codigo": [{ f: "s4", min: 2500, max: 5000, mas: true, mon: "USD", c: "Landing a medida", l: "Landing programada a medida" }],
+    "web-codigo": [{ f: "s3", min: 1500, max: 5000, mon: "USD", c: "Web corporativa", l: "Web corporativa profesional" }],
     "consultoria": [
-      { f: "s1", min: 20650, max: 25350, mon: "ARS", minimo: true, p: "por hora", l: "Diseño, asesoramiento y consultoría" },
-      { f: "s2", min: 20, max: 60, mon: "USD", p: "por hora", l: "Tarifa horaria freelance" }
+      { f: "s1", min: 20650, max: 25350, mon: "ARS", minimo: true, p: "por hora", c: "Consultoría de diseño", l: "Diseño, asesoramiento y consultoría" },
+      { f: "s2", min: 20, max: 60, mon: "USD", p: "por hora", c: "Tarifa horaria freelance", l: "Tarifa horaria freelance" }
     ]
   },
   /* Recargo por entrega urgente, en % */
-  urgente: [{ f: "s7", min: 20, max: 50, mon: "%", l: "Recargo por entregar en menos de una semana" }],
+  urgente: [{ f: "s7", min: 20, max: 50, mon: "%", c: "Recargo por entrega en menos de una semana", l: "Recargo por entregar en menos de una semana" }],
   /* Por qué cambia el valor según el tipo de cliente */
   clientes: {
     "emprendimiento": "Es el valor base. Corresponde a proyectos que están arrancando o que no tienen fines de lucro, con un alcance y una estructura más acotados.",

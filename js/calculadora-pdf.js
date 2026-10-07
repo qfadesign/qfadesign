@@ -1,7 +1,7 @@
 /* qfadesign — PDF del presupuesto de la calculadora.
    Arma el documento en el navegador con jsPDF (js/vendor/jspdf.umd.min.js, se carga recién al apretar el botón).
    Usa las tipografías de /fonts (en /fonts/pdf, versiones TrueType livianas de Articulat para el PDF) y el logo de /img; si algo no carga, cae a Helvetica y el PDF sale igual.
-   Las referencias de mercado salen de js/calculadora-refs.js. */
+   Las referencias de mercado salen de js/calculadora-refs.js. El presupuesto entra en UNA hoja: se prueban distintos niveles de compactación (NIVELES). */
 (function (root) {
   "use strict";
 
@@ -93,34 +93,45 @@
     }
     return t + ".";
   }
-  function posicion(v, r, mep) {
+  function rangoCorto(r, mep) { return rangoTexto(r, mep).replace(/\.$/, ""); }
+  function posCorta(v, r, mep) {
     var c = aPesos(r, mep);
     if (r.min === r.max) {
       var d = (v / c.min - 1) * 100;
-      if (Math.abs(d) <= 10) return "El valor aplicado está en línea con la referencia.";
-      return "El valor aplicado queda un " + Math.abs(Math.round(d)) + " % " + (d < 0 ? "por debajo" : "por encima") + " de la referencia.";
+      if (Math.abs(d) <= 10) return "En línea con la referencia.";
+      return Math.abs(Math.round(d)) + " % " + (d < 0 ? "por debajo" : "por encima") + " de la referencia.";
     }
-    if (v < c.min) return "El valor aplicado queda por debajo del rango de referencia.";
-    if (v > c.max && !r.mas) return r.minimo ? "El valor aplicado queda por encima de la banda mínima de referencia." : "El valor aplicado queda por encima del rango de referencia.";
-    return "El valor aplicado está dentro del rango de referencia.";
+    if (v < c.min) return "Por debajo del rango.";
+    if (v > c.max && !r.mas) return r.minimo ? "Por encima de la banda mínima." : "Por encima del rango.";
+    return "Dentro del rango.";
   }
 
   /* ---- Armado del documento ---- */
-  function construir(jsPDF, d, rec) {
+  /* Niveles de compactación: se prueba del más amplio al más compacto hasta que todo entre en UNA hoja.
+     Si ni así entra (muchísimos servicios), se usa el nivel 1 y el resto sigue en una segunda hoja. */
+  var NIVELES = [
+    { ts: 46, ty: 112, sub: 24, gapT: 52, np: 42, strip: 54, sd: 26, hd: 16, hdy: 20, rowPad: 10, nm: 10.5, jf: 7.8, jl: 9.6, tg: 20, bh: 76, tf: 26, cond: 7, cg: 22 },
+    { ts: 38, ty: 98,  sub: 22, gapT: 42, np: 34, strip: 52, sd: 20, hd: 15, hdy: 18, rowPad: 8,  nm: 10,   jf: 7.5, jl: 9.1, tg: 16, bh: 74, tf: 24, cond: 6.8, cg: 18 },
+    { ts: 30, ty: 86,  sub: 20, gapT: 36, np: 32, strip: 50, sd: 14, hd: 14, hdy: 16, rowPad: 6,  nm: 9.5,  jf: 7,   jl: 8.5, tg: 12, bh: 71, tf: 21, cond: 6.6, cg: 14 },
+    { ts: 26, ty: 76,  sub: 18, gapT: 30, np: 30, strip: 48, sd: 10, hd: 13, hdy: 14, rowPad: 4,  nm: 9,    jf: 6.6, jl: 8,   tg: 10, bh: 69, tf: 19, cond: 6.4, cg: 10 }
+  ];
+
+  function construir(jsPDF, d, rec, nivel) {
+    var P = NIVELES[nivel];
     var R = root.QFA_REFS || { fuentes: {}, servicios: {}, porHora: [], urgente: [], clientes: {} };
     var mep = d.mep.value;
     var doc = new jsPDF({ unit: "pt", format: "a4", compress: true, putOnlyUsedFonts: true });
     var PW = 595.28, PH = 841.89, ML = 46, CW = PW - ML * 2, TOP = 46, BOT = PH - 62;
-    var y = TOP, pagina = 1;
+    var y = TOP;
 
     /* tipografías: las de la marca si cargaron, Helvetica si no */
     var conMarca = !!(rec && rec.fonts && rec.fonts.AR && rec.fonts.AR.normal && rec.fonts.AR.italic && rec.fonts.ARH && rec.fonts.POD);
     if (conMarca) {
       Object.keys(rec.fonts).forEach(function (fam) {
         Object.keys(rec.fonts[fam]).forEach(function (estilo) {
-          var f = rec.fonts[fam][estilo];
-          doc.addFileToVFS(f.file, f.b64);
-          doc.addFont(f.file, fam, estilo);
+          var fo = rec.fonts[fam][estilo];
+          doc.addFileToVFS(fo.file, fo.b64);
+          doc.addFont(fo.file, fam, estilo);
         });
       });
     }
@@ -135,47 +146,44 @@
     function trazo(color, w) { doc.setDrawColor.apply(doc, color); doc.setLineWidth(w); }
     function relleno(color) { doc.setFillColor.apply(doc, color); }
     function mayus(s) { return s.toUpperCase(); }
+    function logo(x, yy, w) { if (rec && rec.logo) { doc.addImage(rec.logo, "PNG", x, yy, w, w * LOGO_RATIO); return true; } return false; }
 
-    /* citas: cada fuente recibe su número la primera vez que se menciona */
-    var orden = [];
-    function cita(fid) {
-      var i = orden.indexOf(fid);
-      if (i < 0) { orden.push(fid); i = orden.length - 1; }
-      return i + 1;
-    }
-
-    /* párrafo: mide y, si draw, dibuja. Devuelve el alto */
-    function parrafo(texto, x, w, k, size, color, lh, draw) {
-      f(k, size, color);
-      var ls = doc.splitTextToSize(texto, w);
-      if (draw) ls.forEach(function (l, i) { doc.text(l, x, y + size + i * lh - 1); });
-      return ls.length * lh;
+    /* párrafo con estilos mezclados: segs = [{t, k, c}]. Mide y, si draw, dibuja. Devuelve el alto */
+    function rico(segs, x, y0, w, size, lh, draw) {
+      var lines = [[]], cx = 0;
+      segs.forEach(function (s) {
+        f(s.k, size, s.c);
+        (s.t.match(/\S+|\s+/g) || []).forEach(function (t) {
+          var esp = /^\s/.test(t), tw = doc.getTextWidth(t);
+          if (esp) { if (cx === 0) return; lines[lines.length - 1].push({ t: t, k: s.k, c: s.c, x: cx, sp: true }); cx += tw; return; }
+          if (cx + tw > w && cx > 0) { lines.push([]); cx = 0; }
+          lines[lines.length - 1].push({ t: t, k: s.k, c: s.c, x: cx });
+          cx += tw;
+        });
+      });
+      if (draw) lines.forEach(function (ln, i) {
+        ln.forEach(function (tk) {
+          if (tk.sp) return;
+          f(tk.k, size, tk.c);
+          doc.text(tk.t, x + tk.x, y0 + size + i * lh - 1);
+        });
+      });
+      return lines.length * lh;
     }
 
     function cabeceraInterna() {
-      if (rec && rec.logo) doc.addImage(rec.logo, "PNG", ML, 30, 70, 70 * LOGO_RATIO);
+      logo(ML, 30, 70);
       f("p", 7, C.gris);
       doc.text(mayus("Presupuesto estimado · " + d.ref), PW - ML, 42, { align: "right", charSpace: 0.7 });
       trazo(C.linea, 0.75);
       doc.line(ML, 58, PW - ML, 58);
       y = 80;
     }
-    function nuevaPagina() { doc.addPage(); pagina++; cabeceraInterna(); }
+    function nuevaPagina() { doc.addPage(); cabeceraInterna(); }
     function asegurar(h) { if (y + h > BOT) nuevaPagina(); }
 
-    function titulo(kicker, texto) {
-      asegurar(64);
-      f("p", 7.5, C.azul);
-      doc.text(mayus(kicker), ML, y + 8, { charSpace: 1 });
-      y += 14;
-      f("h", 21, C.navy);
-      doc.text(texto, ML, y + 18, { charSpace: -0.4 });
-      y += 30;
-    }
-
     /* ===== Portada: marca, título y datos ===== */
-    if (rec && rec.logo) doc.addImage(rec.logo, "PNG", ML, TOP - 2, 118, 118 * LOGO_RATIO);
-    else { f("h", 20, C.azulV); doc.text("qfadesign", ML, TOP + 18); }
+    if (!logo(ML, TOP - 2, 118)) { f("h", 20, C.azulV); doc.text("qfadesign", ML, TOP + 18); }
     f("p", 8, C.azul);
     doc.text(mayus("Presupuesto estimado"), PW - ML, TOP + 10, { align: "right", charSpace: 1.2 });
     f("b", 8.5, C.gris);
@@ -184,21 +192,21 @@
     doc.line(ML, TOP + 40, PW - ML, TOP + 40);
 
     /* título: la mitad rellena y la otra "hueca", como en el sitio */
-    y = TOP + 112;
-    var TS = 46, cs = -1.4;
+    y = TOP + P.ty;
+    var TS = P.ts, cs = -TS * 0.03;
     f("h", TS, C.azul);
     doc.text("Presu", ML, y, { charSpace: cs });
     var w1 = doc.getTextWidth("Presu") + cs * 5;
     trazo(C.azul, 1.3);
     doc.text("puesto", ML + w1, y, { renderingMode: "stroke", charSpace: cs });
     f("b", 11, C.gris);
-    doc.text("Detalle de lo seleccionado y fundamentos de cada valor.", ML, y + 24);
-    y += 52;
+    doc.text("Detalle de lo seleccionado y fundamentos de cada valor.", ML, y + P.sub);
+    y += P.gapT;
 
     if (d.nombre) {
       f("p", 7, C.gris); doc.text(mayus("Preparado para"), ML, y + 7, { charSpace: 0.9 });
-      f("h", 16, C.navy); doc.text(d.nombre, ML, y + 26, { maxWidth: CW });
-      y += 42;
+      f("h", nivel === 0 ? 16 : 14, C.navy); doc.text(d.nombre, ML, y + (nivel === 0 ? 26 : 22), { maxWidth: CW });
+      y += P.np;
     }
 
     /* franja de datos */
@@ -217,14 +225,23 @@
       f("b", 9.5, C.navy); doc.text(c[1], x, y + 31, { maxWidth: cw - 8 });
       if (c[2]) { f("b", 7.5, C.gris); doc.text(c[2], x, y + 42); }
     });
-    y += 54;
+    y += P.strip;
     doc.line(ML, y, PW - ML, y);
-    y += 30;
+    y += P.sd + 10;
 
-    /* ===== Detalle ===== */
-    f("h", 16, C.navy);
-    doc.text("Detalle del presupuesto", ML, y + 4, { charSpace: -0.2 });
-    y += 20;
+    /* ===== Detalle y fundamentos ===== */
+    f("h", P.hd, C.navy);
+    doc.text("Detalle del presupuesto y por qué estos valores", ML, y + 4, { charSpace: -0.2 });
+    y += P.hdy;
+
+    var intro = "Cada valor parte de un precio base en pesos, definido por el alcance de cada servicio, que se ajusta por tipo de cliente y, si hace falta, por urgencia. Después se contrasta con referencias públicas de mercado (argentinas, en pesos, e internacionales, en dólares al MEP del día). Son datos para dimensionar el valor, no una tarifa oficial.";
+    var segsIntro = [{ t: intro + " ", k: "b", c: C.gris }];
+    var txtCli = R.clientes && R.clientes[d.cliente.id];
+    if (txtCli) {
+      segsIntro.push({ t: "Tipo de cliente · " + d.cliente.label + ": ", k: "h", c: C.navy });
+      segsIntro.push({ t: txtCli, k: "b", c: C.gris });
+    }
+    y += rico(segsIntro, ML, y, CW, Math.min(8, P.jf + 0.4), Math.min(10.8, P.jl + 1), true) + 8;
 
     var W = [214, 56, 76, 84, 73];
     var X1 = ML + W[0] + W[1] + W[2];            // borde derecho de "Valor unitario"
@@ -244,227 +261,108 @@
     }
     cabeceraTabla();
 
-    function fila(nombre, desc, cant, unidad, unit, total) {
-      f("h", 10.5, C.navy);
+    /* texto de justificación de cada fila (sin nombrar fuentes) */
+    function segsServicio(l) {
+      var segs = [{ t: (d.cliente.mult === 1 ? "Base " + ars(l.baseArs) + " (sin coeficiente). " : "Base " + ars(l.baseArs) + " × coeficiente " + coef(d.cliente.mult) + ". "), k: "b", c: C.gris }];
+      var refs = R.servicios && R.servicios[l.id];
+      if (refs && refs.length) {
+        refs.forEach(function (r) {
+          segs.push({ t: (r.c || r.l) + ": " + rangoCorto(r, mep) + ". ", k: "b", c: C.navy });
+          segs.push({ t: posCorta(l.unitArs, r, mep) + " ", k: "h", c: C.azul });
+        });
+      } else {
+        var ph = (R.porHora || []).map(function (r) { return rangoCorto(r, mep); });
+        segs.push({ t: "Sin tarifa comparable relevada: el valor responde al alcance incluido y al tiempo de trabajo." + (ph.length ? " Referencia por hora: " + ph.join("; ") + "." : ""), k: "b", c: C.gris });
+      }
+      return segs;
+    }
+    function segsUrgente() {
+      var pct = d.recargo * 100;
+      var segs = [{ t: "Para entregas en menos de 5 días hábiles; se calcula sobre el subtotal. ", k: "b", c: C.gris }];
+      (R.urgente || []).forEach(function (r) {
+        segs.push({ t: (r.c || r.l) + ": entre " + r.min + " % y " + r.max + " %. ", k: "b", c: C.navy });
+        segs.push({ t: (pct < r.min ? "Por debajo del rango." : pct > r.max ? "Por encima del rango." : "Dentro del rango.") + " ", k: "h", c: C.azul });
+      });
+      return segs;
+    }
+
+    function fila(nombre, cant, unidad, unit, total, segs) {
+      f("h", P.nm, C.navy);
       var ln = doc.splitTextToSize(nombre, W[0] - 12);
-      f("b", 8, C.gris);
-      var ld = desc ? doc.splitTextToSize(desc, W[0] - 12) : [];
-      var h = 11 + ln.length * 12.5 + (ld.length ? 3 + ld.length * 10.4 : 0) + 11;
+      var topH = Math.max(ln.length * (P.nm + 2), P.nm + 9);
+      var hj = rico(segs, ML, 0, CW, P.jf, P.jl, false);
+      var h = P.rowPad + topH + 2 + hj + P.rowPad * 0.8 + 2;
       if (y + h > BOT) { nuevaPagina(); cabeceraTabla(); }
-      var ty = y + 11 + 10;
-      f("h", 10.5, C.navy);
-      ln.forEach(function (l, i) { doc.text(l, ML, ty + i * 12.5); });
-      var dy = ty + (ln.length - 1) * 12.5 + 3;
-      f("b", 8, C.gris);
-      ld.forEach(function (l, i) { doc.text(l, ML, dy + 10 + i * 10.4 - 2); });
-      var by = y + 11 + 9.5;
-      f("h", 10, C.navy);
+      var ty = y + P.rowPad + P.nm;
+      f("h", P.nm, C.navy);
+      ln.forEach(function (l, i) { doc.text(l, ML, ty + i * (P.nm + 2)); });
+      var by = ty - 0.5;
+      f("h", P.nm - 0.5, C.navy);
       doc.text(String(cant), XC, by, { align: "center" });
-      if (unidad) { f("bi", 7, C.gris); doc.text(unidad, XC, by + 10, { align: "center" }); }
+      if (unidad) { f("bi", 7, C.gris); doc.text(unidad, XC, by + 9, { align: "center" }); }
       if (unit != null) { f("b", 9.5, C.navy); doc.text(ars(unit), X1, by, { align: "right" }); }
-      f("h", 10, C.navy);
+      f("h", P.nm - 0.5, C.navy);
       doc.text(ars(total), X2, by, { align: "right" });
       f("b", 9, C.gris);
       doc.text(usd(total / mep), X3, by, { align: "right" });
+      rico(segs, ML, y + P.rowPad + topH + 2, CW, P.jf, P.jl, true);
       y += h;
       trazo(C.linea, 0.6);
       doc.line(ML, y, PW - ML, y);
     }
-    d.lineas.forEach(function (l) { fila(l.name, l.desc, l.qty, l.unit, l.unitArs, l.totalArs); });
-    if (d.urgente) fila("Entrega urgente (+" + Math.round(d.recargo * 100) + " %)", "Para entregas en menos de 5 días hábiles. Se calcula sobre el subtotal.", "—", "", null, d.recargoArs);
+    d.lineas.forEach(function (l) { fila(l.name, l.qty, l.unit, l.unitArs, l.totalArs, segsServicio(l)); });
+    if (d.urgente) fila("Entrega urgente (+" + Math.round(d.recargo * 100) + " %)", "—", "", null, d.recargoArs, segsUrgente());
 
-    /* total */
-    y += 22;
-    asegurar(96);
-    var BW = 244, BX = PW - ML - BW, BH = 78;
+    /* ===== Total + alcance y condiciones, lado a lado ===== */
+    y += P.tg;
+    var BW = 244, BX = PW - ML - BW;
+    var cond = "Valores de referencia en pesos argentinos; el equivalente en dólares se calcula con el dólar MEP" + (d.mep.vivo ? " del " : " de referencia al ") + fechaCorta(d.mep.fecha) + ". Se ajustan según el contexto económico y el presupuesto final se confirma según el alcance real del proyecto, los plazos y el tipo de vínculo con la marca. No incluye pauta publicitaria, producción externa (impresión, fotografía profesional, etc.), licencias de software, dominio ni hosting.";
+    var hCond = rico([{ t: cond, k: "b", c: C.gris }], ML, 0, BX - ML - 22, P.cond, P.cond + 1.9, false);
+    var BH = Math.max(P.bh, hCond + 16);
+    asegurar(BH + (d.urgente ? 14 : 0) + 80);
+    if (d.urgente) {
+      f("b", 7.5, C.gris);
+      doc.text("Subtotal " + ars(d.subtotal) + "  +  Urgencia " + ars(d.recargoArs), PW - ML, y + 8, { align: "right" });
+      y += 14;
+    }
     relleno(C.azul);
     doc.roundedRect(BX, y, BW, BH, 12, 12, "F");
-    f("p", 7.5, C.blanco); doc.text(mayus("Total estimado"), BX + 18, y + 20, { charSpace: 1.2 });
-    f("h", 26, C.blanco);
+    var cy = y + (BH - P.bh) / 2;
+    f("p", 7.5, C.blanco); doc.text(mayus("Total estimado"), BX + 18, cy + 17, { charSpace: 1.2 });
+    f("h", P.tf, C.blanco);
     var tTxt = ars(d.total);
-    doc.text(tTxt, BX + 18, y + 49, { charSpace: -0.5 });
+    var ty2 = cy + 17 + P.tf + 6;
+    doc.text(tTxt, BX + 18, ty2, { charSpace: -0.5 });
     var tw = doc.getTextWidth(tTxt) - 0.5 * tTxt.length;
-    f("p", 8.5, C.blanco); doc.text("ARS", BX + 18 + tw + 6, y + 49);
-    f("h", 11, C.blanco); doc.text(usd(d.total / mep), BX + 18, y + 67);
-    var phn = parrafo("Valores en pesos argentinos. El equivalente en dólares se calcula con el dólar MEP" + (d.mep.vivo ? " del " : " de referencia al ") + fechaCorta(d.mep.fecha) + ".", ML, BX - ML - 22, "b", 8, C.gris, 11, true);
-    if (d.urgente) {
-      f("b", 8, C.gris);
-      doc.text("Subtotal: " + ars(d.subtotal) + "  ·  Urgencia: " + ars(d.recargoArs), ML, y + phn + 14);
-    }
-    y += BH + 30;
-
-    /* ===== Fundamentos ===== */
-    titulo("Fundamentos", "¿Por qué estos valores?");
-    var intro = "Cada valor parte de un precio base en pesos, definido por el alcance de cada servicio. Ese precio se ajusta según el tipo de cliente y, si hace falta, por urgencia. Después se contrasta con referencias públicas de mercado: algunas argentinas, en pesos, y otras internacionales, en dólares, que se pasan a pesos con el dólar MEP del día. Son datos para dimensionar el valor, no una tarifa oficial.";
-    y += parrafo(intro, ML, CW, "b", 9.5, C.gris, 13.8, true) + 12;
-
-    /* bloque con barra de acento: contenido(draw) -> alto */
-    function bloque(contenido) {
-      var y0 = y;
-      var h = contenido(false);
-      y = y0;
-      asegurar(h + 14);
-      y0 = y;
-      contenido(true);
-      trazo(C.azulV, 2.4);
-      doc.line(ML, y0 + 1, ML, y0 + h - 4);
-      y = y0 + h + 14;
-    }
-
-    /* tipo de cliente */
-    bloque(function (draw) {
-      var x = ML + 14, w = CW - 14, yo = y, h = 0;
-      function avanzar(n) { h += n; y = yo + h; }
-      if (draw) { f("h", 11.5, C.navy); doc.text("Tipo de cliente: " + d.cliente.label, x, y + 11); }
-      avanzar(18);
-      var txt = R.clientes && R.clientes[d.cliente.id] ? R.clientes[d.cliente.id] : "";
-      if (txt) avanzar(parrafo(txt, x, w, "b", 9, C.gris, 12.6, draw));
-      return h + 2;
-    });
-
-    /* un bloque por servicio */
-    function bloqueServicio(l) {
-      bloque(function (draw) {
-        var x = ML + 14, w = CW - 14, yo = y, h = 0;
-        function avanzar(n) { h += n; y = yo + h; }
-        /* título y valor */
-        if (draw) {
-          f("h", 11.5, C.navy); doc.text(l.name, x, y + 11, { maxWidth: w - 150 });
-          f("h", 11.5, C.azul); doc.text(ars(l.unitArs) + " " + l.unit.replace("por ", "/ "), PW - ML, y + 11, { align: "right" });
-        }
-        f("h", 11.5, C.navy);
-        var nl = doc.splitTextToSize(l.name, w - 150).length;
-        avanzar(Math.max(nl, 1) * 14 + 4);
-        /* cómo se llega al valor */
-        var formula = d.cliente.mult === 1
-          ? "Precio base " + ars(l.baseArs) + " (sin coeficiente: cliente " + d.cliente.label + "). Equivale a " + usd(l.unitArs / mep) + "."
-          : "Precio base " + ars(l.baseArs) + " × coeficiente de cliente " + coef(d.cliente.mult) + " = " + ars(l.unitArs) + ". Equivale a " + usd(l.unitArs / mep) + ".";
-        avanzar(parrafo(formula, x, w, "b", 8.5, C.gris, 12, draw) + 4);
-        /* referencias */
-        var refs = R.servicios[l.id];
-        if (refs && refs.length) {
-          refs.forEach(function (r) {
-            var n = draw ? cita(r.f) : (orden.indexOf(r.f) >= 0 ? orden.indexOf(r.f) + 1 : orden.length + 1);
-            var lab = "[" + n + "]";
-            if (draw) { f("h", 8.5, C.azul); doc.text(lab, x, y + 9.5); }
-            var t = r.l + ": " + rangoTexto(r, mep);
-            var a = parrafo(t, x + 20, w - 20, "b", 8.5, C.navy, 12, draw);
-            avanzar(a);
-            if (draw) { f("h", 8.5, C.azul); }
-            var pos = posicion(l.unitArs, r, mep);
-            f("h", 8.5, C.azul);
-            var lp = doc.splitTextToSize(pos, w - 20);
-            if (draw) lp.forEach(function (s, i) { doc.text(s, x + 20, y + 9.5 + i * 12); });
-            avanzar(lp.length * 12 + 4);
-          });
-        } else {
-          var ph = R.porHora || [];
-          var partes = ph.map(function (r) {
-            var n = draw ? cita(r.f) : (orden.indexOf(r.f) >= 0 ? orden.indexOf(r.f) + 1 : orden.length + 1);
-            return rangoTexto(r, mep).replace(/\.$/, "") + " [" + n + "]";
-          });
-          var t = "No se relevó una tarifa de mercado comparable para este servicio puntual. El valor se define por el alcance incluido y el tiempo de trabajo, tomando como base las tarifas horarias de referencia: " + partes.join(" y ") + ".";
-          avanzar(parrafo(t, x, w, "b", 8.5, C.navy, 12, draw) + 2);
-        }
-        return h;
-      });
-    }
-    d.lineas.forEach(bloqueServicio);
-
-    /* urgencia */
-    if (d.urgente) {
-      bloque(function (draw) {
-        var x = ML + 14, w = CW - 14, yo = y, h = 0;
-        function avanzar(n) { h += n; y = yo + h; }
-        if (draw) {
-          f("h", 11.5, C.navy); doc.text("Entrega urgente (+" + Math.round(d.recargo * 100) + " %)", x, y + 11);
-          f("h", 11.5, C.azul); doc.text(ars(d.recargoArs), PW - ML, y + 11, { align: "right" });
-        }
-        avanzar(18);
-        avanzar(parrafo("Recargo por entregar en menos de 5 días hábiles: obliga a reordenar la agenda y a priorizar el proyecto por sobre otros trabajos.", x, w, "b", 8.5, C.gris, 12, draw) + 4);
-        (R.urgente || []).forEach(function (r) {
-          var n = draw ? cita(r.f) : (orden.indexOf(r.f) >= 0 ? orden.indexOf(r.f) + 1 : orden.length + 1);
-          if (draw) { f("h", 8.5, C.azul); doc.text("[" + n + "]", x, y + 9.5); }
-          avanzar(parrafo(r.l + ": entre " + r.min + " % y " + r.max + " %.", x + 20, w - 20, "b", 8.5, C.navy, 12, draw));
-          var pos = d.recargo * 100 < r.min ? "El recargo aplicado (" + Math.round(d.recargo * 100) + " %) queda por debajo del rango de referencia."
-            : d.recargo * 100 > r.max ? "El recargo aplicado (" + Math.round(d.recargo * 100) + " %) queda por encima del rango de referencia."
-            : "El recargo aplicado (" + Math.round(d.recargo * 100) + " %) está dentro del rango de referencia.";
-          f("h", 8.5, C.azul);
-          var lp = doc.splitTextToSize(pos, w - 20);
-          if (draw) lp.forEach(function (s, i) { doc.text(s, x + 20, y + 9.5 + i * 12); });
-          avanzar(lp.length * 12 + 4);
-        });
-        return h;
-      });
-    }
-
-    /* ===== Fuentes ===== */
-    y += 8;
-    titulo("Referencias", "Fuentes consultadas");
-    orden.forEach(function (fid, i) {
-      var s = R.fuentes[fid];
-      if (!s) return;
-      var w = CW - 24;
-      var alto = function (draw) {
-        var h = 0, yo = y;
-        function avanzar(n) { h += n; y = yo + h; }
-        avanzar(parrafo(s.t, ML + 24, w, "h", 9, C.navy, 12, draw));
-        avanzar(parrafo(s.o + ". Consultado el " + R.consulta + ".", ML + 24, w, "b", 8, C.gris, 11, draw));
-        avanzar(parrafo(s.n, ML + 24, w, "b", 8, C.gris, 11, draw));
-        f("b", 8, C.azul);
-        var lu = doc.splitTextToSize(s.u, w);
-        lu.forEach(function (u, k) { if (draw) doc.textWithLink(u, ML + 24, y + 8 + k * 11, { url: s.u }); });
-        avanzar(lu.length * 11);
-        return h;
-      };
-      var yy = y, h = alto(false);
-      y = yy;
-      asegurar(h + 12);
-      yy = y;
-      f("h", 9, C.azul); doc.text("[" + (i + 1) + "]", ML, yy + 9);
-      alto(true);
-      y = yy + h + 10;
-    });
-
-    /* ===== Alcance y condiciones ===== */
-    y += 4;
-    var cond = "Los valores son de referencia: están calculados en pesos y se muestran también en dólares con la cotización del MEP del día. Se ajustan según el contexto económico. El presupuesto final se confirma según el alcance real del proyecto, los plazos y el tipo de vínculo con la marca. No incluye pauta publicitaria, producción externa (impresión, fotografía profesional, etc.), licencias de software, dominio ni hosting.";
-    var hc = parrafo(cond, ML + 16, CW - 32, "b", 8.5, C.gris, 12.2, false);
-    asegurar(hc + 50);
-    relleno(C.suave);
-    doc.roundedRect(ML, y, CW, hc + 40, 10, 10, "F");
-    f("p", 7.5, C.azul); doc.text(mayus("Alcance y condiciones"), ML + 16, y + 20, { charSpace: 1 });
-    y += 26;
-    parrafo(cond, ML + 16, CW - 32, "b", 8.5, C.gris, 12.2, true);
-    y += hc + 28;
+    f("p", 8.5, C.blanco); doc.text("ARS", BX + 18 + tw + 6, ty2);
+    f("h", 11, C.blanco); doc.text(usd(d.total / mep), BX + 18, ty2 + 16);
+    f("p", 6.8, C.azul); doc.text(mayus("Alcance y condiciones"), ML, y + 9, { charSpace: 1 });
+    rico([{ t: cond, k: "b", c: C.gris }], ML, y + 14, BX - ML - 22, P.cond, P.cond + 1.9, true);
+    y += BH + P.cg;
 
     /* ===== Contacto ===== */
-    asegurar(70);
+    asegurar(44);
     trazo(C.linea, 0.75);
     doc.line(ML, y, PW - ML, y);
-    y += 28;
-    f("h", 17, C.navy); doc.text("¿Charlamos tu proyecto?", ML, y, { charSpace: -0.3 });
-    y += 20;
-    f("b", 9.5, C.azul);
-    doc.textWithLink(EMAIL, ML, y, { url: "mailto:" + EMAIL });
-    var xe = ML + doc.getTextWidth(EMAIL);
-    f("b", 9.5, C.gris); doc.text("  ·  ", xe, y);
-    xe += doc.getTextWidth("  ·  ");
-    f("b", 9.5, C.azul); doc.textWithLink(SITIO, xe, y, { url: "https://" + SITIO });
-    xe += doc.getTextWidth(SITIO);
-    f("b", 9.5, C.gris); doc.text("  ·  ", xe, y);
-    xe += doc.getTextWidth("  ·  ");
-    f("b", 9.5, C.azul); doc.textWithLink("@qfadesign", xe, y, { url: INSTAGRAM });
+    y += 22;
+    f("h", 14, C.navy); doc.text("¿Charlamos tu proyecto?", ML, y, { charSpace: -0.2 });
+    var sep = "  ·  ", ig = "@qfadesign";
+    f("b", 9, C.azul);
+    var wE = doc.getTextWidth(EMAIL), wI = doc.getTextWidth(ig), wS = doc.getTextWidth(sep);
+    var xe = PW - ML - (wE + wS + wI);
+    doc.textWithLink(EMAIL, xe, y, { url: "mailto:" + EMAIL });
+    f("b", 9, C.gris); doc.text(sep, xe + wE, y);
+    f("b", 9, C.azul); doc.textWithLink(ig, xe + wE + wS, y, { url: INSTAGRAM });
 
-    /* pie de todas las páginas */
+    /* pie de todas las páginas: la marca (logo) y el sitio */
     var total = doc.getNumberOfPages();
     for (var p = 1; p <= total; p++) {
       doc.setPage(p);
       trazo(C.linea, 0.75);
       doc.line(ML, PH - 44, PW - ML, PH - 44);
+      logo(ML, PH - 38, 62);
       f("b", 7.5, C.gris);
-      doc.text("qfadesign  ·  " + SITIO, ML, PH - 30);
-      doc.text("Página " + p + " de " + total, PW - ML, PH - 30, { align: "right" });
+      doc.text(total > 1 ? "Página " + p + " de " + total + "  ·  " + SITIO : SITIO, PW - ML, PH - 27, { align: "right" });
     }
 
     doc.setProperties({
@@ -474,6 +372,15 @@
       creator: SITIO
     });
     return doc;
+  }
+
+  /* Prueba del nivel más amplio al más compacto hasta que entre en una hoja */
+  function armar(jsPDF, d, rec) {
+    for (var i = 0; i < NIVELES.length; i++) {
+      var doc = construir(jsPDF, d, rec, i);
+      if (doc.getNumberOfPages() === 1) return doc;
+    }
+    return construir(jsPDF, d, rec, 1);
   }
 
   /* ---- API pública ---- */
@@ -492,10 +399,10 @@
     d.ref = d.ref || ("QFA-" + d.ahora.getFullYear() + pad(d.ahora.getMonth() + 1) + pad(d.ahora.getDate()) + "-" + pad(d.ahora.getHours()) + pad(d.ahora.getMinutes()));
     var lib = root.jspdf && root.jspdf.jsPDF ? Promise.resolve() : cargarScript(BASE + "js/vendor/jspdf.umd.min.js");
     return Promise.all([lib, cargarRecursos()]).then(function (r) {
-      var doc = construir(root.jspdf.jsPDF, d, r[1]);
+      var doc = armar(root.jspdf.jsPDF, d, r[1]);
       doc.save(nombreArchivo(d));
     });
   }
 
-  root.QFAPdf = { descargar: descargar, _construir: construir, _nombreArchivo: nombreArchivo };
+  root.QFAPdf = { descargar: descargar, _construir: armar, _nombreArchivo: nombreArchivo };
 })(typeof window !== "undefined" ? window : globalThis);

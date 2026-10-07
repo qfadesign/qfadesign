@@ -201,8 +201,13 @@
     });
 
     resumen();
+    var hay = Object.keys(estado.sel).length > 0;
     var bp = $("cpPdf");
-    if (bp) bp.disabled = !Object.keys(estado.sel).length;
+    if (bp) bp.disabled = !hay;
+    var bb = $("cpBorrar");
+    if (bb) bb.disabled = !(hay || estado.urgente);
+    var uc = $("cpUrgente");
+    if (uc) uc.checked = estado.urgente;
   }
 
   function montos(n) {
@@ -243,6 +248,24 @@
     $("cpTotalUsd").textContent = usd(total / MEP.value);
     $("cpBarTotal").textContent = ars(total);
     $("cpBarUsd").textContent = usd(total / MEP.value);
+  }
+
+  /* ---- Borrar selección: deja servicios, cantidades y urgencia en cero (el tipo de cliente y el nombre se conservan) ---- */
+  function armarBorrar() {
+    var b = $("cpBorrar");
+    if (!b) return;
+    b.addEventListener("click", function () {
+      if (b.disabled) return;
+      var n = Object.keys(estado.sel).length;
+      estado.sel = {}; estado.cant = {}; estado.urgente = false;
+      actualizar(); // el botón queda deshabilitado: el foco pasa al título del resumen para no perderse
+      var t = $("cpResTit");
+      if (t) t.focus({ preventScroll: true });
+      var msg = $("cpEstado");
+      if (msg) msg.textContent = "Se borró la selección" + (n ? " (" + n + (n > 1 ? " servicios" : " servicio") + ")" : "") + ". El total volvió a cero.";
+    });
+    // al volver a elegir algo, se limpia el aviso
+    $("cpCats").addEventListener("change", function () { var m = $("cpEstado"); if (m) m.textContent = ""; });
   }
 
   /* ---- PDF del presupuesto ---- */
@@ -333,6 +356,7 @@
   armarClientes();
   armarCategorias();
   armarPdf();
+  armarBorrar();
   armarFuentes();
   pintarMep();
   actualizar();
