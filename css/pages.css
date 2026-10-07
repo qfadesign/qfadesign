@@ -11,6 +11,12 @@ main{position:relative;z-index:1;flex:1;max-width:1240px;width:100%;margin:auto;
 /* título gigante */
 .ph{padding:clamp(40px,6vw,88px) 0 0}
 h1{font-weight:900;font-style:italic;font-size:clamp(30px,11.5vw,172px);line-height:.9;letter-spacing:-.03em;font-family:var(--fh)}
+/* TÍTULO GIGANTE = STICKER: en las páginas con fondo azul va el sticker de borde negro (titulo-*.svg); en las de fondo negro, el de borde blanco */
+h1.st-h1{line-height:0;letter-spacing:0;animation:none}
+.st-h1 img{display:block;width:calc(var(--vw)*.0118em);max-width:100%;height:auto;filter:var(--st-sombra);rotate:-2deg;transform-origin:left center;animation:pegar .85s cubic-bezier(.2,.8,.2,1) .15s backwards}
+.ah-bg.st-h1{text-align:center}
+.ah-bg.st-h1 img{margin-inline:auto;width:min(94%,1040px);transform-origin:center}
+@media(prefers-reduced-motion:reduce){.st-h1 img{animation:none}}
 .hueco{color:transparent;-webkit-text-stroke:clamp(1.5px,.32vw,4px) #fff}
 .lead{font-size:clamp(18px,1.9vw,26px);max-width:620px;margin-top:clamp(16px,2.2vw,28px)}
 
