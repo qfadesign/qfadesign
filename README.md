@@ -26,12 +26,12 @@ scripts/                    Herramientas para mantener la web (ver abajo)
 
 ## Calculadora de precios: PDF y referencias
 
-La calculadora (Herramientas) genera un **PDF del presupuesto** con el detalle de lo elegido y la justificación de cada valor. Se arma en el navegador, sin servidor.
+La calculadora (Herramientas) genera un **PDF del presupuesto en una sola hoja** con el detalle de lo elegido y la justificación de cada valor (sin listado de fuentes; las fuentes se ven en la web). Si se eligen muchísimos servicios (más de 6 o 7), pasa a una segunda hoja para no achicar demasiado la letra. La calculadora también tiene un botón "Borrar selección". Se arma en el navegador, sin servidor.
 
 ```
 js/calculadora.js           Precios base, tipos de cliente, recargo urgente (acá se cambian los precios)
 js/calculadora-refs.js      Fuentes y rangos de mercado con los que se justifica cada valor
-js/calculadora-pdf.js       Diseño del PDF (portada, detalle, fundamentos, fuentes, condiciones)
+js/calculadora-pdf.js       Diseño del PDF (una sola hoja: portada, detalle con fundamentos, total, condiciones y contacto)
 js/vendor/jspdf.umd.min.js  Librería jsPDF 4.2.1 (se carga solo al tocar "Descargar")
 img/pdf-logo-azul.png       Logo para el PDF (salió de img/Marca_qfadesign_azul.svg)
 ```
