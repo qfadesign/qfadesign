@@ -266,6 +266,30 @@ h2{font-weight:900;font-style:italic;line-height:1;font-family:var(--fh)}
 .cp-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;margin-top:clamp(20px,2.4vw,28px);padding-top:clamp(20px,2.4vw,28px);border-top:1px solid rgba(255,255,255,.28)}
 .cp-cta p{font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(20px,2.2vw,30px);line-height:1.05}
 
+/* PDF del presupuesto y fuentes (calculadora) */
+.cp-pdf{margin-top:18px;padding-top:16px;border-top:1px solid rgba(6,33,77,.16)}
+.cp-pdf label{display:block;font-size:13px;font-weight:700;font-style:italic;color:#4a5a75;margin-bottom:6px}
+.cp-pdf label span{font-weight:400}
+.cp-pdf input{box-sizing:border-box;width:100%;font:inherit;font-size:15px;padding:11px 14px;border-radius:14px;border:1.5px solid rgba(6,33,77,.28);background:#fff;color:var(--nav)}
+.cp-pdf input:focus-visible{outline:3px solid var(--azul);outline-offset:2px;border-color:var(--azul-f)}
+.cp-pdf .btn{width:100%;margin-top:10px;background:var(--azul-f);color:#fff;font-size:13px;padding:14px 18px;transition:opacity .2s,transform .2s}
+.cp-pdf .btn:hover:not(:disabled){transform:translateY(-2px)}
+.cp-pdf .btn:disabled{opacity:.4;cursor:not-allowed}
+.cp-pdf .btn:focus-visible{outline:3px solid var(--nav);outline-offset:3px}
+.cp-pdf-m{font-size:12.5px;line-height:1.4;color:#4a5a75;margin-top:8px;min-height:1.4em}
+.cp-fuentes{margin-top:clamp(18px,2vw,26px);border-radius:22px;border:1px solid rgba(255,255,255,.38);background:rgba(255,255,255,.08)}
+.cp-fuentes summary{cursor:pointer;list-style:none;padding:16px clamp(16px,2vw,24px);font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(17px,1.5vw,20px);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.cp-fuentes summary::-webkit-details-marker{display:none}
+.cp-fuentes summary::after{content:"+";font-size:26px;line-height:1;transition:rotate .3s}
+.cp-fuentes[open] summary::after{rotate:45deg}
+.cp-fuentes summary:focus-visible{outline:3px solid #fff;outline-offset:-5px;border-radius:22px}
+.cp-fuentes-in{padding:0 clamp(16px,2vw,24px) 20px;font-size:14px;line-height:1.5}
+.cp-fuentes-in p{max-width:70ch;margin-bottom:14px}
+.cp-fuentes-in ul{list-style:none;padding:0;display:grid;gap:12px}
+.cp-fuentes-in li a{font-weight:700;font-style:italic;text-decoration:underline;text-underline-offset:3px}
+.cp-fuentes-in li span{display:block;font-size:13px;opacity:.9;margin-top:2px}
+@media(prefers-reduced-motion:reduce){.cp-fuentes summary::after{transition:none}}
+
 @media(max-width:860px){
  .cp-lay{grid-template-columns:1fr}
  .cp-res{position:static;max-height:none;overflow:visible}

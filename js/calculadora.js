@@ -1,6 +1,7 @@
 /* qfadesign — calculadora de precios (herramientas). Sin dependencias.
    Los precios base están en pesos (baseArs); el dólar MEP se usa para mostrar el equivalente en USD.
-   El MEP se pide a dolarapi.com al abrir la página; si falla, se usa el valor de referencia de abajo. */
+   El MEP se pide a dolarapi.com al abrir la página; si falla, se usa el valor de referencia de abajo.
+   El PDF del presupuesto y sus referencias de mercado viven en js/calculadora-pdf.js y js/calculadora-refs.js. */
 (function () {
   "use strict";
   var raiz = document.getElementById("calculadora");
@@ -200,6 +201,8 @@
     });
 
     resumen();
+    var bp = $("cpPdf");
+    if (bp) bp.disabled = !Object.keys(estado.sel).length;
   }
 
   function montos(n) {
@@ -242,6 +245,61 @@
     $("cpBarUsd").textContent = usd(total / MEP.value);
   }
 
+  /* ---- PDF del presupuesto ---- */
+  function datosPdf() {
+    var cli = CLIENTES.filter(function (c) { return c.id === estado.cliente; })[0];
+    var subtotal = 0;
+    var lineas = filas.filter(function (f) { return estado.sel[f.item.id]; }).map(function (f) {
+      var q = cantidad(f.item), u = precio(f.item);
+      subtotal += u * q;
+      return { id: f.item.id, name: f.item.name, desc: f.item.desc, unit: f.item.unit, qty: q, baseArs: f.item.baseArs, unitArs: u, totalArs: u * q };
+    });
+    var recargo = estado.urgente ? subtotal * RECARGO_URGENTE : 0;
+    return {
+      nombre: ($("cpNombre").value || "").trim(),
+      cliente: { id: cli.id, label: cli.label, mult: cli.mult },
+      lineas: lineas, urgente: estado.urgente, recargo: RECARGO_URGENTE,
+      subtotal: subtotal, recargoArs: recargo, total: subtotal + recargo,
+      mep: { value: MEP.value, fecha: MEP.fecha, vivo: MEP.vivo }
+    };
+  }
+
+  function armarPdf() {
+    var btn = $("cpPdf"), msg = $("cpPdfMsg");
+    if (!btn) return;
+    var textoBtn = btn.textContent, textoMsg = msg.textContent;
+    btn.addEventListener("click", function () {
+      if (btn.disabled || !window.QFAPdf) { if (!window.QFAPdf) msg.textContent = "No se pudo preparar el PDF. Recargá la página e intentá de nuevo."; return; }
+      btn.disabled = true;
+      btn.setAttribute("aria-busy", "true");
+      btn.textContent = "Armando tu PDF…";
+      msg.textContent = "";
+      window.QFAPdf.descargar(datosPdf())
+        .then(function () { msg.textContent = "Listo: se descargó tu presupuesto."; })
+        .catch(function () { msg.textContent = "No pude armar el PDF. Probá de nuevo en un momento."; })
+        .then(function () {
+          btn.removeAttribute("aria-busy");
+          btn.textContent = textoBtn;
+          btn.disabled = !Object.keys(estado.sel).length;
+        });
+    });
+    $("cpNombre").addEventListener("input", function () { if (msg.textContent !== textoMsg) msg.textContent = textoMsg; });
+  }
+
+  /* ---- Fuentes (se leen de js/calculadora-refs.js) ---- */
+  function armarFuentes() {
+    var ul = $("cpFuentes"), R = window.QFA_REFS;
+    if (!ul || !R || !R.fuentes) return;
+    Object.keys(R.fuentes).forEach(function (id) {
+      var s = R.fuentes[id];
+      var li = el("li");
+      var a = el("a"); a.href = s.u; a.target = "_blank"; a.rel = "noopener"; a.textContent = s.t;
+      var sp = el("span"); sp.textContent = s.o + ". " + s.n;
+      li.appendChild(a); li.appendChild(sp);
+      ul.appendChild(li);
+    });
+  }
+
   /* ---- Dólar MEP ---- */
   function pintarMep() {
     $("cpMep").textContent = "$ " + MEP.value.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -274,6 +332,8 @@
 
   armarClientes();
   armarCategorias();
+  armarPdf();
+  armarFuentes();
   pintarMep();
   actualizar();
   cargarMep();
