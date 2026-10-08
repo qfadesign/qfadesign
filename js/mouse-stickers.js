@@ -50,7 +50,7 @@
     if(e.pointerType&&e.pointerType!=='mouse')return;
     const t=e.target;
     // no en la barra (ahí ya hay stickers) ni sobre campos de texto
-    if(t&&t.closest&&t.closest('nav,input,textarea,select,[contenteditable],dialog[open]')){acum=0;prev=null;return}
+    if(t&&t.closest&&t.closest('nav,input,textarea,select,[contenteditable],.md-on')){acum=0;prev=null;return}
     if(prev){acum+=Math.hypot(e.clientX-prev.x,e.clientY-prev.y)}
     prev={x:e.clientX,y:e.clientY};
     const ahora=performance.now();
