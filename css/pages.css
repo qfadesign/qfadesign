@@ -620,38 +620,35 @@ h2{font-weight:900;font-style:italic;line-height:1;font-family:var(--fh)}
 @media(max-width:640px){.hgs-sq{grid-template-columns:repeat(2,minmax(0,1fr))}.tl{padding:14px;gap:8px}.tl-t{font-size:clamp(17px,5vw,21px)}.tl-d{display:none}.tl-tag{font-size:9.5px;padding:3px 8px 3px 6px}.tl-tag::before{width:6px;height:6px}}
 @media(prefers-reduced-motion:reduce){.tl,.tl-ic,.tl-tag{transition:none!important}.tl:hover,.tl:focus-visible{transform:none}}
 
-/* HERRAMIENTAS: ventana flotante en el centro */
-html.md-open{overflow:hidden}
+/* HERRAMIENTAS: cada herramienta se despliega a pantalla completa (panel común, sin <dialog>)
+   Cerrada = oculta. Abierta = tapa toda la pantalla hasta que se cierra. */
 html:has(.f-herramientas){scrollbar-gutter:stable}
-.md{box-sizing:border-box;padding:0;margin:auto;border:1px solid rgba(255,255,255,.5);border-radius:28px;color:#fff;font:inherit;background:linear-gradient(165deg,rgba(14,110,235,.97),rgba(8,71,163,.98) 60%,rgba(6,48,120,.98));box-shadow:0 40px 90px rgba(0,10,40,.55),inset 0 1px 0 rgba(255,255,255,.35);width:min(94vw,880px);max-width:none;max-height:92vh;max-height:min(92dvh,920px);overflow:hidden}
-.md[open]{display:flex;flex-direction:column;animation:md-in .42s cubic-bezier(.2,.9,.25,1) both}
-.md::backdrop{background:rgba(2,14,48,.58);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);animation:md-bd .35s ease both}
-.md.saliendo{animation:md-out .22s ease both}
-.md.saliendo::backdrop{animation:md-bd-out .22s ease both}
-@keyframes md-in{from{opacity:0;transform:translateY(26px) scale(.9)}to{opacity:1;transform:none}}
-@keyframes md-out{to{opacity:0;transform:translateY(14px) scale(.95)}}
-@keyframes md-bd{from{opacity:0}}
-@keyframes md-bd-out{to{opacity:0}}
-#mc{width:min(96vw,1120px)}#mp{width:min(94vw,900px)}#mk{width:min(94vw,980px)}#mv{width:min(94vw,860px)}#mu{width:min(94vw,640px)}#ml{width:min(94vw,760px)}
-.md-hd{flex:none;display:flex;align-items:center;gap:14px;padding:clamp(14px,1.8vw,20px) clamp(16px,2.2vw,26px);border-bottom:1px solid rgba(255,255,255,.26)}
+html.md-open{overflow:hidden;scrollbar-gutter:auto}
+.md{--mw:1120px;box-sizing:border-box;position:fixed;top:0;right:0;bottom:0;left:0;z-index:1200;margin:0;padding:0;border:0;border-radius:0;color:#fff;font:inherit;display:none;flex-direction:column;overflow:hidden;background:#0b6fe6;background:radial-gradient(90vw 60vh at 12% -8%,rgba(90,170,255,.55),transparent 62%),linear-gradient(165deg,#0e6eeb,#0847a3 62%,#063078)}
+.md.md-on{display:flex}
+.md[hidden]{display:none!important}
+.md.md-anim{will-change:clip-path,opacity}
+#mc{--mw:1180px}#mp{--mw:980px}#mk{--mw:1040px}#mv{--mw:920px}#mu{--mw:720px}#ml{--mw:820px}
+.md-hd{flex:none;display:flex;align-items:center;gap:14px;padding:clamp(12px,1.6vw,18px) max(clamp(16px,2.4vw,28px),calc((100% - var(--mw))/2 + clamp(16px,2.4vw,28px)));border-bottom:1px solid rgba(255,255,255,.26);background:rgba(4,30,90,.28)}
 .md-ic{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1px solid var(--v-borde);background-image:var(--v-fondo);box-shadow:var(--v-luz)}
 .md-ic svg{width:54%;height:54%}
 .md-tx{flex:1;min-width:0}
 .md-tx h2{font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(21px,2.6vw,30px);line-height:1.05;margin:0}
 .md-tx p{font-size:clamp(13px,1.1vw,15px);line-height:1.35;margin:3px 0 0;opacity:.95}
-.md-x{all:unset;box-sizing:border-box;flex:none;cursor:pointer;position:relative;width:44px;height:44px;border-radius:50%;background:var(--crema);box-shadow:var(--plato);transition:transform .4s cubic-bezier(.34,1.56,.64,1),background .2s}
-.md-x::before,.md-x::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:3px;border-radius:2px;background:var(--azul-f);transform:translate(-50%,-50%) rotate(45deg)}
+.md-x{all:unset;box-sizing:border-box;flex:none;cursor:pointer;position:relative;width:48px;height:48px;border-radius:50%;background:var(--crema);box-shadow:var(--plato);transition:transform .4s cubic-bezier(.34,1.56,.64,1),background .2s}
+.md-x::before,.md-x::after{content:"";position:absolute;left:50%;top:50%;width:20px;height:3px;border-radius:2px;background:var(--azul-f);transform:translate(-50%,-50%) rotate(45deg)}
 .md-x::after{transform:translate(-50%,-50%) rotate(-45deg)}
 .md-x:hover{transform:rotate(90deg);background:#fff}
 .md-x:focus-visible{outline:3px solid #fff;outline-offset:3px}
-.md-b{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding-top:clamp(12px,1.6vw,18px)}
+.md-b{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-top:clamp(12px,1.6vw,18px);padding-bottom:max(20px,env(safe-area-inset-bottom,0px))}
+.md-b>*{width:100%;max-width:var(--mw);margin-left:auto;margin-right:auto;box-sizing:border-box}
 .md .cp-top,.md .pl-top,.md .ct-lay{border-top:0;padding-top:0}
 .md .cv,.md .un{border-top:0;padding-top:0}
 .md .cp-res,.md .ct-res{top:4px}
-.md .cp-res{max-height:calc(min(92vh,920px) - 120px);max-height:calc(min(92dvh,920px) - 120px)}
+.md .cp-res{max-height:calc(100vh - 150px);max-height:calc(100dvh - 150px)}
 .md .hl-subs{padding-top:0}
-@media(max-width:600px){.md{width:calc(100vw - 16px)!important;max-height:calc(100vh - 16px);max-height:calc(100dvh - 16px);border-radius:22px}.md-ic{display:none}.md-hd{gap:10px}}
-@media(prefers-reduced-motion:reduce){.md[open],.md::backdrop,.md.saliendo,.md.saliendo::backdrop{animation:none!important}.md-x{transition:none}}
+@media(max-width:600px){.md-ic{display:none}.md-hd{gap:10px}.md-x{width:44px;height:44px}.md .cp-res{max-height:none}}
+@media(prefers-reduced-motion:reduce){.md-x{transition:none}}
 
 .un-primero{margin-top:0}
 
@@ -682,12 +679,6 @@ html:has(.f-herramientas){scrollbar-gutter:stable}
 @media(max-width:380px){.hgs-sq{grid-template-columns:minmax(0,1fr)}}
 
 /* HERRAMIENTAS: compatibilidad con navegadores viejos */
-/* ventanas cerradas siempre ocultas (si el navegador no conoce <dialog>) */
-.md:not([open]){display:none}
-/* sin <dialog> modal: ventana fija al centro + fondo oscuro, hecha con JS */
-.md.md-fb[open]{position:fixed;top:50%;left:50%;margin:0;transform:translate(-50%,-50%);z-index:1001;animation:none}
-.md.md-fb.saliendo{animation:none;opacity:0;transition:opacity .2s}
-.md-fb-bd{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1000;background:rgba(2,14,48,.62)}
 /* sin grid animable: los grupos de enlaces se muestran/ocultan directo */
 @supports not (grid-template-rows:0fr){.hl-p{display:none}.hl.open>.hl-p{display:block}}
 /* sin aspect-ratio: las tarjetas no quedan aplastadas */
