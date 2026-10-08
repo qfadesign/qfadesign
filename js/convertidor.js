@@ -1,6 +1,8 @@
-/* qfadesign — Convertidor de formatos (Herramientas).
-   Pasa imágenes entre JPG, PNG y WebP. Todo ocurre en el navegador: las imágenes no se suben a ningún servidor.
-   Se dibuja cada imagen en un canvas y se la vuelve a exportar en el formato elegido.
+/* qfadesign — Convertidor y compresor de imágenes (Herramientas).
+   Convierte entre JPG, PNG y WebP, o comprime manteniendo el formato. Todo ocurre en el navegador:
+   las imágenes no se suben a ningún servidor.
+   Cada imagen se dibuja en un canvas y se vuelve a exportar. Eso también borra los metadatos (ubicación, cámara).
+   En «Mantener formato», si el resultado no pesa menos que el original, se conserva el original (ya estaba optimizado).
    Para bajar varias a la vez se arma un .zip a mano (sin compresión, que en imágenes ya comprimidas no ahorra nada). */
 (function () {
   "use strict";
@@ -10,11 +12,13 @@
   if (!drop || !file) return;
 
   var MAX_ARCHIVOS = 12, MAX_BYTES = 30 * 1024 * 1024, MAX_PIXELES = 120e6;
-  var ctl = $("cvCtl"), lista = $("cvLista"), msg = $("cvMsg"), estado = $("cvEstado"), acc = $("cvAcc"), nota = $("cvNota");
-  var cal = $("cvCal"), calV = $("cvCalV"), calG = $("cvQg"), ancho = $("cvAn"), bg = $("cvBg"), bgG = $("cvBgg");
-  var fmts = ctl.querySelectorAll(".cv-fmts .chip");
+  var ctl = $("cvCtl"), lista = $("cvLista"), msg = $("cvMsg"), estado = $("cvEstado"), acc = $("cvAcc"), nota = $("cvNota"), resumen = $("cvRes");
+  var ancho = $("cvAn"), bg = $("cvBg"), bgG = $("cvBgg"), calG = $("cvQg");
+  var chipsF = $("cvFmts").querySelectorAll(".chip"), chipsN = $("cvNiv").querySelectorAll(".chip");
   var EXT = { jpeg: "jpg", png: "png", webp: "webp" }, MIME = { jpeg: "image/jpeg", png: "image/png", webp: "image/webp" };
-  var items = [], formato = "webp", corrida = 0, tReco = null;
+  var NOM = { jpeg: "JPG", png: "PNG", webp: "WebP" };
+  var NIVELES = { alta: 0.9, media: 0.8, baja: 0.6 };      /* calidad de JPG y WebP; PNG no pierde nunca */
+  var items = [], formato = "igual", nivel = "alta", corrida = 0, tReco = null;
 
   function avisar(t) { estado.textContent = ""; setTimeout(function () { estado.textContent = t; }, 30); }
   function error(t) { msg.hidden = !t; msg.textContent = t || ""; }
@@ -25,6 +29,15 @@
     return (b / 1048576).toFixed(1).replace(".", ",") + " MB";
   }
   function base(n) { return n.replace(/\.[^.]+$/, "") || "imagen"; }
+
+  /* formato de salida de una imagen: el elegido, o el suyo si se mantiene (lo que el navegador no exporta pasa a WebP) */
+  function tipoDe(f) { return f.type === "image/jpeg" ? "jpeg" : f.type === "image/png" ? "png" : "webp"; }
+  function fmtDe(it) { return formato === "igual" ? tipoDe(it.file) : formato; }
+  function nombreSalida(it) {
+    var r = it.r;
+    if (r && r.igual) return it.nombre;
+    return base(it.nombre) + (formato === "igual" ? "-comprimida" : "") + "." + EXT[fmtDe(it)];
+  }
 
   /* ---- Carga ---- */
   function cargar(f) {
@@ -41,23 +54,24 @@
     });
   }
 
-  /* ---- Conversión ---- */
+  /* ---- Conversión / compresión ---- */
   function convertir(it) {
     return new Promise(function (ok) {
-      var maxW = parseInt(ancho.value, 10), w = it.w, h = it.h;
-      if (maxW > 0 && w > maxW) { h = Math.max(1, Math.round(h * maxW / w)); w = maxW; }
+      var fm = fmtDe(it), maxW = parseInt(ancho.value, 10), w = it.w, h = it.h, achico = false;
+      if (maxW > 0 && w > maxW) { h = Math.max(1, Math.round(h * maxW / w)); w = maxW; achico = true; }
       if (w * h > MAX_PIXELES) return ok({ error: "La imagen es demasiado grande para convertirla acá." });
       var cv = document.createElement("canvas"); cv.width = w; cv.height = h;
       var cx = cv.getContext("2d");
-      if (formato === "jpeg") { cx.fillStyle = bg.value; cx.fillRect(0, 0, w, h); }
+      if (fm === "jpeg") { cx.fillStyle = bg.value; cx.fillRect(0, 0, w, h); }
       cx.imageSmoothingQuality = "high";
       cx.drawImage(it.src, 0, 0, w, h);
-      var q = formato === "png" ? undefined : (+cal.value) / 100;
       cv.toBlob(function (blob) {
         if (!blob) return ok({ error: "No se pudo convertir." });
-        if (blob.type !== MIME[formato]) return ok({ error: "Tu navegador no puede exportar a " + (formato === "webp" ? "WebP" : formato.toUpperCase()) + ". Probá con otro formato." });
+        if (blob.type !== MIME[fm]) return ok({ error: "Tu navegador no puede exportar a " + NOM[fm] + ". Probá con otro formato." });
+        /* comprimiendo sin cambiar de formato ni de tamaño: si no baja el peso, se queda el original */
+        if (formato === "igual" && !achico && blob.size >= it.bytes) return ok({ blob: it.file, w: it.w, h: it.h, igual: true });
         ok({ blob: blob, w: w, h: h });
-      }, MIME[formato], q);
+      }, MIME[fm], fm === "png" ? undefined : NIVELES[nivel]);
     });
   }
 
@@ -77,7 +91,7 @@
     }, Promise.resolve()).then(function () {
       if (mia !== corrida) return;
       var bien = items.filter(function (i) { return i.r && i.r.blob; }).length;
-      avisar(bien + (bien === 1 ? " imagen convertida." : " imágenes convertidas."));
+      avisar(bien + (bien === 1 ? " imagen lista. " : " imágenes listas. ") + resumen.textContent);
     });
   }
 
@@ -85,13 +99,19 @@
   function pintar() {
     lista.innerHTML = items.map(function (it, i) {
       var r = it.r;
-      if (!r) return '<li class="cv-it"><span class="cv-th" aria-hidden="true"></span><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">Convirtiendo…</p></li>';
+      if (!r) return '<li class="cv-it"><span class="cv-th" aria-hidden="true"></span><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">Procesando…</p></li>';
       if (r.error) return '<li class="cv-it err"><span class="cv-th" aria-hidden="true"></span><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">' + esc(r.error) + '</p><span class="cv-b"><button class="cv-x" type="button" data-q="' + i + '" aria-label="Quitar ' + esc(it.nombre) + '">✕</button></span></li>';
-      var dif = Math.round((1 - r.blob.size / it.bytes) * 100), menos = dif >= 0;
-      var nuevo = base(it.nombre) + "." + EXT[formato];
+      var nuevo = nombreSalida(it), meta;
+      if (r.igual) {
+        meta = pesoTxt(it.bytes) + ' · <span class="igual">Ya estaba optimizada (se deja la original)</span> · ' + r.w + "×" + r.h;
+      } else {
+        var dif = Math.round((1 - r.blob.size / it.bytes) * 100), menos = dif >= 0;
+        meta = pesoTxt(it.bytes) + " → " + pesoTxt(r.blob.size) + ' <b class="' + (menos ? "" : "mas") + '">(' + (menos ? "−" : "+") + Math.abs(dif) + "%)</b> · " + r.w + "×" + r.h;
+        if (formato === "igual" && tipoDe(it.file) === "webp" && it.file.type !== "image/webp") meta += " · pasó a WebP";
+      }
       return '<li class="cv-it"><img class="cv-th" src="' + it.url + '" alt="">' +
         '<p class="cv-n">' + esc(nuevo) + "</p>" +
-        '<p class="cv-m">' + pesoTxt(it.bytes) + " → " + pesoTxt(r.blob.size) + ' <b class="' + (menos ? "" : "mas") + '">(' + (menos ? "−" : "+") + Math.abs(dif) + "%)</b> · " + r.w + "×" + r.h + "</p>" +
+        '<p class="cv-m">' + meta + "</p>" +
         '<span class="cv-b"><a class="cv-d" href="' + it.url + '" download="' + esc(nuevo) + '" aria-label="Descargar ' + esc(nuevo) + '">Descargar</a>' +
         '<button class="cv-x" type="button" data-q="' + i + '" aria-label="Quitar ' + esc(it.nombre) + '">✕</button></span></li>';
     }).join("");
@@ -101,6 +121,11 @@
     $("cvZip").hidden = items.length < 2;
     calG.hidden = formato === "png";
     bgG.hidden = formato !== "jpeg";
+    /* ahorro total */
+    var antes = 0, despues = 0;
+    items.forEach(function (it) { if (it.r && it.r.blob) { antes += it.bytes; despues += it.r.blob.size; } });
+    resumen.textContent = antes && despues < antes ? "Ahorraste " + pesoTxt(antes - despues) + " (−" + Math.round((1 - despues / antes) * 100) + "%) en total." : "";
+    resumen.hidden = !resumen.textContent;
   }
 
   /* ---- Alta y baja de archivos ---- */
@@ -113,11 +138,11 @@
       return true;
     });
     var libres = MAX_ARCHIVOS - items.length;
-    if (validos.length > libres) { malos.push("Se pueden convertir hasta " + MAX_ARCHIVOS + " imágenes a la vez."); validos = validos.slice(0, Math.max(0, libres)); }
+    if (validos.length > libres) { malos.push("Se pueden procesar hasta " + MAX_ARCHIVOS + " imágenes a la vez."); validos = validos.slice(0, Math.max(0, libres)); }
     if (malos.length) error(malos.join(" "));
     if (!validos.length) return;
     Promise.all(validos.map(function (f) {
-      return cargar(f).then(function (d) { return { src: d.src, w: d.w, h: d.h, nombre: f.name, bytes: f.size }; }, function () { malos.push("No pude leer " + f.name + "."); return null; });
+      return cargar(f).then(function (d) { return { file: f, src: d.src, w: d.w, h: d.h, nombre: f.name, bytes: f.size }; }, function () { malos.push("No pude leer " + f.name + "."); return null; });
     })).then(function (nuevos) {
       nuevos.forEach(function (n) { if (n) items.push(n); });
       if (malos.length) error(malos.join(" "));
@@ -150,14 +175,16 @@
 
   /* ---- Opciones ---- */
   function nuevoReco() { clearTimeout(tReco); tReco = setTimeout(function () { if (items.length) reconvertir(); }, 250); }
-  Array.prototype.forEach.call(fmts, function (b) {
-    b.addEventListener("click", function () {
-      formato = b.getAttribute("data-f");
-      Array.prototype.forEach.call(fmts, function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
-      pintar(); if (items.length) reconvertir();
-    });
+  function elegir(chips, b, attr) {
+    Array.prototype.forEach.call(chips, function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+    return b.getAttribute(attr);
+  }
+  Array.prototype.forEach.call(chipsF, function (b) {
+    b.addEventListener("click", function () { formato = elegir(chipsF, b, "data-f"); pintar(); if (items.length) reconvertir(); });
   });
-  cal.addEventListener("input", function () { calV.textContent = cal.value; nuevoReco(); });
+  Array.prototype.forEach.call(chipsN, function (b) {
+    b.addEventListener("click", function () { nivel = elegir(chipsN, b, "data-n"); if (items.length) reconvertir(); });
+  });
   ancho.addEventListener("input", function () { ancho.value = ancho.value.replace(/\D/g, ""); nuevoReco(); });
   bg.addEventListener("input", nuevoReco);
 
@@ -197,14 +224,14 @@
     if (!bien.length) return;
     Promise.all(bien.map(function (it) {
       return it.r.blob.arrayBuffer().then(function (buf) {
-        var n = base(it.nombre), nom = n + "." + EXT[formato], k = 1;
-        while (usados[nom]) nom = n + "-" + (++k) + "." + EXT[formato];
+        var nom = nombreSalida(it), n = nom.replace(/\.[^.]+$/, ""), e = nom.slice(n.length), k = 1;
+        while (usados[nom]) nom = n + "-" + (++k) + e;
         usados[nom] = 1;
         return { nombre: nom, datos: new Uint8Array(buf) };
       });
     })).then(function (arch) {
       var url = URL.createObjectURL(armarZip(arch)), a = document.createElement("a");
-      a.href = url; a.download = "qfadesign-imagenes-" + EXT[formato] + ".zip";
+      a.href = url; a.download = "qfadesign-imagenes.zip";
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
     });
