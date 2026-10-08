@@ -134,6 +134,14 @@ body .btn.claro::after,body .btn.negro::after{background:rgba(249,251,242,.92)}
 body .btn.btn.btn:hover,body .btn.btn.btn:focus-visible{color:var(--crema)}
 body .btn.claro.btn.btn:hover,body .btn.claro.btn.btn:focus-visible,body .btn.negro.btn.btn:hover,body .btn.negro.btn.btn:focus-visible{color:var(--azul-f)}
 
+/* botones del hero: píldoras en fila, con flecha que se desliza */
+.intro .acciones{flex-direction:row;flex-wrap:wrap;gap:10px;margin-top:6px}
+.intro .acciones .btn{flex:1 1 auto;display:inline-flex;align-items:center;justify-content:center;gap:.55em;white-space:nowrap;border-radius:99px;padding:15px clamp(20px,2.2vw,30px) 16px;font-size:clamp(15px,1.25vw,18px);letter-spacing:.005em}
+.intro .acciones .btn:not(.claro){background:linear-gradient(180deg,#fff,rgba(249,251,242,.88));border:1px solid rgba(255,255,255,.95);box-shadow:inset 0 1px 0 #fff,0 12px 28px rgba(0,20,70,.38)}
+.intro .acciones .btn.claro{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 22px rgba(0,0,0,.2)}
+.btn .fl{display:inline-block;font-style:normal;transition:translate .3s cubic-bezier(.2,.8,.2,1)}
+.btn:hover .fl,.btn:focus-visible .fl{translate:5px 0}
+
 @media(min-width:761px) and (max-width:1000px){
  .intro{width:min(580px,72vw)}
  .intro .bajada{font-size:clamp(16px,2.2vw,20px)}
@@ -180,7 +188,7 @@ body .btn.claro.btn.btn:hover,body .btn.claro.btn.btn:focus-visible,body .btn.ne
  <div class="intro">
   <p class="titular">Soy Facundo, diseñador en Comunicación Visual.</p>
   <p class="bajada">Me gusta transformar ideas en imágenes, marcas y piezas que comuniquen de verdad.</p>
-  <div class="acciones"><a class="btn" href="portfolio">Ver trabajos</a><a class="btn claro" href="acerca">Un poco sobre mí</a><a class="btn herr" href="herramientas">Herramientas</a></div>
+  <div class="acciones"><a class="btn" href="portfolio">Ver trabajos<span class="fl" aria-hidden="true">→</span></a><a class="btn claro" href="acerca">Un poco sobre mí<span class="fl" aria-hidden="true">→</span></a></div>
  </div>
 </header>
 
