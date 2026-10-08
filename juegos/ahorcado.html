@@ -196,7 +196,7 @@
       content:"";
       position:absolute;
       left:18px;
-      top:0;
+      bottom:121px;
       width:82px;
       height:4px;
       background:#ffffff;
@@ -206,9 +206,9 @@
     .rope{
       position:absolute;
       left:100px;
-      top:0;
+      top:14px;
       width:4px;
-      height:18px;
+      height:14px;
       background:#ffffff;
       border-radius:4px;
     }
@@ -225,7 +225,7 @@
 
     .head{
       left:88px;
-      top:15px;
+      top:25px;
       width:29px;
       height:29px;
       border:4px solid var(--blue);
@@ -235,7 +235,7 @@
 
     .body{
       left:100px;
-      top:43px;
+      top:53px;
       width:5px;
       height:47px;
       border-radius:5px;
@@ -243,7 +243,7 @@
 
     .arm-left{
       left:74px;
-      top:51px;
+      top:61px;
       width:31px;
       height:5px;
       transform:rotate(-28deg);
@@ -253,7 +253,7 @@
 
     .arm-right{
       left:101px;
-      top:51px;
+      top:61px;
       width:31px;
       height:5px;
       transform:rotate(28deg);
@@ -263,7 +263,7 @@
 
     .leg-left{
       left:98px;
-      top:85px;
+      top:95px;
       width:5px;
       height:34px;
       transform:rotate(35deg);
@@ -273,7 +273,7 @@
 
     .leg-right{
       left:102px;
-      top:85px;
+      top:95px;
       width:5px;
       height:34px;
       transform:rotate(-35deg);
@@ -341,26 +341,26 @@
       display:flex;
       justify-content:center;
       flex-wrap:wrap;
-      gap:8px;
+      gap:12px 24px;
       margin:0 auto 17px;
       max-width:580px;
     }
 
+    .word-group{
+      display:flex;
+      gap:5px;
+    }
+
     .letter{
-      width:38px;
-      height:46px;
+      width:var(--lw,38px);
+      height:var(--lh,46px);
       border-bottom:3px solid #ffffff;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:20px;
+      font-size:var(--lf,20px);
       font-weight:800;
       text-transform:uppercase;
-    }
-
-    .letter.space{
-      width:18px;
-      border-bottom:0;
     }
 
     .letter.revealed{
@@ -405,7 +405,7 @@
     }
 
     .key{
-      flex:1;
+      flex:0 0 calc((100% - 45px) / 10);
       min-width:0;
       height:47px;
       border-radius:8px;
@@ -440,7 +440,7 @@
     .start-screen[hidden]{display:none}
     .start-label{color:var(--blue);font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;}
     .start-title{color:var(--blue);margin:9px 0 8px;font-size:30px;line-height:1.05;font-weight:800;letter-spacing:-.05em;}
-    .start-copy{max-width:460px;margin:0 auto 22px;color:var(--muted);font-size:12px;line-height:1.6;}
+    .start-copy{max-width:460px;text-wrap:balance;margin:0 auto 22px;color:var(--muted);font-size:12px;line-height:1.6;}
     .how-to{max-width:460px;margin:0 auto 24px;padding:16px;background:#111111;border:1px solid #ffffff;border-radius:14px;text-align:left;}
     .how-to strong{display:block;margin-bottom:6px;font-size:12px;}
     .how-to p{margin:0;color:var(--muted);font-size:11px;line-height:1.55;}
@@ -507,7 +507,39 @@
       background:var(--blue-dark);
     }
 
+    /* pista: etiqueta con la categoría + texto bien legible */
+    .game-card .hint{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:9px;
+      min-height:78px;
+      margin-bottom:14px;
+      font-size:15px!important;
+      line-height:1.4;
+      font-weight:500;
+      color:#fff!important;
+    }
+    .hint-tag{
+      font-family:var(--fp);
+      font-size:11px;
+      font-weight:400;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      padding:4px 12px;
+      border:1px solid rgba(255,255,255,.4);
+      border-radius:99px;
+      color:rgba(255,255,255,.74);
+    }
+    .hint-text{max-width:470px;text-wrap:balance}
+    /* letras que no se adivinaron y se muestran al perder */
+    .letter.revealed.missed{
+      color:rgba(255,255,255,.5)!important;
+      border-bottom-color:rgba(255,255,255,.35)!important;
+    }
+
     @media(max-width:520px){
+      .game-card .hint{min-height:104px;font-size:14.5px!important}
       .app{
         padding:22px 12px 28px;
       }
@@ -525,14 +557,8 @@
         transform:scale(.88);
       }
 
-      .letter{
-        width:31px;
-        height:42px;
-        font-size:18px;
-      }
-
       .word{
-        gap:6px;
+        gap:10px 18px;
       }
 
       .key{
@@ -558,12 +584,12 @@
     <section class="game-card">
       <div class="start-screen" id="startScreen">
         <div class="start-label">¿LISTO PARA JUGAR?</div>
-        <div class="start-title">El ahorcado del diseño</div>
-        <p class="start-copy">Adiviná conceptos, movimientos y escuelas de diseño letra por letra.</p>
-        <div class="how-to"><strong>¿Cómo se juega?</strong><p>Descubrí la palabra antes de quedarte sin vidas. Cada letra incorrecta agrega una parte al ahorcado.</p></div>
+        <div class="start-title">Cinco palabras, seis vidas</div>
+        <p class="start-copy">Adiviná conceptos, tipografías, herramientas, movimientos y diseñadores letra por letra.</p>
+        <div class="how-to"><strong>¿Cómo se juega?</strong><p>Descubrí la palabra antes de quedarte sin vidas. Cada letra incorrecta agrega una parte al ahorcado, y la pista te dice de qué se trata.</p></div>
         <div class="difficulty-title">Elegí la dificultad</div>
         <div class="difficulty-grid">
-          <button class="difficulty-btn" type="button" id="timedMode"><strong>⏱ CON TIEMPO</strong><span>Tenés 25 segundos por ronda para descubrir la palabra.</span></button>
+          <button class="difficulty-btn" type="button" id="timedMode"><strong>⏱ CON TIEMPO</strong><span>Tenés 25 segundos por ronda (un poco más si la palabra es larga).</span></button>
           <button class="difficulty-btn" type="button" id="untimedMode"><strong>∞ SIN TIEMPO</strong><span>Jugá a tu ritmo. No hay límite de tiempo.</span></button>
         </div>
       </div>
@@ -628,50 +654,169 @@
   <script>
     /*
       Conceptos de diseño gráfico.
-      Se usan palabras sin tildes para que el teclado sea sencillo.
+      Las palabras van sin tildes (la Ñ sí se conserva) para que el teclado sea sencillo.
+      Las que tienen más de una palabra llevan espacio: "art deco", "paul rand".
+      cat = categoría que se muestra junto a la pista.
     */
     const CONCEPTS = [
-      {word:"tipografia", hint:"Sistema y elección de letras en una pieza."},
-      {word:"contraste", hint:"Diferencia visual entre elementos."},
-      {word:"reticula", hint:"Estructura que organiza una composición."},
-      {word:"jerarquia", hint:"Orden de importancia visual de los elementos."},
-      {word:"paleta", hint:"Conjunto de colores usados en un diseño."},
-      {word:"textura", hint:"Cualidad visual o táctil de una superficie."},
-      {word:"logotipo", hint:"Representación gráfica basada principalmente en letras."},
-      {word:"vector", hint:"Gráfico definido mediante formas y trazados matemáticos."},
-      {word:"composicion", hint:"Organización de los elementos dentro de una pieza."},
-      {word:"proporcion", hint:"Relación de tamaño entre diferentes elementos."},
-      {word:"alineacion", hint:"Forma en que se ordenan y relacionan los elementos."},
-      {word:"simetria", hint:"Correspondencia equilibrada entre partes de una composición."},
-      {word:"grilla", hint:"Sistema de líneas que ayuda a estructurar una composición."},
-      {word:"espacio", hint:"Área vacía que ayuda a organizar los elementos."},
-      {word:"ritmo", hint:"Repetición y variación que genera movimiento visual."},
-      {word:"escala", hint:"Relación de tamaño entre elementos o respecto de un formato."},
-      {word:"forma", hint:"Elemento visual definido por contorno, superficie o volumen."},
-      {word:"linea", hint:"Elemento gráfico fundamental que construye formas y direcciones."},
-      {word:"modulo", hint:"Unidad que puede repetirse para construir una composición."},
-      {word:"patron", hint:"Repetición organizada de elementos visuales."},
-      {word:"croma", hint:"Característica relacionada con la intensidad o pureza de un color."},
-      {word:"icono", hint:"Signo visual que representa una idea, objeto o acción."},
-      {word:"signo", hint:"Elemento que comunica o representa un significado."},
-      {word:"marca", hint:"Identidad visual que distingue una organización o producto."},
-      {word:"identidad", hint:"Sistema visual que construye el reconocimiento de una marca."},
-      {word:"afiche", hint:"Pieza gráfica destinada principalmente a comunicar un mensaje."},
-      {word:"editorial", hint:"Área del diseño relacionada con publicaciones y contenidos."},
-
-      {word:"bauhaus", hint:"Escuela alemana fundada en 1919 que integró arte, diseño y arquitectura."},
-      {word:"ulm", hint:"Escuela alemana de diseño fundada en 1953, vinculada al diseño racional y sistemático."},
-      {word:"destijl", hint:"Movimiento neerlandés asociado a la abstracción geométrica."},
-      {word:"vkhutemas", hint:"Escuela soviética de arte y diseño activa en Moscú durante la década de 1920."},
-      {word:"memphis", hint:"Grupo italiano de diseño surgido en 1981, conocido por formas y colores expresivos."},
-      {word:"cranbrook", hint:"Academia estadounidense vinculada a importantes desarrollos del diseño moderno."},
-      {word:"artscrafts", hint:"Movimiento británico que defendió la artesanía frente a la industrialización."},
-      {word:"artnouveau", hint:"Movimiento de fines del siglo XIX caracterizado por líneas orgánicas y ornamentación."},
-      {word:"artdeco", hint:"Estilo de las décadas de 1920 y 1930 asociado a geometría y ornamentación."},
-      {word:"constructivismo", hint:"Vanguardia rusa con gran influencia en la gráfica y la comunicación visual."},
-      {word:"futurismo", hint:"Vanguardia italiana que influyó en la tipografía y composición gráfica."},
-      {word:"dadaismo", hint:"Movimiento de vanguardia que cuestionó las convenciones artísticas y visuales."},
-      {word:"internacional", hint:"Estilo gráfico asociado a claridad, retículas y tipografía sans serif."}
+      {word:"tipografia", cat:"Tipografía", hint:"Disciplina de elegir, combinar y ordenar letras para comunicar."},
+      {word:"contraste", cat:"Concepto", hint:"Diferencia marcada entre dos elementos, como claro y oscuro."},
+      {word:"reticula", cat:"Concepto", hint:"Estructura de columnas y márgenes que ordena una página."},
+      {word:"grilla", cat:"Concepto", hint:"Cuadrícula de líneas guía que ayuda a ubicar los elementos."},
+      {word:"jerarquia", cat:"Concepto", hint:"Orden de importancia visual de los elementos."},
+      {word:"paleta", cat:"Color", hint:"Conjunto de colores elegidos para un diseño."},
+      {word:"textura", cat:"Concepto", hint:"Cualidad visual o táctil de una superficie."},
+      {word:"logotipo", cat:"Marca", hint:"Representación de una marca hecha solo con letras."},
+      {word:"vector", cat:"Digital", hint:"Gráfico hecho con trazados matemáticos que no pierde calidad al escalar."},
+      {word:"composicion", cat:"Concepto", hint:"Organización de los elementos dentro de una pieza."},
+      {word:"proporcion", cat:"Concepto", hint:"Relación de tamaño entre las partes de una pieza."},
+      {word:"alineacion", cat:"Concepto", hint:"Principio que ubica los elementos sobre un eje o borde en común."},
+      {word:"simetria", cat:"Concepto", hint:"Correspondencia equilibrada entre las dos mitades de una composición."},
+      {word:"espacio", cat:"Concepto", hint:"Vacío entre elementos que da aire y orden a una pieza."},
+      {word:"ritmo", cat:"Concepto", hint:"Repetición y variación que genera movimiento visual."},
+      {word:"escala", cat:"Concepto", hint:"Relación de tamaño entre elementos o respecto de un formato."},
+      {word:"forma", cat:"Concepto", hint:"Elemento visual definido por contorno, superficie o volumen."},
+      {word:"linea", cat:"Concepto", hint:"Elemento básico que construye formas, límites y direcciones."},
+      {word:"modulo", cat:"Concepto", hint:"Unidad que se repite para construir una composición."},
+      {word:"patron", cat:"Concepto", hint:"Repetición organizada de elementos visuales."},
+      {word:"croma", cat:"Color", hint:"Pureza o intensidad de un color."},
+      {word:"icono", cat:"Concepto", hint:"Signo visual que representa una idea, objeto o acción."},
+      {word:"signo", cat:"Concepto", hint:"Elemento que representa o comunica un significado."},
+      {word:"marca", cat:"Marca", hint:"Nombre o signo que distingue a un producto o a una empresa."},
+      {word:"identidad", cat:"Marca", hint:"Sistema visual que hace reconocible a una empresa o proyecto."},
+      {word:"afiche", cat:"Impresión", hint:"Pieza gráfica pensada para comunicar un mensaje en la vía pública."},
+      {word:"editorial", cat:"Concepto", hint:"Área del diseño dedicada a libros, revistas y publicaciones."},
+      {word:"bauhaus", cat:"Escuela", hint:"Escuela alemana fundada en 1919 que unió arte, diseño y arquitectura."},
+      {word:"ulm", cat:"Escuela", hint:"Escuela alemana de diseño fundada en 1953, ligada al diseño racional y sistemático."},
+      {word:"de stijl", cat:"Movimiento", hint:"Movimiento neerlandés de 1917 basado en la abstracción geométrica y los colores primarios."},
+      {word:"vkhutemas", cat:"Escuela", hint:"Escuela soviética de arte y diseño que funcionó en Moscú entre 1920 y 1930."},
+      {word:"memphis", cat:"Movimiento", hint:"Grupo italiano de diseño nacido en 1981, famoso por sus formas y colores estridentes."},
+      {word:"cranbrook", cat:"Escuela", hint:"Academia de arte y diseño de Míchigan, clave en la gráfica experimental."},
+      {word:"arts and crafts", cat:"Movimiento", hint:"Movimiento británico que defendió el trabajo artesanal frente a la industrialización."},
+      {word:"art nouveau", cat:"Movimiento", hint:"Estilo de fines del siglo XIX con líneas orgánicas y ornamentación inspirada en plantas."},
+      {word:"art deco", cat:"Movimiento", hint:"Estilo de los años 20 y 30 con geometría, simetría y lujo ornamental."},
+      {word:"constructivismo", cat:"Movimiento", hint:"Vanguardia rusa que influyó muchísimo en la gráfica y los carteles."},
+      {word:"futurismo", cat:"Movimiento", hint:"Vanguardia italiana que exaltó la velocidad y rompió con la tipografía tradicional."},
+      {word:"dadaismo", cat:"Movimiento", hint:"Vanguardia nacida en Zúrich en 1916 que cuestionó todas las convenciones artísticas."},
+      {word:"estilo suizo", cat:"Movimiento", hint:"Corriente de mediados del siglo XX con retículas, claridad y letra de palo seco; también se la llama Tipográfico Internacional."},
+      {word:"pop art", cat:"Movimiento", hint:"Movimiento de los años 50 y 60 que llevó la publicidad y el consumo al arte."},
+      {word:"minimalismo", cat:"Movimiento", hint:"Corriente que reduce una pieza a lo esencial."},
+      {word:"posmodernismo", cat:"Movimiento", hint:"Corriente que desde los años 70 rompió con la rigidez del diseño moderno."},
+      {word:"grunge", cat:"Movimiento", hint:"Estética de los 90 con texturas sucias y tipografías desordenadas."},
+      {word:"skeuomorfismo", cat:"Movimiento", hint:"Diseño digital que imita texturas y objetos del mundo físico."},
+      {word:"flat design", cat:"Movimiento", hint:"Estilo digital de formas planas, sin sombras ni texturas."},
+      {word:"equilibrio", cat:"Concepto", hint:"Sensación de estabilidad entre los pesos visuales de una composición."},
+      {word:"unidad", cat:"Concepto", hint:"Cualidad por la que todos los elementos parecen pertenecer al mismo conjunto."},
+      {word:"repeticion", cat:"Concepto", hint:"Uso reiterado de un mismo elemento para dar coherencia."},
+      {word:"proximidad", cat:"Concepto", hint:"Principio por el cual lo que está cerca se percibe como relacionado."},
+      {word:"gestalt", cat:"Concepto", hint:"Escuela de psicología alemana que explica cómo percibimos las formas como un todo."},
+      {word:"figura fondo", cat:"Concepto", hint:"Relación entre lo que destaca en una imagen y lo que queda detrás."},
+      {word:"enfasis", cat:"Concepto", hint:"Recurso para atraer primero la mirada hacia un punto."},
+      {word:"punto focal", cat:"Concepto", hint:"Zona de una pieza donde la vista se detiene primero."},
+      {word:"espacio negativo", cat:"Concepto", hint:"Zona vacía alrededor o entre los elementos que también forma figuras."},
+      {word:"margen", cat:"Concepto", hint:"Espacio libre entre el contenido y el borde de una pieza."},
+      {word:"medianil", cat:"Concepto", hint:"Espacio que separa dos columnas de texto."},
+      {word:"concepto", cat:"Proceso", hint:"Idea central que guía y da sentido a una pieza."},
+      {word:"kerning", cat:"Tipografía", hint:"Ajuste del espacio entre dos letras específicas."},
+      {word:"tracking", cat:"Tipografía", hint:"Ajuste parejo del espacio entre todas las letras de un texto."},
+      {word:"interlineado", cat:"Tipografía", hint:"Distancia vertical entre una línea de texto y la siguiente."},
+      {word:"serifa", cat:"Tipografía", hint:"Pequeño remate en los extremos de los trazos de una letra."},
+      {word:"palo seco", cat:"Tipografía", hint:"Tipografía sin remates en los extremos de sus trazos."},
+      {word:"ligadura", cat:"Tipografía", hint:"Unión de dos o más letras en un solo signo."},
+      {word:"glifo", cat:"Tipografía", hint:"Cada una de las formas gráficas concretas de una tipografía."},
+      {word:"ascendente", cat:"Tipografía", hint:"Parte de una minúscula que sube por encima del cuerpo, como en la b o la d."},
+      {word:"descendente", cat:"Tipografía", hint:"Parte de una letra que baja de la línea de base, como en la p o la g."},
+      {word:"versalitas", cat:"Tipografía", hint:"Mayúsculas diseñadas con la altura de las minúsculas."},
+      {word:"cursiva", cat:"Tipografía", hint:"Variante inclinada de una tipografía, inspirada en la escritura a mano."},
+      {word:"familia tipografica", cat:"Tipografía", hint:"Conjunto de estilos de una misma letra, como light, regular y bold."},
+      {word:"monoespaciada", cat:"Tipografía", hint:"Tipografía en la que todas las letras ocupan el mismo ancho."},
+      {word:"caligrafia", cat:"Tipografía", hint:"Arte de escribir a mano con belleza y estilo."},
+      {word:"lettering", cat:"Tipografía", hint:"Arte de dibujar letras a medida para una pieza."},
+      {word:"helvetica", cat:"Tipografía", hint:"Tipografía de palo seco nacida en Suiza en 1957, presente en incontables logos y señales."},
+      {word:"futura", cat:"Tipografía", hint:"Tipografía geométrica diseñada por Paul Renner y lanzada en 1927."},
+      {word:"bodoni", cat:"Tipografía", hint:"Tipografía serif de alto contraste creada por un impresor italiano a fines del siglo XVIII."},
+      {word:"garamond", cat:"Tipografía", hint:"Familia serif de inspiración renacentista que lleva el nombre de un grabador francés del siglo XVI."},
+      {word:"comic sans", cat:"Tipografía", hint:"Tipografía informal creada en 1994 que muchos diseñadores adoran criticar."},
+      {word:"matiz", cat:"Color", hint:"Característica que distingue un color de otro, como el rojo del azul."},
+      {word:"saturacion", cat:"Color", hint:"Qué tan vivo o apagado se ve un color."},
+      {word:"brillo", cat:"Color", hint:"Cuánta luz tiene un color, de oscuro a claro."},
+      {word:"complementario", cat:"Color", hint:"Color ubicado en el lado opuesto del círculo cromático."},
+      {word:"analogos", cat:"Color", hint:"Colores vecinos en el círculo cromático."},
+      {word:"monocromatico", cat:"Color", hint:"Paleta construida con un único color en distintas luminosidades."},
+      {word:"degrade", cat:"Color", hint:"Transición gradual entre dos o más colores."},
+      {word:"circulo cromatico", cat:"Color", hint:"Representación circular de los colores y sus relaciones."},
+      {word:"cmyk", cat:"Color", hint:"Modo de color para impresión: cian, magenta, amarillo y negro."},
+      {word:"rgb", cat:"Color", hint:"Modo de color de las pantallas: rojo, verde y azul."},
+      {word:"pantone", cat:"Color", hint:"Sistema de referencia de colores muy usado en imprenta y diseño."},
+      {word:"isotipo", cat:"Marca", hint:"Parte de una marca formada solo por un símbolo, sin texto."},
+      {word:"imagotipo", cat:"Marca", hint:"Marca donde símbolo y texto conviven, pero pueden separarse."},
+      {word:"isologo", cat:"Marca", hint:"Marca donde símbolo y texto están fusionados en un solo bloque."},
+      {word:"monograma", cat:"Marca", hint:"Marca construida con las iniciales de un nombre."},
+      {word:"eslogan", cat:"Marca", hint:"Frase breve que resume la promesa de una marca."},
+      {word:"naming", cat:"Marca", hint:"Proceso de crear el nombre de una marca."},
+      {word:"branding", cat:"Marca", hint:"Proceso de construir la personalidad y el reconocimiento de una marca."},
+      {word:"rebranding", cat:"Marca", hint:"Renovación de la identidad visual de una empresa ya existente."},
+      {word:"manual de marca", cat:"Marca", hint:"Documento que fija las reglas de uso de una identidad visual."},
+      {word:"packaging", cat:"Marca", hint:"Diseño del envase y la presentación de un producto."},
+      {word:"pictograma", cat:"Concepto", hint:"Signo que representa un objeto o una idea con un dibujo esquemático."},
+      {word:"señaletica", cat:"Concepto", hint:"Sistema de señales que orienta a las personas dentro de un espacio."},
+      {word:"sangrado", cat:"Impresión", hint:"Margen extra que se imprime más allá del corte para evitar bordes blancos."},
+      {word:"troquel", cat:"Impresión", hint:"Molde de corte que da forma a una pieza impresa."},
+      {word:"offset", cat:"Impresión", hint:"Método de impresión industrial por planchas, ideal para grandes tiradas."},
+      {word:"serigrafia", cat:"Impresión", hint:"Técnica que pasa la tinta a través de una malla tensada."},
+      {word:"xilografia", cat:"Impresión", hint:"Grabado en relieve sobre madera usado para estampar."},
+      {word:"gramaje", cat:"Impresión", hint:"Peso del papel en gramos por metro cuadrado."},
+      {word:"pliego", cat:"Impresión", hint:"Hoja grande de papel que se imprime y luego se dobla."},
+      {word:"maquetacion", cat:"Impresión", hint:"Organización de textos e imágenes en las páginas de una publicación."},
+      {word:"portada", cat:"Impresión", hint:"Cara frontal de un libro o revista que presenta su contenido."},
+      {word:"infografia", cat:"Concepto", hint:"Pieza que explica datos o procesos combinando imágenes y texto."},
+      {word:"ilustracion", cat:"Concepto", hint:"Imagen creada para acompañar o explicar una idea o un texto."},
+      {word:"collage", cat:"Concepto", hint:"Técnica que combina recortes de distintos materiales en una sola imagen."},
+      {word:"pixel", cat:"Digital", hint:"Unidad mínima de color de una imagen digital."},
+      {word:"resolucion", cat:"Digital", hint:"Cantidad de detalle de una imagen, medida en píxeles por pulgada."},
+      {word:"mapa de bits", cat:"Digital", hint:"Imagen formada por una cuadrícula de píxeles."},
+      {word:"wireframe", cat:"Digital", hint:"Esquema simple que muestra la estructura de una pantalla sin diseño visual."},
+      {word:"mockup", cat:"Digital", hint:"Simulación realista de cómo se vería un diseño en un soporte."},
+      {word:"prototipo", cat:"Digital", hint:"Versión preliminar de un producto o interfaz para probar ideas."},
+      {word:"responsive", cat:"Digital", hint:"Diseño web que se adapta a distintos tamaños de pantalla."},
+      {word:"interfaz", cat:"Digital", hint:"Espacio donde una persona interactúa con un sistema digital."},
+      {word:"usabilidad", cat:"Digital", hint:"Facilidad con la que una persona logra usar un producto."},
+      {word:"accesibilidad", cat:"Digital", hint:"Diseñar para que todas las personas puedan usar una pieza o producto."},
+      {word:"favicon", cat:"Digital", hint:"Pequeño ícono que aparece en la pestaña del navegador."},
+      {word:"keyframe", cat:"Movimiento", hint:"Punto de una línea de tiempo donde se define un cambio de la animación."},
+      {word:"easing", cat:"Movimiento", hint:"Curva que suaviza la aceleración de un movimiento animado."},
+      {word:"storyboard", cat:"Movimiento", hint:"Secuencia de dibujos que planifica un video o animación plano a plano."},
+      {word:"motion graphics", cat:"Movimiento", hint:"Disciplina que anima elementos gráficos para video y pantallas."},
+      {word:"loop", cat:"Movimiento", hint:"Animación que termina y vuelve a empezar sin cortes."},
+      {word:"brief", cat:"Proceso", hint:"Documento con los objetivos y requisitos de un proyecto de diseño."},
+      {word:"boceto", cat:"Proceso", hint:"Dibujo rápido para explorar ideas antes de definir una pieza."},
+      {word:"moodboard", cat:"Proceso", hint:"Tablero de imágenes y referencias que define el clima visual de un proyecto."},
+      {word:"iteracion", cat:"Proceso", hint:"Repetir y mejorar una propuesta en ciclos sucesivos."},
+      {word:"photoshop", cat:"Herramienta", hint:"Programa de Adobe para editar imágenes y fotos."},
+      {word:"illustrator", cat:"Herramienta", hint:"Programa de Adobe para dibujo vectorial."},
+      {word:"indesign", cat:"Herramienta", hint:"Programa de Adobe para maquetar publicaciones."},
+      {word:"after effects", cat:"Herramienta", hint:"Programa de Adobe para animación y efectos visuales."},
+      {word:"figma", cat:"Herramienta", hint:"Herramienta colaborativa para diseñar interfaces en el navegador."},
+      {word:"pluma", cat:"Herramienta", hint:"Herramienta vectorial que dibuja curvas con puntos de anclaje."},
+      {word:"capa", cat:"Herramienta", hint:"Nivel transparente que apila contenido dentro de un archivo de diseño."},
+      {word:"mascara", cat:"Herramienta", hint:"Recurso que oculta o muestra partes de una capa."},
+      {word:"paul rand", cat:"Diseñador/a", hint:"Diseñador estadounidense que creó logos como el de IBM y el de ABC."},
+      {word:"massimo vignelli", cat:"Diseñador/a", hint:"Diseñador italiano autor del mapa del subte de Nueva York de 1972."},
+      {word:"saul bass", cat:"Diseñador/a", hint:"Diseñador estadounidense famoso por los títulos de películas de Hitchcock."},
+      {word:"milton glaser", cat:"Diseñador/a", hint:"Diseñador estadounidense autor del logo I ♥ NY."},
+      {word:"paula scher", cat:"Diseñador/a", hint:"Diseñadora estadounidense de Pentagram, autora del logo de Citi."},
+      {word:"jan tschichold", cat:"Diseñador/a", hint:"Tipógrafo alemán autor de La nueva tipografía, publicada en 1928."},
+      {word:"herbert bayer", cat:"Diseñador/a", hint:"Diseñador austriaco de la Bauhaus que ideó un alfabeto «universal» en minúsculas."},
+      {word:"david carson", cat:"Diseñador/a", hint:"Diseñador estadounidense que rompió todas las reglas en la revista Ray Gun."},
+      {word:"dieter rams", cat:"Diseñador/a", hint:"Diseñador industrial alemán de Braun, célebre por «menos, pero mejor»."},
+      {word:"otl aicher", cat:"Diseñador/a", hint:"Diseñador alemán que creó los pictogramas de los Juegos Olímpicos de Múnich 1972."},
+      {word:"adrian frutiger", cat:"Diseñador/a", hint:"Tipógrafo suizo creador de Univers y de la letra de la señalética del aeropuerto Charles de Gaulle."},
+      {word:"zuzana licko", cat:"Diseñador/a", hint:"Diseñadora tipográfica cofundadora de Emigre, pionera de las fuentes digitales."},
+      {word:"susan kare", cat:"Diseñador/a", hint:"Diseñadora de los íconos de la primera Macintosh, en 1984."},
+      {word:"gutenberg", cat:"Historia", hint:"Impresor alemán que desarrolló la imprenta de tipos móviles en Europa hacia 1450."},
+      {word:"diseño", cat:"Concepto", hint:"Disciplina que planifica y da forma visual a ideas, mensajes y objetos."},
+      {word:"diseñador", cat:"Diseñador/a", hint:"Persona que proyecta y da forma visual a ideas, mensajes y objetos."},
+      {word:"tamaño", cat:"Concepto", hint:"Medida de una pieza o de un elemento dentro de ella."}
     ];
 
     const MAX_LIVES = 6;
@@ -697,6 +842,10 @@
     let solved = 0;
     let roundStart = 0;
     const ROUND_TIME = 25;
+    let roundTime = ROUND_TIME;
+    let category = "";
+    let playing = false;
+    let missed = new Set();
 
     const startScreen = document.getElementById("startScreen");
     const timedModeBtn = document.getElementById("timedMode");
@@ -715,11 +864,15 @@
     const timerFill = document.getElementById("timerFill");
     const playAgain = document.getElementById("playAgain");
 
+    // Saca las tildes pero conserva la Ñ (si no, la Ñ se convertía en N)
     function normalize(value){
       return value
         .toLowerCase()
+        .normalize("NFC")
+        .replace(/ñ/g, "\u0001")
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\u0001/g, "ñ");
     }
 
     function chooseConcept(){
@@ -735,6 +888,11 @@
       previousWords.push(concept.word);
       answer = normalize(concept.word);
       hint = concept.hint;
+      category = concept.cat || "Concepto";
+
+      // palabras largas: hasta 15 s extra
+      const letterCount = answer.replace(/[^a-zñ]/g, "").length;
+      roundTime = Math.min(ROUND_TIME + 15, ROUND_TIME + Math.round(Math.max(0, letterCount - 10) * 1.5));
     }
 
     function createKeyboard(){
@@ -762,23 +920,48 @@
     function renderWord(){
       wordEl.innerHTML = "";
 
-      for(let i = 0; i < answer.length; i++){
-        const char = answer[i];
-        const letter = document.createElement("div");
+      const parts = answer.split(" ");
+      const longest = Math.max(...parts.map(p => p.length));
+      const avail = wordEl.clientWidth || 320;
+      const lw = Math.max(16, Math.min(38, Math.floor((avail - 5 * (longest - 1)) / longest)));
 
-        if(char === " "){
-          letter.className = "letter space";
-        }else{
+      wordEl.style.setProperty("--lw", lw + "px");
+      wordEl.style.setProperty("--lh", Math.round(lw * 1.2) + "px");
+      wordEl.style.setProperty("--lf", Math.max(12, Math.round(lw * 0.52)) + "px");
+
+      parts.forEach(part => {
+        const group = document.createElement("div");
+        group.className = "word-group";
+
+        for(const char of part){
+          const letter = document.createElement("div");
           letter.className = "letter";
 
           if(guessed.has(char)){
             letter.textContent = char.toUpperCase();
             letter.classList.add("revealed");
+            if(missed.has(char)) letter.classList.add("missed");
           }
+
+          group.appendChild(letter);
         }
 
-        wordEl.appendChild(letter);
-      }
+        wordEl.appendChild(group);
+      });
+    }
+
+    function renderHint(){
+      hintEl.innerHTML = "";
+
+      const tag = document.createElement("span");
+      tag.className = "hint-tag";
+      tag.textContent = `Pista · ${category}`;
+
+      const text = document.createElement("span");
+      text.className = "hint-text";
+      text.textContent = hint;
+
+      hintEl.append(tag, text);
     }
 
     function updateLives(){
@@ -837,23 +1020,21 @@
 
     function startTimer(){
       clearInterval(timer);
-      if(!timedMode){
-        timerText.textContent = "∞";
-        timerFill.style.width = "100%";
-        timerFill.classList.remove("warning","danger");
-        return;
-      }
+      // sin tiempo: se oculta la barra
+      document.querySelector(".timer-wrap").hidden = !timedMode;
+      if(!timedMode) return;
+
       roundStart = performance.now();
-      timerText.textContent = `${ROUND_TIME}s`;
+      timerText.textContent = `${roundTime}s`;
       timerFill.style.width = "100%";
       timerFill.classList.remove("warning","danger");
       timer = setInterval(() => {
         const elapsed = (performance.now() - roundStart) / 1000;
-        const remaining = Math.max(0, ROUND_TIME - elapsed);
+        const remaining = Math.max(0, roundTime - elapsed);
         timerText.textContent = `${Math.ceil(remaining)}s`;
-        timerFill.style.width = `${(remaining / ROUND_TIME) * 100}%`;
-        timerFill.classList.toggle("warning", remaining <= 12 && remaining > 6);
-        timerFill.classList.toggle("danger", remaining <= 6);
+        timerFill.style.width = `${(remaining / roundTime) * 100}%`;
+        timerFill.classList.toggle("warning", remaining <= roundTime * .5 && remaining > roundTime * .25);
+        timerFill.classList.toggle("danger", remaining <= roundTime * .25);
         if(remaining <= 0){ clearInterval(timer); timeOut(); }
       }, 50);
     }
@@ -861,13 +1042,14 @@
     function timeOut(){
       if(!timedMode || locked) return;
       locked = true;
+      clearInterval(timer);
       revealAnswer();
       showMessage(`Se acabó el tiempo. Era ${answer.toUpperCase()}.`, "error");
       setTimeout(nextRound, 1300);
     }
 
     function guessLetter(letter){
-      if(locked || guessed.has(letter) || wrongLetters.has(letter)) return;
+      if(!playing || locked || guessed.has(letter) || wrongLetters.has(letter)) return;
 
       if(answer.includes(letter)){
         guessed.add(letter);
@@ -876,6 +1058,7 @@
 
         if(allLettersFound()){
           locked = true;
+          clearInterval(timer);
           solved++;
           const points = calculateRoundPoints();
           score += points;
@@ -896,6 +1079,7 @@
 
         if(lives <= 0){
           locked = true;
+          clearInterval(timer);
           revealAnswer();
 
           showMessage(
@@ -912,7 +1096,8 @@
 
     function revealAnswer(){
       answer.split("").forEach(letter => {
-        if(letter !== " "){
+        if(letter !== " " && !guessed.has(letter)){
+          missed.add(letter);
           guessed.add(letter);
         }
       });
@@ -934,13 +1119,15 @@
       locked = false;
       guessed = new Set();
       wrongLetters = new Set();
+      missed = new Set();
       lives = MAX_LIVES;
+      playing = true;
 
       chooseConcept();
 
       roundEl.textContent = `Ronda ${round} / ${TOTAL_ROUNDS}`;
       scoreEl.textContent = `${score} pts`;
-      hintEl.textContent = `Pista: ${hint}`;
+      renderHint();
 
       createKeyboard();
       renderWord();
@@ -951,6 +1138,8 @@
     }
 
     function finishGame(){
+      playing = false;
+      clearInterval(timer);
       gameContent.style.display = "none";
       finalScreen.classList.add("show");
       finalScoreEl.textContent = `${score} pts`;
@@ -962,7 +1151,7 @@
           juego:"El ahorcado del diseño",
           puntos:score,
           dificultad:timedMode ? "Con tiempo" : "Sin tiempo",
-          detalle:[["RONDAS", String(TOTAL_ROUNDS)], ["PALABRAS ADIVINADAS", `${solved} de ${TOTAL_ROUNDS}`], ["TIEMPO POR RONDA", timedMode ? `${ROUND_TIME} s` : "Libre"]]
+          detalle:[["RONDAS", String(TOTAL_ROUNDS)], ["PALABRAS ADIVINADAS", `${solved} de ${TOTAL_ROUNDS}`], ["TIEMPO POR RONDA", timedMode ? `${ROUND_TIME} s o más` : "Libre"]]
         }));
       }
     }
@@ -980,9 +1169,11 @@
     }
 
     document.addEventListener("keydown", event => {
-      if(locked) return;
+      // solo cuando se está jugando, y sin atajos (Ctrl+R, Cmd+C, etc.)
+      if(!playing || locked) return;
+      if(event.ctrlKey || event.metaKey || event.altKey) return;
 
-      const key = normalize(event.key);
+      const key = normalize(event.key || "");
 
       if(/^[a-zñ]$/.test(key)){
         guessLetter(key);
@@ -990,6 +1181,7 @@
     });
 
     playAgain.addEventListener("click", restartGame);
+    window.addEventListener("resize", () => { if(playing) renderWord(); });
 
     function startGame(mode){
       timedMode = mode;
