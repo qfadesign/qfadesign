@@ -78,6 +78,9 @@ nav>a:first-child:focus-visible::before{opacity:1;scale:1;rotate:-1.5deg}
  /* cada link es su sticker (img/stickers/*.svg); el texto queda solo para lectores de pantalla */
  nav ul a{display:block;position:relative;padding:0;font-size:0;color:transparent;text-shadow:none;width:calc(var(--sw)*var(--fs));height:calc(var(--sh)*var(--fs));vertical-align:baseline;transition:scale .25s cubic-bezier(.34,1.56,.64,1)}
  nav ul a{--st:var(--tt)}
+ /* la página donde estás usa el sticker del otro color (crema en fondo azul, negro en fondo negro) para distinguirla de las demás */
+ nav ul a[aria-current]{--st:var(--tb)}
+ :is(.f-portfolio,.f-jueguitos,.f-juegos) nav ul a[aria-current]{--st:var(--tn)}
  nav ul a::before{display:none}
  nav ul a::after,nav ul a[aria-current]::after,nav ul a[aria-current]:hover::after,nav ul a[aria-current]:focus-visible::after{content:"";position:absolute;inset:0;left:0;top:0;translate:none;display:block;width:auto;height:auto;visibility:visible;overflow:visible;background:var(--st) center/contain no-repeat;filter:var(--st-sombra);scale:1;animation:none;transition:none}
  nav ul a:hover{scale:1;translate:none}
