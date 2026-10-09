@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GRQW2ECVME"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GRQW2ECVME');
+</script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- SEO:start -->
+<title>Ahorcado de diseño: conceptos de diseño | qfadesign</title>
+<meta name="description" content="El clásico ahorcado con conceptos de diseño gráfico. Un juego rápido para practicar vocabulario del oficio, por qfadesign.">
+<link rel="canonical" href="https://qfadesign.com/juegos/ahorcado">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="author" content="Facundo">
+<meta name="theme-color" content="#0a5cc0">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="icon" href="../favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../favicon-16x16.png" type="image/png" sizes="16x16">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="qfadesign">
+<meta property="og:locale" content="es_LA">
+<meta property="og:url" content="https://qfadesign.com/juegos/ahorcado">
+<meta property="og:title" content="Ahorcado de diseño: conceptos de diseño | qfadesign">
+<meta property="og:description" content="El clásico ahorcado con conceptos de diseño gráfico. Un juego rápido para practicar vocabulario del oficio, por qfadesign.">
+<meta property="og:image" content="https://qfadesign.com/img/og/og-jueguitos.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ahorcado de diseño, un jueguito de qfadesign">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ahorcado de diseño: conceptos de diseño | qfadesign">
+<meta name="twitter:description" content="El clásico ahorcado con conceptos de diseño gráfico. Un juego rápido para practicar vocabulario del oficio, por qfadesign.">
+<meta name="twitter:image" content="https://qfadesign.com/img/og/og-jueguitos.jpg">
+<meta name="twitter:image:alt" content="Ahorcado de diseño, un jueguito de qfadesign">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Ahorcado de diseño","description":"El clásico ahorcado con conceptos de diseño gráfico. Un juego rápido para practicar vocabulario del oficio, por qfadesign.","url":"https://qfadesign.com/juegos/ahorcado","applicationCategory":"GameApplication","operatingSystem":"Web","inLanguage":"es","image":"https://qfadesign.com/img/og/og-jueguitos.jpg","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@id":"https://qfadesign.com/#facundo"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://qfadesign.com/"},{"@type":"ListItem","position":2,"name":"Jueguitos","item":"https://qfadesign.com/jueguitos"},{"@type":"ListItem","position":3,"name":"Ahorcado de diseño","item":"https://qfadesign.com/juegos/ahorcado"}]},{"@type":"Person","@id":"https://qfadesign.com/#facundo","name":"Facundo","alternateName":"qfadesign","jobTitle":"Diseñador en Comunicación Visual","url":"https://qfadesign.com/","image":"https://qfadesign.com/img/perfil.jpg","email":"mailto:qfadesignn@gmail.com","knowsAbout":["Branding","Identidad visual","Motion graphics","Diseño editorial","Social media","Diseño de logos"],"sameAs":["https://www.instagram.com/qfadesign/","https://www.tiktok.com/@qfadesign","https://www.behance.net/facundocruz5","https://www.linkedin.com/in/facundo-cruz-19a581303/"]}]}</script>
+<!-- SEO:end -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --blue:#0b75f4;
+      --blue-dark:#0b75f4;
+      --blue-light:#0b75f4;
+      --black:#ffffff;
+      --muted:#b7b7b7;
+      --bg:#000000;
+      --white:#111111;
+      --line:#ffffff;
+      --key:#ffffff;
+      --wrong:#ffffff;
+      --danger:#0b75f4;
+    }
+
+    *{box-sizing:border-box}
+
+    html,body{
+      margin:0;
+      min-height:100%;
+      background:var(--bg);
+      color:var(--black);
+      font-family:"Montserrat",Arial,sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+    }
+
+    button{
+      font:inherit;
+      font-family:"Montserrat",Arial,sans-serif;
+      border:0;
+      cursor:pointer;
+    }
+
+    .app{
+      width:100%;
+      max-width:760px;
+      min-height:100vh;
+      padding:30px 18px 40px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    .header{
+      text-align:center;
+      margin-bottom:22px;
+    }
+
+    .eyebrow{
+      color:var(--blue);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+      margin-bottom:7px;
+    }
+
+    h1{
+      color:var(--blue);
+      margin:0;
+      font-size:clamp(27px,5vw,38px);
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-.055em;
+    }
+
+    .subtitle{
+      margin:9px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .game-card{
+      width:100%;
+      max-width:650px;
+      background:var(--white);
+      border:1px solid var(--line);
+      border-radius:24px;
+      box-shadow:0 18px 45px rgba(36,48,80,.09);
+      padding:27px 25px 25px;
+    }
+
+    .top-info{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:600;
+      margin-bottom:16px;
+    }
+
+    .top-info strong{
+      color:var(--black);
+    }
+
+    .score{
+      color:var(--blue-dark);
+      font-weight:800;
+    }
+
+    .hangman-area{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:145px;
+      margin:0 auto 15px;
+    }
+
+    .hangman{
+      width:180px;
+      height:145px;
+      position:relative;
+    }
+
+    .gallows{
+      position:absolute;
+      left:17px;
+      bottom:10px;
+      width:115px;
+      height:4px;
+      border-radius:4px;
+      background:#ffffff;
+    }
+
+    .gallows::before{
+      content:"";
+      position:absolute;
+      left:18px;
+      bottom:0;
+      width:4px;
+      height:125px;
+      background:#ffffff;
+      border-radius:4px;
+    }
+
+    .gallows::after{
+      content:"";
+      position:absolute;
+      left:18px;
+      bottom:121px;
+      width:82px;
+      height:4px;
+      background:#ffffff;
+      border-radius:4px;
+    }
+
+    .rope{
+      position:absolute;
+      left:100px;
+      top:14px;
+      width:4px;
+      height:14px;
+      background:#ffffff;
+      border-radius:4px;
+    }
+
+    .part{
+      position:absolute;
+      display:none;
+      background:var(--blue);
+    }
+
+    .part.show{
+      display:block;
+    }
+
+    .head{
+      left:88px;
+      top:25px;
+      width:29px;
+      height:29px;
+      border:4px solid var(--blue);
+      border-radius:50%;
+      background:#ffffff;
+    }
+
+    .body{
+      left:100px;
+      top:53px;
+      width:5px;
+      height:47px;
+      border-radius:5px;
+    }
+
+    .arm-left{
+      left:74px;
+      top:61px;
+      width:31px;
+      height:5px;
+      transform:rotate(-28deg);
+      transform-origin:right center;
+      border-radius:5px;
+    }
+
+    .arm-right{
+      left:101px;
+      top:61px;
+      width:31px;
+      height:5px;
+      transform:rotate(28deg);
+      transform-origin:left center;
+      border-radius:5px;
+    }
+
+    .leg-left{
+      left:98px;
+      top:95px;
+      width:5px;
+      height:34px;
+      transform:rotate(35deg);
+      transform-origin:top center;
+      border-radius:5px;
+    }
+
+    .leg-right{
+      left:102px;
+      top:95px;
+      width:5px;
+      height:34px;
+      transform:rotate(-35deg);
+      transform-origin:top center;
+      border-radius:5px;
+    }
+
+
+    .timer-wrap{
+      width:100%;
+      max-width:430px;
+      margin:0 auto 17px;
+    }
+    .timer-line{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+    .timer-number{
+      color:var(--black);
+      font-size:13px;
+      font-weight:800;
+    }
+    .timer-bar{
+      width:100%;
+      height:7px;
+      background:#ffffff;
+      border-radius:99px;
+      overflow:hidden;
+    }
+    .timer-fill{
+      width:100%;
+      height:100%;
+      background:var(--blue);
+      border-radius:99px;
+      transition:width .1s linear;
+    }
+    .timer-fill.warning{background:var(--blue-light)}
+    .timer-fill.danger{background:var(--blue-dark)}
+
+    .lives{
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+      margin-bottom:20px;
+    }
+
+    .hearts{
+      color:var(--blue);
+      letter-spacing:3px;
+      font-size:14px;
+      margin-left:5px;
+    }
+
+    .hearts .lost{
+      color:#ffffff;
+    }
+
+    .word{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:12px 24px;
+      margin:0 auto 17px;
+      max-width:580px;
+    }
+
+    .word-group{
+      display:flex;
+      gap:5px;
+    }
+
+    .letter{
+      width:var(--lw,38px);
+      height:var(--lh,46px);
+      border-bottom:3px solid #ffffff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:var(--lf,20px);
+      font-weight:800;
+      text-transform:uppercase;
+    }
+
+    .letter.revealed{
+      color:var(--blue-dark);
+      border-bottom-color:var(--blue-dark);
+    }
+
+    .hint{
+      text-align:center;
+      min-height:21px;
+      margin-bottom:16px;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:600;
+    }
+
+    .message{
+      min-height:23px;
+      text-align:center;
+      margin-bottom:13px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .message.success{color:var(--blue-dark)}
+    .message.error{color:#ffffff}
+
+    .keyboard{
+      width:100%;
+      max-width:550px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .key-row{
+      display:flex;
+      gap:5px;
+      justify-content:center;
+    }
+
+    .key{
+      flex:0 0 calc((100% - 45px) / 10);
+      min-width:0;
+      height:47px;
+      border-radius:8px;
+      background:var(--key);
+      color:var(--blue);
+      font-size:12px;
+      font-weight:800;
+      transition:.12s ease;
+    }
+
+    .key:hover:not(:disabled){
+      background:#ffffff;
+    }
+
+    .key.correct{
+      background:var(--blue-dark);
+      color:#fff;
+    }
+
+    .key.wrong{
+      background:var(--wrong);
+      color:#0b75f4;
+      text-decoration:line-through;
+    }
+
+    .key:disabled{
+      cursor:default;
+    }
+
+
+    .start-screen{text-align:center;padding:10px 5px 5px;}
+    .start-screen[hidden]{display:none}
+    .start-label{color:var(--blue);font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;}
+    .start-title{color:var(--blue);margin:9px 0 8px;font-size:30px;line-height:1.05;font-weight:800;letter-spacing:-.05em;}
+    .start-copy{max-width:460px;text-wrap:balance;margin:0 auto 22px;color:var(--muted);font-size:12px;line-height:1.6;}
+    .how-to{max-width:460px;margin:0 auto 24px;padding:16px;background:#111111;border:1px solid #ffffff;border-radius:14px;text-align:left;}
+    .how-to strong{display:block;margin-bottom:6px;font-size:12px;}
+    .how-to p{margin:0;color:var(--muted);font-size:11px;line-height:1.55;}
+    .difficulty-title{margin:0 0 12px;font-size:12px;font-weight:800;}
+    .difficulty-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:460px;margin:0 auto;}
+    .difficulty-btn{min-height:88px;padding:14px 12px;border:1px solid var(--line);border-radius:12px;background:var(--white);color:var(--black);text-align:left;transition:.12s ease;}
+    .difficulty-btn:hover{border-color:var(--blue);transform:translateY(-1px);}
+    .difficulty-btn strong{display:block;color:var(--blue-dark);font-size:12px;margin-bottom:6px;}
+    .difficulty-btn span{display:block;color:var(--muted);font-size:10px;line-height:1.45;font-weight:600;}
+    @media(max-width:520px){.difficulty-grid{grid-template-columns:1fr;}}
+
+    .final-screen{
+      display:none;
+      text-align:center;
+      padding:15px 5px 5px;
+    }
+
+    .final-screen.show{
+      display:block;
+    }
+
+    .final-label{
+      color:var(--blue);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+    }
+
+    .final-title{
+      margin:9px 0 5px;
+      font-size:30px;
+      line-height:1.05;
+      font-weight:800;
+      letter-spacing:-.05em;
+    }
+
+    .final-score{
+      color:var(--blue);
+      font-size:54px;
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-.06em;
+      margin:14px 0 8px;
+    }
+
+    .final-copy{
+      color:var(--muted);
+      font-size:12px;
+      margin:0 0 22px;
+    }
+
+    .play-again{
+      background:var(--blue);
+      color:#fff;
+      border-radius:10px;
+      padding:13px 22px;
+      font-size:12px;
+      font-weight:800;
+      box-shadow:0 7px 16px rgba(69,105,232,.18);
+    }
+
+    .play-again:hover{
+      background:var(--blue-dark);
+    }
+
+    /* pista: etiqueta con la categoría + texto bien legible */
+    .game-card .hint{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:9px;
+      min-height:78px;
+      margin-bottom:14px;
+      font-size:15px!important;
+      line-height:1.4;
+      font-weight:500;
+      color:#fff!important;
+    }
+    .hint-tag{
+      font-family:var(--fp);
+      font-size:11px;
+      font-weight:400;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      padding:4px 12px;
+      border:1px solid rgba(255,255,255,.4);
+      border-radius:99px;
+      color:rgba(255,255,255,.74);
+    }
+    .hint-text{max-width:470px;text-wrap:balance}
+    /* letras que no se adivinaron y se muestran al perder */
+    .letter.revealed.missed{
+      color:rgba(255,255,255,.5)!important;
+      border-bottom-color:rgba(255,255,255,.35)!important;
+    }
+
+    @media(max-width:520px){
+      .game-card .hint{min-height:104px;font-size:14.5px!important}
+      .app{
+        padding:22px 12px 28px;
+      }
+
+      .game-card{
+        padding:22px 13px 20px;
+        border-radius:20px;
+      }
+
+      .hangman-area{
+        min-height:125px;
+      }
+
+      .hangman{
+        transform:scale(.88);
+      }
+
+      .word{
+        gap:10px 18px;
+      }
+
+      .key{
+        height:45px;
+        font-size:10px;
+      }
+    }
+  </style>
+<script>if(self!==top){document.write('<style>html,body{background:transparent!important}#volver{display:none!important}</style>')}</script>
+<link rel="preconnect" href="https://use.typekit.net" crossorigin><link rel="preconnect" href="https://p.typekit.net" crossorigin><link rel="stylesheet" href="https://use.typekit.net/ftd7ahn.css">
+<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/ranking-config.js" defer></script><script src="../js/ranking.js" defer></script>
+</head>
+
+<body class="f-juegos"><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca" data-t="Acerca de">Acerca de</a></li><li><a href="../portfolio" data-t="Portfolio">Portfolio</a></li><li><a href="../herramientas" data-t="Herramientas">Herramientas</a></li><li><a href="../jueguitos" data-t="Jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../contacto" data-t="Contacto">Contacto</a></li></ul></nav>
+<div class="vol-wrap"><a class="volver" href="../jueguitos" aria-label="Volver a Jueguitos"><span>Volver a</span><img src="../img/stickers/jueguitos.svg" alt="" width="488.7" height="126.74"></a></div>
+  <main class="app">
+    <header class="header">
+      <h1 class="h1-st"><img src="../img/stickers/juego-ahorcado.svg" alt="El ahorcado del diseño" width="1033.95" height="616.51" decoding="async"></h1>
+      <p class="subtitle">Adiviná conceptos de diseño gráfico letra por letra.</p>
+    </header>
+
+    <section class="game-card">
+      <div class="start-screen" id="startScreen">
+        <div class="inicio">
+         <div class="inicio-reglas">
+        <div class="start-title">Cinco palabras, seis vidas</div>
+        <p class="start-copy">Adiviná conceptos, tipografías, herramientas, movimientos y diseñadores letra por letra.</p>
+        <div class="how-to"><strong>¿Cómo se juega?</strong><p>Descubrí la palabra antes de quedarte sin vidas. Cada letra incorrecta agrega una parte al ahorcado, y la pista te dice de qué se trata.</p></div>
+          <div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div>
+         </div>
+         <aside class="rank-top" data-rank-top data-juego="ahorcado" data-modo="Estándar" aria-label="Los 3 mejores puntajes"></aside>
+        </div>
+      </div>
+      <div id="gameContent" style="display:none;">
+        <div class="top-info">
+          <span id="roundText">Ronda 1 / 5</span>
+          <span class="score" id="scoreText">0 pts</span>
+        </div>
+
+        <div class="hangman-area">
+          <div class="hangman" aria-label="Ahorcado">
+            <div class="gallows"></div>
+            <div class="rope"></div>
+            <div class="part head" data-part="1"></div>
+            <div class="part body" data-part="2"></div>
+            <div class="part arm-left" data-part="3"></div>
+            <div class="part arm-right" data-part="4"></div>
+            <div class="part leg-left" data-part="5"></div>
+            <div class="part leg-right" data-part="6"></div>
+          </div>
+        </div>
+
+        <div class="lives">
+          Vidas:
+          <span class="hearts" id="hearts">● ● ● ● ● ●</span>
+        </div>
+
+        <div class="word" id="word"></div>
+
+        <div class="hint" id="hint">
+          Pista: concepto, escuela o movimiento de diseño
+        </div>
+
+        <div class="message" id="message">
+          Elegí una letra.
+        </div>
+
+        <div class="keyboard" id="keyboard"></div>
+      </div>
+
+      <div class="final-screen" id="finalScreen">
+        <div class="final-label">Partida terminada</div>
+        <div class="final-title">¡Terminaste las 5 rondas!</div>
+        <div class="final-score" id="finalScore">0 pts</div>
+        <p class="final-copy">Tu puntaje total en el ahorcado del diseño.</p>
+        <div id="shareBox" class="share-box"></div>
+        <button class="play-again" id="playAgain">Jugar de nuevo</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /*
+      Conceptos de diseño gráfico.
+      Las palabras van sin tildes (la Ñ sí se conserva) para que el teclado sea sencillo.
+      Las que tienen más de una palabra llevan espacio: "art deco", "paul rand".
+      cat = categoría que se muestra junto a la pista.
+    */
+    const CONCEPTS = [
+      {word:"tipografia", cat:"Tipografía", hint:"Disciplina de elegir, combinar y ordenar letras para comunicar."},
+      {word:"contraste", cat:"Concepto", hint:"Diferencia marcada entre dos elementos, como claro y oscuro."},
+      {word:"reticula", cat:"Concepto", hint:"Estructura de columnas y márgenes que ordena una página."},
+      {word:"grilla", cat:"Concepto", hint:"Cuadrícula de líneas guía que ayuda a ubicar los elementos."},
+      {word:"jerarquia", cat:"Concepto", hint:"Orden de importancia visual de los elementos."},
+      {word:"paleta", cat:"Color", hint:"Conjunto de colores elegidos para un diseño."},
+      {word:"textura", cat:"Concepto", hint:"Cualidad visual o táctil de una superficie."},
+      {word:"logotipo", cat:"Marca", hint:"Representación de una marca hecha solo con letras."},
+      {word:"vector", cat:"Digital", hint:"Gráfico hecho con trazados matemáticos que no pierde calidad al escalar."},
+      {word:"composicion", cat:"Concepto", hint:"Organización de los elementos dentro de una pieza."},
+      {word:"proporcion", cat:"Concepto", hint:"Relación de tamaño entre las partes de una pieza."},
+      {word:"alineacion", cat:"Concepto", hint:"Principio que ubica los elementos sobre un eje o borde en común."},
+      {word:"simetria", cat:"Concepto", hint:"Correspondencia equilibrada entre las dos mitades de una composición."},
+      {word:"espacio", cat:"Concepto", hint:"Vacío entre elementos que da aire y orden a una pieza."},
+      {word:"ritmo", cat:"Concepto", hint:"Repetición y variación que genera movimiento visual."},
+      {word:"escala", cat:"Concepto", hint:"Relación de tamaño entre elementos o respecto de un formato."},
+      {word:"forma", cat:"Concepto", hint:"Elemento visual definido por contorno, superficie o volumen."},
+      {word:"linea", cat:"Concepto", hint:"Elemento básico que construye formas, límites y direcciones."},
+      {word:"modulo", cat:"Concepto", hint:"Unidad que se repite para construir una composición."},
+      {word:"patron", cat:"Concepto", hint:"Repetición organizada de elementos visuales."},
+      {word:"croma", cat:"Color", hint:"Pureza o intensidad de un color."},
+      {word:"icono", cat:"Concepto", hint:"Signo visual que representa una idea, objeto o acción."},
+      {word:"signo", cat:"Concepto", hint:"Elemento que representa o comunica un significado."},
+      {word:"marca", cat:"Marca", hint:"Nombre o signo que distingue a un producto o a una empresa."},
+      {word:"identidad", cat:"Marca", hint:"Sistema visual que hace reconocible a una empresa o proyecto."},
+      {word:"afiche", cat:"Impresión", hint:"Pieza gráfica pensada para comunicar un mensaje en la vía pública."},
+      {word:"editorial", cat:"Concepto", hint:"Área del diseño dedicada a libros, revistas y publicaciones."},
+      {word:"bauhaus", cat:"Escuela", hint:"Escuela alemana fundada en 1919 que unió arte, diseño y arquitectura."},
+      {word:"ulm", cat:"Escuela", hint:"Escuela alemana de diseño fundada en 1953, ligada al diseño racional y sistemático."},
+      {word:"de stijl", cat:"Movimiento", hint:"Movimiento neerlandés de 1917 basado en la abstracción geométrica y los colores primarios."},
+      {word:"vkhutemas", cat:"Escuela", hint:"Escuela soviética de arte y diseño que funcionó en Moscú entre 1920 y 1930."},
+      {word:"memphis", cat:"Movimiento", hint:"Grupo italiano de diseño nacido en 1981, famoso por sus formas y colores estridentes."},
+      {word:"cranbrook", cat:"Escuela", hint:"Academia de arte y diseño de Míchigan, clave en la gráfica experimental."},
+      {word:"arts and crafts", cat:"Movimiento", hint:"Movimiento británico que defendió el trabajo artesanal frente a la industrialización."},
+      {word:"art nouveau", cat:"Movimiento", hint:"Estilo de fines del siglo XIX con líneas orgánicas y ornamentación inspirada en plantas."},
+      {word:"art deco", cat:"Movimiento", hint:"Estilo de los años 20 y 30 con geometría, simetría y lujo ornamental."},
+      {word:"constructivismo", cat:"Movimiento", hint:"Vanguardia rusa que influyó muchísimo en la gráfica y los carteles."},
+      {word:"futurismo", cat:"Movimiento", hint:"Vanguardia italiana que exaltó la velocidad y rompió con la tipografía tradicional."},
+      {word:"dadaismo", cat:"Movimiento", hint:"Vanguardia nacida en Zúrich en 1916 que cuestionó todas las convenciones artísticas."},
+      {word:"estilo suizo", cat:"Movimiento", hint:"Corriente de mediados del siglo XX con retículas, claridad y letra de palo seco; también se la llama Tipográfico Internacional."},
+      {word:"pop art", cat:"Movimiento", hint:"Movimiento de los años 50 y 60 que llevó la publicidad y el consumo al arte."},
+      {word:"minimalismo", cat:"Movimiento", hint:"Corriente que reduce una pieza a lo esencial."},
+      {word:"posmodernismo", cat:"Movimiento", hint:"Corriente que desde los años 70 rompió con la rigidez del diseño moderno."},
+      {word:"grunge", cat:"Movimiento", hint:"Estética de los 90 con texturas sucias y tipografías desordenadas."},
+      {word:"skeuomorfismo", cat:"Movimiento", hint:"Diseño digital que imita texturas y objetos del mundo físico."},
+      {word:"flat design", cat:"Movimiento", hint:"Estilo digital de formas planas, sin sombras ni texturas."},
+      {word:"equilibrio", cat:"Concepto", hint:"Sensación de estabilidad entre los pesos visuales de una composición."},
+      {word:"unidad", cat:"Concepto", hint:"Cualidad por la que todos los elementos parecen pertenecer al mismo conjunto."},
+      {word:"repeticion", cat:"Concepto", hint:"Uso reiterado de un mismo elemento para dar coherencia."},
+      {word:"proximidad", cat:"Concepto", hint:"Principio por el cual lo que está cerca se percibe como relacionado."},
+      {word:"gestalt", cat:"Concepto", hint:"Escuela de psicología alemana que explica cómo percibimos las formas como un todo."},
+      {word:"figura fondo", cat:"Concepto", hint:"Relación entre lo que destaca en una imagen y lo que queda detrás."},
+      {word:"enfasis", cat:"Concepto", hint:"Recurso para atraer primero la mirada hacia un punto."},
+      {word:"punto focal", cat:"Concepto", hint:"Zona de una pieza donde la vista se detiene primero."},
+      {word:"espacio negativo", cat:"Concepto", hint:"Zona vacía alrededor o entre los elementos que también forma figuras."},
+      {word:"margen", cat:"Concepto", hint:"Espacio libre entre el contenido y el borde de una pieza."},
+      {word:"medianil", cat:"Concepto", hint:"Espacio que separa dos columnas de texto."},
+      {word:"concepto", cat:"Proceso", hint:"Idea central que guía y da sentido a una pieza."},
+      {word:"kerning", cat:"Tipografía", hint:"Ajuste del espacio entre dos letras específicas."},
+      {word:"tracking", cat:"Tipografía", hint:"Ajuste parejo del espacio entre todas las letras de un texto."},
+      {word:"interlineado", cat:"Tipografía", hint:"Distancia vertical entre una línea de texto y la siguiente."},
+      {word:"serifa", cat:"Tipografía", hint:"Pequeño remate en los extremos de los trazos de una letra."},
+      {word:"palo seco", cat:"Tipografía", hint:"Tipografía sin remates en los extremos de sus trazos."},
+      {word:"ligadura", cat:"Tipografía", hint:"Unión de dos o más letras en un solo signo."},
+      {word:"glifo", cat:"Tipografía", hint:"Cada una de las formas gráficas concretas de una tipografía."},
+      {word:"ascendente", cat:"Tipografía", hint:"Parte de una minúscula que sube por encima del cuerpo, como en la b o la d."},
+      {word:"descendente", cat:"Tipografía", hint:"Parte de una letra que baja de la línea de base, como en la p o la g."},
+      {word:"versalitas", cat:"Tipografía", hint:"Mayúsculas diseñadas con la altura de las minúsculas."},
+      {word:"cursiva", cat:"Tipografía", hint:"Variante inclinada de una tipografía, inspirada en la escritura a mano."},
+      {word:"familia tipografica", cat:"Tipografía", hint:"Conjunto de estilos de una misma letra, como light, regular y bold."},
+      {word:"monoespaciada", cat:"Tipografía", hint:"Tipografía en la que todas las letras ocupan el mismo ancho."},
+      {word:"caligrafia", cat:"Tipografía", hint:"Arte de escribir a mano con belleza y estilo."},
+      {word:"lettering", cat:"Tipografía", hint:"Arte de dibujar letras a medida para una pieza."},
+      {word:"helvetica", cat:"Tipografía", hint:"Tipografía de palo seco nacida en Suiza en 1957, presente en incontables logos y señales."},
+      {word:"futura", cat:"Tipografía", hint:"Tipografía geométrica diseñada por Paul Renner y lanzada en 1927."},
+      {word:"bodoni", cat:"Tipografía", hint:"Tipografía serif de alto contraste creada por un impresor italiano a fines del siglo XVIII."},
+      {word:"garamond", cat:"Tipografía", hint:"Familia serif de inspiración renacentista que lleva el nombre de un grabador francés del siglo XVI."},
+      {word:"comic sans", cat:"Tipografía", hint:"Tipografía informal creada en 1994 que muchos diseñadores adoran criticar."},
+      {word:"matiz", cat:"Color", hint:"Característica que distingue un color de otro, como el rojo del azul."},
+      {word:"saturacion", cat:"Color", hint:"Qué tan vivo o apagado se ve un color."},
+      {word:"brillo", cat:"Color", hint:"Cuánta luz tiene un color, de oscuro a claro."},
+      {word:"complementario", cat:"Color", hint:"Color ubicado en el lado opuesto del círculo cromático."},
+      {word:"analogos", cat:"Color", hint:"Colores vecinos en el círculo cromático."},
+      {word:"monocromatico", cat:"Color", hint:"Paleta construida con un único color en distintas luminosidades."},
+      {word:"degrade", cat:"Color", hint:"Transición gradual entre dos o más colores."},
+      {word:"circulo cromatico", cat:"Color", hint:"Representación circular de los colores y sus relaciones."},
+      {word:"cmyk", cat:"Color", hint:"Modo de color para impresión: cian, magenta, amarillo y negro."},
+      {word:"rgb", cat:"Color", hint:"Modo de color de las pantallas: rojo, verde y azul."},
+      {word:"pantone", cat:"Color", hint:"Sistema de referencia de colores muy usado en imprenta y diseño."},
+      {word:"isotipo", cat:"Marca", hint:"Parte de una marca formada solo por un símbolo, sin texto."},
+      {word:"imagotipo", cat:"Marca", hint:"Marca donde símbolo y texto conviven, pero pueden separarse."},
+      {word:"isologo", cat:"Marca", hint:"Marca donde símbolo y texto están fusionados en un solo bloque."},
+      {word:"monograma", cat:"Marca", hint:"Marca construida con las iniciales de un nombre."},
+      {word:"eslogan", cat:"Marca", hint:"Frase breve que resume la promesa de una marca."},
+      {word:"naming", cat:"Marca", hint:"Proceso de crear el nombre de una marca."},
+      {word:"branding", cat:"Marca", hint:"Proceso de construir la personalidad y el reconocimiento de una marca."},
+      {word:"rebranding", cat:"Marca", hint:"Renovación de la identidad visual de una empresa ya existente."},
+      {word:"manual de marca", cat:"Marca", hint:"Documento que fija las reglas de uso de una identidad visual."},
+      {word:"packaging", cat:"Marca", hint:"Diseño del envase y la presentación de un producto."},
+      {word:"pictograma", cat:"Concepto", hint:"Signo que representa un objeto o una idea con un dibujo esquemático."},
+      {word:"señaletica", cat:"Concepto", hint:"Sistema de señales que orienta a las personas dentro de un espacio."},
+      {word:"sangrado", cat:"Impresión", hint:"Margen extra que se imprime más allá del corte para evitar bordes blancos."},
+      {word:"troquel", cat:"Impresión", hint:"Molde de corte que da forma a una pieza impresa."},
+      {word:"offset", cat:"Impresión", hint:"Método de impresión industrial por planchas, ideal para grandes tiradas."},
+      {word:"serigrafia", cat:"Impresión", hint:"Técnica que pasa la tinta a través de una malla tensada."},
+      {word:"xilografia", cat:"Impresión", hint:"Grabado en relieve sobre madera usado para estampar."},
+      {word:"gramaje", cat:"Impresión", hint:"Peso del papel en gramos por metro cuadrado."},
+      {word:"pliego", cat:"Impresión", hint:"Hoja grande de papel que se imprime y luego se dobla."},
+      {word:"maquetacion", cat:"Impresión", hint:"Organización de textos e imágenes en las páginas de una publicación."},
+      {word:"portada", cat:"Impresión", hint:"Cara frontal de un libro o revista que presenta su contenido."},
+      {word:"infografia", cat:"Concepto", hint:"Pieza que explica datos o procesos combinando imágenes y texto."},
+      {word:"ilustracion", cat:"Concepto", hint:"Imagen creada para acompañar o explicar una idea o un texto."},
+      {word:"collage", cat:"Concepto", hint:"Técnica que combina recortes de distintos materiales en una sola imagen."},
+      {word:"pixel", cat:"Digital", hint:"Unidad mínima de color de una imagen digital."},
+      {word:"resolucion", cat:"Digital", hint:"Cantidad de detalle de una imagen, medida en píxeles por pulgada."},
+      {word:"mapa de bits", cat:"Digital", hint:"Imagen formada por una cuadrícula de píxeles."},
+      {word:"wireframe", cat:"Digital", hint:"Esquema simple que muestra la estructura de una pantalla sin diseño visual."},
+      {word:"mockup", cat:"Digital", hint:"Simulación realista de cómo se vería un diseño en un soporte."},
+      {word:"prototipo", cat:"Digital", hint:"Versión preliminar de un producto o interfaz para probar ideas."},
+      {word:"responsive", cat:"Digital", hint:"Diseño web que se adapta a distintos tamaños de pantalla."},
+      {word:"interfaz", cat:"Digital", hint:"Espacio donde una persona interactúa con un sistema digital."},
+      {word:"usabilidad", cat:"Digital", hint:"Facilidad con la que una persona logra usar un producto."},
+      {word:"accesibilidad", cat:"Digital", hint:"Diseñar para que todas las personas puedan usar una pieza o producto."},
+      {word:"favicon", cat:"Digital", hint:"Pequeño ícono que aparece en la pestaña del navegador."},
+      {word:"keyframe", cat:"Movimiento", hint:"Punto de una línea de tiempo donde se define un cambio de la animación."},
+      {word:"easing", cat:"Movimiento", hint:"Curva que suaviza la aceleración de un movimiento animado."},
+      {word:"storyboard", cat:"Movimiento", hint:"Secuencia de dibujos que planifica un video o animación plano a plano."},
+      {word:"motion graphics", cat:"Movimiento", hint:"Disciplina que anima elementos gráficos para video y pantallas."},
+      {word:"loop", cat:"Movimiento", hint:"Animación que termina y vuelve a empezar sin cortes."},
+      {word:"brief", cat:"Proceso", hint:"Documento con los objetivos y requisitos de un proyecto de diseño."},
+      {word:"boceto", cat:"Proceso", hint:"Dibujo rápido para explorar ideas antes de definir una pieza."},
+      {word:"moodboard", cat:"Proceso", hint:"Tablero de imágenes y referencias que define el clima visual de un proyecto."},
+      {word:"iteracion", cat:"Proceso", hint:"Repetir y mejorar una propuesta en ciclos sucesivos."},
+      {word:"photoshop", cat:"Herramienta", hint:"Programa de Adobe para editar imágenes y fotos."},
+      {word:"illustrator", cat:"Herramienta", hint:"Programa de Adobe para dibujo vectorial."},
+      {word:"indesign", cat:"Herramienta", hint:"Programa de Adobe para maquetar publicaciones."},
+      {word:"after effects", cat:"Herramienta", hint:"Programa de Adobe para animación y efectos visuales."},
+      {word:"figma", cat:"Herramienta", hint:"Herramienta colaborativa para diseñar interfaces en el navegador."},
+      {word:"pluma", cat:"Herramienta", hint:"Herramienta vectorial que dibuja curvas con puntos de anclaje."},
+      {word:"capa", cat:"Herramienta", hint:"Nivel transparente que apila contenido dentro de un archivo de diseño."},
+      {word:"mascara", cat:"Herramienta", hint:"Recurso que oculta o muestra partes de una capa."},
+      {word:"paul rand", cat:"Diseñador/a", hint:"Diseñador estadounidense que creó logos como el de IBM y el de ABC."},
+      {word:"massimo vignelli", cat:"Diseñador/a", hint:"Diseñador italiano autor del mapa del subte de Nueva York de 1972."},
+      {word:"saul bass", cat:"Diseñador/a", hint:"Diseñador estadounidense famoso por los títulos de películas de Hitchcock."},
+      {word:"milton glaser", cat:"Diseñador/a", hint:"Diseñador estadounidense autor del logo I ♥ NY."},
+      {word:"paula scher", cat:"Diseñador/a", hint:"Diseñadora estadounidense de Pentagram, autora del logo de Citi."},
+      {word:"jan tschichold", cat:"Diseñador/a", hint:"Tipógrafo alemán autor de La nueva tipografía, publicada en 1928."},
+      {word:"herbert bayer", cat:"Diseñador/a", hint:"Diseñador austriaco de la Bauhaus que ideó un alfabeto «universal» en minúsculas."},
+      {word:"david carson", cat:"Diseñador/a", hint:"Diseñador estadounidense que rompió todas las reglas en la revista Ray Gun."},
+      {word:"dieter rams", cat:"Diseñador/a", hint:"Diseñador industrial alemán de Braun, célebre por «menos, pero mejor»."},
+      {word:"otl aicher", cat:"Diseñador/a", hint:"Diseñador alemán que creó los pictogramas de los Juegos Olímpicos de Múnich 1972."},
+      {word:"adrian frutiger", cat:"Diseñador/a", hint:"Tipógrafo suizo creador de Univers y de la letra de la señalética del aeropuerto Charles de Gaulle."},
+      {word:"zuzana licko", cat:"Diseñador/a", hint:"Diseñadora tipográfica cofundadora de Emigre, pionera de las fuentes digitales."},
+      {word:"susan kare", cat:"Diseñador/a", hint:"Diseñadora de los íconos de la primera Macintosh, en 1984."},
+      {word:"gutenberg", cat:"Historia", hint:"Impresor alemán que desarrolló la imprenta de tipos móviles en Europa hacia 1450."},
+      {word:"diseño", cat:"Concepto", hint:"Disciplina que planifica y da forma visual a ideas, mensajes y objetos."},
+      {word:"diseñador", cat:"Diseñador/a", hint:"Persona que proyecta y da forma visual a ideas, mensajes y objetos."},
+      {word:"tamaño", cat:"Concepto", hint:"Medida de una pieza o de un elemento dentro de ella."}
+    ];
+
+    const MAX_LIVES = 6;
+    const TOTAL_ROUNDS = 5;
+
+    const KEY_ROWS = [
+      ["Q","W","E","R","T","Y","U","I","O","P"],
+      ["A","S","D","F","G","H","J","K","L","Ñ"],
+      ["Z","X","C","V","B","N","M"]
+    ];
+
+    let answer = "";
+    let hint = "";
+    let guessed = new Set();
+    let wrongLetters = new Set();
+    let lives = MAX_LIVES;
+    let round = 1;
+    let score = 0;
+    let locked = false;
+    let previousWords = [];
+    let solved = 0;
+    let category = "";
+    let playing = false;
+    let missed = new Set();
+
+    const startScreen = document.getElementById("startScreen");
+    const gameContent = document.getElementById("gameContent");
+    const finalScreen = document.getElementById("finalScreen");
+    const wordEl = document.getElementById("word");
+    const hintEl = document.getElementById("hint");
+    const messageEl = document.getElementById("message");
+    const keyboardEl = document.getElementById("keyboard");
+    const heartsEl = document.getElementById("hearts");
+    const scoreEl = document.getElementById("scoreText");
+    const roundEl = document.getElementById("roundText");
+    const finalScoreEl = document.getElementById("finalScore");
+    const playAgain = document.getElementById("playAgain");
+
+    // Saca las tildes pero conserva la Ñ (si no, la Ñ se convertía en N)
+    function normalize(value){
+      return value
+        .toLowerCase()
+        .normalize("NFC")
+        .replace(/ñ/g, "\u0001")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\u0001/g, "ñ");
+    }
+
+    function chooseConcept(){
+      let available = CONCEPTS.filter(c => !previousWords.includes(c.word));
+
+      if(!available.length){
+        previousWords = [];
+        available = CONCEPTS;
+      }
+
+      const concept = available[Math.floor(Math.random() * available.length)];
+
+      previousWords.push(concept.word);
+      answer = normalize(concept.word);
+      hint = concept.hint;
+      category = concept.cat || "Concepto";
+
+    }
+
+    function createKeyboard(){
+      keyboardEl.innerHTML = "";
+
+      KEY_ROWS.forEach(row => {
+        const rowEl = document.createElement("div");
+        rowEl.className = "key-row";
+
+        row.forEach(letter => {
+          const key = document.createElement("button");
+          key.className = "key";
+          key.textContent = letter;
+          key.dataset.letter = normalize(letter);
+
+          key.addEventListener("click", () => guessLetter(normalize(letter)));
+
+          rowEl.appendChild(key);
+        });
+
+        keyboardEl.appendChild(rowEl);
+      });
+    }
+
+    function renderWord(){
+      wordEl.innerHTML = "";
+
+      const parts = answer.split(" ");
+      const longest = Math.max(...parts.map(p => p.length));
+      const avail = wordEl.clientWidth || 320;
+      const lw = Math.max(16, Math.min(38, Math.floor((avail - 5 * (longest - 1)) / longest)));
+
+      wordEl.style.setProperty("--lw", lw + "px");
+      wordEl.style.setProperty("--lh", Math.round(lw * 1.2) + "px");
+      wordEl.style.setProperty("--lf", Math.max(12, Math.round(lw * 0.52)) + "px");
+
+      parts.forEach(part => {
+        const group = document.createElement("div");
+        group.className = "word-group";
+
+        for(const char of part){
+          const letter = document.createElement("div");
+          letter.className = "letter";
+
+          if(guessed.has(char)){
+            letter.textContent = char.toUpperCase();
+            letter.classList.add("revealed");
+            if(missed.has(char)) letter.classList.add("missed");
+          }
+
+          group.appendChild(letter);
+        }
+
+        wordEl.appendChild(group);
+      });
+    }
+
+    function renderHint(){
+      hintEl.innerHTML = "";
+
+      const tag = document.createElement("span");
+      tag.className = "hint-tag";
+      tag.textContent = `Pista · ${category}`;
+
+      const text = document.createElement("span");
+      text.className = "hint-text";
+      text.textContent = hint;
+
+      hintEl.append(tag, text);
+    }
+
+    function updateLives(){
+      let html = "";
+
+      for(let i = 0; i < MAX_LIVES; i++){
+        html += i < lives
+          ? "● "
+          : '<span class="lost">●</span> ';
+      }
+
+      heartsEl.innerHTML = html.trim();
+    }
+
+    function updateHangman(){
+      document.querySelectorAll(".part").forEach(part => {
+        const number = Number(part.dataset.part);
+        part.classList.toggle("show", number <= (MAX_LIVES - lives));
+      });
+    }
+
+    function updateKeyboard(letter, state){
+      const key = keyboardEl.querySelector(`[data-letter="${letter}"]`);
+
+      if(!key) return;
+
+      key.disabled = true;
+      key.classList.remove("correct","wrong");
+
+      if(state === "correct"){
+        key.classList.add("correct");
+      }else{
+        key.classList.add("wrong");
+      }
+    }
+
+    function showMessage(text, type = ""){
+      messageEl.textContent = text;
+      messageEl.className = "message";
+
+      if(type){
+        messageEl.classList.add(type);
+      }
+    }
+
+    function allLettersFound(){
+      return [...new Set(answer.replace(/[^a-zñ]/g, ""))]
+        .every(letter => guessed.has(letter));
+    }
+
+    function calculateRoundPoints(){
+      // Más puntos si se acierta con más vidas restantes.
+      return 100 + lives * 25;
+    }
+
+
+    function guessLetter(letter){
+      if(!playing || locked || guessed.has(letter) || wrongLetters.has(letter)) return;
+
+      if(answer.includes(letter)){
+        guessed.add(letter);
+        updateKeyboard(letter, "correct");
+        renderWord();
+
+        if(allLettersFound()){
+          locked = true;
+          solved++;
+          const points = calculateRoundPoints();
+          score += points;
+          scoreEl.textContent = `${score} pts`;
+          showMessage(`¡Correcto! +${points} puntos`, "success");
+
+          setTimeout(nextRound, 1100);
+        }else{
+          showMessage("¡Está! No perdés ninguna vida.", "success");
+        }
+      }else{
+        wrongLetters.add(letter);
+        lives--;
+
+        updateKeyboard(letter, "wrong");
+        updateLives();
+        updateHangman();
+
+        if(lives <= 0){
+          locked = true;
+          revealAnswer();
+
+          showMessage(
+            `Te quedaste sin vidas. Era ${answer.toUpperCase()}.`,
+            "error"
+          );
+
+          setTimeout(nextRound, 1400);
+        }else{
+          showMessage(`La letra ${letter.toUpperCase()} no está.`, "error");
+        }
+      }
+    }
+
+    function revealAnswer(){
+      answer.split("").forEach(letter => {
+        if(letter !== " " && !guessed.has(letter)){
+          missed.add(letter);
+          guessed.add(letter);
+        }
+      });
+
+      renderWord();
+    }
+
+    function nextRound(){
+      if(round >= TOTAL_ROUNDS){
+        finishGame();
+        return;
+      }
+
+      round++;
+      startRound();
+    }
+
+    function startRound(){
+      locked = false;
+      guessed = new Set();
+      wrongLetters = new Set();
+      missed = new Set();
+      lives = MAX_LIVES;
+      playing = true;
+
+      chooseConcept();
+
+      roundEl.textContent = `Ronda ${round} / ${TOTAL_ROUNDS}`;
+      scoreEl.textContent = `${score} pts`;
+      renderHint();
+
+      createKeyboard();
+      renderWord();
+      updateLives();
+      updateHangman();
+      showMessage("Elegí una letra.");
+    }
+
+    function finishGame(){
+      playing = false;
+      gameContent.style.display = "none";
+      finalScreen.classList.add("show");
+      finalScoreEl.textContent = `${score} pts`;
+
+      const shareBox = document.getElementById("shareBox");
+      shareBox.innerHTML = "";
+      if(window.QFARanking)QFARanking.montar(shareBox,{juego:"ahorcado",modo:"Estándar",titulo:"Ahorcado de diseño",puntos:score});
+      if(window.QFAResultado){
+        QFAResultado.montar(shareBox, () => ({
+          juego:"El ahorcado del diseño",
+          puntos:score,
+          detalle:[["RONDAS", String(TOTAL_ROUNDS)], ["PALABRAS ADIVINADAS", `${solved} de ${TOTAL_ROUNDS}`]]
+        }));
+      }
+    }
+
+    function restartGame(){
+      round = 1;
+      score = 0;
+      solved = 0;
+      previousWords = [];
+      finalScreen.classList.remove("show");
+      startScreen.hidden = true;
+      gameContent.style.display = "";
+      startRound();
+    }
+
+    document.addEventListener("keydown", event => {
+      // solo cuando se está jugando, y sin atajos (Ctrl+R, Cmd+C, etc.)
+      if(!playing || locked) return;
+      if(event.ctrlKey || event.metaKey || event.altKey) return;
+
+      const key = normalize(event.key || "");
+
+      if(/^[a-zñ]$/.test(key)){
+        guessLetter(key);
+      }
+    });
+
+    playAgain.addEventListener("click", restartGame);
+    window.addEventListener("resize", () => { if(playing) renderWord(); });
+
+    function startGame(){
+      startScreen.hidden = true;
+      gameContent.style.display = "";
+      finalScreen.classList.remove("show");
+      round = 1;
+      score = 0;
+      solved = 0;
+      previousWords = [];
+      startRound();
+    }
+
+    document.getElementById("startBtn").addEventListener("click", startGame);
+  </script>
+<style id="embebido">.embebido html,html.embebido,html.embebido body{background:transparent!important;min-height:0!important;height:auto!important}html.embebido body>*{min-height:0!important}html.embebido .volver{display:none!important}</style>
+<script>if(top!==self){document.documentElement.classList.add('embebido');const s=()=>parent.postMessage({altoJuego:document.body.getBoundingClientRect().height+16},'*');addEventListener('load',()=>{s();new ResizeObserver(s).observe(document.body)})}</script>
+<footer>
+ <div class="gran" aria-hidden="true"><img src="../img/Marca_qfadesign_blanco.svg" alt=""></div>
+ <div class="pie"><div class="redes"><a href="https://www.instagram.com/qfadesign/" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@qfadesign" target="_blank" rel="noopener">Tiktok</a><a href="https://www.behance.net/facundocruz5" target="_blank" rel="noopener">Behance</a><a href="https://www.linkedin.com/in/facundo-cruz-19a581303/" target="_blank" rel="noopener">LinkedIn</a></div></div>
+ <p class="firma">web diseñada por qfadesign</p>
+</footer>
+</body>
+</html>
