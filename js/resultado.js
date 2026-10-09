@@ -132,7 +132,14 @@
   function montar(contenedor, obtener){
     const caja = document.createElement('div');
     caja.className = 'resultado-img';
-    caja.innerHTML = '<div class="resultado-prev" hidden></div><div class="resultado-acc"><button type="button" class="primary res-compartir">Compartir resultado</button><button type="button" class="res-bajar">Descargar imagen</button></div><div class="resultado-msg" aria-live="polite"></div>';
+    caja.innerHTML = '<div class="resultado-prev" hidden></div><div class="resultado-acc"><button type="button" class="primary res-compartir">Compartir</button><button type="button" class="res-bajar">Descargar imagen</button></div><div class="resultado-msg" aria-live="polite"></div>';
+    const abrir = document.createElement('button');
+    abrir.type = 'button';
+    abrir.className = 'res-bajar res-abrir';
+    abrir.textContent = 'Compartir mi resultado';
+    abrir.setAttribute('aria-expanded', 'false');
+    caja.hidden = true;
+    contenedor.appendChild(abrir);
     contenedor.appendChild(caja);
 
     const prev = caja.querySelector('.resultado-prev');
@@ -190,8 +197,19 @@
       msg.textContent = 'Tu navegador no puede compartir directo: se descargó la imagen para que la subas donde quieras.';
     });
 
-    // vista previa automática apenas aparece el resultado
-    generar().then(() => { msg.textContent = ''; }).catch(() => {});
+    // la imagen y los botones aparecen recién cuando la persona aprieta "Compartir mi resultado"
+    let generada = false;
+    abrir.addEventListener('click', () => {
+      const abierto = caja.hidden;
+      caja.hidden = !abierto;
+      abrir.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+      abrir.textContent = abierto ? 'Cerrar' : 'Compartir mi resultado';
+      if (abierto && !generada) {
+        generada = true;
+        msg.textContent = 'Generando imagen…';
+        generar().then(() => { msg.textContent = ''; }).catch(() => { generada = false; msg.textContent = 'No se pudo generar la imagen.'; });
+      }
+    });
     return { regenerar: generar };
   }
 

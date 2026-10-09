@@ -205,26 +205,43 @@
     var wrap = box.closest ? box.closest('.inicio') : null;
     if (!activo()) { box.remove(); if (wrap) wrap.classList.add('sin-rank'); return; }
     box.textContent = '';
-    box.appendChild(el('span', 'rank-tag', 'Los 3 mejores'));
+    box.classList.remove('abierto');
+    var etiqueta = el('span', 'rank-tag', 'Los 3 mejores');
+    box.appendChild(etiqueta);
     var cuerpo = el('div', 'rank-podio-cuerpo');
     box.appendChild(cuerpo);
     cuerpo.appendChild(el('p', 'rank-msg', 'Cargando…'));
     var yo = leer();
-    rpc('top_ranking', { p_juego: juego, p_modo: modo, p_limite: 3 }).then(function(filas){
+    rpc('top_ranking', { p_juego: juego, p_modo: modo, p_limite: 50 }).then(function(filas){
       cuerpo.textContent = '';
       if (!filas || !filas.length) {
         cuerpo.appendChild(el('p', 'rank-msg', 'Todavía no hay puntajes. Podés ser el primero.'));
         return;
       }
       var ol = el('ol', 'rank-podio');
+      ol.id = 'rank-lista-' + juego;
       filas.forEach(function(f, i){
-        var li = el('li', (yo && f.apodo.toLowerCase() === yo.apodo.toLowerCase() && f.tag === yo.tag) ? 'rank-yo-fila' : '');
+        var propio = yo && f.apodo.toLowerCase() === yo.apodo.toLowerCase() && f.tag === yo.tag;
+        var li = el('li', ((i > 2 ? 'rank-extra ' : '') + (propio ? 'rank-yo-fila' : '')).trim());
         li.appendChild(el('span', 'pos', String(i + 1)));
         li.appendChild(el('span', 'nom', f.apodo + '#' + f.tag));
         li.appendChild(el('span', 'pts', f.puntaje + ' pts'));
         ol.appendChild(li);
       });
       cuerpo.appendChild(ol);
+      if (filas.length > 3) {
+        var btn = el('button', 'rank-link rank-ver', 'Ver ranking completo ↓');
+        btn.type = 'button';
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-controls', ol.id);
+        btn.addEventListener('click', function(){
+          var abierto = box.classList.toggle('abierto');
+          btn.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+          btn.textContent = abierto ? 'Ver solo el top 3 ↑' : 'Ver ranking completo ↓';
+          etiqueta.textContent = abierto ? 'Ranking completo' : 'Los 3 mejores';
+        });
+        cuerpo.appendChild(btn);
+      }
     }).catch(function(){
       cuerpo.textContent = '';
       cuerpo.appendChild(el('p', 'rank-msg', 'No pudimos cargar el ranking ahora.'));
