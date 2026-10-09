@@ -18,12 +18,14 @@ footer{position:relative;z-index:1}
 
 /* títulos: igual que el resto del sitio (heavy cursiva + palabra con contorno) */
 header,.header{text-align:center;margin-bottom:clamp(22px,3vw,34px)!important}
-header h1,.header h1,.big-title{font-family:var(--fh)!important;font-weight:900!important;font-style:italic;color:#fff!important;line-height:.94!important;letter-spacing:-.02em!important;margin:0}
-header h1,.header h1{font-size:clamp(40px,8.4vw,104px)!important}
-.big-title{font-size:clamp(38px,7.6vw,84px)!important;margin-bottom:16px}
-.big-title em{color:#fff;font-style:italic}
-.hueco{color:transparent!important;-webkit-text-stroke:clamp(1.5px,.28vw,3.5px) #fff}
-header p,.subtitle{font-size:clamp(16px,1.6vw,20px)!important;color:var(--muted)!important;margin:14px auto 0!important;max-width:560px;line-height:1.4;font-weight:400}
+/* títulos como los stickers del sitio: chapita crema con letra azul heavy cursiva, apenas torcida.
+   Todo el título lleva el mismo tratamiento (nada de media palabra con contorno). */
+header h1,.header h1,h1.big-title{font-family:var(--fh)!important;font-weight:900!important;font-style:italic;color:var(--az-f)!important;line-height:1!important;letter-spacing:-.02em!important;margin:0 auto;display:inline-block;max-width:100%;box-sizing:border-box;background:var(--crema);padding:.14em .42em .2em;border-radius:.3em;rotate:-1.5deg;box-shadow:inset 0 1px 0 #fff,0 18px 44px rgba(0,0,0,.6)}
+header h1,.header h1{font-size:clamp(32px,6.2vw,72px)!important}
+h1.big-title{font-size:clamp(32px,6vw,68px)!important;margin-bottom:22px}
+h2.big-title{font-family:var(--fh)!important;font-weight:900!important;font-style:italic;color:#fff!important;line-height:.98!important;letter-spacing:-.02em!important;margin:0 0 14px;font-size:clamp(34px,6vw,64px)!important}
+.hueco{color:inherit!important;-webkit-text-stroke:0}
+header p,.subtitle{font-size:clamp(16px,1.6vw,20px)!important;color:var(--muted)!important;margin:20px auto 0!important;max-width:560px;line-height:1.4;font-weight:400}
 
 /* etiquetas chiquitas = pastillas como los filtros del portfolio */
 .eyebrow,.label,.target-label,.start-label,.final-label{display:inline-block;font-family:var(--fp)!important;font-weight:400!important;font-size:12px!important;letter-spacing:.05em!important;text-transform:uppercase;color:#fff!important;border:2px solid #fff;border-radius:99px;padding:7px 16px;margin-bottom:16px!important}
@@ -50,14 +52,6 @@ header p,.subtitle{font-size:clamp(16px,1.6vw,20px)!important;color:var(--muted)
 .primary:active:not(:disabled),.play-again:active{scale:.94;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 3px 8px rgba(0,0,0,.3)!important;transition-duration:.25s,.25s,.08s,.12s,.2s,.35s}
 .primary:disabled{opacity:.4;cursor:not-allowed}
 
-/* dificultad */
-.diff-btn{min-height:0!important;font-family:var(--fh)!important;font-weight:900!important;font-style:italic;text-transform:none;font-size:16px!important;letter-spacing:0;padding:11px 22px 12px!important;border:1px solid var(--v-borde)!important;border-radius:99px!important;background:var(--v-fondo)!important;-webkit-backdrop-filter:var(--v-blur);backdrop-filter:var(--v-blur);box-shadow:var(--v-luz);color:var(--crema)!important;transition:background .2s,color .2s,box-shadow .3s}
-.diff-btn:hover,.diff-btn.active{background:var(--crema)!important;color:var(--az-f)!important;transform:none!important;box-shadow:var(--plato)}
-.difficulty-btn{border:1px solid var(--v-borde)!important;border-radius:20px!important;background:var(--v-fondo)!important;-webkit-backdrop-filter:var(--v-blur);backdrop-filter:var(--v-blur);box-shadow:var(--v-luz);transition:background .25s,color .25s,transform .2s!important}
-.difficulty-btn strong{font-family:var(--fh);font-weight:900;font-style:italic;color:#fff!important;font-size:15px!important}
-.difficulty-btn span{color:var(--muted)!important;font-size:12px!important;font-weight:400!important}
-.difficulty-btn:hover{background:#fff!important;transform:translateY(-3px)!important}
-.difficulty-btn:hover strong,.difficulty-btn:hover span{color:var(--az-f)!important}
 
 /* color: cajas, timer, inputs, sliders */
 .target-color{border-radius:22px!important;border:1px solid rgba(255,255,255,.3)!important}
