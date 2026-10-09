@@ -108,3 +108,9 @@ html.pausa *,html.pausa *::before,html.pausa *::after{animation-play-state:pause
  .jh-tx{margin-top:0}
 }
 @media(prefers-reduced-motion:reduce){.jh-img{transition:none}}
+
+/* HOME: títulos de Herramientas y Jueguitos = stickers (bloques cortos) */
+.hr-home h3.hr-st{margin:16px 0 14px;line-height:0;font-size:0}
+.hr-st img{display:block;width:min(calc(var(--vw)*.62px),88%);height:auto;margin-inline:auto;rotate:-2deg;filter:var(--st-sombra)}
+.jh-home{max-width:960px}
+.hr-home p{margin-bottom:22px}
