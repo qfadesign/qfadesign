@@ -77,11 +77,10 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:23px;height:23px;b
 <body class="f-juegos"><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca" data-t="Acerca de">Acerca de</a></li><li><a href="../portfolio" data-t="Portfolio">Portfolio</a></li><li><a href="../herramientas" data-t="Herramientas">Herramientas</a></li><li><a href="../jueguitos" data-t="Jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../contacto" data-t="Contacto">Contacto</a></li></ul></nav>
 <div class="vol-wrap"><a class="volver" href="../jueguitos">← Todos los jueguitos</a></div>
 <div class="app">
-<header><h1>Adivina el <span class="hueco">color</span></h1><p>Entrená tu ojo. Recreá el color que viste.</p></header>
+<header><h1>Adivina el color</h1><p>Entrená tu ojo. Recreá el color que viste.</p></header>
 <main class="screen">
 <section id="introScreen" class="card intro">
-<h2>¿Qué tan preciso es tu ojo?</h2><p>Observá un color durante unos segundos y después intentá recrearlo usando los controles RGB.</p>
-<div class="difficulty"><button class="diff-btn active" data-difficulty="easy" type="button">Fácil · 3s + 10s</button><button class="diff-btn" data-difficulty="medium" type="button">Medio · 2s + 7s</button><button class="diff-btn" data-difficulty="hard" type="button">Difícil · 1,2s + 5s</button></div>
+<h2>¿Qué tan preciso es tu ojo?</h2><p>Mirá un color durante 3 segundos y después recrealo con los controles RGB. Tenés 15 segundos para igualarlo.</p>
 <div class="actions"><button id="startBtn" class="primary" type="button">Empezar</button></div>
 </section>
 <section id="gameScreen" class="screen hidden">
@@ -104,7 +103,7 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:23px;height:23px;b
    <div id="copyLabel" class="target-label">Recreá el color que viste</div>
    <div id="liveBox" class="target-color live-box"><div id="liveUser" class="half"><span class="tag">Tu color</span></div><div id="liveTarget" class="half"><span class="tag">Original</span></div></div>
   </div>
-  <div id="copyMessage" class="message">Tenés 10 segundos.</div>
+  <div id="copyMessage" class="message">Tenés 15 segundos.</div>
 
   <div id="controls" class="rgb-panel">
    <div class="rgb-row"><label class="r-label">R</label><input id="rRange" class="rgb-r" type="range" min="0" max="255" value="128"><input id="rValue" class="rgb-value" type="number" min="0" max="255" value="128" aria-label="Rojo"></div>
@@ -163,7 +162,6 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:23px;height:23px;b
   const ranges={r:$('rRange'),g:$('gRange'),b:$('bRange')};
   const values={r:$('rValue'),g:$('gValue'),b:$('bValue')};
 
-  let difficulty='easy';
   let rounds=5;
   let currentRound=0;
   let score=0;
@@ -171,10 +169,9 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:23px;height:23px;b
   let countdown=null;
   let locked=false;
   let sims=[];
-  const diffNames={easy:'Fácil',medium:'Medio',hard:'Difícil'};
 
-  const times={easy:3,medium:2,hard:1.2};
-  const copyTimes={easy:10,medium:7,hard:5};
+  const MEMO_TIME=3;   // segundos para memorizar
+  const COPY_TIME=15;  // segundos para recrear el color
 
   const rgb=c=>`rgb(${c.r}, ${c.g}, ${c.b})`;
   const hex=c=>'#'+[c.r,c.g,c.b].map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase();
@@ -237,7 +234,7 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:23px;height:23px;b
     copyLabel.textContent='Recreá el color que viste';
     setUserColor(getUserColor());
 
-    const copyTime=copyTimes[difficulty];
+    const copyTime=COPY_TIME;
     copyMessage.textContent=`Tenés ${copyTime} segundos para copiarlo.`;
     submitBtn.disabled=false;
 
@@ -274,7 +271,7 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:23px;height:23px;b
     messageEl.textContent='Memorizá el color…';
     submitBtn.disabled=true;
 
-    const total=times[difficulty];
+    const total=MEMO_TIME;
     let remaining=total;
 
     timerEl.textContent=Number.isInteger(total)?total:total.toFixed(1);
@@ -336,14 +333,6 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:23px;height:23px;b
     requestAnimationFrame(()=>requestAnimationFrame(()=>liveBox.classList.add('split')));
   }
 
-  document.querySelectorAll('.diff-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      difficulty=btn.dataset.difficulty;
-    });
-  });
-
   Object.keys(ranges).forEach(k=>{
     ranges[k].addEventListener('input',()=>{
       values[k].value=ranges[k].value;
@@ -370,9 +359,9 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:23px;height:23px;b
       const media=Math.round(sims.reduce((a,b)=>a+b,0)/sims.length);
       const mejor=Math.max(...sims);
       shareBox.innerHTML='';
-      if(window.QFARanking)QFARanking.montar(shareBox,{juego:'color',modo:diffNames[difficulty],titulo:'Adivina el color',puntos:score});
+      if(window.QFARanking)QFARanking.montar(shareBox,{juego:'color',modo:'Estándar',titulo:'Adivina el color',puntos:score});
       if(window.QFAResultado){
-        QFAResultado.montar(shareBox,()=>({juego:'Adivina el color',puntos:score,dificultad:diffNames[difficulty],detalle:[['RONDAS',String(rounds)],['PRECISIÓN MEDIA',media+'%'],['MEJOR RONDA',mejor+'%']]}));
+        QFAResultado.montar(shareBox,()=>({juego:'Adivina el color',puntos:score,detalle:[['RONDAS',String(rounds)],['TIEMPO PARA RECREAR','15 s'],['PRECISIÓN MEDIA',media+'%'],['MEJOR RONDA',mejor+'%']]}));
       }
     }else{
       setUserColor({r:128,g:128,b:128});
