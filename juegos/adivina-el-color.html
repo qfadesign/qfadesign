@@ -75,13 +75,20 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:23px;height:23px;b
 <link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/ranking-config.js" defer></script><script src="../js/ranking.js" defer></script>
 </head>
 <body class="f-juegos"><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca" data-t="Acerca de">Acerca de</a></li><li><a href="../portfolio" data-t="Portfolio">Portfolio</a></li><li><a href="../herramientas" data-t="Herramientas">Herramientas</a></li><li><a href="../jueguitos" data-t="Jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../contacto" data-t="Contacto">Contacto</a></li></ul></nav>
-<div class="vol-wrap"><a class="volver" href="../jueguitos">← Todos los jueguitos</a></div>
+<div class="vol-wrap"><a class="volver" href="../jueguitos" aria-label="Volver a Jueguitos"><span>Volver a</span><img src="../img/stickers/jueguitos.svg" alt="" width="488.7" height="126.74"></a></div>
 <div class="app">
-<header><h1>Adivina el color</h1><p>Entrená tu ojo. Recreá el color que viste.</p></header>
+<header><h1 class="h1-st"><img src="../img/stickers/juego-color.svg" alt="Adivina el color" width="1124.89" height="754.69" decoding="async"></h1><p>Entrená tu ojo. Recreá el color que viste.</p></header>
 <main class="screen">
 <section id="introScreen" class="card intro">
-<h2>¿Qué tan preciso es tu ojo?</h2><p>Mirá un color durante 3 segundos y después recrealo con los controles RGB. Tenés 15 segundos para igualarlo.</p>
-<div class="actions"><button id="startBtn" class="primary" type="button">Empezar</button></div>
+<div class="inicio">
+ <div class="inicio-reglas">
+  <h2>¿Qué tan preciso es tu ojo?</h2>
+  <p>Mirá un color durante 3 segundos y después recrealo con los controles RGB. Tenés 15 segundos para igualarlo.</p>
+  <p>Son 5 rondas: cuanto más parecido te quede, más puntos sumás.</p>
+  <div class="actions"><button id="startBtn" class="primary" type="button">Empezar</button></div>
+ </div>
+ <aside class="rank-top" data-rank-top data-juego="color" data-modo="Estándar" aria-label="Los 3 mejores puntajes"></aside>
+</div>
 </section>
 <section id="gameScreen" class="screen hidden">
  <div class="game-top">

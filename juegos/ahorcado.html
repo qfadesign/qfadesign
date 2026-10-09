@@ -573,21 +573,24 @@
 </head>
 
 <body class="f-juegos"><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca" data-t="Acerca de">Acerca de</a></li><li><a href="../portfolio" data-t="Portfolio">Portfolio</a></li><li><a href="../herramientas" data-t="Herramientas">Herramientas</a></li><li><a href="../jueguitos" data-t="Jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../contacto" data-t="Contacto">Contacto</a></li></ul></nav>
-<div class="vol-wrap"><a class="volver" href="../jueguitos">← Todos los jueguitos</a></div>
+<div class="vol-wrap"><a class="volver" href="../jueguitos" aria-label="Volver a Jueguitos"><span>Volver a</span><img src="../img/stickers/jueguitos.svg" alt="" width="488.7" height="126.74"></a></div>
   <main class="app">
     <header class="header">
-      <div class="eyebrow">JUEGO DE DISEÑO</div>
-      <h1>El ahorcado del diseño</h1>
+      <h1 class="h1-st"><img src="../img/stickers/juego-ahorcado.svg" alt="El ahorcado del diseño" width="1033.95" height="616.51" decoding="async"></h1>
       <p class="subtitle">Adiviná conceptos de diseño gráfico letra por letra.</p>
     </header>
 
     <section class="game-card">
       <div class="start-screen" id="startScreen">
-        <div class="start-label">¿LISTO PARA JUGAR?</div>
+        <div class="inicio">
+         <div class="inicio-reglas">
         <div class="start-title">Cinco palabras, seis vidas</div>
         <p class="start-copy">Adiviná conceptos, tipografías, herramientas, movimientos y diseñadores letra por letra.</p>
         <div class="how-to"><strong>¿Cómo se juega?</strong><p>Descubrí la palabra antes de quedarte sin vidas. Cada letra incorrecta agrega una parte al ahorcado, y la pista te dice de qué se trata.</p></div>
-        <div style="display:flex;justify-content:center;margin-top:26px"><button class="primary" type="button" id="startBtn">Empezar</button></div>
+          <div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div>
+         </div>
+         <aside class="rank-top" data-rank-top data-juego="ahorcado" data-modo="Estándar" aria-label="Los 3 mejores puntajes"></aside>
+        </div>
       </div>
       <div id="gameContent" style="display:none;">
         <div class="top-info">
