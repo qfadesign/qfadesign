@@ -75,7 +75,7 @@
 
     var cabecera = el('div', 'rank-cab');
     cabecera.appendChild(el('span', 'rank-tag', 'Ranking'));
-    cabecera.appendChild(el('strong', 'rank-tit', d.titulo + ' · ' + d.modo));
+    cabecera.appendChild(el('strong', 'rank-tit', d.titulo));
     var cuerpo = el('div', 'rank-cuerpo');
     box.appendChild(cabecera);
     box.appendChild(cuerpo);
