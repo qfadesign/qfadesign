@@ -198,5 +198,44 @@
     if (yo) enviarComoYo(yo); else formulario();
   }
 
-  window.QFARanking = { montar: montar };
+  /* Top 3 para las pantallas de inicio: <aside data-rank-top data-juego="color" data-modo="Estándar"> */
+  function montarTop3(box){
+    var juego = box.getAttribute('data-juego');
+    var modo = box.getAttribute('data-modo') || 'Estándar';
+    var wrap = box.closest ? box.closest('.inicio') : null;
+    if (!activo()) { box.remove(); if (wrap) wrap.classList.add('sin-rank'); return; }
+    box.textContent = '';
+    box.appendChild(el('span', 'rank-tag', 'Los 3 mejores'));
+    var cuerpo = el('div', 'rank-podio-cuerpo');
+    box.appendChild(cuerpo);
+    cuerpo.appendChild(el('p', 'rank-msg', 'Cargando…'));
+    var yo = leer();
+    rpc('top_ranking', { p_juego: juego, p_modo: modo, p_limite: 3 }).then(function(filas){
+      cuerpo.textContent = '';
+      if (!filas || !filas.length) {
+        cuerpo.appendChild(el('p', 'rank-msg', 'Todavía no hay puntajes. Podés ser el primero.'));
+        return;
+      }
+      var ol = el('ol', 'rank-podio');
+      filas.forEach(function(f, i){
+        var li = el('li', (yo && f.apodo.toLowerCase() === yo.apodo.toLowerCase() && f.tag === yo.tag) ? 'rank-yo-fila' : '');
+        li.appendChild(el('span', 'pos', String(i + 1)));
+        li.appendChild(el('span', 'nom', f.apodo + '#' + f.tag));
+        li.appendChild(el('span', 'pts', f.puntaje + ' pts'));
+        ol.appendChild(li);
+      });
+      cuerpo.appendChild(ol);
+    }).catch(function(){
+      cuerpo.textContent = '';
+      cuerpo.appendChild(el('p', 'rank-msg', 'No pudimos cargar el ranking ahora.'));
+    });
+  }
+  function iniciarTop3(){
+    var cajas = document.querySelectorAll('[data-rank-top]');
+    for (var i = 0; i < cajas.length; i++) montarTop3(cajas[i]);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarTop3);
+  else iniciarTop3();
+
+  window.QFARanking = { montar: montar, top3: montarTop3 };
 })();
