@@ -52,6 +52,7 @@
  <a class="mail" href="mailto:qfadesignn@gmail.com">qfadesignn@gmail.com</a>
  <div class="pills"><a href="https://www.instagram.com/qfadesign/" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@qfadesign" target="_blank" rel="noopener">Tiktok</a><a href="https://www.behance.net/facundocruz5" target="_blank" rel="noopener">Behance</a><a href="https://www.linkedin.com/in/facundo-cruz-19a581303/" target="_blank" rel="noopener">LinkedIn</a></div></div>
  <form class="form vid" id="consulta" novalidate>
+  <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
   <label>Nombre<input name="nombre" type="text" autocomplete="name" required placeholder="Tu nombre"></label>
   <label>Tu mail<input name="email" type="email" autocomplete="email" required placeholder="nombre@correo.com"></label>
   <label>Asunto<input name="asunto" type="text" placeholder="Ej: Identidad para mi emprendimiento"></label>
@@ -66,14 +67,5 @@
  <div class="pie"><div class="redes"><a href="https://www.instagram.com/qfadesign/" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@qfadesign" target="_blank" rel="noopener">Tiktok</a><a href="https://www.behance.net/facundocruz5" target="_blank" rel="noopener">Behance</a><a href="https://www.linkedin.com/in/facundo-cruz-19a581303/" target="_blank" rel="noopener">LinkedIn</a></div></div>
  <p class="firma">web diseñada por qfadesign</p>
 </footer>
-<script>
-document.getElementById('consulta').addEventListener('submit',e=>{
- e.preventDefault();const f=e.target,av=document.getElementById('aviso');
- if(!f.nombre.value.trim()||!/^\S+@\S+\.\S+$/.test(f.email.value)||!f.mensaje.value.trim()){av.textContent='Completá tu nombre, un mail válido y tu consulta.';return}
- const asunto=f.asunto.value.trim()||'Consulta desde la web';
- const cuerpo=`${f.mensaje.value.trim()}\n\n— ${f.nombre.value.trim()}\n${f.email.value.trim()}`;
- av.textContent='Se abrirá tu app de correo para enviar el mensaje.';
- location.href=`mailto:qfadesignn@gmail.com?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-});
-</script>
+<script src="js/contacto.js" defer></script>
 </body></html>
