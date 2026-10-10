@@ -190,3 +190,8 @@ header h1.h1-st,.header h1.h1-st,h1.big-title.h1-st{display:block;background:non
 /* ranking del final: nombres largos completos */
 .rank-box{max-width:480px}
 .rank-nom{overflow-wrap:anywhere;white-space:normal;line-height:1.2}
+
+/* ranking: apodo + código de 4 números (y recuperar nombre) */
+.rank-form{flex-wrap:wrap}
+.rank-form input{flex:1 1 140px}
+.rank-form .rank-pin{flex:0 1 112px;text-align:center;letter-spacing:.12em}
