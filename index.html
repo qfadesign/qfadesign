@@ -96,30 +96,6 @@ h2{font-weight:900;font-style:italic;font-size:clamp(28px,3.4vw,46px);line-heigh
 /* zona oscura: el degradé azul se apaga hasta negro y la sección de trabajos vive adentro */
 .oscuro{padding-top:clamp(70px,10vw,150px);background:radial-gradient(55vw 32vw at 100% 38%,rgba(11,117,244,.2),transparent 66%),radial-gradient(42vw 18vw at 0% 52%,rgba(8,71,163,.3),transparent 70%),linear-gradient(180deg,rgba(0,0,0,0) 0,rgba(0,0,0,.55) clamp(70px,10vw,150px),#000 clamp(260px,34vw,460px))}
 .oscuro .mas{margin-top:34px}
-/* trabajos */
-.trabajos{background:none;color:#fff;margin:0 clamp(12px,2vw,32px);display:flex;gap:20px;align-items:center;padding:20px}
-.trabajos h3{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:900;font-style:italic;font-size:clamp(24px,2.6vw,36px);white-space:nowrap;font-family:var(--fh)}
-.card span{position:absolute;left:14px;bottom:12px;background:rgba(255,255,255,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);color:#06214d;padding:5px 12px;border-radius:99px;font-size:14px}
-.rail-wrap{flex:1;min-width:0;position:relative;container-type:inline-size;--cw:clamp(250px,62cqw,460px)}
-.rail{display:flex;gap:clamp(14px,2vw,26px);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:22px calc(50cqw - var(--cw)/2) 44px;cursor:grab;overscroll-behavior-x:contain;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-.rail::-webkit-scrollbar{display:none}
-.rail.arrastrando{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
-.rail.arrastrando .card{pointer-events:none}
-.card{flex:0 0 var(--cw);aspect-ratio:4/3;border-radius:22px;scroll-snap-align:center;display:flex;align-items:flex-end;padding:16px;color:#fff;font-weight:900;font-style:italic;font-size:20px;background-size:cover;background-position:center;position:relative;overflow:hidden;scale:var(--s,1);opacity:var(--o,1);box-shadow:0 22px 44px rgba(0,0,0,.5);user-select:none;-webkit-user-drag:none;font-family:var(--fh)}
-.ctrl{display:flex;align-items:center;justify-content:center;gap:18px;padding-bottom:4px}
-.flecha{width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font:900 20px var(--fh);cursor:pointer;display:grid;place-items:center;transition:background .25s,color .25s,scale .25s}
-.flecha:hover{background:#fff;color:var(--azul-f);scale:1.08}
-.flecha:disabled{opacity:.3;cursor:default;scale:1;background:rgba(255,255,255,.12);color:#fff}
-.puntos{display:flex;gap:8px}
-.puntos button{width:10px;height:10px;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.3);cursor:pointer;transition:width .35s cubic-bezier(.2,.8,.2,1),background .25s}
-.puntos button[aria-current=true]{width:30px;background:#fff}
-.c1{background-image:url(img/arbol.jpg)}
-.c2{background-image:url(img/bleko.jpg)}
-.c3{background-image:url(img/dulcemente.jpg)}
-.c4{background-image:url(img/miga.jpg)}
-.c5{background-image:url(img/ros.jpg)}
-.c6{background-image:url(img/trazo.jpg)}
-.c7{background-image:url(img/f1.jpg)}
 .mas{text-align:center;margin:26px 0 70px}
 .ayuda{text-align:center;padding:0 20px 28px}
 .ayuda h3{font-weight:900;font-style:italic;font-size:clamp(20px,2vw,26px);font-family:var(--fh)}
@@ -136,9 +112,7 @@ body .btn.claro.btn.btn:hover,body .btn.claro.btn.btn:focus-visible,body .btn.ne
 
 /* botones del hero: píldoras en fila, con flecha que se desliza */
 .intro .acciones{flex-direction:row;flex-wrap:wrap;gap:10px;margin-top:6px}
-.intro .acciones .btn{flex:1 1 auto;display:inline-flex;align-items:center;justify-content:center;gap:.55em;white-space:nowrap;border-radius:99px;padding:15px clamp(20px,2.2vw,30px) 16px;font-size:clamp(15px,1.25vw,18px);letter-spacing:.005em}
-.intro .acciones .btn:not(.claro){background:linear-gradient(180deg,#fff,rgba(249,251,242,.88));border:1px solid rgba(255,255,255,.95);box-shadow:inset 0 1px 0 #fff,0 12px 28px rgba(0,20,70,.38)}
-.intro .acciones .btn.claro{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 22px rgba(0,0,0,.2)}
+.intro .acciones .btn{flex:1 1 auto;display:inline-flex;align-items:center;justify-content:center;gap:.55em;white-space:nowrap;border-radius:18px;padding:15px clamp(20px,2.2vw,30px) 16px;font-size:clamp(15px,1.25vw,18px);letter-spacing:.005em}
 .btn .fl{display:inline-block;font-style:normal;transition:translate .3s cubic-bezier(.2,.8,.2,1)}
 .btn:hover .fl,.btn:focus-visible .fl{translate:5px 0}
 
@@ -153,8 +127,6 @@ body .btn.claro.btn.btn:hover,body .btn.claro.btn.btn:focus-visible,body .btn.ne
  .intro .bajada{font-size:clamp(15px,4.2vw,17px)}
  .intro .btn{text-align:center}
  .sobre{grid-template-columns:1fr}.sobre img{justify-self:center}
- .trabajos{flex-direction:column;align-items:stretch;padding:18px 8px 14px}.trabajos h3{writing-mode:horizontal-tb;transform:none;padding-left:12px}
- .rail-wrap{--cw:clamp(230px,74cqw,420px)}
 }
 @media(max-height:700px) and (min-width:761px),(max-height:560px) and (min-width:481px){
  .intro{width:min(580px,56vw);gap:10px;padding:16px 20px;margin-bottom:16px}
@@ -206,28 +178,32 @@ body .btn.claro.btn.btn:hover,body .btn.claro.btn.btn:focus-visible,body .btn.ne
  <p class="lema" id="herramientas">Acá vas a encontrar proyectos, recursos y algunas cosas para jugar. Ojalá algo te inspire o te ayude a mirar lo cotidiano de otra manera.</p>
 
  <div class="oscuro">
- <section class="trabajos" id="portfolio" aria-label="Últimos trabajos">
-  <h3>Últimos trabajos</h3>
-  <div class="rail-wrap"><div class="rail" tabindex="-1">
-   <a class="card c1" href="proyecto-arbol" aria-label="Proyecto Árbol"><span>Árbol</span></a><a class="card c2" href="proyecto-bleko" aria-label="Proyecto Bleko"><span>Bleko</span></a><a class="card c3" href="proyecto-dulcemente" aria-label="Proyecto Dulcemente"><span>Dulcemente</span></a><a class="card c4" href="proyecto-miga" aria-label="Proyecto Miga"><span>Miga</span></a><a class="card c5" href="proyecto-ros" aria-label="Proyecto ROS.exe"><span>ROS.exe</span></a><a class="card c6" href="proyecto-trazo" aria-label="Proyecto Trazo"><span>Trazo</span></a><a class="card c7" href="proyecto-f1" aria-label="Proyecto Infografía F1"><span>Infografía F1</span></a>
+ <section class="trabajos pf" id="portfolio" aria-labelledby="pf-t" style="--n:3">
+  <div class="pf-stage">
+   <h3 id="pf-t" class="hr-st pf-st"><img src="img/stickers/titulo-portfolio.svg" alt="Portfolio" width="445.32" height="124.86" style="--vw:445.32" decoding="async"></h3>
+   <div class="pf-frame">
+   <a class="pf-slide" href="proyecto-bleko"><img class="pf-img" src="img/bleko.jpg" alt="" width="1200" height="825" loading="lazy" decoding="async"><span class="pf-num" aria-hidden="true">01 / 03</span><span class="pf-info"><b>Bleko</b><i>Manual de marca</i><em class="pf-fl" aria-hidden="true">→</em></span></a>
+   <a class="pf-slide" href="proyecto-arbol"><img class="pf-img" src="img/arbol.jpg" alt="" width="1200" height="734" loading="lazy" decoding="async"><span class="pf-num" aria-hidden="true">02 / 03</span><span class="pf-info"><b>Árbol</b><i>Identidad de marca</i><em class="pf-fl" aria-hidden="true">→</em></span></a>
+   <a class="pf-slide" href="proyecto-miga"><img class="pf-img" src="img/miga.jpg" alt="" width="1200" height="675" loading="lazy" decoding="async"><span class="pf-num" aria-hidden="true">03 / 03</span><span class="pf-info"><b>Miga</b><i>Identidad</i><em class="pf-fl" aria-hidden="true">→</em></span></a>
+   </div>
+   <div class="pf-nav" role="group" aria-label="Elegir proyecto"><button type="button" data-i="0"><small>01</small>Bleko</button><button type="button" data-i="1"><small>02</small>Árbol</button><button type="button" data-i="2"><small>03</small>Miga</button></div>
   </div>
-  <div class="ctrl"><button class="flecha" type="button" data-d="-1" aria-label="Trabajo anterior">←</button><div class="puntos" role="group" aria-label="Elegir trabajo"></div><button class="flecha" type="button" data-d="1" aria-label="Trabajo siguiente">→</button></div></div>
  </section>
  <p class="mas" id="jueguitos"><a class="btn claro" style="display:inline-block;padding:13px 34px" href="portfolio">Ver todo el portfolio</a></p>
 
- <section class="hr-home" id="herramientas-home" aria-labelledby="hr-t">
+ <a class="hr-home" id="herramientas-home" href="herramientas">
   <span class="hr-tag">Interactivas</span>
-  <h3 id="hr-t" class="hr-st"><img src="img/stickers/titulo-herramientas.svg" alt="Herramientas" width="672.35" height="107.44" style="--vw:672.35" loading="lazy" decoding="async"></h3>
+  <h3 class="hr-st hr-swap"><img class="st-a" src="img/stickers/titulo-herramientas.svg" alt="Herramientas" width="672.35" height="107.44" style="--vw:672.35" loading="lazy" decoding="async"><img class="st-b" src="img/stickers/herramientas.svg" alt="" aria-hidden="true" width="672.35" height="107.44" style="--vw:672.35" loading="lazy" decoding="async"></h3>
   <p>Presupuestos, paletas, contraste y más, sin instalar nada.</p>
-  <a class="btn negro" href="herramientas">Ver herramientas</a>
- </section>
+  <span class="btn negro">Ver herramientas</span>
+ </a>
 
- <section class="hr-home jh-home" id="juegos-home" aria-labelledby="jh-t">
+ <a class="hr-home jh-home" id="juegos-home" href="jueguitos">
   <span class="hr-tag">Para jugar</span>
-  <h3 id="jh-t" class="hr-st"><img src="img/stickers/titulo-jueguitos.svg" alt="Jueguitos" width="488.7" height="126.74" style="--vw:488.7" loading="lazy" decoding="async"></h3>
+  <h3 class="hr-st hr-swap"><img class="st-a" src="img/stickers/titulo-jueguitos.svg" alt="Jueguitos" width="488.7" height="126.74" style="--vw:488.7" loading="lazy" decoding="async"><img class="st-b" src="img/stickers/jueguitos.svg" alt="" aria-hidden="true" width="488.7" height="126.74" style="--vw:488.7" loading="lazy" decoding="async"></h3>
   <p>Entrená el ojo mientras te despejás un rato.</p>
-  <a class="btn negro" href="jueguitos">Ver jueguitos</a>
- </section>
+  <span class="btn negro">Ver jueguitos</span>
+ </a>
 
  <section class="ayuda" id="contacto">
   <h3>En qué puedo ayudarte</h3>
