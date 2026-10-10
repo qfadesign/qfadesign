@@ -584,9 +584,9 @@
       <div class="start-screen" id="startScreen">
         <div class="inicio">
          <div class="inicio-reglas">
-        <div class="start-title">Cinco palabras, seis vidas</div>
+        <div class="start-title">Cinco palabras, seis vidas, 40 segundos cada una</div>
         <p class="start-copy">Adiviná conceptos, tipografías, herramientas, movimientos y diseñadores letra por letra.</p>
-        <div class="how-to"><strong>¿Cómo se juega?</strong><p>Descubrí la palabra antes de quedarte sin vidas. Cada letra incorrecta agrega una parte al ahorcado, y la pista te dice de qué se trata.</p></div>
+        <div class="how-to"><strong>¿Cómo se juega?</strong><p>Descubrí la palabra antes de quedarte sin vidas. Cada letra incorrecta agrega una parte al ahorcado, y la pista te dice de qué se trata. Tenés 40 segundos por palabra: si se acaba el tiempo, perdés la ronda.</p></div>
           <div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div>
          </div>
          <aside class="rank-top" data-rank-top data-juego="ahorcado" data-modo="Estándar" aria-label="Los 3 mejores puntajes"></aside>
@@ -596,6 +596,11 @@
         <div class="top-info">
           <span id="roundText">Ronda 1 / 5</span>
           <span class="score" id="scoreText">0 pts</span>
+        </div>
+
+        <div class="timer-wrap" aria-live="off">
+          <div class="timer-line"><span>Tiempo</span><span class="timer-number" id="timerNumber">40 s</span></div>
+          <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
         </div>
 
         <div class="hangman-area">
@@ -843,6 +848,47 @@
     const roundEl = document.getElementById("roundText");
     const finalScoreEl = document.getElementById("finalScore");
     const playAgain = document.getElementById("playAgain");
+    const timerFill = document.getElementById("timerFill");
+    const timerNumber = document.getElementById("timerNumber");
+
+    // Tiempo por palabra (en segundos). Se mide con la hora real, así que
+    // cambiar de pestaña no frena el reloj.
+    const ROUND_SECONDS = 40;
+    let timerId = null;
+    let deadline = 0;
+
+    function stopTimer(){
+      clearInterval(timerId);
+      timerId = null;
+    }
+
+    function renderTimer(){
+      const left = Math.max(0, deadline - Date.now());
+      const pct = left / (ROUND_SECONDS * 1000);
+      timerFill.style.width = (pct * 100) + "%";
+      timerFill.classList.toggle("warning", pct <= 0.5 && pct > 0.25);
+      timerFill.classList.toggle("danger", pct <= 0.25);
+      timerNumber.textContent = Math.ceil(left / 1000) + " s";
+      return left;
+    }
+
+    function startTimer(){
+      stopTimer();
+      deadline = Date.now() + ROUND_SECONDS * 1000;
+      renderTimer();
+      timerId = setInterval(() => {
+        if(renderTimer() <= 0) timeUp();
+      }, 100);
+    }
+
+    function timeUp(){
+      stopTimer();
+      if(!playing || locked) return;
+      locked = true;
+      revealAnswer();
+      showMessage(`Se acabó el tiempo. Era ${answer.toUpperCase()}.`, "error");
+      setTimeout(nextRound, 1400);
+    }
 
     // Saca las tildes pero conserva la Ñ (si no, la Ñ se convertía en N)
     function normalize(value){
@@ -1005,6 +1051,7 @@
 
         if(allLettersFound()){
           locked = true;
+          stopTimer();
           solved++;
           const points = calculateRoundPoints();
           score += points;
@@ -1025,6 +1072,7 @@
 
         if(lives <= 0){
           locked = true;
+          stopTimer();
           revealAnswer();
 
           showMessage(
@@ -1079,10 +1127,12 @@
       updateLives();
       updateHangman();
       showMessage("Elegí una letra.");
+      startTimer();
     }
 
     function finishGame(){
       playing = false;
+      stopTimer();
       gameContent.style.display = "none";
       finalScreen.classList.add("show");
       finalScoreEl.textContent = `${score} pts`;
