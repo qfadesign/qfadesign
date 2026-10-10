@@ -188,4 +188,17 @@ a.hr-home:hover .btn,a.hr-home:focus-visible .btn{transform:translateY(-2px)}
 @media(prefers-reduced-motion:no-preference) and (max-width:760px){
  .js .pf-stage{padding-inline:12px}
  .js .pf-frame{flex:none;width:100%;height:auto;max-height:none;aspect-ratio:4/3}
+ /* en celular el bloque ya no ocupa toda la pantalla: mide lo que mide su contenido y queda pegado cerca del menú, así no sobra aire arriba y abajo */
+ .js .trabajos.pf{height:auto;--pf-top:calc(var(--navh,58px) + 3svh)}
+ .js .trabajos.pf::after{content:"";display:block;height:calc(var(--n,3)*60svh)}
+ .js .pf-stage{top:var(--pf-top);height:auto;justify-content:flex-start;gap:clamp(12px,2svh,20px);padding:0 12px 4px}
+}
+
+/* HOME en celular: menos aire entre las secciones que rodean al portfolio */
+@media(max-width:760px){
+ .sobre{padding-bottom:20px}
+ .lema{margin:12px auto 20px}
+ .oscuro{padding-top:clamp(28px,8vw,48px)}
+ .oscuro .mas{margin:18px 0 8px}
+ .oscuro .hr-home{margin-top:clamp(28px,7vw,40px)}
 }
