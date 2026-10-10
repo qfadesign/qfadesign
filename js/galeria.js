@@ -4,7 +4,16 @@
   const sec=document.querySelector('.pg'),fila=sec&&sec.querySelector('.pg-row');
   if(!fila)return;
   const f=[...fila.children];
-  const poner=i=>f.forEach((e,k)=>e.classList.toggle('on',k===i));
+  const cap=sec.querySelector('.pg-cap'),cb=cap.querySelector('b'),ci=cap.querySelector('i');
+  let cur=-1,tm=0;
+  const texto=e=>{cb.textContent=e.dataset.n;ci.textContent=e.dataset.t};
+  const poner=i=>{
+    f.forEach((e,k)=>e.classList.toggle('on',k===i));
+    if(i===cur)return;
+    if(cur<0)texto(f[i]);
+    else{cap.classList.add('cambia');clearTimeout(tm);tm=setTimeout(()=>{texto(f[i]);cap.classList.remove('cambia')},130)}
+    cur=i;
+  };
   poner(0);
   f.forEach((e,k)=>{
     e.addEventListener('pointerenter',ev=>{if(ev.pointerType!=='touch')poner(k)});
