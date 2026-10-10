@@ -134,3 +134,7 @@ html.t-in body>*:not(nav){opacity:0!important;translate:0 14px!important;filter:
 html.t-in body::before{opacity:0}
 /* mientras la página nueva espera, sus animaciones de entrada esperan también */
 html.t-wait *,html.t-wait *::before,html.t-wait *::after{animation-play-state:paused!important}
+
+/* sticker grande de la transición entre páginas de la barra (js/anim.js): aparece centrado y después vuela hasta ser el título */
+.qst{position:fixed;inset:0;margin:auto;z-index:41;width:min(84vw,calc(var(--qw)*1.5px),calc(40vh*var(--qa)));height:auto;max-width:none;pointer-events:none;transform:rotate(-2deg);filter:drop-shadow(0 26px 16px rgba(0,0,0,.42)) drop-shadow(0 4px 6px rgba(0,0,0,.3))}
+html.qst-in.t-in body>*:not(nav){translate:0 0!important;filter:none!important}
