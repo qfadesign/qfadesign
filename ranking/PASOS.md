@@ -11,7 +11,7 @@
 Mientras el archivo de config tenga el texto de ejemplo, el ranking queda apagado y los juegos funcionan igual que antes.
 
 ## Cómo funciona
-- El jugador elige un apodo y, si quiere, un código de 4 números (opcional); el sistema le asigna un número de 4 cifras al azar (`Facu#4821`).
+- El jugador elige un apodo y, si quiere, un código de 4 números (opcional); el sistema le asigna un número correlativo (`Facu#7`: el primer jugador es #1, el segundo #2…; hay que correr `ranking/numeros.sql` una vez).
 - Con apodo + número + código se arma un secreto que queda guardado en su navegador. Solo quien lo tiene puede actualizar los puntajes de ese jugador.
 - Se guarda únicamente el mejor puntaje por jugador, juego y modo (el ranking es por dificultad).
 - Si borra los datos del navegador o juega desde otro dispositivo, toca "Ya jugué antes" y pone apodo, número y código para recuperar su nombre (requiere haber corrido `ranking/recuperar.sql` una vez).

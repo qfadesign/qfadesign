@@ -1,11 +1,11 @@
 -- qfadesign · ranking de jueguitos
 -- Pegar TODO esto en Supabase > SQL Editor > New query > Run.
 
--- 1) Jugadores: apodo + número de 4 cifras + huella del código secreto (nunca se publica)
+-- 1) Jugadores: apodo + número correlativo (1, 2, 3…) + huella del código secreto (nunca se publica)
 create table if not exists public.players (
   id         bigint generated always as identity primary key,
   apodo      text not null check (char_length(apodo) between 2 and 16),
-  tag        text not null check (tag ~ '^[0-9]{4}$'),
+  tag        text not null check (tag ~ '^[0-9]{1,6}$'),
   token_hash text not null,
   created_at timestamptz not null default now()
 );
@@ -50,7 +50,7 @@ begin
   if lower(p_apodo) ~ '(^|[^[:alpha:]])(puto|puta|mierda|verga|pija|forro|sorete|nazi)([^[:alpha:]]|$)'
      or lower(p_apodo) ~ 'hitler|nigg|fuck|cunt'
   then raise exception 'apodo_no_permitido'; end if;
-  if coalesce(p_tag, '') !~ '^[0-9]{4}$' then raise exception 'tag'; end if;
+  if coalesce(p_tag, '') !~ '^[0-9]{1,6}$' then raise exception 'tag'; end if;
   if char_length(coalesce(p_token, '')) < 16 then raise exception 'token'; end if;
 
   v_hash := encode(sha256(convert_to(p_token, 'utf8')), 'hex');
@@ -93,3 +93,10 @@ revoke all on function public.enviar_puntaje(text,text,text,text,text,int) from 
 revoke all on function public.top_ranking(text,text,int) from public;
 grant execute on function public.enviar_puntaje(text,text,text,text,text,int) to anon;
 grant execute on function public.top_ranking(text,text,int) to anon;
+
+-- 6) Números correlativos: el primer jugador es #1, el segundo #2, etc.
+create sequence if not exists public.players_tag_seq start 1;
+create or replace function public.nuevo_numero() returns text
+language sql security definer set search_path = public as $$ select nextval('public.players_tag_seq')::text; $$;
+revoke all on function public.nuevo_numero() from public;
+grant execute on function public.nuevo_numero() to anon;
