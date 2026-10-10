@@ -146,7 +146,7 @@ body .btn.claro.btn.btn:hover,body .btn.claro.btn.btn:focus-visible,body .btn.ne
 <link rel="stylesheet" href="css/anim.css">
 <script src="js/intro.js"></script>
 <script src="js/anim.js"></script>
-<script src="js/carrusel.js" defer></script>
+<script src="js/galeria.js" defer></script><script src="js/carrusel.js" defer></script>
 <script src="js/mouse-stickers.js" defer></script></head>
 <body>
  <nav aria-label="Principal">
@@ -178,15 +178,18 @@ body .btn.claro.btn.btn:hover,body .btn.claro.btn.btn:focus-visible,body .btn.ne
  <p class="lema" id="herramientas">Acá vas a encontrar proyectos, recursos y algunas cosas para jugar. Ojalá algo te inspire o te ayude a mirar lo cotidiano de otra manera.</p>
 
  <div class="oscuro">
- <section class="trabajos pf" id="portfolio" aria-labelledby="pf-t" style="--n:3">
-  <div class="pf-stage">
+ <section class="trabajos pg" id="portfolio" aria-labelledby="pf-t">
+  <div class="pg-wrap">
    <h3 id="pf-t" class="hr-st pf-st"><img src="img/stickers/titulo-portfolio.svg" alt="Portfolio" width="445.32" height="124.86" style="--vw:445.32" decoding="async"></h3>
-   <div class="pf-frame">
-   <a class="pf-slide" href="proyecto-bleko"><img class="pf-img" src="img/bleko.webp" alt="" width="1200" height="825" loading="lazy" decoding="async"><span class="pf-num" aria-hidden="true">01 / 03</span><span class="pf-info"><b>Bleko</b><i>Manual de marca</i><em class="pf-fl" aria-hidden="true">→</em></span></a>
-   <a class="pf-slide" href="proyecto-arbol"><img class="pf-img" src="img/arbol.webp" alt="" width="1200" height="734" loading="lazy" decoding="async"><span class="pf-num" aria-hidden="true">02 / 03</span><span class="pf-info"><b>Árbol</b><i>Identidad de marca</i><em class="pf-fl" aria-hidden="true">→</em></span></a>
-   <a class="pf-slide" href="proyecto-miga"><img class="pf-img" src="img/miga.webp" alt="" width="1200" height="675" loading="lazy" decoding="async"><span class="pf-num" aria-hidden="true">03 / 03</span><span class="pf-info"><b>Miga</b><i>Identidad</i><em class="pf-fl" aria-hidden="true">→</em></span></a>
+   <div class="pg-row">
+   <a class="pg-s" href="proyecto-arbol" style="--i:0"><img src="img/arbol.webp" alt="" loading="lazy" decoding="async"><span class="pg-v" aria-hidden="true">Árbol</span><span class="pg-info"><b>Árbol</b><i>Identidad de marca</i><em class="pg-fl" aria-hidden="true">→</em></span></a>
+   <a class="pg-s" href="proyecto-bleko" style="--i:1"><img src="img/bleko.webp" alt="" loading="lazy" decoding="async"><span class="pg-v" aria-hidden="true">Bleko</span><span class="pg-info"><b>Bleko</b><i>Mentes en acción · manual de marca</i><em class="pg-fl" aria-hidden="true">→</em></span></a>
+   <a class="pg-s" href="proyecto-dulcemente" style="--i:2"><img src="img/dulcemente.webp" alt="" loading="lazy" decoding="async"><span class="pg-v" aria-hidden="true">Dulcemente</span><span class="pg-info"><b>Dulcemente</b><i>Pastelería · identidad</i><em class="pg-fl" aria-hidden="true">→</em></span></a>
+   <a class="pg-s" href="proyecto-miga" style="--i:3"><img src="img/miga.webp" alt="" loading="lazy" decoding="async"><span class="pg-v" aria-hidden="true">Miga</span><span class="pg-info"><b>Miga</b><i>Cafetería y panadería de especialidad</i><em class="pg-fl" aria-hidden="true">→</em></span></a>
+   <a class="pg-s" href="proyecto-ros" style="--i:4"><img src="img/ros.webp" alt="" loading="lazy" decoding="async"><span class="pg-v" aria-hidden="true">ROS.exe</span><span class="pg-info"><b>ROS.exe</b><i>Video presentación · Motion graphic</i><em class="pg-fl" aria-hidden="true">→</em></span></a>
+   <a class="pg-s" href="proyecto-trazo" style="--i:5"><img src="img/trazo.webp" alt="" loading="lazy" decoding="async" style="object-position:center 40%"><span class="pg-v" aria-hidden="true">Trazo</span><span class="pg-info"><b>Trazo</b><i>Revista de diseño gráfico · Editorial</i><em class="pg-fl" aria-hidden="true">→</em></span></a>
+   <a class="pg-s" href="proyecto-f1" style="--i:6"><img src="img/f1.webp" alt="" loading="lazy" decoding="async"><span class="pg-v" aria-hidden="true">Infografía F1</span><span class="pg-info"><b>Infografía F1</b><i>Un fin de semana en la Fórmula 1 · Editorial</i><em class="pg-fl" aria-hidden="true">→</em></span></a>
    </div>
-   <div class="pf-nav" role="group" aria-label="Elegir proyecto"><button type="button" data-i="0"><small>01</small>Bleko</button><button type="button" data-i="1"><small>02</small>Árbol</button><button type="button" data-i="2"><small>03</small>Miga</button></div>
   </div>
  </section>
  <p class="mas" id="jueguitos"><a class="btn claro" style="display:inline-block;padding:13px 34px" href="portfolio">Ver todo el portfolio</a></p>
