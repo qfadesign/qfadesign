@@ -104,7 +104,7 @@ addEventListener('DOMContentLoaded',()=>{
   // portfolio de la home: la sección queda pegada a la pantalla y, mientras se scrollea, cambia el proyecto que se ve
   const pf=document.querySelector('.pf');
   if(pf){
-    const slides=[...pf.querySelectorAll('.pf-slide')],btns=[...pf.querySelectorAll('.pf-nav button')],n=slides.length;
+    const stage=pf.querySelector('.pf-stage'),slides=[...pf.querySelectorAll('.pf-slide')],btns=[...pf.querySelectorAll('.pf-nav button')],n=slides.length;
     pf.style.setProperty('--n',n);
     let cur=-1,tk=false;
     const poner=i=>{
@@ -114,16 +114,16 @@ addEventListener('DOMContentLoaded',()=>{
     };
     const medir=()=>{
       tk=false;
-      const r=pf.getBoundingClientRect(),rango=r.height-innerHeight;
-      const p=rango>0?Math.max(0,Math.min(1,-r.top/rango)):0;
+      const r=pf.getBoundingClientRect(),rango=r.height-stage.offsetHeight,top0=parseFloat(getComputedStyle(stage).top)||0;
+      const p=rango>0?Math.max(0,Math.min(1,(top0-r.top)/rango)):0;
       const i=Math.min(n-1,Math.floor(p*n));
       poner(i);pf.style.setProperty('--lp',(p*n-i).toFixed(3));
     };
     addEventListener('scroll',()=>{if(!tk){tk=true;requestAnimationFrame(medir)}},{passive:true});
     addEventListener('resize',medir);medir();
     btns.forEach((b,k)=>b.addEventListener('click',()=>{
-      const rango=pf.offsetHeight-innerHeight,top=pf.getBoundingClientRect().top+scrollY;
-      scrollTo({top:top+rango*(k+.5)/n,behavior:'smooth'});
+      const rango=pf.offsetHeight-stage.offsetHeight,top0=parseFloat(getComputedStyle(stage).top)||0,top=pf.getBoundingClientRect().top+scrollY;
+      scrollTo({top:top-top0+rango*(k+.5)/n,behavior:'smooth'});
     }));
     new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){pf.classList.add('in');o.disconnect()}},{rootMargin:'0px 0px -12% 0px'}).observe(pf);
   }
