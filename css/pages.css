@@ -106,6 +106,11 @@ h2{font-weight:900;font-style:italic;line-height:1;font-family:var(--fh)}
 .form input:focus-visible,.form textarea:focus-visible{outline:3px solid #000;outline-offset:2px;box-shadow:0 0 0 6px #fff}
 .form textarea{min-height:160px;resize:vertical}.form ::placeholder{color:#4a5a75;opacity:1}
 .form button{justify-self:start;font-size:15px}.aviso{font-size:15px;min-height:1.4em}
+.form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+.form button:disabled{opacity:.7;cursor:progress}
+.form input[aria-invalid=true],.form textarea[aria-invalid=true]{border-color:#ff8f8f}
+.aviso.ok,.aviso.err{padding:12px 18px;border-radius:16px;font-weight:700;line-height:1.4;background:var(--crema,#f9fbf2);color:#06214d}
+.aviso.err{color:#7a1b1b}.aviso.err a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 
 @media(max-width:980px) and (min-width:761px){.qh .vid{grid-column:span 3}}
 @media(max-width:860px){.cn{grid-template-columns:1fr}.hg{grid-template-columns:1fr auto}.hg p{grid-column:1/2;grid-row:2}}
