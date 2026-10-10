@@ -689,3 +689,9 @@ html:has(.f-herramientas){scrollbar-gutter:stable}
 @supports not (grid-template-rows:0fr){.hl-p{display:none}.hl.open>.hl-p{display:block}}
 /* sin aspect-ratio: las tarjetas no quedan aplastadas */
 @supports not (aspect-ratio:1){.tl{min-height:170px}.tl-ic{height:clamp(46px,5vw,60px)}}
+
+/* PORTFOLIO: tarjetas con inclinación 3D y reflejo (js/tilt.js) */
+.pj.tilt{--rx:0deg;--ry:0deg;--mx:50%;--my:50%}
+.pj.tilt::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;pointer-events:none;opacity:0;background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.34),transparent 55%);transition:opacity .3s}
+.pj.tilt:hover::after{opacity:1}
+.pj.tilt:hover{transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-6px) scale(1.015);transition:transform .12s linear,box-shadow .3s}
