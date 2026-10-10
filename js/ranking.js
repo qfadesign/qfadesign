@@ -7,15 +7,22 @@
   'use strict';
   var CFG = window.QFA_RANKING || {};
   var LS = 'qfa-jugador';
+  var VERSION = String(CFG.version || '');
 
   function activo(){
     var s = String(CFG.url || '') + String(CFG.key || '');
     return !!(CFG.url && CFG.key) && !/TU-PROYECTO|PEGA-ACA/i.test(s);
   }
   function leer(){
-    try { var j = JSON.parse(localStorage.getItem(LS)); return (j && j.apodo && j.tag && j.token) ? j : null; } catch(e){ return null; }
+    try {
+      var j = JSON.parse(localStorage.getItem(LS));
+      if (!(j && j.apodo && j.tag && j.token)) return null;
+      /* si el ranking se reinició (cambió CFG.version), el nombre guardado ya no sirve: se descarta */
+      if (String(j.v || '') !== VERSION) { localStorage.removeItem(LS); return null; }
+      return j;
+    } catch(e){ return null; }
   }
-  function guardar(j){ try { localStorage.setItem(LS, JSON.stringify(j)); } catch(e){} }
+  function guardar(j){ try { j.v = VERSION; localStorage.setItem(LS, JSON.stringify(j)); } catch(e){} }
   function borrar(){ try { localStorage.removeItem(LS); } catch(e){} }
 
   function azar(n){

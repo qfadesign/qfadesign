@@ -4,5 +4,7 @@
    Nunca pegues acá la clave "secret" ni la "service_role". */
 window.QFA_RANKING = {
   url: 'https://mzfrkutqzbacrocnsitr.supabase.co',
-  key: 'sb_publishable_ibW45zwEh3iCxK_skGwkZA_1F2lhb-a'
+  key: 'sb_publishable_ibW45zwEh3iCxK_skGwkZA_1F2lhb-a',
+  /* Cambiá este texto cada vez que reinicies el ranking en Supabase: así todos los navegadores sueltan el nombre viejo solos. */
+  version: '2'
 };
