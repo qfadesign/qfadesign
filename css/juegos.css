@@ -195,3 +195,8 @@ header h1.h1-st,.header h1.h1-st,h1.big-title.h1-st{display:block;background:non
 .rank-form{flex-wrap:wrap}
 .rank-form input{flex:1 1 140px}
 .rank-form .rank-pin{flex:0 1 112px;text-align:center;letter-spacing:.12em}
+
+/* ranking: caja con los datos para copiar al guardar el código */
+.rank-datos{display:flex;flex-direction:column;align-items:center;gap:10px;margin:0 0 14px;padding:14px;border-radius:16px;border:2px dashed currentColor;text-align:center}
+.rank-datos .rank-msg{margin:0}
+.rank-datos-txt{margin:0;font-weight:900;font-size:1.15em;letter-spacing:.02em;word-break:break-word}
