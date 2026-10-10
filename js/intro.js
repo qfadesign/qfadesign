@@ -17,14 +17,25 @@
   const lejos=Math.max(Math.hypot(px,py),Math.hypot(vw-px,py),Math.hypot(px,vh-py),Math.hypot(vw-px,vh-py));
   const K=Math.max(8,1.12*lejos/(R*b));
 
+  // el azul de la marca ya no es plano: degradé diagonal + una luz celeste que cruza la pantalla + una sombra profunda que va en sentido contrario
+  const RM=Math.max(vw,vh);
+  const DEFS='<linearGradient id="qfa-b" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0847a3"/><stop offset=".5" stop-color="#0b75f4"/><stop offset="1" stop-color="#3fa0ff"/></linearGradient>'+
+    '<radialGradient id="qfa-l" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="'+RM*.75+'"><stop offset="0" stop-color="#9ad6ff" stop-opacity=".9"/><stop offset=".45" stop-color="#5db4ff" stop-opacity=".35"/><stop offset="1" stop-color="#0b75f4" stop-opacity="0"/></radialGradient>'+
+    '<radialGradient id="qfa-d" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="'+RM*.65+'"><stop offset="0" stop-color="#03225e" stop-opacity=".85"/><stop offset="1" stop-color="#03225e" stop-opacity="0"/></radialGradient>';
+  const CAPAS=['qfa-b','qfa-l','qfa-d'].map(id=>'<rect width="'+vw+'" height="'+vh+'" fill="url(#'+id+')"/>').join('');
+
   const c=document.createElement('div');c.className='carga';c.setAttribute('aria-hidden','true');
   c.innerHTML='<svg width="100%" height="100%" viewBox="0 0 '+vw+' '+vh+'" preserveAspectRatio="none"><defs>'+
     '<mask id="qfa-m" maskUnits="userSpaceOnUse" x="0" y="0" width="'+vw+'" height="'+vh+'"><rect width="'+vw+'" height="'+vh+'" fill="#fff"/>'+
-    '<g id="qfa-g">'+PATHS.map(d=>'<path d="'+d+'" fill="#000"/>').join('')+'</g></mask></defs>'+
-    '<rect width="'+vw+'" height="'+vh+'" fill="#0b75f4" mask="url(#qfa-m)"/></svg>';
+    '<g id="qfa-g">'+PATHS.map(d=>'<path d="'+d+'" fill="#000"/>').join('')+'</g></mask>'+DEFS+'</defs>'+
+    '<g mask="url(#qfa-m)">'+CAPAS+'</g></svg>';
   root.classList.add('cargando','pausa','con-intro');
   root.appendChild(c);
-  const g=c.querySelector('#qfa-g');
+  const g=c.querySelector('#qfa-g'),gl=c.querySelector('#qfa-l'),gd=c.querySelector('#qfa-d');
+  const tinte=t=>{const p=Math.min(1,t/4200),e=p*p*(3-2*p),w=Math.sin(t/700)*.04;
+    gl.setAttribute('cx',vw*(.05+.9*e));gl.setAttribute('cy',vh*(1-.95*e+w));
+    gd.setAttribute('cx',vw*(.95-.9*e));gd.setAttribute('cy',vh*(.95*e-w))};
+  tinte(0);
   // z = zoom alrededor del punto (cx,cy)
   const set=(z,cx,cy)=>{const s=b*z;g.setAttribute('transform','matrix('+s+' 0 0 '+s+' '+(cx*(1-z)+z*tx)+' '+(cy*(1-z)+z*ty)+')')};
   set(.78,vw/2,vh/2);
@@ -43,6 +54,7 @@
     if(fin)return;
     if(t0===null)t0=now;
     const t=now-t0;
+    tinte(t);
     if(t<T1)set(.78+.22*salida(t/T1),vw/2,vh/2);
     else if(t<T1+HOLD||!listo)set(1,vw/2,vh/2);
     else{

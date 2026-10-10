@@ -9,13 +9,36 @@ document.documentElement.classList.add('js');
   const seg=p=>p.replace(/\/+$/,'').split('/').pop().replace(/\.html$/,'');
   const flag=(k,v)=>{try{v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){}};
 
+  // stickers de título de las páginas de la barra: al ir a una, el sticker aparece grande en el centro; ya en la página nueva vuela hasta su lugar y se pega como título
+  const STK={acerca:['titulo-acerca',493.04,102.69,0],portfolio:['portfolio',445.32,124.86,1],herramientas:['titulo-herramientas',672.35,107.44,0],jueguitos:['jueguitos',488.7,126.74,1],contacto:['titulo-contacto',453.24,98.03,0]}; // [archivo, ancho, alto, fondo negro]
+  const SH0='drop-shadow(0 26px 16px rgba(0,0,0,.42)) drop-shadow(0 4px 6px rgba(0,0,0,.3))',SH1='drop-shadow(0 1px 0 rgba(0,0,0,.3)) drop-shadow(0 4px 6px rgba(0,0,0,.38))';
+  const cartel=(u,w,h)=>{const i=new Image();i.className='qst';i.alt='';i.decoding='sync';i.setAttribute('aria-hidden','true');i.style.cssText='--qw:'+w+';--qa:'+(w/h);i.src=u;root.appendChild(i);return i};
+  const volar=el=>{
+    const img=document.querySelector('.st-h1 img');
+    const fin=()=>{if(img)img.style.visibility='';el.remove();root.style.background=''};
+    if(!img||!el.animate){if(el.animate)el.animate([{opacity:1},{opacity:0}],{duration:300,fill:'forwards'}).onfinish=fin;else fin();return}
+    img.style.animation='none';img.style.visibility='hidden'; // el de la página espera escondido hasta que el sticker aterriza
+    const a=el.getBoundingClientRect(),b=img.getBoundingClientRect();
+    const dx=b.left+b.width/2-(a.left+a.width/2),dy=b.top+b.height/2-(a.top+a.height/2),k=img.offsetWidth/el.offsetWidth;
+    const T=s=>'translate('+dx+'px,'+dy+'px) scale('+s+') rotate(-2deg)';
+    el.animate([
+      {transform:'rotate(-2deg)',filter:SH0,offset:0,easing:'cubic-bezier(.6,0,.2,1)'},
+      {transform:T(k*.9),filter:SH1,offset:.7},   // llega y se aplasta contra la página
+      {transform:T(k*1.035),offset:.86},
+      {transform:T(k),filter:SH1,offset:1}
+    ],{duration:820,fill:'forwards'}).onfinish=fin;
+  };
+
   // 1) página que llega: arranca invisible (la barra no) y, cuando está lista, el degradé y el contenido aparecen suave
-  let vino=false;try{vino=!!sessionStorage.getItem('qfa-t')}catch(e){}
+  let vino=false,st=null;try{vino=!!sessionStorage.getItem('qfa-t');st=JSON.parse(sessionStorage.getItem('qfa-st')||'null');sessionStorage.removeItem('qfa-st')}catch(e){}
   flag('qfa-t',null);
+  if(!(st&&st.u&&st.s===seg(location.pathname)))st=null;
   if(vino&&!root.classList.contains('con-intro')){
     root.classList.add('vino','t-in','t-wait');
+    const el=st?cartel(st.u,st.w,st.h):null; // el mismo sticker grande que quedó en el centro de la página anterior
+    if(el){root.classList.add('qst-in');root.style.background=st.o?'#000':'#0847a3'}
     let listo=false;
-    const abrir=()=>{if(listo)return;listo=true;root.classList.remove('t-in','t-wait')};
+    const abrir=()=>{if(listo)return;listo=true;if(el)volar(el);root.classList.remove('t-in','t-wait')};
     addEventListener('DOMContentLoaded',()=>{
       Promise.race([document.fonts?document.fonts.ready:0,new Promise(r=>setTimeout(r,600))]).then(()=>requestAnimationFrame(abrir));
     });
@@ -38,10 +61,24 @@ document.documentElement.classList.add('js');
     root.classList.add('sale');
     if(document.body)document.body.style.setProperty('--fondo',oscura?'#000':'#0847a3');
     flag('qfa-t','1');
-    setTimeout(()=>{location.href=a.href},320);
+    let espera=320;
+    const k=STK[s];
+    if(k&&!a.hash&&root.animate){ // página de la barra: sticker grande en el centro (se pega como título en la página nueva)
+      const u=new URL('img/stickers/'+k[0]+'.svg',a.href).href;
+      cartel(u,k[1],k[2]).animate([
+        {opacity:0,transform:'translateY(40px) scale(.45) rotate(-16deg)'},
+        {opacity:1,offset:.5},
+        {transform:'scale(1.06) rotate(-1deg)',offset:.78},
+        {opacity:1,transform:'rotate(-2deg)'}
+      ],{duration:520,delay:140,easing:'cubic-bezier(.2,.8,.2,1)',fill:'both'});
+      flag('qfa-st',JSON.stringify({s,u,w:k[1],h:k[2],o:k[3]}));
+      const bg=document.querySelector('.burger[aria-expanded=true]');if(bg)bg.click(); // en celu, cierra el menú para que se vea el sticker
+      espera=660;
+    }
+    setTimeout(()=>{location.href=a.href},espera);
   });
   // volver con el botón "atrás" (página guardada en memoria): devolver la página a su estado normal
-  addEventListener('pageshow',e=>{if(e.persisted){root.classList.remove('sale','t-in','t-wait');if(document.body)document.body.style.removeProperty('--fondo');flag('qfa-t',null)}});
+  addEventListener('pageshow',e=>{if(e.persisted){root.classList.remove('sale','t-in','t-wait','qst-in');root.style.background='';document.querySelectorAll('.qst').forEach(n=>n.remove());flag('qfa-st',null);if(document.body)document.body.style.removeProperty('--fondo');flag('qfa-t',null)}});
 })();
 addEventListener('DOMContentLoaded',()=>{const n=document.querySelector('nav');if(!n)return;const set=()=>document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');set();new ResizeObserver(set).observe(n)});
 addEventListener('DOMContentLoaded',()=>{
