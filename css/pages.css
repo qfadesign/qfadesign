@@ -105,6 +105,7 @@ h2{font-weight:900;font-style:italic;line-height:1;font-family:var(--fh)}
 .form input,.form textarea{width:100%;font:inherit;font-weight:400;font-style:normal;padding:14px 16px;border-radius:14px;border:2px solid transparent;background:#fff;color:#06214d}
 .form input:focus-visible,.form textarea:focus-visible{outline:3px solid #000;outline-offset:2px;box-shadow:0 0 0 6px #fff}
 .form textarea{min-height:160px;resize:vertical}.form ::placeholder{color:#4a5a75;opacity:1}
+.form textarea::placeholder{opacity:.55;line-height:1.45}
 .form button{justify-self:start;font-size:15px}.aviso{font-size:15px;min-height:1.4em}
 .form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
 .form button:disabled{opacity:.7;cursor:progress}
