@@ -114,3 +114,78 @@ html.pausa *,html.pausa *::before,html.pausa *::after{animation-play-state:pause
 .hr-st img{display:block;width:min(calc(var(--vw)*.62px),88%);height:auto;margin-inline:auto;rotate:-2deg;filter:var(--st-sombra)}
 .jh-home{max-width:960px}
 .hr-home p{margin-bottom:22px}
+
+/* PORTFOLIO (home): sin JS o con "reducir movimiento" = 3 tarjetas grandes una debajo de otra */
+.trabajos.pf{display:block;max-width:1100px;margin:0 auto;padding:clamp(6px,1.6vw,20px) clamp(14px,3vw,32px) 0;color:#fff}
+.trabajos .pf-st{writing-mode:horizontal-tb;transform:none;padding:0;margin:0 0 clamp(26px,4vw,52px);text-align:center;line-height:0;font-size:0}
+.pf-st img{width:min(calc(var(--vw)*.82px),88%)}
+.pf-frame{display:grid;gap:clamp(22px,4vw,46px)}
+.pf-slide{position:relative;display:block;overflow:hidden;isolation:isolate;aspect-ratio:16/9;border-radius:clamp(20px,3vw,34px);color:#fff;background:#06142e;box-shadow:0 30px 70px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.16)}
+.pf-slide::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(2,10,30,0) 42%,rgba(2,10,30,.74));pointer-events:none}
+.pf-slide:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.pf-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pf-num,.pf-nav{display:none}
+.pf-info{position:absolute;z-index:2;left:clamp(16px,3vw,34px);right:clamp(16px,3vw,34px);bottom:clamp(14px,2.6vw,30px);display:flex;align-items:flex-end;flex-wrap:wrap;gap:8px 14px}
+.pf-info b{font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(34px,6vw,72px);line-height:.92;letter-spacing:-.02em;text-shadow:0 4px 26px rgba(0,0,0,.55)}
+.pf-info i{margin-bottom:.5em;padding:6px 14px;border-radius:99px;background:rgba(255,255,255,.58);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);color:#06214d;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(13px,1.2vw,16px)}
+.pf-fl{margin:0 0 .4em auto;display:grid;place-items:center;width:clamp(42px,4.4vw,56px);height:clamp(42px,4.4vw,56px);border-radius:50%;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font:900 clamp(18px,2vw,24px) var(--fh);font-style:normal;transition:background .25s,color .25s,translate .35s cubic-bezier(.2,.8,.2,1)}
+.pf-slide:hover .pf-fl,.pf-slide:focus-visible .pf-fl{background:#fff;color:var(--azul-f);translate:6px 0}
+@media(max-width:760px){.pf-slide{aspect-ratio:4/3}.pf-info i{margin-bottom:.2em}}
+
+/* PORTFOLIO (home) con movimiento: la sección queda "pegada" a la pantalla y, al scrollear, va cambiando el proyecto (js/anim.js) */
+@media(prefers-reduced-motion:no-preference){
+ .js .trabajos.pf{max-width:none;margin:0;padding:0;height:calc(100svh + var(--n,3)*72svh)}
+ .js .pf-stage{position:sticky;top:0;height:100svh;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2svh,22px);padding:calc(var(--navh,64px) + 6px) clamp(12px,3vw,32px) clamp(12px,2.4svh,26px)}
+ .js .trabajos .pf-st{margin:0;flex:none}
+ .js .pf-st img{width:min(250px,54vw,36svh)}
+ .js .pf-frame{display:block;position:relative;flex:1 1 auto;min-height:0;width:min(100%,1180px);max-height:720px;overflow:hidden;isolation:isolate;border-radius:clamp(22px,3.2vw,38px);background:#06142e;box-shadow:0 40px 90px rgba(0,0,0,.55);opacity:0;scale:.92;translate:0 50px;transition:opacity .9s,scale 1.1s cubic-bezier(.16,.9,.2,1),translate 1.1s cubic-bezier(.16,.9,.2,1)}
+ .js .pf.in .pf-frame{opacity:1;scale:1;translate:0 0}
+ .js .pf-frame::after{content:"";position:absolute;inset:0;z-index:9;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);pointer-events:none}
+ .js .pf-slide{position:absolute;inset:0;aspect-ratio:auto;border-radius:0;box-shadow:none;background:none;clip-path:inset(100% 0 0 0);transition:clip-path 1.05s cubic-bezier(.77,0,.18,1)}
+ .js .pf-slide:nth-child(1){z-index:1;clip-path:inset(0)}
+ .js .pf-slide:nth-child(2){z-index:2}
+ .js .pf-slide:nth-child(3){z-index:3}
+ .js .pf-slide.on{clip-path:inset(0)}
+ .js .pf-img{scale:1.22;translate:0 calc((var(--lp,0) - .5)*-3%);transition:scale 1.8s cubic-bezier(.16,.9,.2,1)}
+ .js .pf-slide.on .pf-img{scale:1.05}
+ .js .pf-info{opacity:0;translate:0 36px;transition:opacity .45s,translate .45s}
+ .js .pf-slide.act .pf-info{opacity:1;translate:0 0;transition:opacity .8s .55s,translate .95s .55s cubic-bezier(.16,.9,.2,1)}
+ .js .pf-num{display:block;position:absolute;z-index:3;top:clamp(14px,2.4vw,28px);right:clamp(16px,3vw,34px);padding:6px 14px;border-radius:99px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.42);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font:900 clamp(13px,1.3vw,17px) var(--fh);font-style:italic;letter-spacing:.06em;opacity:0;transition:opacity .4s}
+ .js .pf-slide.act .pf-num{opacity:1;transition:opacity .6s .5s}
+ .js .pf-nav{display:flex;flex:none;flex-wrap:wrap;justify-content:center;gap:8px;opacity:0;transition:opacity .8s .5s}
+ .js .pf.in .pf-nav{opacity:1}
+ .js .pf-nav button{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);color:#fff;font:900 clamp(14px,1.3vw,16px) var(--fh);font-style:italic;cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:background .25s,color .25s,border-color .25s}
+ .js .pf-nav button small{font:inherit;opacity:.65}
+ .js .pf-nav button:hover{background:rgba(255,255,255,.28)}
+ .js .pf-nav button[aria-current=true]{background:var(--crema);color:var(--azul-f);border-color:transparent}
+ .js .pf-nav button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+}
+
+/* HOME: Herramientas y Jueguitos = toda la pastilla es un botón; al pasar, el sticker cambia por el de la barra */
+a.hr-home{display:block;color:#fff;text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:translate .4s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .4s}
+a.hr-home:hover,a.hr-home:focus-visible,a.hr-home:active{translate:0 -6px;border-color:rgba(255,255,255,.55);box-shadow:0 30px 64px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.3)}
+a.hr-home:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.hr-swap{display:grid;place-items:center}
+.hr-swap img{grid-area:1/1;transition:opacity .25s,scale .5s cubic-bezier(.34,1.56,.64,1),rotate .5s cubic-bezier(.34,1.56,.64,1)}
+.hr-swap .st-b{opacity:0;scale:.8;rotate:6deg}
+a.hr-home:hover .st-a,a.hr-home:focus-visible .st-a,a.hr-home:active .st-a{opacity:0;scale:1.08}
+a.hr-home:hover .st-b,a.hr-home:focus-visible .st-b,a.hr-home:active .st-b{opacity:1;scale:1.04;rotate:-3deg}
+/* el botón de adentro reacciona cuando se pasa por cualquier parte de la pastilla */
+a.hr-home:hover .btn::after,a.hr-home:focus-visible .btn::after,a.hr-home:active .btn::after{translate:0 0}
+a.hr-home:hover .btn.negro,a.hr-home:focus-visible .btn.negro,a.hr-home:active .btn.negro{color:var(--azul-f)}
+a.hr-home:hover .btn,a.hr-home:focus-visible .btn{transform:translateY(-2px)}
+@media(prefers-reduced-motion:reduce){
+ a.hr-home,.hr-swap img{transition:none}
+ a.hr-home:hover,a.hr-home:focus-visible,a.hr-home:active{translate:none}
+ .hr-swap .st-b,a.hr-home:hover .st-a,a.hr-home:hover .st-b{scale:none;rotate:none}
+}
+
+/* HOME: textos (menos el hero) con poca opacidad que se van poniendo blancos al scrollear (js/anim.js). La palabra entera viaja junta, así no salta de línea. */
+.js .tw-c{opacity:.22;transition:opacity .18s}
+.js .tw-c.on{opacity:1}
+.js .tw-w{display:inline-block;white-space:nowrap}
+/* PORTFOLIO en pantallas angostas: el marco sigue siendo un rectángulo horizontal, no una tira alta */
+@media(prefers-reduced-motion:no-preference) and (max-width:760px){
+ .js .pf-stage{padding-inline:12px}
+ .js .pf-frame{flex:none;width:100%;height:auto;max-height:none;aspect-ratio:4/3}
+}
