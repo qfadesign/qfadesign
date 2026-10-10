@@ -1,7 +1,8 @@
 /* qfadesign — ranking de los jueguitos (Supabase).
    Uso: QFARanking.montar(elementoReferencia, {juego:'color', modo:'Fácil', titulo:'Adivina el color', puntos:1234})
    Inserta el bloque de ranking justo antes del elemento de referencia.
-   Identidad: apodo + número de 4 cifras al azar + código secreto guardado en este navegador. */
+   Identidad: apodo + número de 4 cifras al azar + código de 4 números que elige cada jugador (con eso se arma el secreto,
+   así puede recuperar su nombre desde cualquier dispositivo). */
 (function(){
   'use strict';
   var CFG = window.QFA_RANKING || {};
@@ -32,6 +33,19 @@
       for (var j = 0; j < 48; j++) s += Math.floor(Math.random() * 16).toString(16);
     }
     return s;
+  }
+
+  /* el secreto sale del apodo + número + código del jugador: en otro dispositivo se vuelve a armar igual */
+  function sha(txt){
+    if (!(window.crypto && crypto.subtle && window.TextEncoder)) return Promise.resolve(null);
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt)).then(function(b){
+      var a = new Uint8Array(b), h = '';
+      for (var i = 0; i < a.length; i++) h += ('0' + a[i].toString(16)).slice(-2);
+      return h;
+    });
+  }
+  function tokenDe(apodo, tag, pin){
+    return sha('qfa|' + apodo.toLowerCase() + '|' + tag + '|' + pin).then(function(h){ return h || nuevoToken(); });
   }
 
   function rpc(nombre, args){
@@ -87,6 +101,12 @@
       return p;
     }
 
+    /* dentro del navegador de Instagram/Facebook lo guardado no se comparte con Chrome o Safari */
+    var enApp = /Instagram|FBAN|FBAV/i.test(navigator.userAgent || '');
+    function avisoApp(){
+      return estado('Estás en el navegador de Instagram: tu nombre puede no guardarse. Abrí esta página en Chrome o Safari (menú ⋯ → "Abrir en el navegador").');
+    }
+
     function mostrarTop(yo, mejor){
       rpc('top_ranking', { p_juego: d.juego, p_modo: d.modo, p_limite: 10 }).then(function(filas){
         if (!vivo()) return;
@@ -97,6 +117,8 @@
           linea.appendChild(el('strong', null, yo.apodo + '#' + yo.tag));
           if (mejor != null) linea.appendChild(document.createTextNode(' · tu mejor acá: ' + mejor + ' pts'));
           cuerpo.appendChild(linea);
+          if (enApp && !yo.pin) cuerpo.appendChild(avisoApp());
+          if (yo.pin) cuerpo.appendChild(el('p', 'rank-msg', 'Para recuperar tu nombre en otro dispositivo necesitás tu apodo, el #' + yo.tag + ' y tu código de 4 números.'));
         }
         if (!filas || !filas.length) {
           cuerpo.appendChild(estado('Todavía no hay puntajes. Sé el primero.'));
@@ -109,6 +131,12 @@
             ol.appendChild(li);
           });
           cuerpo.appendChild(ol);
+        }
+        if (yo && !yo.pin) {
+          var poner = el('button', 'rank-link', 'Ponerle un código a mi nombre para no perderlo');
+          poner.type = 'button';
+          poner.addEventListener('click', function(){ ponerCodigo(yo, mejor); });
+          cuerpo.appendChild(poner);
         }
         if (yo) {
           var cambiar = el('button', 'rank-link', 'No soy ' + yo.apodo + '#' + yo.tag);
@@ -144,30 +172,53 @@
         });
     }
 
-    function registrar(apodo, intento, token){
+    function registrar(apodo, pin, intento){
       var tag = nuevoTag();
-      return rpc('enviar_puntaje', { p_juego: d.juego, p_modo: d.modo, p_apodo: apodo, p_tag: tag, p_token: token, p_puntaje: d.puntos })
-        .then(function(mejor){ return { yo: { apodo: apodo, tag: tag, token: token }, mejor: mejor }; })
-        .catch(function(err){
-          if (/identidad/.test(err.message) && intento < 6) return registrar(apodo, intento + 1, token);
-          throw err;
-        });
+      return (pin ? tokenDe(apodo, tag, pin) : Promise.resolve(nuevoToken())).then(function(token){
+        return rpc('enviar_puntaje', { p_juego: d.juego, p_modo: d.modo, p_apodo: apodo, p_tag: tag, p_token: token, p_puntaje: d.puntos })
+          .then(function(mejor){ return { yo: { apodo: apodo, tag: tag, token: token, pin: pin ? 1 : 0 }, mejor: mejor }; });
+      }).catch(function(err){
+        if (/identidad/.test(err.message) && intento < 6) return registrar(apodo, pin, intento + 1);
+        throw err;
+      });
+    }
+
+    function campoNum(ph, etiqueta){
+      var i = el('input', 'rank-pin');
+      i.type = 'text'; i.inputMode = 'numeric'; i.maxLength = 4; i.autocomplete = 'off';
+      i.placeholder = ph; i.setAttribute('aria-label', etiqueta);
+      i.addEventListener('input', function(){ i.value = i.value.replace(/\D/g, '').slice(0, 4); });
+      return i;
+    }
+    function campoApodo(){
+      var i = el('input');
+      i.type = 'text'; i.maxLength = 16; i.autocomplete = 'nickname';
+      i.placeholder = 'Tu apodo'; i.setAttribute('aria-label', 'Tu apodo (2 a 16 caracteres)');
+      return i;
+    }
+    function aviso_(err, txt){ err.textContent = txt; err.hidden = false; }
+    function conEnter(campos, fn){
+      campos.forEach(function(c){ c.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); fn(); } }); });
     }
 
     function formulario(aviso){
       cuerpo.textContent = '';
       if (aviso) cuerpo.appendChild(estado(aviso, true));
-      cuerpo.appendChild(el('p', 'rank-msg', 'Guardá tu puntaje (' + d.puntos + ' pts) con un apodo. Te asignamos un número para distinguirte de otros iguales.'));
+      if (enApp) cuerpo.appendChild(avisoApp());
+      cuerpo.appendChild(el('p', 'rank-msg', 'Guardá tu puntaje (' + d.puntos + ' pts) con un apodo. Si querés recuperar tu nombre en otro dispositivo, sumá un código de 4 números (opcional).'));
       var fila = el('div', 'rank-form');
-      var input = el('input');
-      input.type = 'text'; input.maxLength = 16; input.autocomplete = 'nickname';
-      input.placeholder = 'Tu apodo'; input.setAttribute('aria-label', 'Tu apodo (2 a 16 caracteres)');
+      var input = campoApodo();
+      var pin = campoNum('Código (opcional)', 'Código de 4 números, opcional: sirve para recuperar tu nombre en otro dispositivo');
       var ok = el('button', 'rank-guardar', 'Guardar');
       ok.type = 'button';
-      fila.appendChild(input); fila.appendChild(ok);
+      fila.appendChild(input); fila.appendChild(pin); fila.appendChild(ok);
       cuerpo.appendChild(fila);
       var err = el('p', 'rank-msg rank-error'); err.hidden = true; err.setAttribute('role', 'alert');
       cuerpo.appendChild(err);
+      var ya = el('button', 'rank-link', 'Ya jugué antes: recuperar mi nombre');
+      ya.type = 'button';
+      ya.addEventListener('click', function(){ recuperar(); });
+      cuerpo.appendChild(ya);
       var ver = el('button', 'rank-link', 'Solo ver el ranking');
       ver.type = 'button';
       ver.addEventListener('click', function(){ mostrarTop(null, null); });
@@ -175,23 +226,94 @@
 
       function enviar(){
         var apodo = limpiarApodo(input.value);
-        if (!apodoValido(apodo)) {
-          err.textContent = 'Usá entre 2 y 16 caracteres: letras, números, espacio, punto, guion o guion bajo.';
-          err.hidden = false; return;
-        }
+        if (!apodoValido(apodo)) return aviso_(err, 'Usá entre 2 y 16 caracteres: letras, números, espacio, punto, guion o guion bajo.');
+        if (pin.value && !/^\d{4}$/.test(pin.value)) return aviso_(err, 'El código tiene que ser de 4 números (o dejalo vacío). Anotalo: lo vas a necesitar para recuperar tu nombre.');
         err.hidden = true; ok.disabled = true; ok.textContent = 'Guardando…';
-        registrar(apodo, 0, nuevoToken()).then(function(r){
+        registrar(apodo, pin.value, 0).then(function(r){
           guardar(r.yo);
           if (vivo()) mostrarTop(r.yo, r.mejor);
         }).catch(function(e){
           if (!vivo()) return;
           ok.disabled = false; ok.textContent = 'Guardar';
-          err.textContent = /apodo_no_permitido/.test(e.message) ? 'Ese apodo no está permitido. Probá con otro.' : 'No se pudo guardar ahora. Probá de nuevo.';
-          err.hidden = false;
+          aviso_(err, /apodo_no_permitido/.test(e.message) ? 'Ese apodo no está permitido. Probá con otro.' : 'No se pudo guardar ahora. Probá de nuevo.');
         });
       }
       ok.addEventListener('click', enviar);
-      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); enviar(); } });
+      conEnter([input, pin], enviar);
+    }
+
+    /* para quien ya jugó sin código: elige uno y cambia el secreto de su nombre (necesita tenerlo guardado en este navegador) */
+    function ponerCodigo(yo, mejor){
+      cuerpo.textContent = '';
+      cuerpo.appendChild(el('p', 'rank-msg', 'Elegí un código de 4 números para ' + yo.apodo + '#' + yo.tag + '. Con tu apodo, ese número y el código recuperás tu nombre desde cualquier dispositivo.'));
+      var fila = el('div', 'rank-form');
+      var pn = campoNum('Tu código', 'Tu código de 4 números');
+      var ok = el('button', 'rank-guardar', 'Guardar código');
+      ok.type = 'button';
+      fila.appendChild(pn); fila.appendChild(ok);
+      cuerpo.appendChild(fila);
+      var err = el('p', 'rank-msg rank-error'); err.hidden = true; err.setAttribute('role', 'alert');
+      cuerpo.appendChild(err);
+      var volver = el('button', 'rank-link', 'Volver');
+      volver.type = 'button';
+      volver.addEventListener('click', function(){ mostrarTop(yo, mejor); });
+      cuerpo.appendChild(volver);
+
+      function ir(){
+        if (!/^\d{4}$/.test(pn.value)) return aviso_(err, 'El código tiene que ser de 4 números.');
+        err.hidden = true; ok.disabled = true; ok.textContent = 'Guardando…';
+        tokenDe(yo.apodo, yo.tag, pn.value).then(function(nuevo){
+          return rpc('poner_codigo', { p_apodo: yo.apodo, p_tag: yo.tag, p_token: yo.token, p_token_nuevo: nuevo }).then(function(sirve){
+            if (!sirve) throw new Error('nada');
+            var y2 = { apodo: yo.apodo, tag: yo.tag, token: nuevo, pin: 1 };
+            guardar(y2);
+            if (vivo()) mostrarTop(y2, mejor);
+          });
+        }).catch(function(e){
+          if (!vivo()) return;
+          ok.disabled = false; ok.textContent = 'Guardar código';
+          aviso_(err, e.message === 'nada' ? 'No pudimos verificar tu nombre. Probá jugar de nuevo y repetirlo.' : 'No se pudo guardar el código ahora. Probá de nuevo en un rato.');
+        });
+      }
+      ok.addEventListener('click', ir);
+      conEnter([pn], ir);
+    }
+
+    function recuperar(){
+      cuerpo.textContent = '';
+      cuerpo.appendChild(el('p', 'rank-msg', 'Poné tu apodo, tu número (los 4 dígitos después del #) y tu código de 4 números.'));
+      var fila = el('div', 'rank-form');
+      var ap = campoApodo(), tg = campoNum('# número', 'Tu número, los 4 dígitos después del #'), pn = campoNum('Tu código', 'Tu código de 4 números');
+      var ok = el('button', 'rank-guardar', 'Recuperar');
+      ok.type = 'button';
+      fila.appendChild(ap); fila.appendChild(tg); fila.appendChild(pn); fila.appendChild(ok);
+      cuerpo.appendChild(fila);
+      var err = el('p', 'rank-msg rank-error'); err.hidden = true; err.setAttribute('role', 'alert');
+      cuerpo.appendChild(err);
+      var volver = el('button', 'rank-link', 'Volver');
+      volver.type = 'button';
+      volver.addEventListener('click', function(){ formulario(); });
+      cuerpo.appendChild(volver);
+
+      function ir(){
+        var apodo = limpiarApodo(ap.value);
+        if (!apodoValido(apodo) || !/^\d{4}$/.test(tg.value) || !/^\d{4}$/.test(pn.value)) return aviso_(err, 'Revisá los datos: apodo, número de 4 cifras y código de 4 números.');
+        err.hidden = true; ok.disabled = true; ok.textContent = 'Buscando…';
+        tokenDe(apodo, tg.value, pn.value).then(function(token){
+          return rpc('verificar_jugador', { p_apodo: apodo, p_tag: tg.value, p_token: token }).then(function(sirve){
+            if (!sirve) throw new Error('nada');
+            var yo = { apodo: apodo, tag: tg.value, token: token, pin: 1 };
+            guardar(yo);
+            if (vivo()) enviarComoYo(yo);
+          });
+        }).catch(function(e){
+          if (!vivo()) return;
+          ok.disabled = false; ok.textContent = 'Recuperar';
+          aviso_(err, e.message === 'nada' ? 'No encontramos ese nombre con ese código. Revisá el apodo, el número y el código.' : 'No se pudo verificar ahora. Probá de nuevo en un rato.');
+        });
+      }
+      ok.addEventListener('click', ir);
+      conEnter([ap, tg, pn], ir);
     }
 
     var yo = leer();
