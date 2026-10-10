@@ -1,6 +1,10 @@
 -- Números correlativos después del # (1, 2, 3…).
 -- Correr en Supabase: SQL Editor -> New query -> pegar TODO -> Run. Se puede volver a correr sin problema.
--- Los jugadores que ya existen conservan su número; los nuevos empiezan en 1.
+-- Los jugadores que ya existen conservan su número; los nuevos siguen la cuenta (el siguiente después del más alto).
+--
+-- ORDEN RECOMENDADO si ya hay jugadores con número al azar de 4 cifras:
+--   a) Table Editor -> players -> cambiar a mano la columna "tag" de cada uno a 1, 2, 3…
+--   b) Correr este archivo completo (el último paso ajusta el contador para que el próximo jugador sea el siguiente número).
 
 -- 1) El número ya no tiene que ser de exactamente 4 cifras
 alter table public.players drop constraint if exists players_tag_check;
@@ -9,8 +13,6 @@ alter table public.players add constraint players_tag_formato check (tag ~ '^[0-
 
 -- 2) Contador de números
 create sequence if not exists public.players_tag_seq start 1;
--- (para volver a empezar desde 1, por ejemplo después de borrar jugadores de prueba:)
--- alter sequence public.players_tag_seq restart 1;
 create or replace function public.nuevo_numero() returns text
 language sql security definer set search_path = public as $$ select nextval('public.players_tag_seq')::text; $$;
 revoke all on function public.nuevo_numero() from public;
@@ -69,3 +71,15 @@ end $$;
 
 revoke all on function public.enviar_puntaje(text,text,text,text,text,int) from public;
 grant execute on function public.enviar_puntaje(text,text,text,text,text,int) to anon;
+
+-- 4) Ajustar el contador: el próximo jugador nuevo recibe (número más alto que exista) + 1.
+--    Si la tabla está vacía, empieza en 1. Correr DESPUÉS de renumerar a mano a los que ya jugaron.
+select setval(
+  'public.players_tag_seq',
+  greatest(coalesce((select max(tag::int) from public.players), 0), 1),
+  (select count(*) > 0 from public.players)   -- true: el siguiente es max+1 | false: el siguiente es 1
+);
+
+-- 5) Control: ver cómo quedaron los jugadores y cuál será el próximo número
+select id, apodo, tag, created_at from public.players order by tag::int;
+select coalesce(max(tag::int), 0) + 1 as proximo_numero from public.players;
