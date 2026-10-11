@@ -66,3 +66,10 @@ html.qc .pg-s{cursor:none}
 /* En qué puedo ayudarte: integrado a la página (sin panel de color) */
 .ayuda.sv-sec{background:radial-gradient(ellipse closest-side at 78% 32%,rgba(11,117,244,.22),transparent),radial-gradient(ellipse closest-side at 20% 80%,rgba(8,71,163,.24),transparent);border-radius:0;box-shadow:none}
 .sv,.sv li{border-color:rgba(255,255,255,.2)}
+
+/* servicios: portadas de proyectos que siguen al cursor + fondo con el color del proyecto */
+.tinte{z-index:5;mix-blend-mode:screen;transition:opacity .6s,--tc .5s ease}
+.lf{position:fixed;left:0;top:0;width:0;height:0;z-index:30;pointer-events:none}
+.lf img{max-width:none;position:absolute;left:0;top:0;width:clamp(150px,15vw,220px);aspect-ratio:4/3;object-fit:cover;border-radius:16px;border:1px solid rgba(255,255,255,.35);box-shadow:0 22px 50px rgba(0,0,0,.5);margin:calc(clamp(150px,15vw,220px)*-.375) 0 0 calc(clamp(150px,15vw,220px)*-.5);opacity:0;translate:calc(var(--dx)*.4) 14px;scale:.6;rotate:var(--r);transition:opacity .25s,translate .45s cubic-bezier(.2,.8,.2,1),scale .45s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d)}
+.lf.on img{opacity:1;translate:calc(var(--dx)*1) 0;scale:1}
+.lf.uno img{width:clamp(220px,22vw,320px);margin:calc(clamp(220px,22vw,320px)*-.375) 0 0 calc(clamp(220px,22vw,320px)*-.5)}
