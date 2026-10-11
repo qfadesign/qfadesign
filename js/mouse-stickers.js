@@ -49,8 +49,8 @@
   addEventListener('pointermove',e=>{
     if(e.pointerType&&e.pointerType!=='mouse')return;
     const t=e.target;
-    // no en la barra (ahí ya hay stickers) ni sobre campos de texto
-    if(t&&t.closest&&t.closest('nav,input,textarea,select,[contenteditable],.md-on')){acum=0;prev=null;return}
+    // no en la barra (ahí ya hay stickers), ni sobre campos de texto, ni sobre imágenes de proyectos / servicios (ahí va el círculo "Ver" o las portadas)
+    if(t&&t.closest&&t.closest('nav,input,textarea,select,[contenteditable],.md-on,.pg-s,.pj,.zoom,.sv')){acum=0;prev=null;return}
     if(prev){acum+=Math.hypot(e.clientX-prev.x,e.clientY-prev.y)}
     prev={x:e.clientX,y:e.clientY};
     const ahora=performance.now();
