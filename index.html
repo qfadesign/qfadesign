@@ -143,11 +143,11 @@ body .btn.claro.btn.btn:hover,body .btn.claro.btn.btn:focus-visible,body .btn.ne
 }
 @media(prefers-reduced-motion:reduce){.pista{animation:none}html{scroll-behavior:auto}}
 </style>
-<link rel="stylesheet" href="css/anim.css">
+<link rel="stylesheet" href="css/anim.css"><link rel="stylesheet" href="css/portfolio-fx.css"><link rel="stylesheet" href="css/home-fx.css">
 <script src="js/intro.js"></script>
 <script src="js/anim.js"></script>
 <script src="js/galeria.js" defer></script><script src="js/carrusel.js" defer></script>
-<script src="js/mouse-stickers.js" defer></script></head>
+<script src="js/mouse-stickers.js" defer></script><script src="js/cursor.js" defer></script><script src="js/home-fx.js" defer></script></head>
 <body>
  <nav aria-label="Principal">
   <a href="./" aria-label="qfadesign, inicio"><img class="logo" src="img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a>
@@ -173,7 +173,7 @@ body .btn.claro.btn.btn:hover,body .btn.claro.btn.btn:focus-visible,body .btn.ne
    <p class="sub">Un espacio para pensar, hacer y compartir diseño.</p>
    <p>qfadesign nació como mi identidad profesional, pero también es un lugar para compartir todo lo que me interesa del diseño: los procesos, las decisiones, las referencias y esas ideas que aparecen cuando aprendemos a mirar con más atención.</p>
   </div>
-  <img src="img/perfil.webp" alt="Retrato de Facundo con los ojos cerrados sobre fondo azul" loading="lazy" decoding="async">
+  <div class="so-ph"><img src="img/perfil.webp" alt="Retrato de Facundo con los ojos cerrados sobre fondo azul" loading="lazy" decoding="async"><span class="so-st" aria-hidden="true">Soy Facundo</span></div>
  </section>
  <p class="lema" id="herramientas">Acá vas a encontrar proyectos, recursos y algunas cosas para jugar. Ojalá algo te inspire o te ayude a mirar lo cotidiano de otra manera.</p>
 
@@ -182,20 +182,24 @@ body .btn.claro.btn.btn:hover,body .btn.claro.btn.btn:focus-visible,body .btn.ne
   <div class="pg-wrap">
    <h3 id="pf-t" class="hr-st pf-st"><img src="img/stickers/titulo-portfolio.svg" alt="Portfolio" width="445.32" height="124.86" style="--vw:445.32" decoding="async"></h3>
    <div class="pg-row">
-   <a class="pg-s" data-n="Árbol" data-t="Identidad de marca" href="proyecto-arbol" style="--i:0"><img src="img/arbol.webp" alt="" loading="lazy" decoding="async"><span class="sr-only">Árbol. Identidad de marca</span></a>
-   <a class="pg-s" data-n="Bleko" data-t="Mentes en acción · manual de marca" href="proyecto-bleko" style="--i:1"><img src="img/bleko.webp" alt="" loading="lazy" decoding="async"><span class="sr-only">Bleko. Mentes en acción · manual de marca</span></a>
-   <a class="pg-s" data-n="Dulcemente" data-t="Pastelería · identidad" href="proyecto-dulcemente" style="--i:2"><img src="img/dulcemente.webp" alt="" loading="lazy" decoding="async"><span class="sr-only">Dulcemente. Pastelería · identidad</span></a>
-   <a class="pg-s" data-n="Miga" data-t="Cafetería y panadería de especialidad" href="proyecto-miga" style="--i:3"><img src="img/miga.webp" alt="" loading="lazy" decoding="async"><span class="sr-only">Miga. Cafetería y panadería de especialidad</span></a>
-   <a class="pg-s" data-n="ROS.exe" data-t="Video presentación · Motion graphic" href="proyecto-ros" style="--i:4"><img src="img/ros.webp" alt="" loading="lazy" decoding="async"><span class="sr-only">ROS.exe. Video presentación · Motion graphic</span></a>
-   <a class="pg-s" data-n="Trazo" data-t="Revista de diseño gráfico · Editorial" href="proyecto-trazo" style="--i:5"><img src="img/trazo.webp" alt="" loading="lazy" decoding="async" style="object-position:center 40%"><span class="sr-only">Trazo. Revista de diseño gráfico · Editorial</span></a>
-   <a class="pg-s" data-n="Infografía F1" data-t="Un fin de semana en la Fórmula 1 · Editorial" href="proyecto-f1" style="--i:6"><img src="img/f1.webp" alt="" loading="lazy" decoding="async"><span class="sr-only">Infografía F1. Un fin de semana en la Fórmula 1 · Editorial</span></a>
+   <a class="pg-s" data-n="Árbol" data-t="Identidad de marca" data-c="#e8783c" data-l="arbol" href="proyecto-arbol" style="--i:0"><img src="img/arbol.webp" alt="" loading="lazy" decoding="async"><span class="sr-only">Árbol. Identidad de marca</span></a>
+   <a class="pg-s" data-n="Bleko" data-t="Mentes en acción · manual de marca" data-c="#f56446" data-l="bleko" href="proyecto-bleko" style="--i:1"><img src="img/bleko.webp" alt="" loading="lazy" decoding="async"><span class="sr-only">Bleko. Mentes en acción · manual de marca</span></a>
+   <a class="pg-s" data-n="Dulcemente" data-t="Pastelería · identidad" data-c="#f57896" data-l="dulcemente" href="proyecto-dulcemente" style="--i:2"><img src="img/dulcemente.webp" alt="" loading="lazy" decoding="async"><span class="sr-only">Dulcemente. Pastelería · identidad</span></a>
+   <a class="pg-s" data-n="Miga" data-t="Cafetería y panadería de especialidad" data-c="#2f8cff" data-l="miga" href="proyecto-miga" style="--i:3"><img src="img/miga.webp" alt="" loading="lazy" decoding="async"><span class="sr-only">Miga. Cafetería y panadería de especialidad</span></a>
+   <a class="pg-s" data-n="ROS.exe" data-t="Video presentación · Motion graphic" data-c="#7d41ff" data-l="ros" href="proyecto-ros" style="--i:4"><img src="img/ros.webp" alt="" loading="lazy" decoding="async"><span class="sr-only">ROS.exe. Video presentación · Motion graphic</span></a>
+   <a class="pg-s" data-n="Trazo" data-t="Revista de diseño gráfico · Editorial" data-c="#28cdff" data-l="trazo" href="proyecto-trazo" style="--i:5"><img src="img/trazo.webp" alt="" loading="lazy" decoding="async" style="object-position:center 40%"><span class="sr-only">Trazo. Revista de diseño gráfico · Editorial</span></a>
+   <a class="pg-s" data-n="Infografía F1" data-t="Un fin de semana en la Fórmula 1 · Editorial" data-c="#eb2837" data-l="f1" href="proyecto-f1" style="--i:6"><img src="img/f1.webp" alt="" loading="lazy" decoding="async"><span class="sr-only">Infografía F1. Un fin de semana en la Fórmula 1 · Editorial</span></a>
    </div>
    <p class="pg-cap" aria-hidden="true"><b></b><i></i></p>
   </div>
  </section>
  <p class="mas" id="jueguitos"><a class="btn claro" style="display:inline-block;padding:13px 34px" href="portfolio">Ver todo el portfolio</a></p>
 
+ <section class="banda" aria-label="Cómo pienso el diseño"><p>Diseñar es tomar decisiones, construir una identidad y comunicar una idea de forma clara.</p><span>qfadesign</span></section>
+
+ <div class="hj">
  <a class="hr-home" id="herramientas-home" href="herramientas">
+  <span class="vis vis-t" aria-hidden="true"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M8.5 7.5h7"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01" stroke-width="2.6"/></svg></span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="9" r="5"/><circle cx="12" cy="15" r="5"/></svg></span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg></span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7.5" width="19" height="9" rx="2"/><path d="M7 7.5v3M11 7.5v4.5M15 7.5v3M19 7.5v2"/></svg></span></span>
   <span class="hr-tag">Interactivas</span>
   <h3 class="hr-st hr-swap"><img class="st-a" src="img/stickers/titulo-herramientas.svg" alt="Herramientas" width="672.35" height="107.44" style="--vw:672.35" loading="lazy" decoding="async"><img class="st-b" src="img/stickers/herramientas.svg" alt="" aria-hidden="true" width="672.35" height="107.44" style="--vw:672.35" loading="lazy" decoding="async"></h3>
   <p>Presupuestos, paletas, contraste y más, sin instalar nada.</p>
@@ -203,16 +207,26 @@ body .btn.claro.btn.btn:hover,body .btn.claro.btn.btn:focus-visible,body .btn.ne
  </a>
 
  <a class="hr-home jh-home" id="juegos-home" href="jueguitos">
+  <span class="vis vis-j" aria-hidden="true"><img src="img/juego-color.webp" alt="" loading="lazy" decoding="async"><img src="img/juego-tipografia.webp" alt="" loading="lazy" decoding="async"><img src="img/juego-ahorcado.webp" alt="" loading="lazy" decoding="async"></span>
   <span class="hr-tag">Para jugar</span>
   <h3 class="hr-st hr-swap"><img class="st-a" src="img/stickers/titulo-jueguitos.svg" alt="Jueguitos" width="488.7" height="126.74" style="--vw:488.7" loading="lazy" decoding="async"><img class="st-b" src="img/stickers/jueguitos.svg" alt="" aria-hidden="true" width="488.7" height="126.74" style="--vw:488.7" loading="lazy" decoding="async"></h3>
   <p>Entrená el ojo mientras te despejás un rato.</p>
   <span class="btn negro">Ver jueguitos</span>
  </a>
+ </div>
 
- <section class="ayuda" id="contacto">
-  <h3>En qué puedo ayudarte</h3>
-  <p>¿Tenés una idea y no sabés por dónde empezar?</p>
-  <a class="btn negro" href="contacto">Hablemos de tu proyecto</a>
+ <section class="ayuda sv-sec" id="contacto" aria-labelledby="sv-t">
+  <h3 id="sv-t">En qué puedo ayudarte</h3>
+  <p class="sv-sub">¿Tenés una idea y no sabés por dónde empezar?</p>
+  <ul class="sv">
+   <li data-img="img/arbol.webp"><span class="n">01</span><b>Branding</b><em>Identidad y manual de marca</em></li>
+   <li data-img="img/dulcemente.webp"><span class="n">02</span><b>Diseño de logos</b><em>Logotipos y sistemas visuales</em></li>
+   <li data-img="img/ros.webp"><span class="n">03</span><b>Motion graphics</b><em>Videos y piezas animadas</em></li>
+   <li data-img="img/bleko.webp"><span class="n">04</span><b>Social media</b><em>Piezas y carruseles para redes</em></li>
+   <li data-img="img/trazo.webp"><span class="n">05</span><b>Diseño editorial</b><em>Revistas e infografías</em></li>
+  </ul>
+  <p class="sv-mas">Y más: packaging, afiches, posters, publicidades y edición de fotografía.</p>
+  <div class="sv-cta"><a class="btn claro" href="contacto">Hablemos de tu proyecto</a><button class="btn negro" type="button" data-copy="qfadesignn@gmail.com" aria-live="polite">Copiar mail</button></div>
  </section>
 </div>
 </main>
