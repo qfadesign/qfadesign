@@ -64,3 +64,22 @@ html.qc .pj,html.qc .zoom{cursor:none}
 .pr-h .pr-t{text-align:center}
 .pr-t .logo{margin-inline:auto}
 .pr-h:has(.logo) .lead{margin-inline:auto;text-align:center}
+
+/* filtros desplegables en celu + botones de vista como íconos */
+.fdrop{position:relative}.fd-btn{align-items:center;gap:10px}
+.fd-btn svg{width:14px;height:14px;transition:rotate .3s}.fd-btn[aria-expanded=true] svg{rotate:180deg}
+.fd-list{display:flex;gap:10px;flex-wrap:wrap}
+.vista .chip{width:46px;height:46px;padding:0;display:grid;place-items:center}.vista svg{width:20px;height:20px}
+.fd-btn{display:inline-flex}
+.fd-list{position:absolute;left:0;top:calc(100% + 10px);z-index:20;min-width:220px;flex-direction:column;flex-wrap:nowrap;gap:6px;padding:10px;border-radius:26px;border:1px solid rgba(255,255,255,.28);background:rgba(8,16,36,.9);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 20px 40px rgba(0,0,0,.5);opacity:0;visibility:hidden;translate:0 -8px;transition:opacity .25s,translate .3s,visibility .25s}
+.fd-btn[aria-expanded=true]+.fd-list{opacity:1;visibility:visible;translate:0 0}
+.fd-list .chip{width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;text-align:left}
+.fd-list .ct{font-style:normal;font-size:12px;min-width:22px;padding:3px 0 4px;border-radius:99px;text-align:center;background:rgba(255,255,255,.16)}
+.fd-list .chip[aria-pressed=true] .ct{background:rgba(8,71,163,.14)}
+.filtros{flex-wrap:nowrap;gap:12px}
+/* textos de las portadas: todos del mismo lado (abajo a la derecha) */
+.pj .et{text-align:right}
+.pjs.lista .pj .et{text-align:left}
+/* lista: título y debajo su texto, los dos alineados a la izquierda */
+.pjs.lista .pj .et{display:block;text-align:left}
+.pjs.lista .pj p{max-width:none;margin:clamp(6px,.8vw,12px) 0 0;text-align:left}
