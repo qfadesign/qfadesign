@@ -1,0 +1,66 @@
+/* PORTFOLIO + PROYECTOS: efectos (tinte por marca, grilla con ritmo, vista lista, cursor, transición tarjeta→proyecto) */
+.f-portfolio main,.f-portfolio footer{position:relative;z-index:1}
+.tinte{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s;background:radial-gradient(70vw 55vw at 80% 20%,color-mix(in srgb,var(--tc,#0b75f4) 58%,transparent),transparent 65%),radial-gradient(60vw 45vw at 10% 85%,color-mix(in srgb,var(--tc,#0b75f4) 36%,transparent),transparent 65%)}
+.tinte.on{opacity:1}
+.filtros{align-items:center}.filtros .vista{display:flex;gap:10px;margin-left:auto}
+/* tarjetas: número, categoría y título sobre la imagen (sin caja de vidrio repetida) */
+.pj .et{left:0;right:0;bottom:0;max-width:none;padding:70px 24px 22px;border:0;border-radius:0;background:linear-gradient(transparent,rgba(0,0,0,.66));backdrop-filter:none;-webkit-backdrop-filter:none;color:#fff}
+.pj h3{font-size:clamp(26px,3vw,44px)}.pj p{opacity:.92}
+.pj .n,.pj .k{position:absolute;top:16px;z-index:3;padding:6px 14px 7px;border-radius:99px;font:900 italic 13px/1 var(--fh);background:rgba(255,255,255,.74);color:#06214d;border:1px solid rgba(255,255,255,.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.pj .n{left:16px}.pj .k{right:16px;text-transform:uppercase;letter-spacing:.06em}
+.pj .alt{position:absolute;inset:0;opacity:0;transition:opacity .55s,scale .8s cubic-bezier(.2,.8,.2,1)}
+@media(hover:hover){.pj:hover .alt{opacity:1}}
+/* grilla con ritmo: una tarjeta alta + dos apiladas, al revés, y un banner */
+@media(min-width:761px){
+ .pjs{grid-auto-rows:clamp(58px,6.1vw,88px)}
+ .pjs:not(.f):not(.lista) .pj:nth-child(1){grid-area:1/1/7/4}
+ .pjs:not(.f):not(.lista) .pj:nth-child(2){grid-area:1/4/4/7}
+ .pjs:not(.f):not(.lista) .pj:nth-child(3){grid-area:4/4/7/7}
+ .pjs:not(.f):not(.lista) .pj:nth-child(4){grid-area:7/1/10/4}
+ .pjs:not(.f):not(.lista) .pj:nth-child(5){grid-area:10/1/13/4}
+ .pjs:not(.f):not(.lista) .pj:nth-child(6){grid-area:7/4/13/7}
+ .pjs:not(.f):not(.lista) .pj:nth-child(7){grid-area:13/1/17/7}
+ .pjs.f .pj{grid-row:span 4}
+}
+/* vista lista: nombres gigantes; la imagen sigue al cursor */
+.pjs.lista{display:block;border-top:1px solid rgba(255,255,255,.28)}
+.pjs.lista .pj{display:flex;align-items:baseline;gap:clamp(14px,3vw,40px);border-radius:0;background:none;overflow:visible;border-bottom:1px solid rgba(255,255,255,.28);padding:clamp(14px,2.2vw,28px) 0;transform:none!important;box-shadow:none!important;transition:opacity .3s}
+.pjs.lista .pj::after{display:none}
+.pjs.lista .pj>img{display:none}
+.pjs.lista .pj .n,.pjs.lista .pj .k{position:static;padding:0;border:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;color:#fff;font-size:clamp(13px,1.2vw,16px)}
+.pjs.lista .pj .k{order:3}
+.pjs.lista .pj .et{position:static;flex:1;display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:0;background:none}
+.pjs.lista .pj h3{font-size:clamp(44px,9vw,138px);line-height:.95;transition:translate .4s cubic-bezier(.2,.8,.2,1)}
+.pjs.lista .pj:hover h3{translate:18px 0}
+.pjs.lista .pj p{font-size:clamp(13px,1.2vw,17px);max-width:26ch;text-align:right}
+.pjs.lista .pj>*{transition:opacity .3s}
+.pjs.lista:has(.pj:hover) .pj:not(:hover)>*{opacity:.28}
+@media(hover:none){.pjs.lista .pj>img{display:block;order:4;width:clamp(70px,20vw,120px);height:clamp(52px,15vw,90px);border-radius:12px;object-fit:cover;align-self:center}}
+@media(max-width:760px){.pjs.lista .pj{flex-wrap:wrap}.pjs.lista .pj .et{flex-basis:100%;order:5}.pjs.lista .pj h3{font-size:clamp(40px,13vw,72px)}.pjs.lista .pj p{text-align:left}}
+.lv{position:fixed;left:0;top:0;width:clamp(240px,24vw,360px);aspect-ratio:4/3;z-index:30;pointer-events:none;border-radius:20px;overflow:hidden;opacity:0;scale:.7;transition:opacity .25s,scale .35s cubic-bezier(.2,.8,.2,1);box-shadow:0 26px 60px rgba(0,0,0,.5)}
+.lv.on{opacity:1;scale:1}.lv img{width:100%;height:100%;object-fit:cover;display:block}
+/* cursor propio */
+.qcur{position:fixed;left:0;top:0;z-index:9999;pointer-events:none;width:0;height:0}
+.qcur span{position:absolute;left:0;top:0;display:grid;place-items:center;width:92px;height:92px;margin:-46px 0 0 -46px;border-radius:50%;background:var(--crema,#f9fbf2);color:var(--azul-f,#0847a3);font:900 italic 18px/1 var(--fh);rotate:-8deg;scale:0;transition:scale .35s cubic-bezier(.34,1.56,.64,1)}
+.qcur.on span{scale:1}
+html.qc .pj,html.qc .zoom{cursor:none}
+/* transición tarjeta → proyecto */
+.qpj{position:fixed;z-index:41;pointer-events:none;background-size:cover;background-repeat:no-repeat;overflow:hidden}
+/* páginas de proyecto */
+.lt{display:inline-block;animation:lt 1s cubic-bezier(.16,.9,.2,1) calc(.75s + var(--i)*.05s) both}
+@keyframes lt{from{opacity:0;translate:0 70%;rotate:7deg}to{opacity:1;translate:0 0;rotate:0deg}}
+.px{transform:scale(1.1);will-change:transform}
+.js .pr-gal figure.rv{rotate:-1.6deg;scale:.94;translate:0 60px;transition:opacity .9s,translate 1.1s cubic-bezier(.16,.9,.2,1),rotate 1.1s cubic-bezier(.16,.9,.2,1),scale 1.1s cubic-bezier(.16,.9,.2,1)}
+.js .pr-gal figure.rv:nth-child(even){rotate:1.6deg}
+.js .pr-gal figure.rv.in{rotate:0deg;scale:1;translate:0 0}
+@media(prefers-reduced-motion:reduce){.px{transform:none}.lt{animation:none}.js .pr-gal figure.rv{rotate:0deg;scale:1}}
+
+/* marca del proyecto como título */
+.pr-t .logo{display:block;height:auto;max-width:100%;animation:logo 1s cubic-bezier(.16,.9,.2,1) .75s both}
+.pr-t .logo.t{width:clamp(140px,26vw,300px)}.pr-t .logo.m{width:clamp(200px,40vw,480px)}.pr-t .logo.w{width:clamp(260px,56vw,680px)}
+.f-f1 .pr-t .logo{filter:brightness(0) invert(1)}
+@keyframes logo{from{opacity:0;scale:.82;rotate:-5deg}to{opacity:1;scale:1;rotate:0deg}}
+@media(prefers-reduced-motion:reduce){.pr-t .logo{animation:none}}
+.pr-h .pr-t{text-align:center}
+.pr-t .logo{margin-inline:auto}
+.pr-h:has(.logo) .lead{margin-inline:auto;text-align:center}
