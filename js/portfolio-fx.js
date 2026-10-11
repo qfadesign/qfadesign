@@ -11,6 +11,15 @@
     cards.forEach(c=>{c.hidden=f!=='todos'&&c.dataset.cat!==f;c.classList.remove('solo')});
     const vis=cards.filter(c=>!c.hidden);if(f!=='todos'&&vis.length%2)vis[vis.length-1].classList.add('solo');
   }));
+  // en celu los filtros son un desplegable
+  const fbtn=document.querySelector('.fd-btn');
+  if(fbtn){
+    const abrir=v=>fbtn.setAttribute('aria-expanded',v);
+    fbtn.addEventListener('click',e=>{e.stopPropagation();abrir(fbtn.getAttribute('aria-expanded')!=='true')});
+    document.addEventListener('click',()=>abrir(false));
+    addEventListener('keydown',e=>{if(e.key==='Escape')abrir(false)});
+    fb.forEach(b=>b.addEventListener('click',()=>{fbtn.firstElementChild.textContent=b.dataset.t;abrir(false)}));
+  }
   // tinte: el fondo toma el color de la marca de la tarjeta (mouse: hover · celu: la tarjeta que está en el centro)
   const tinte=document.createElement('div');tinte.className='tinte';tinte.setAttribute('aria-hidden','true');document.body.prepend(tinte);
   const tint=c=>{if(c)tinte.style.setProperty('--tc',c.dataset.c);tinte.classList.toggle('on',!!c)};
