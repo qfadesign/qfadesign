@@ -71,7 +71,10 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:23px;height:23px;b
 @media(max-width:600px){.app{padding:25px 14px 35px}header{margin-bottom:22px}.card{padding:22px 17px;border-radius:20px}.game-top{grid-template-columns:1fr auto 1fr}.timer{width:60px;height:60px;font-size:18px}.target-color{height:120px}.rgb-row{grid-template-columns:32px 1fr 62px;gap:8px}.current-wrap,.result-colors{grid-template-columns:1fr}}
 </style>
 <style>
-.dd-h1{margin:0;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(44px,9vw,84px);line-height:.95;letter-spacing:-.025em;color:#f9fbf2;rotate:-2deg;text-shadow:0 3px 0 #0a5cc0,0 8px 18px rgba(0,0,0,.55)}
+.dd-h1{margin:0;line-height:0;letter-spacing:0}
+.dd-h1 img{display:block;width:min(86vw,440px);height:auto;margin-inline:auto;rotate:-2deg;filter:var(--st-sombra);animation:pegar .85s cubic-bezier(.2,.8,.2,1) .15s backwards}
+.dd-signo{display:block;width:clamp(76px,16vw,104px);height:auto;margin:-4px auto 14px;rotate:5deg;filter:var(--st-sombra);animation:pegar .85s cubic-bezier(.2,.8,.2,1) .35s backwards}
+@media(prefers-reduced-motion:reduce){.dd-h1 img,.dd-signo{animation:none}}
 .dd-fecha{margin:14px 0 0;font-size:15px;font-weight:700;color:#cfe0f7}
 .dd-racha{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:18px auto 4px}
 .dd-chip{display:flex;flex-direction:column;align-items:center;min-width:104px;padding:10px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.07)}
@@ -93,11 +96,12 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:23px;height:23px;b
 <body class="f-juegos"><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca" data-t="Acerca de">Acerca de</a></li><li><a href="../portfolio" data-t="Portfolio">Portfolio</a></li><li><a href="../herramientas" data-t="Herramientas">Herramientas</a></li><li><a href="../jueguitos" data-t="Jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../contacto" data-t="Contacto">Contacto</a></li></ul></nav>
 <div class="vol-wrap"><a class="volver" href="../jueguitos" aria-label="Volver a Jueguitos"><span>Volver a</span><img src="../img/stickers/jueguitos.svg" alt="" width="488.7" height="126.74"></a></div>
 <div class="app">
-<header><h1 class="dd-h1">Color del día</h1><p class="dd-fecha" id="ddFecha"></p></header>
+<header><h1 class="dd-h1"><img src="../img/stickers/color-del-dia-titulo.svg" alt="Color del día" width="943" height="494"></h1><p class="dd-fecha" id="ddFecha"></p></header>
 <main class="screen">
 <section id="introScreen" class="card intro">
 <div class="inicio">
  <div class="inicio-reglas">
+  <img class="dd-signo" src="../img/stickers/color-del-dia-signo.svg" alt="" width="774" height="722">
   <h2>El mismo color para todos</h2>
   <p>Hoy hay un solo color. Lo ves 3 segundos y lo recreás con los controles RGB en 15. Tenés un intento por día: volvé mañana por uno nuevo.</p>
   <div class="dd-racha" id="ddRacha"></div>
