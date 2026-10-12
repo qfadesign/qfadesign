@@ -25,8 +25,8 @@ orden = ["index.html", "portfolio.html", "acerca.html", "contacto.html", "herram
 paginas = [p for p in orden if (raiz / p).exists()]
 paginas += sorted(p.name for p in raiz.glob("proyecto-*.html"))
 paginas += sorted(f"juegos/{p.name}" for p in (raiz / "juegos").glob("*.html"))
-if (raiz / "utilidades").is_dir():
-    paginas += sorted(f"utilidades/{p.name}" for p in (raiz / "utilidades").glob("*.html"))
+if (raiz / "herramienta").is_dir():
+    paginas += sorted(f"herramienta/{p.name}" for p in (raiz / "herramienta").glob("*.html"))
 
 filas = []
 for p in paginas:
