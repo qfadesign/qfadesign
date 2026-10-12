@@ -399,6 +399,127 @@
     return construir(jsPDF, d, rec, 1);
   }
 
+  /* ---- PDF del brief (herramienta "Brief para tu proyecto") ----
+     Reusa recursos, colores y tipografías de arriba. Datos: { ahora, ref, nombre, email, secciones:[{t, v}] } (v = texto) */
+  function construirBrief(jsPDF, d, rec) {
+    var doc = new jsPDF({ unit: "pt", format: "a4", compress: true, putOnlyUsedFonts: true });
+    var PW = 595.28, PH = 841.89, ML = 46, CW = PW - ML * 2, TOP = 46, BOT = PH - 62;
+    var y = TOP;
+    var conMarca = !!(rec && rec.fonts && rec.fonts.AR && rec.fonts.AR.normal && rec.fonts.AR.italic && rec.fonts.ARH && rec.fonts.POD);
+    if (conMarca) {
+      Object.keys(rec.fonts).forEach(function (fam) {
+        Object.keys(rec.fonts[fam]).forEach(function (estilo) {
+          var fo = rec.fonts[fam][estilo];
+          doc.addFileToVFS(fo.file, fo.b64);
+          doc.addFont(fo.file, fam, estilo);
+        });
+      });
+    }
+    var FUENTE = conMarca
+      ? { b: ["AR", "normal"], bi: ["AR", "italic"], h: ["ARH", "italic"], p: ["POD", "normal"] }
+      : { b: ["helvetica", "normal"], bi: ["helvetica", "italic"], h: ["helvetica", "bolditalic"], p: ["helvetica", "bold"] };
+    function f(k, size, color) { doc.setFont(FUENTE[k][0], FUENTE[k][1]); doc.setFontSize(size); doc.setTextColor.apply(doc, color || C.navy); }
+    function trazo(color, w) { doc.setDrawColor.apply(doc, color); doc.setLineWidth(w); }
+    function mayus(t) { return t.toUpperCase(); }
+    function marcaDer(yy, w) {
+      if (rec && rec.sticker) { doc.addImage(rec.sticker, "PNG", PW - ML - w, yy, w, w * STICKER_RATIO); return true; }
+      if (rec && rec.logo) { doc.addImage(rec.logo, "PNG", PW - ML - w, yy, w, w * LOGO_RATIO); return true; }
+      return false;
+    }
+    function cabeceraInterna() {
+      marcaDer(26, 76);
+      f("p", 7, C.gris);
+      doc.text(mayus("Brief · " + d.ref), ML, 42, { charSpace: 0.7 });
+      trazo(C.linea, 0.75); doc.line(ML, 58, PW - ML, 58);
+      y = 82;
+    }
+    function nuevaPagina() { doc.addPage(); cabeceraInterna(); }
+
+    /* portada */
+    if (!marcaDer(TOP, 120)) { f("h", 20, C.azulV); doc.text("qfadesign", PW - ML, TOP + 18, { align: "right" }); }
+    f("p", 8, C.azul); doc.text(mayus("Brief de proyecto"), ML, TOP + 10, { charSpace: 1.2 });
+    f("b", 8.5, C.gris); doc.text("N.º " + d.ref, ML, TOP + 24);
+    trazo(C.linea, 0.75); doc.line(ML, TOP + 40, PW - ML, TOP + 40);
+    y = TOP + 96;
+    f("h", 44, C.azul); doc.text("Brief", ML, y, { charSpace: -1.3 });
+    var wb = doc.getTextWidth("Brief") - 1.3 * 5;
+    trazo(C.azul, 1.3); f("h", 44, C.azul);
+    doc.text("de proyecto", ML + wb + 12, y, { renderingMode: "stroke", charSpace: -1.3 });
+    y += 24;
+    f("b", 11, C.gris); doc.text("Lo que necesito para arrancar, ordenado en una hoja.", ML, y);
+    y += 26;
+
+    /* franja de datos */
+    trazo(C.linea, 0.75); doc.line(ML, y, PW - ML, y);
+    var cols = [["Fecha", fechaCorta(d.ahora)], ["Referencia", d.ref], ["Nombre", d.nombre || "—"], ["Mail", d.email || "—"]];
+    var cw = CW / 4;
+    cols.forEach(function (c, i) {
+      var x = ML + i * cw;
+      f("p", 6.8, C.gris); doc.text(mayus(c[0]), x, y + 16, { charSpace: 0.8 });
+      f("b", 9, C.navy); doc.text(c[1], x, y + 30, { maxWidth: cw - 10 });
+    });
+    y += 46; doc.line(ML, y, PW - ML, y);
+    y += 24;
+
+    /* preguntas y respuestas */
+    d.secciones.forEach(function (sec, i) {
+      var txt = (sec.v && String(sec.v).trim()) || "Sin responder";
+      var vacio = !(sec.v && String(sec.v).trim());
+      f("b", 10, vacio ? C.gris : C.navy);
+      var lines = doc.splitTextToSize(txt, CW - 30);
+      var lh = 13.5, h = 18 + lines.length * lh + 16;
+      if (y + h > BOT) nuevaPagina();
+      f("p", 7, C.azul);
+      doc.text(mayus((i + 1 < 10 ? "0" : "") + (i + 1) + "  ·  " + sec.t), ML, y + 6, { charSpace: 0.8 });
+      f(vacio ? "bi" : "b", 10.5, vacio ? C.gris : C.navy);
+      lines.forEach(function (l, k) { doc.text(l, ML + 30, y + 24 + k * lh); });
+      y += h;
+      trazo(C.linea, 0.6); doc.line(ML, y - 6, PW - ML, y - 6);
+    });
+
+    /* cierre */
+    if (y + 60 > BOT) nuevaPagina();
+    y += 14;
+    f("h", 14, C.navy); doc.text("Con esto ya podemos arrancar.", ML, y, { charSpace: -0.2 });
+    f("b", 9, C.azul);
+    var sep = "  ·  ", ig = "@qfadesign";
+    var wE = doc.getTextWidth(EMAIL), wI = doc.getTextWidth(ig), wS = doc.getTextWidth(sep);
+    var xe = PW - ML - (wE + wS + wI);
+    doc.textWithLink(EMAIL, xe, y, { url: "mailto:" + EMAIL });
+    f("b", 9, C.gris); doc.text(sep, xe + wE, y);
+    f("b", 9, C.azul); doc.textWithLink(ig, xe + wE + wS, y, { url: INSTAGRAM });
+
+    var total = doc.getNumberOfPages();
+    for (var p = 1; p <= total; p++) {
+      doc.setPage(p);
+      trazo(C.linea, 0.75); doc.line(ML, PH - 44, PW - ML, PH - 44);
+      if (rec && rec.logo) doc.addImage(rec.logo, "PNG", ML, PH - 38, 62, 62 * LOGO_RATIO);
+      f("b", 7.5, C.gris);
+      doc.text(total > 1 ? "Página " + p + " de " + total + "  ·  " + SITIO : SITIO, PW - ML, PH - 27, { align: "right" });
+    }
+    doc.setProperties({ title: "Brief de proyecto — qfadesign", subject: "Brief N.º " + d.ref, author: "qfadesign", creator: SITIO });
+    return doc;
+  }
+  function nombreBrief(d) {
+    var f = d.ahora;
+    var base = "brief-qfadesign-" + f.getFullYear() + pad(f.getMonth() + 1) + pad(f.getDate());
+    if (d.nombre) {
+      var slug = d.nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 30);
+      if (slug) base += "-" + slug;
+    }
+    return base + ".pdf";
+  }
+  function descargarBrief(datos) {
+    var d = datos;
+    d.ahora = d.ahora || new Date();
+    d.ref = d.ref || ("BRF-" + d.ahora.getFullYear() + pad(d.ahora.getMonth() + 1) + pad(d.ahora.getDate()) + "-" + pad(d.ahora.getHours()) + pad(d.ahora.getMinutes()));
+    var lib = root.jspdf && root.jspdf.jsPDF ? Promise.resolve() : cargarScript(BASE + "js/vendor/jspdf.umd.min.js");
+    return Promise.all([lib, cargarRecursos()]).then(function (r) {
+      var doc = construirBrief(root.jspdf.jsPDF, d, r[1]);
+      doc.save(nombreBrief(d));
+    });
+  }
+
   /* ---- API pública ---- */
   function nombreArchivo(d) {
     var f = d.ahora;
@@ -420,5 +541,5 @@
     });
   }
 
-  root.QFAPdf = { descargar: descargar, _construir: armar, _nombreArchivo: nombreArchivo };
+  root.QFAPdf = { descargar: descargar, descargarBrief: descargarBrief, _construir: armar, _nombreArchivo: nombreArchivo };
 })(typeof window !== "undefined" ? window : globalThis);
