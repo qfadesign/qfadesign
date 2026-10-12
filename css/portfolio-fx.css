@@ -97,3 +97,16 @@ html.qc .pj,html.qc .zoom{cursor:none}
 .pr-proc li p{margin:0;font-size:clamp(15px,1.25vw,17px);line-height:1.5}
 .pr-proc~.pr-portada{margin-top:clamp(14px,2vw,26px)}
 .pr-cta h2{max-width:20ch;font-size:clamp(28px,4.4vw,58px)}
+
+/* Desplegables de proyecto (Sobre el proyecto / Decisiones de diseño): cerrados por defecto */
+.pr-info{align-items:start}
+.pr-det>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;-webkit-tap-highlight-color:transparent}
+.pr-det>summary::-webkit-details-marker{display:none}
+.pr-det>summary h2{margin:0!important}
+.pr-det>summary::after{content:"";flex:none;width:11px;height:11px;border-right:3px solid currentColor;border-bottom:3px solid currentColor;transform:rotate(45deg) translate(-2px,-2px);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.pr-det[open]>summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.pr-det>summary:focus-visible{outline:2px solid currentColor;outline-offset:6px;border-radius:8px}
+.pr-det[open]>summary{margin-bottom:clamp(14px,2vw,22px)}
+.pr-det[open]>:not(summary){animation:prdet .35s ease both}
+@keyframes prdet{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.pr-det[open]>:not(summary){animation:none}.pr-det>summary::after{transition:none}}
