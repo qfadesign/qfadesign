@@ -82,3 +82,7 @@ html.qc .pj,html.qc .zoom{cursor:none}
 /* lista: título y debajo su texto, los dos alineados a la izquierda */
 .pjs.lista .pj .et{display:block;text-align:left}
 .pjs.lista .pj p{max-width:none;margin:clamp(6px,.8vw,12px) 0 0;text-align:left}
+
+/* proyectos: primero título y descripción; la seguidilla de imágenes (portada incluida) va después */
+.pr-h+.pr-info{margin-top:clamp(26px,4vw,48px)}
+.pr-info~.pr-portada{margin-top:clamp(14px,2vw,26px)}
