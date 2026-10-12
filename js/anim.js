@@ -35,7 +35,9 @@ document.documentElement.classList.add('js');
   const volarPj=o=>{
     const t=document.querySelector('.pr-portada'),fin=()=>{o.remove();root.style.background=''};
     if(!t||!o.animate){fin();return}
-    scrollTo(0,0);const b=t.getBoundingClientRect(),R={left:b.left+'px',top:b.top+'px',width:b.width+'px',height:b.height+'px',borderRadius:'34px'};
+    scrollTo(0,0);const b=t.getBoundingClientRect();
+    if(b.top>innerHeight*.6){o.animate([{opacity:1},{opacity:1,offset:.35},{opacity:0}],{duration:850,easing:'ease-out',fill:'forwards'}).onfinish=fin;return} // la portada queda más abajo: la imagen grande se desvanece
+    const R={left:b.left+'px',top:b.top+'px',width:b.width+'px',height:b.height+'px',borderRadius:'34px'};
     o.animate([{left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px',opacity:1},Object.assign({opacity:1,offset:.78},R),Object.assign({opacity:0},R)],{duration:950,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'}).onfinish=fin;
   };
 
@@ -75,7 +77,7 @@ document.documentElement.classList.add('js');
     if(document.body)document.body.style.setProperty('--fondo',oscura?'#000':(PJB[s]||'#0847a3'));
     flag('qfa-t','1');
     let espera=320;
-    const pjc=a.closest('.pj'),pim=pjc&&pjc.querySelector('img'),pr=pim&&pjc.getBoundingClientRect();
+    const pjc=a.closest('.pj,.pg-s'),pim=pjc&&pjc.querySelector('img'),pr=pim&&pjc.getBoundingClientRect();
     if(pr&&pr.width>60&&root.animate){ // tarjeta del portfolio: la imagen se agranda hasta ocupar la pantalla
       const u=pim.currentSrc||pim.src,p=getComputedStyle(pim).objectPosition,o=document.createElement('div');
       o.className='qpj';o.style.cssText='left:'+pr.left+'px;top:'+pr.top+'px;width:'+pr.width+'px;height:'+pr.height+'px;border-radius:28px;background-image:url('+u+');background-position:'+p;
