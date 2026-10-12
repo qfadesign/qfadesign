@@ -110,3 +110,16 @@ html.qc .pj,html.qc .zoom{cursor:none}
 .pr-det[open]>:not(summary){animation:prdet .35s ease both}
 @keyframes prdet{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.pr-det[open]>:not(summary){animation:none}.pr-det>summary::after{transition:none}}
+
+/* Escritorio: "Sobre el proyecto" y "Decisiones de diseño" van apilados a la izquierda y "Qué incluye" a la derecha,
+   a la altura de los dos. Con los desplegables cerrados no quedan huecos. */
+.pr-info>.pr-proc{margin-top:0}
+@media(min-width:761px){
+  .pr-info{align-items:stretch}
+  .pr-info>.pr-det{grid-column:1;grid-row:1}
+  .pr-info>.pr-proc{grid-column:1;grid-row:2}
+  .pr-info>.vid:not(.pr-det){grid-column:2;grid-row:1/3}
+  /* cerrados: el título queda centrado en su barra */
+  .pr-info>.pr-det:not([open]),.pr-info>.pr-proc>.pr-det:not([open]){height:100%}
+  .pr-info>.pr-det:not([open])>summary,.pr-info>.pr-proc>.pr-det:not([open])>summary{height:100%}
+}

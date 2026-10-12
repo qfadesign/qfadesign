@@ -1,0 +1,17 @@
+/* Páginas de cada herramienta (carpeta utilidades/): la herramienta ocupa su propia pantalla */
+.hp-h{padding-top:clamp(24px,3.5vw,48px)}
+.hp-t{font-size:clamp(32px,6vw,76px);margin-top:clamp(18px,2.6vw,32px);overflow-wrap:anywhere;hyphens:auto}
+.hp-h .lead{margin:clamp(12px,1.6vw,20px) 0 0;max-width:60ch}
+/* mismo panel azul que antes, pero fijo en la página (sin cabecera ni botón de cerrar) */
+.md.md-pg{margin-top:clamp(22px,3vw,36px)}
+.md-pg .md-b{padding-top:clamp(18px,2.4vw,28px);border-radius:27px}
+@media(max-width:600px){.md-pg .md-b{border-radius:21px}}
+/* salida a las otras herramientas */
+.hp-otras{margin-top:clamp(22px,3vw,36px)}
+.hp-otras p{margin:0 0 12px;font:900 italic clamp(16px,1.5vw,19px)/1.1 var(--fh)}
+.hp-otras div{display:flex;flex-wrap:wrap;gap:10px}
+.hp-otras a{display:inline-block;padding:10px 18px;border-radius:99px;border:1px solid var(--v-borde,rgba(255,255,255,.5));background:rgba(255,255,255,.13);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#fff;font:900 italic 15px/1.1 var(--fh);text-decoration:none;transition:background .25s,color .25s,transform .25s}
+.hp-otras a:hover,.hp-otras a:focus-visible{background:#fff;color:var(--azul-f);transform:translateY(-3px)}
+.hp-otras a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.hp-otras a{transition:none}.hp-otras a:hover{transform:none}}
+.md-pg .br{border-top:0;padding-top:0}
