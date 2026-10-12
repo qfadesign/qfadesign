@@ -116,10 +116,17 @@ html.qc .pj,html.qc .zoom{cursor:none}
 .pr-info>.pr-proc{margin-top:0}
 @media(min-width:761px){
   .pr-info{align-items:stretch}
-  .pr-info>.pr-det{grid-column:1;grid-row:1}
-  .pr-info>.pr-proc{grid-column:1;grid-row:2}
-  .pr-info>.vid:not(.pr-det){grid-column:2;grid-row:1/3}
+  .pr-info>.pr-det{grid-column:1/-1;grid-row:1}
+  .pr-info>.pr-proc{grid-column:1/-1;grid-row:2}
+  /* "Qué incluye": una sola franja debajo de "Decisiones de diseño", título y etiquetas en la misma línea */
+  .pr-info>.vid:not(.pr-det){grid-column:1/-1;grid-row:3;display:flex;align-items:center;gap:clamp(16px,2vw,28px);padding-block:clamp(14px,1.6vw,20px)}
+  .pr-info>.vid:not(.pr-det) h2{margin:0;flex:none;white-space:nowrap}
+  .pr-info>.vid:not(.pr-det) .pr-tags{margin:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .pr-info>.vid:not(.pr-det) .pr-tags::-webkit-scrollbar{display:none}
+  .pr-info>.vid:not(.pr-det) .pr-tags li{white-space:nowrap;flex:none}
   /* cerrados: el título queda centrado en su barra */
   .pr-info>.pr-det:not([open]),.pr-info>.pr-proc>.pr-det:not([open]){height:100%}
   .pr-info>.pr-det:not([open])>summary,.pr-info>.pr-proc>.pr-det:not([open])>summary{height:100%}
 }
+/* celu: "Qué incluye" también después de "Decisiones de diseño" */
+@media(max-width:760px){.pr-info>.vid:not(.pr-det){order:3}}
