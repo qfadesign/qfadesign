@@ -111,22 +111,11 @@ html.qc .pj,html.qc .zoom{cursor:none}
 @keyframes prdet{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.pr-det[open]>:not(summary){animation:none}.pr-det>summary::after{transition:none}}
 
-/* Escritorio: "Sobre el proyecto" y "Decisiones de diseño" van apilados a la izquierda y "Qué incluye" a la derecha,
-   a la altura de los dos. Con los desplegables cerrados no quedan huecos. */
+/* Los tres bloques van apilados a todo el ancho: "Sobre el proyecto", "Decisiones de diseño" y, abajo,
+   "Qué incluye" con todas sus etiquetas en una sola línea (en pantallas angostas pasan a la línea siguiente). */
+.pr-info{grid-template-columns:1fr;align-items:start}
 .pr-info>.pr-proc{margin-top:0}
-@media(min-width:761px){
-  .pr-info{align-items:stretch}
-  .pr-info>.pr-det{grid-column:1/-1;grid-row:1}
-  .pr-info>.pr-proc{grid-column:1/-1;grid-row:2}
-  /* "Qué incluye": una sola franja debajo de "Decisiones de diseño", título y etiquetas en la misma línea */
-  .pr-info>.vid:not(.pr-det){grid-column:1/-1;grid-row:3;display:flex;align-items:center;gap:clamp(16px,2vw,28px);padding-block:clamp(14px,1.6vw,20px)}
-  .pr-info>.vid:not(.pr-det) h2{margin:0;flex:none;white-space:nowrap}
-  .pr-info>.vid:not(.pr-det) .pr-tags{margin:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
-  .pr-info>.vid:not(.pr-det) .pr-tags::-webkit-scrollbar{display:none}
-  .pr-info>.vid:not(.pr-det) .pr-tags li{white-space:nowrap;flex:none}
-  /* cerrados: el título queda centrado en su barra */
-  .pr-info>.pr-det:not([open]),.pr-info>.pr-proc>.pr-det:not([open]){height:100%}
-  .pr-info>.pr-det:not([open])>summary,.pr-info>.pr-proc>.pr-det:not([open])>summary{height:100%}
-}
-/* celu: "Qué incluye" también después de "Decisiones de diseño" */
-@media(max-width:760px){.pr-info>.vid:not(.pr-det){order:3}}
+.pr-info .pr-inc{display:flex;flex-wrap:wrap;align-items:center;gap:12px clamp(16px,2.2vw,30px);padding-block:clamp(16px,1.9vw,24px)}
+.pr-info .pr-inc h2{margin:0;flex:none}
+.pr-inc .pr-tags{flex:1 1 auto;min-width:0;margin:0}
+@media(min-width:1100px){.pr-inc .pr-tags{flex-wrap:nowrap}.pr-inc .pr-tags li{white-space:nowrap}}
