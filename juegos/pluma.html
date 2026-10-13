@@ -62,15 +62,16 @@
 .stage{display:block;width:min(100%,max(320px,calc((100svh - 400px)*var(--ar,1.6))),1180px);margin:0 auto;border-radius:22px;background:var(--crema);background-image:radial-gradient(rgba(10,92,192,.2) 1.6px,transparent 1.7px);background-size:30px 30px;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 6px rgba(255,255,255,.08);touch-action:none;user-select:none;-webkit-user-select:none}
 .acc{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0 6px}
 .message{min-height:0;text-align:center;margin-top:10px;max-width:760px}
-.message:not(:empty){display:inline-block;background:var(--crema);color:var(--az-f);font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(14px,1.4vw,17px)!important;line-height:1.25;padding:10px 20px 12px;border-radius:16px;rotate:-1deg;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.message:not(:empty){display:inline-block;background:var(--crema);color:#06214d!important;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(14px,1.4vw,17px)!important;line-height:1.25;padding:10px 20px 12px;border-radius:16px;rotate:-1deg;box-shadow:0 12px 30px rgba(0,0,0,.4)}
 .final-screen{display:none;text-align:center;width:100%}.final-screen.show{display:block}
 .final-label{margin-inline:auto}.final-title{margin:6px 0}.final-copy{margin:0 0 16px}
 svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28))}svg.stage rect:active{cursor:grabbing}svg.stage rect:focus-visible{outline:3px solid #ff4d8d;outline-offset:2px}
 svg.stage{cursor:crosshair}.sec{min-height:0!important;padding:11px 20px 12px!important;font-size:14px!important}
+.consejo{display:inline-block;max-width:460px;margin:0 auto 20px;padding:8px 18px;border:2px solid #fff;border-radius:99px;color:#fff;font-family:var(--fp);font-size:12px;letter-spacing:.05em;text-transform:uppercase;line-height:1.4}
 </style>
 <script>if(self!==top){document.write('<style>html,body{background:transparent!important}#volver{display:none!important}</style>')}</script>
 <link rel="preconnect" href="https://use.typekit.net" crossorigin><link rel="preconnect" href="https://p.typekit.net" crossorigin><link rel="stylesheet" href="https://use.typekit.net/ftd7ahn.css">
-<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/juego-base.js" defer></script>
+<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/ranking-config.js" defer></script><script src="../js/ranking.js" defer></script><script src="../js/juego-base.js" defer></script>
 </head>
 
 <body class="f-juegos"><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca" data-t="Acerca de">Acerca de</a></li><li><a href="../portfolio" data-t="Portfolio">Portfolio</a></li><li><a href="../herramientas" data-t="Herramientas">Herramientas</a></li><li><a href="../jueguitos" data-t="Jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../contacto" data-t="Contacto">Contacto</a></li></ul></nav>
@@ -78,10 +79,12 @@ svg.stage{cursor:crosshair}.sec{min-height:0!important;padding:11px 20px 12px!im
   <main class="app">
 <header class="header"><h1 class="h1-st"><img src="../img/stickers/juego-pluma.webp" alt="Vectorizá con la pluma" width="1200" height="806" decoding="async"></h1><p class="subtitle">Calcá formas con curvas Bézier como en Illustrator.</p></header>
 <section class="game-card">
-<div class="start-screen" id="startScreen"><div class="inicio sin-rank"><div class="inicio-reglas">
-<div class="start-title">Cinco formas, pocos puntos</div><p class="start-copy">Calcá cada forma con la pluma y la menor cantidad de puntos posible. Menos puntos, mejor curva.</p>
-<div class="how-to"><strong>¿Cómo se juega?</strong><p>Clic para poner un punto. Clic y arrastrá para sacar las manijas y curvar el trazo. Para cerrar la forma, hacé clic sobre el primer punto. Podés deshacer o borrar.</p></div>
-<div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div></div></div></div>
+<div class="start-screen" id="startScreen"><div class="inicio"><div class="inicio-reglas">
+<div class="start-title">Cinco formas, pocos puntos</div><p class="start-copy">Calcá cada forma con la pluma y la menor cantidad de puntos posible. Menos puntos, mejor curva. Cada partida sortea formas nuevas, de las más simples a las más complejas.</p>
+<p class="consejo">Recomendado: jugalo con mouse</p>
+<div class="how-to"><strong>¿Cómo se juega?</strong><p>Clic para poner un punto. Clic y arrastrá para sacar las manijas y curvar el trazo. Para cerrar la forma, hacé clic sobre el primer punto. Podés deshacer o borrar. Con el mouse es mucho más fácil ser preciso que con el dedo.</p></div>
+<div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div></div>
+<aside class="rank-top" data-rank-top data-juego="pluma" data-modo="Estándar" aria-label="Los 3 mejores puntajes"></aside></div></div>
 <div id="gameContent" style="display:none">
 <div class="top-info"><span id="roundText"></span><p class="consigna" id="consigna"></p><span class="score" id="scoreText">0 pts</span></div>
 <svg class="stage" id="sv" style="--ar:1.5" viewBox="0 0 600 400" role="img" aria-label="Zona de dibujo con la pluma"><path id="tg" fill="none" stroke="rgba(10,92,192,.45)" stroke-width="3" stroke-dasharray="6 8"/><path id="us" fill="none" stroke="#0b75f4" stroke-width="4" stroke-linejoin="round"/><g id="hd"></g></svg>
@@ -91,12 +94,20 @@ svg.stage{cursor:crosshair}.sec{min-height:0!important;padding:11px 20px 12px!im
 </section></main>
 <script>window.addEventListener('load',function(){
 var $=function(i){return document.getElementById(i)};
-var NS='http://www.w3.org/2000/svg',sv=$('sv'),tg=$('tg'),us=$('us'),hd=$('hd'),A,closed,lock,drag,cur,pcts=[];
-var P=[['M60 300L180 100L300 300L420 100L540 300',5,'Solo clics, sin arrastrar: un punto por vértice.'],
-['M60 200C150 20 250 20 300 200S450 380 540 200',4,'Arrastrá en cada punto para sacar las manijas.'],
-['M300 70C371.8 70 430 128.2 430 200C430 271.8 371.8 330 300 330C228.2 330 170 271.8 170 200C170 128.2 228.2 70 300 70Z',5,'Un círculo se hace con 4 puntos. Cerrá sobre el primero.'],
-['M300 50C360 140 440 210 440 280C440 350 380 380 300 380C220 380 160 350 160 280C160 210 240 140 300 50Z',5,'La punta de arriba es un vértice: ahí no hay manijas.'],
-['M300 360C120 240 90 150 150 100C210 55 280 90 300 140C320 90 390 55 450 100C510 150 480 240 300 360Z',5,'Dos vértices (abajo y arriba al centro) y dos curvas.']];
+var NS='http://www.w3.org/2000/svg',sv=$('sv'),tg=$('tg'),us=$('us'),hd=$('hd'),A,closed,lock,drag,cur,pcts=[],P;
+/* banco: k = clave, n = nivel (1 simple … 5 compleja), d = forma, m = máximo de puntos, h = pista */
+var BANCO=[{k:"triangulo",n:1,d:"M300 70C300 70 520 330 520 330C520 330 80 330 80 330C80 330 300 70 300 70Z",m:4,h:"Tres vértices: solo clics, sin arrastrar. Cerrá sobre el primero."},
+{k:"rombo",n:1,d:"M300 50C300 50 520 200 520 200C520 200 300 350 300 350C300 350 80 200 80 200C80 200 300 50 300 50Z",m:5,h:"Cuatro vértices: solo clics. Cerrá sobre el primero."},
+{k:"zigzag",n:2,d:"M60 300L180 100L300 300L420 100L540 300",m:5,h:"Solo clics, sin arrastrar: un punto por vértice."},
+{k:"rayo",n:2,d:"M340 40C340 40 180 220 180 220C180 220 290 220 290 220C290 220 250 360 250 360C250 360 420 160 420 160C420 160 310 160 310 160C310 160 340 40 340 40Z",m:7,h:"Seis vértices, solo clics. Cerrá sobre el primero."},
+{k:"flecha",n:2,d:"M80 160C80 160 330 160 330 160C330 160 330 70 330 70C330 70 520 200 520 200C520 200 330 330 330 330C330 330 330 240 330 240C330 240 80 240 80 240C80 240 80 160 80 160Z",m:8,h:"Siete vértices, solo clics. Cerrá sobre el primero."},
+{k:"onda",n:3,d:"M60 200C150 20 250 20 300 200S450 380 540 200",m:4,h:"Arrastrá en cada punto para sacar las manijas."},
+{k:"circulo",n:3,d:"M300 70C371.8 70 430 128.2 430 200C430 271.8 371.8 330 300 330C228.2 330 170 271.8 170 200C170 128.2 228.2 70 300 70Z",m:5,h:"Un círculo se hace con 4 puntos. Cerrá sobre el primero."},
+{k:"gota",n:4,d:"M300 50C360 140 440 210 440 280C440 350 380 380 300 380C220 380 160 350 160 280C160 210 240 140 300 50Z",m:5,h:"La punta de arriba es un vértice: ahí no hay manijas."},
+{k:"corazon",n:4,d:"M300 360C120 240 90 150 150 100C210 55 280 90 300 140C320 90 390 55 450 100C510 150 480 240 300 360Z",m:5,h:"Dos vértices (abajo y arriba al centro) y dos curvas."},
+{k:"luna",n:5,d:"M400 60C400 60 130 100 130 200C130 300 400 340 400 340C400 340 250 280 250 200C250 120 400 60 400 60Z",m:5,h:"Las dos puntas son vértices; las curvas salen de los otros dos puntos."},
+{k:"infinito",n:5,d:"M500 200C500 300 370 270 300 200C230 130 100 100 100 200C100 300 230 270 300 200C370 130 500 100 500 200Z",m:5,h:"Cuatro puntos: el centro se cruza dos veces. Cerrá sobre el primero."},
+{k:"pez",n:5,d:"M80 200C80 200 160 120 230 110C300 100 400 170 400 170C400 170 520 100 520 100C520 100 490 200 490 200C490 200 520 300 520 300C520 300 400 230 400 230C400 230 300 280 230 290C160 300 80 200 80 200Z",m:9,h:"Cuerpo con curvas y cola con una muesca en el medio."}];
 function pt(e){var p=sv.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(sv.getScreenCTM().inverse())}
 function seg(a,b){return'C'+(a.x+a.ox)+' '+(a.y+a.oy)+' '+(b.x-b.ox)+' '+(b.y-b.oy)+' '+b.x+' '+b.y}
 function ds(){if(!A.length)return'';var d='M'+A[0].x+' '+A[0].y,n=A.length;for(var i=1;i<n;i++)d+=seg(A[i-1],A[i]);if(closed&&n>2)d+=seg(A[n-1],A[0])+'Z';return d}
@@ -109,17 +120,17 @@ function mu(d){var t=document.createElementNS(NS,'path');t.setAttribute('d',d);s
 function ch(a,b){var s=0;a.forEach(function(p){var m=1e9;b.forEach(function(q){m=Math.min(m,Math.hypot(p[0]-q[0],p[1]-q[1]))});s+=m});return s/a.length}
 sv.onpointerdown=function(e){if(lock||closed)return;var p=pt(e);
  if(A.length>2&&Math.hypot(p.x-A[0].x,p.y-A[0].y)<14){closed=true;draw();return}
- if(A.length>=cur[1]){$('message').textContent='Llegaste al máximo de '+cur[1]+' puntos. Deshacé o borrá.';return}
+ if(A.length>=cur.m){$('message').textContent='Llegaste al máximo de '+cur.m+' puntos. Deshacé o borrá.';return}
  drag={x:p.x,y:p.y,ox:0,oy:0};A.push(drag);sv.setPointerCapture(e.pointerId);draw()};
 sv.onpointermove=function(e){if(!drag)return;var p=pt(e);drag.ox=p.x-drag.x;drag.oy=p.y-drag.y;draw()};
 sv.onpointerup=function(){drag=null};
 $('undo').onclick=function(){if(lock)return;if(closed)closed=false;else A.pop();draw()};
 $('clr').onclick=function(){if(lock)return;A=[];closed=false;draw()};
-QFAJ.init({nombre:'La pluma',total:5,reset:function(){pcts=[]},
-ronda:function(n,c){cur=P[n-1];A=[];closed=false;lock=false;drag=null;tg.setAttribute('d',cur[0]);tg.setAttribute('stroke','rgba(10,92,192,.45)');draw();
- c.textContent='Calcá la forma con un máximo de '+cur[1]+' puntos. '+cur[2]},
+QFAJ.init({nombre:'La pluma',juego:'pluma',total:5,reset:function(){pcts=[];P=QFAJ.sortear('pluma',BANCO,5)},
+ronda:function(n,c){cur=P[n-1];A=[];closed=false;lock=false;drag=null;tg.setAttribute('d',cur.d);tg.setAttribute('stroke','rgba(10,92,192,.45)');tg.setAttribute('stroke-dasharray','6 8');draw();
+ c.textContent='Calcá la forma con un máximo de '+cur.m+' puntos. '+cur.h},
 medir:function(){if(A.length<2){$('message').textContent='Poné al menos 2 puntos.';return null}
- var d=(ch(mu(ds()),mu(cur[0]))+ch(mu(cur[0]),mu(ds())))/2;lock=true;tg.setAttribute('stroke','#ff4d8d');tg.setAttribute('stroke-dasharray','0');pcts.push(Math.max(0,1-d/30)*100);
+ var d=(ch(mu(ds()),mu(cur.d))+ch(mu(cur.d),mu(ds())))/2;lock=true;tg.setAttribute('stroke','#ff4d8d');tg.setAttribute('stroke-dasharray','0');pcts.push(Math.max(0,1-d/30)*100);
  return{pts:Math.round(200*Math.max(0,1-d/30)),txt:'desvío medio de '+d.toFixed(1)+' px respecto de la forma.'}},
 detalle:function(){var m=pcts.reduce(function(a,b){return a+b},0)/pcts.length;return[['FORMAS','5'],['PRECISIÓN MEDIA',Math.round(m)+'%']]}});
 });</script>

@@ -62,7 +62,7 @@
 .stage{display:block;width:min(100%,max(320px,calc((100svh - 400px)*var(--ar,1.6))),1180px);margin:0 auto;border-radius:22px;background:var(--crema);background-image:radial-gradient(rgba(10,92,192,.2) 1.6px,transparent 1.7px);background-size:30px 30px;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 6px rgba(255,255,255,.08);touch-action:none;user-select:none;-webkit-user-select:none}
 .acc{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0 6px}
 .message{min-height:0;text-align:center;margin-top:10px;max-width:760px}
-.message:not(:empty){display:inline-block;background:var(--crema);color:var(--az-f);font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(14px,1.4vw,17px)!important;line-height:1.25;padding:10px 20px 12px;border-radius:16px;rotate:-1deg;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.message:not(:empty){display:inline-block;background:var(--crema);color:#06214d!important;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(14px,1.4vw,17px)!important;line-height:1.25;padding:10px 20px 12px;border-radius:16px;rotate:-1deg;box-shadow:0 12px 30px rgba(0,0,0,.4)}
 .final-screen{display:none;text-align:center;width:100%}.final-screen.show{display:block}
 .final-label{margin-inline:auto}.final-title{margin:6px 0}.final-copy{margin:0 0 16px}
 svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28))}svg.stage rect:active{cursor:grabbing}svg.stage rect:focus-visible{outline:3px solid #ff4d8d;outline-offset:2px}
@@ -70,18 +70,19 @@ svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28
 </style>
 <script>if(self!==top){document.write('<style>html,body{background:transparent!important}#volver{display:none!important}</style>')}</script>
 <link rel="preconnect" href="https://use.typekit.net" crossorigin><link rel="preconnect" href="https://p.typekit.net" crossorigin><link rel="stylesheet" href="https://use.typekit.net/ftd7ahn.css">
-<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/juego-base.js" defer></script>
+<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/ranking-config.js" defer></script><script src="../js/ranking.js" defer></script><script src="../js/juego-base.js" defer></script>
 </head>
 
 <body class="f-juegos"><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca" data-t="Acerca de">Acerca de</a></li><li><a href="../portfolio" data-t="Portfolio">Portfolio</a></li><li><a href="../herramientas" data-t="Herramientas">Herramientas</a></li><li><a href="../jueguitos" data-t="Jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../contacto" data-t="Contacto">Contacto</a></li></ul></nav>
 <div class="vol-wrap"><a class="volver" href="../jueguitos" aria-label="Volver a Jueguitos"><span>Volver a</span><img src="../img/stickers/jueguitos.svg" alt="" width="488.7" height="126.74"></a></div>
   <main class="app">
-<header class="header"><h1 class="h1-st"><img src="../img/stickers/juego-alinear.webp" alt="Alineá los elementos" width="1200" height="625" decoding="async"></h1><p class="subtitle">¿Qué tan fino es tu ojo? Alineá a mano, sin imanes.</p></header>
+<header class="header"><h1 class="h1-st"><img src="../img/stickers/juego-alinear.webp" alt="Alineá los elementos" width="1200" height="625" decoding="async"></h1><p class="subtitle">¿Qué tan fino es tu ojo? Alineá a mano, sin ajuste automático.</p></header>
 <section class="game-card">
-<div class="start-screen" id="startScreen"><div class="inicio sin-rank"><div class="inicio-reglas">
-<div class="start-title">Cinco ejercicios, cero imanes</div><p class="start-copy">Sin guías magnéticas ni snap: solo tu pulso y tu ojo. Mové los bloques hasta dejarlos donde piden.</p>
-<div class="how-to"><strong>¿Cómo se juega?</strong><p>Arrastrá cada bloque (o usá las flechas del teclado: 1 px, y 10 px con Shift). Tocá Listo y vas a ver cuántos píxeles te desviaste en promedio.</p></div>
-<div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div></div></div></div>
+<div class="start-screen" id="startScreen"><div class="inicio"><div class="inicio-reglas">
+<div class="start-title">Cinco ejercicios, a pulso</div><p class="start-copy">Sin ajuste automático ni ayudas: solo tu pulso y tu ojo. Mové los bloques hasta dejarlos donde piden. Cada partida sortea ejercicios nuevos, de los más simples a los más complejos.</p>
+<div class="how-to"><strong>¿Cómo se juega?</strong><p>Arrastrá cada bloque (o usá las flechas del teclado: 1 px, y 10 px con Shift). Tocá Listo y vas a ver cuántos píxeles te desviaste en promedio. En los últimos ejercicios hay que acertar en dos direcciones a la vez.</p></div>
+<div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div></div>
+<aside class="rank-top" data-rank-top data-juego="alinear" data-modo="Estándar" aria-label="Los 3 mejores puntajes"></aside></div></div>
 <div id="gameContent" style="display:none">
 <div class="top-info"><span id="roundText"></span><p class="consigna" id="consigna"></p><span class="score" id="scoreText">0 pts</span></div>
 <svg class="stage" id="sv" style="--ar:1.667" viewBox="0 0 600 360" role="group" aria-label="Zona de juego"></svg>
@@ -91,30 +92,50 @@ svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28
 </section></main>
 <script>window.addEventListener('load',function(){
 var $=function(i){return document.getElementById(i)};
-var NS='http://www.w3.org/2000/svg',sv=$('sv'),B,G,T,lock,errs=[];
-var TIPOS=[['izq','Alineá el borde izquierdo de todos los bloques con la guía.'],['centro','Centrá los bloques sobre la guía.'],['der','Alineá el borde derecho de todos los bloques con la guía.'],['dist','Distribuí los 3 bloques del medio con espacios iguales entre los cinco.'],['base','Apoyá todos los bloques sobre la línea de base.']];
+var NS='http://www.w3.org/2000/svg',sv=$('sv'),B,G,Gx,Gy,T,V,cur,lock,errs=[];
+/* banco: k = clave, n = nivel (1 simple … 5 complejo), t = tipo (x / y / xy / dx / dy), f = punto del bloque que se alinea (0 = borde de arriba o izquierdo, .5 = centro, 1 = borde de abajo o derecho) */
+var BANCO=[
+{k:'izq',n:1,t:'x',f:0,c:'Alineá el borde izquierdo de todos los bloques con la guía.'},
+{k:'der',n:1,t:'x',f:1,c:'Alineá el borde derecho de todos los bloques con la guía.'},
+{k:'sup',n:1,t:'y',f:0,c:'Alineá el borde de arriba de todos los bloques con la guía.'},
+{k:'centro',n:2,t:'x',f:.5,c:'Centrá los bloques sobre la guía.'},
+{k:'medio',n:2,t:'y',f:.5,c:'Centrá los bloques en vertical sobre la guía.'},
+{k:'base',n:2,t:'y',f:1,c:'Apoyá todos los bloques sobre la línea de base.'},
+{k:'dx',n:3,t:'dx',c:'Distribuí los 3 bloques del medio con espacios iguales entre los cinco.'},
+{k:'dy',n:3,t:'dy',c:'Distribuí los 3 bloques del medio, en vertical, con espacios iguales entre los cinco.'},
+{k:'esq',n:4,t:'xy',f:[0,0],b:3,c:'Llevá la esquina de arriba a la izquierda de cada bloque al cruce de las guías.'},
+{k:'esqInf',n:4,t:'xy',f:[1,1],b:3,c:'Llevá la esquina de abajo a la derecha de cada bloque al cruce de las guías.'},
+{k:'cen2',n:5,t:'xy',f:[.5,.5],b:4,c:'Llevá el centro de cada bloque al cruce de las guías.'},
+{k:'esqSD',n:5,t:'xy',f:[1,0],b:4,c:'Llevá la esquina de arriba a la derecha de cada bloque al cruce de las guías.'},
+{k:'esqII',n:5,t:'xy',f:[0,1],b:4,c:'Llevá la esquina de abajo a la izquierda de cada bloque al cruce de las guías.'}];
 function E(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);sv.appendChild(e);return e}
 function R(a,b){return Math.round(a+Math.random()*(b-a))}
 function pt(e){var p=sv.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(sv.getScreenCTM().inverse())}
 function cl(v,a,b){return Math.max(a,Math.min(b,v))}
-function mv(b,dx,dy){if(b.fixed||lock)return;if(T=='base')b.y=cl(b.y+dy,0,360-b.h);else b.x=cl(b.x+dx,0,600-b.w);b.el.setAttribute('x',b.x);b.el.setAttribute('y',b.y)}
-QFAJ.init({nombre:'Alinear',total:5,reset:function(){errs=[]},
-ronda:function(n,c){T=TIPOS[n-1][0];c.textContent=TIPOS[n-1][1];sv.innerHTML='';B=[];lock=false;
- if(T=='base'){G=R(280,320);E('line',{x1:10,x2:590,y1:G,y2:G,stroke:'#ff4d8d','stroke-width':2,'stroke-dasharray':'6 6'})}
- else if(T!='dist'){G=T=='izq'?R(120,240):T=='der'?R(360,480):300;E('line',{x1:G,x2:G,y1:10,y2:350,stroke:'#ff4d8d','stroke-width':2,'stroke-dasharray':'6 6'})}
- for(var i=0;i<(T=='dist'?5:T=='base'?5:4);i++){var b={w:R(60,120),h:48,fixed:false};
-  if(T=='base'){b.w=80;b.h=R(40,140);b.x=40+i*110;b.y=R(20,340-b.h)}
-  else if(T=='dist'){b.w=R(50,90);b.y=150;b.h=60;b.x=i==0?30:i==4?570-b.w:R(100,440);b.fixed=i==0||i==4}
-  else{b.x=R(20,540-b.w+20);b.y=30+i*80}
-  var r=E('rect',{x:b.x,y:b.y,width:b.w,height:b.h,rx:6,fill:b.fixed?'#06214d':'#0b75f4',tabindex:b.fixed?-1:0,'aria-label':'Bloque '+(i+1)});b.el=r;B.push(b);
-  (function(b,r){if(b.fixed)return;r.onpointerdown=function(e){if(lock)return;r.setPointerCapture(e.pointerId);var d=pt(e),x0=b.x,y0=b.y;
-   r.onpointermove=function(f){var p=pt(f);mv(b,x0+p.x-d.x-b.x,y0+p.y-d.y-b.y)};r.onpointerup=function(){r.onpointermove=null}};
-   r.onkeydown=function(e){var k=e.key,s=e.shiftKey?10:1,dx=k=='ArrowRight'?s:k=='ArrowLeft'?-s:0,dy=k=='ArrowDown'?s:k=='ArrowUp'?-s:0;if(dx||dy){e.preventDefault();mv(b,dx,dy)}}})(b,r)}},
-medir:function(){var m=B.filter(function(b){return!b.fixed}),v;lock=true;
- if(T=='dist'){var o=B.slice().sort(function(a,b){return a.x-b.x}),g=[];for(var i=0;i<4;i++)g.push(o[i+1].x-o[i].x-o[i].w);var mg=g.reduce(function(a,b){return a+b},0)/4;v=g.map(function(x){return Math.abs(x-mg)})}
- else v=m.map(function(b){return Math.abs(T=='izq'?b.x-G:T=='centro'?b.x+b.w/2-G:T=='der'?b.x+b.w-G:b.y+b.h-G)});
+function guia(x1,y1,x2,y2){E('line',{x1:x1,y1:y1,x2:x2,y2:y2,stroke:'#ff4d8d','stroke-width':2,'stroke-dasharray':'6 6'})}
+function mv(b,dx,dy){if(b.fixed||lock)return;if(T=='x'||T=='dx'||T=='xy')b.x=cl(b.x+dx,0,600-b.w);if(T=='y'||T=='dy'||T=='xy')b.y=cl(b.y+dy,0,360-b.h);b.el.setAttribute('x',b.x);b.el.setAttribute('y',b.y)}
+function bloque(b,i){var r=E('rect',{x:b.x,y:b.y,width:b.w,height:b.h,rx:6,fill:b.fixed?'#06214d':'#0b75f4','fill-opacity':T=='xy'?.78:1,stroke:T=='xy'?'#fff':'none','stroke-width':1.5,tabindex:b.fixed?-1:0,'aria-label':'Bloque '+(i+1)});b.el=r;B.push(b);
+ if(b.fixed)return;
+ r.onpointerdown=function(e){if(lock)return;r.setPointerCapture(e.pointerId);var d=pt(e),x0=b.x,y0=b.y;
+  r.onpointermove=function(f){var p=pt(f);mv(b,x0+p.x-d.x-b.x,y0+p.y-d.y-b.y)};r.onpointerup=function(){r.onpointermove=null}};
+ r.onkeydown=function(e){var k=e.key,s=e.shiftKey?10:1,dx=k=='ArrowRight'?s:k=='ArrowLeft'?-s:0,dy=k=='ArrowDown'?s:k=='ArrowUp'?-s:0;if(dx||dy){e.preventDefault();mv(b,dx,dy)}}}
+QFAJ.init({nombre:'Alinear',juego:'alinear',total:5,reset:function(){errs=[];V=QFAJ.sortear('alinear',BANCO,5)},
+ronda:function(n,c){cur=V[n-1];T=cur.t;c.textContent=cur.c;sv.innerHTML='';B=[];lock=false;var i,b;
+ if(T=='x'){G=cur.f==0?R(120,240):cur.f==1?R(360,480):R(240,360);guia(G,10,G,350);
+  for(i=0;i<4;i++){b={w:R(50,130),h:R(34,60),fixed:false};b.x=R(20,540-b.w+20);b.y=24+i*84;bloque(b,i)}}
+ else if(T=='y'){G=cur.f==0?R(60,120):cur.f==1?R(280,320):R(150,210);guia(10,G,590,G);
+  for(i=0;i<5;i++){b={w:R(50,90),h:R(40,140),fixed:false};b.x=40+i*110;b.y=R(20,340-b.h);bloque(b,i)}}
+ else if(T=='dx'){for(i=0;i<5;i++){b={w:R(50,90),h:R(44,80),y:140,fixed:i==0||i==4};b.x=i==0?30:i==4?570-b.w:R(100,440);b.y=140+Math.round((80-b.h)/2);bloque(b,i)}}
+ else if(T=='dy'){for(i=0;i<5;i++){b={w:R(60,90),h:R(26,44),fixed:i==0||i==4};b.x=40+i*110;b.y=i==0?14:i==4?346-b.h:R(70,250);bloque(b,i)}}
+ else{Gx=R(170,430);Gy=R(120,240);guia(Gx,10,Gx,350);guia(10,Gy,590,Gy);
+  for(i=0;i<cur.b;i++){b={w:R(50,110),h:R(40,90),fixed:false};var t=0;do{b.x=R(10,590-b.w);b.y=R(10,350-b.h);t++}while(t<20&&Math.hypot(b.x+b.w*cur.f[0]-Gx,b.y+b.h*cur.f[1]-Gy)<80);bloque(b,i)}}},
+medir:function(){var m=B.filter(function(b){return!b.fixed}),v,div=20;lock=true;
+ if(T=='dx'||T=='dy'){var k=T=='dx'?'x':'y',s=T=='dx'?'w':'h',o=B.slice().sort(function(a,b){return a[k]-b[k]}),g=[];for(var i=0;i<4;i++)g.push(o[i+1][k]-o[i][k]-o[i][s]);var mg=g.reduce(function(a,b){return a+b},0)/4;v=g.map(function(x){return Math.abs(x-mg)})}
+ else if(T=='xy'){div=28;v=m.map(function(b){return Math.hypot(b.x+b.w*cur.f[0]-Gx,b.y+b.h*cur.f[1]-Gy)})}
+ else if(T=='x')v=m.map(function(b){return Math.abs(b.x+b.w*cur.f-G)});
+ else v=m.map(function(b){return Math.abs(b.y+b.h*cur.f-G)});
  var e=v.reduce(function(a,b){return a+b},0)/v.length;errs.push(e);
- return{pts:Math.round(200*Math.max(0,1-e/20)),txt:'error medio de '+e.toFixed(1)+' px'+(e<1?'. Pulso de cirujano.':'.')}},
+ return{pts:Math.round(200*Math.max(0,1-e/div)),txt:'error medio de '+e.toFixed(1)+' px'+(e<1?'. Pulso de cirujano.':'.')}},
 detalle:function(){var m=errs.reduce(function(a,b){return a+b},0)/errs.length;return[['EJERCICIOS','5'],['ERROR MEDIO',m.toFixed(1)+' px']]}});
 });</script>
 <style id="embebido">.embebido html,html.embebido,html.embebido body{background:transparent!important;min-height:0!important;height:auto!important}html.embebido body>*{min-height:0!important}html.embebido .volver{display:none!important}</style>

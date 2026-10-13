@@ -219,7 +219,7 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .game-info,.progress{font-size:14px!important}
 /* ahorcado: figura a la izquierda, palabra y teclado a la derecha */
 @media(min-width:1000px){
- body:has(.hangman-area) #gameContent{display:grid!important;grid-template-columns:minmax(260px,1fr) minmax(0,1.5fr);column-gap:64px;align-items:center;max-width:1120px;margin-inline:auto}
+ body:has(.hangman-area) #gameContent:not([style*="none"]){display:grid!important;grid-template-columns:minmax(260px,1fr) minmax(0,1.5fr);column-gap:64px;align-items:center;max-width:1120px;margin-inline:auto}
  body:has(.hangman-area) #gameContent>.top-info{grid-column:1/-1}
  body:has(.hangman-area) #gameContent>.hangman-area{grid-column:1;grid-row:2/8;transform:scale(1.5);transform-origin:center}
  body:has(.hangman-area) #gameContent>:not(.top-info):not(.hangman-area){grid-column:2}

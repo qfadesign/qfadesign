@@ -10,6 +10,9 @@
 
 Mientras el archivo de config tenga el texto de ejemplo, el ranking queda apagado y los juegos funcionan igual que antes.
 
+## Kerning, La pluma y Alinear
+Si ya tenías el ranking andando, correr una vez `ranking/juegos-nuevos.sql` en Supabase (SQL Editor → New query → pegar → Run). Sin eso, esos tres juegos muestran el ranking pero no pueden guardar puntajes. Si armás todo de cero, alcanza con `supabase.sql` (ya los incluye).
+
 ## Cómo funciona
 - El jugador elige un apodo y, si quiere, un código de 4 números (opcional); el sistema le asigna un número correlativo (`Facu#7`: el primer jugador es #1, el segundo #2…; hay que correr `ranking/numeros.sql` una vez).
 - Con apodo + número + código se arma un secreto que queda guardado en su navegador. Solo quien lo tiene puede actualizar los puntajes de ese jugador.

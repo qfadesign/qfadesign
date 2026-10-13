@@ -17,7 +17,7 @@ declare
   v_dia  date;
 begin
   -- puntaje máximo posible por juego (evita puntajes inventados)
-  v_max := case p_juego when 'color' then 5000 when 'tipografia' then 1500 when 'ahorcado' then 1250 when 'diario' then 1000 else null end;
+  v_max := case p_juego when 'color' then 5000 when 'tipografia' then 1500 when 'ahorcado' then 1250 when 'diario' then 1000 when 'kerning' then 1000 when 'pluma' then 1000 when 'alinear' then 1000 else null end;
   if v_max is null then raise exception 'juego'; end if;
   if p_juego = 'diario' then
     -- desafío diario: el modo es la fecha (AAAA-MM-DD, hora de Argentina) y solo se acepta la de hoy o la de ayer

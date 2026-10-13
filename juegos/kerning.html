@@ -62,7 +62,7 @@
 .stage{display:block;width:min(100%,max(320px,calc((100svh - 400px)*var(--ar,1.6))),1180px);margin:0 auto;border-radius:22px;background:var(--crema);background-image:radial-gradient(rgba(10,92,192,.2) 1.6px,transparent 1.7px);background-size:30px 30px;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 6px rgba(255,255,255,.08);touch-action:none;user-select:none;-webkit-user-select:none}
 .acc{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0 6px}
 .message{min-height:0;text-align:center;margin-top:10px;max-width:760px}
-.message:not(:empty){display:inline-block;background:var(--crema);color:var(--az-f);font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(14px,1.4vw,17px)!important;line-height:1.25;padding:10px 20px 12px;border-radius:16px;rotate:-1deg;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.message:not(:empty){display:inline-block;background:var(--crema);color:#06214d!important;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(14px,1.4vw,17px)!important;line-height:1.25;padding:10px 20px 12px;border-radius:16px;rotate:-1deg;box-shadow:0 12px 30px rgba(0,0,0,.4)}
 .final-screen{display:none;text-align:center;width:100%}.final-screen.show{display:block}
 .final-label{margin-inline:auto}.final-title{margin:6px 0}.final-copy{margin:0 0 16px}
 svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28))}svg.stage rect:active{cursor:grabbing}svg.stage rect:focus-visible{outline:3px solid #ff4d8d;outline-offset:2px}
@@ -71,7 +71,7 @@ svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28
 </style>
 <script>if(self!==top){document.write('<style>html,body{background:transparent!important}#volver{display:none!important}</style>')}</script>
 <link rel="preconnect" href="https://use.typekit.net" crossorigin><link rel="preconnect" href="https://p.typekit.net" crossorigin><link rel="stylesheet" href="https://use.typekit.net/ftd7ahn.css">
-<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/juego-base.js" defer></script>
+<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/ranking-config.js" defer></script><script src="../js/ranking.js" defer></script><script src="../js/juego-base.js" defer></script>
 </head>
 
 <body class="f-juegos"><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca" data-t="Acerca de">Acerca de</a></li><li><a href="../portfolio" data-t="Portfolio">Portfolio</a></li><li><a href="../herramientas" data-t="Herramientas">Herramientas</a></li><li><a href="../jueguitos" data-t="Jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../contacto" data-t="Contacto">Contacto</a></li></ul></nav>
@@ -79,10 +79,11 @@ svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28
   <main class="app">
 <header class="header"><h1 class="h1-st"><img src="../img/stickers/juego-kerning.webp" alt="Ajustá el kerning" width="1200" height="729" decoding="async"></h1><p class="subtitle">Ajustá el espacio entre letras como lo haría un tipógrafo.</p></header>
 <section class="game-card">
-<div class="start-screen" id="startScreen"><div class="inicio sin-rank"><div class="inicio-reglas">
-<div class="start-title">Cinco palabras sin kerning</div><p class="start-copy">Cada palabra aparece con el espacio de fábrica. Corregilo a ojo y acercate a lo que dibujó el tipógrafo.</p>
-<div class="how-to"><strong>¿Cómo se juega?</strong><p>Arrastrá una letra a izquierda o derecha para cambiar su espacio con la anterior (con el teclado: flechas, y Shift para más). Tocá Listo y vas a ver cómo lo resolvió la fuente.</p></div>
-<div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div></div></div></div>
+<div class="start-screen" id="startScreen"><div class="inicio"><div class="inicio-reglas">
+<div class="start-title">Cinco palabras sin kerning</div><p class="start-copy">Cada palabra aparece sin ajustar. Corregí el espacio a ojo y acercate a lo que dibujó el tipógrafo. Cada partida sortea palabras nuevas, de las más fáciles a las más difíciles.</p>
+<div class="how-to"><strong>¿Cómo se juega?</strong><p>Arrastrá una letra a izquierda o derecha para cambiar su espacio con la anterior (con el teclado: flechas, y Shift para más). Tocá Listo y vas a ver cómo lo resolvió la tipografía.</p></div>
+<div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div></div>
+<aside class="rank-top" data-rank-top data-juego="kerning" data-modo="Estándar" aria-label="Los 3 mejores puntajes"></aside></div></div>
 <div id="gameContent" style="display:none">
 <div class="top-info"><span id="roundText"></span><p class="consigna" id="consigna"></p><span class="score" id="scoreText">0 pts</span></div>
 <div class="stage kw" id="kw"></div>
@@ -92,18 +93,45 @@ svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28
 </section></main>
 <script>window.addEventListener('load',function(){
 var $=function(i){return document.getElementById(i)};
-var W=[["WATER",[-103,-100,0,0]],["AVATAR",[-133,-133,-100,-100,0]],["TOYOTA",[-30,-50,-50,-30,-100]],["FAVOR",[-80,-133,-35,0]],["KAYAK",[-10,-140,-140,0]]],kw=$('kw'),cur,off,sp,rev,errs=[];
+/* banco: k = palabra, n = nivel (1 fácil … 5 difícil), p = kerning de la fuente para cada par (1 unidad = 1/1000 del cuerpo) */
+var BANCO=[{k:"TAXI",n:1,p:[-100,0,0]},
+{k:"LAVA",n:1,p:[0,-133,-133]},
+{k:"YOGA",n:1,p:[-50,0,-35]},
+{k:"TAPA",n:1,p:[-100,0,-90]},
+{k:"WAVE",n:1,p:[-103,-133,0]},
+{k:"WATER",n:2,p:[-103,-100,0,0]},
+{k:"PATIO",n:2,p:[-90,-100,0,0]},
+{k:"PLAYA",n:2,p:[0,0,-140,-140]},
+{k:"VALOR",n:2,p:[-133,0,-20,0]},
+{k:"AWAKE",n:2,p:[-103,-103,0,0]},
+{k:"FAVOR",n:3,p:[-80,-133,-35,0]},
+{k:"KAYAK",n:3,p:[-10,-140,-140,0]},
+{k:"PALTA",n:3,p:[-90,0,-80,-100]},
+{k:"TRATAR",n:3,p:[0,-5,-100,-100,0]},
+{k:"VOLTAJE",n:3,p:[-35,0,-80,-100,0,0]},
+{k:"PAYASO",n:4,p:[-90,-140,-140,-20,0]},
+{k:"AVATAR",n:4,p:[-133,-133,-100,-100,0]},
+{k:"TOYOTA",n:4,p:[-30,-50,-50,-30,-100]},
+{k:"TARTAS",n:4,p:[-100,0,-20,-100,-20]},
+{k:"VAYAMOS",n:4,p:[-133,-140,-140,0,0,0]},
+{k:"PAPAYAS",n:5,p:[-90,0,-90,-140,-140,-20]},
+{k:"PAYASOS",n:5,p:[-90,-140,-140,-20,0,0]},
+{k:"TOYOTAS",n:5,p:[-30,-50,-50,-30,-100,-20]},
+{k:"WAYFARER",n:5,p:[-103,-140,0,-80,0,0,0]},
+{k:"AVATARES",n:5,p:[-133,-133,-100,-100,0,0,0]}],W,kw=$('kw'),cur,off,sp,rev,errs=[];
 function place(){sp.forEach(function(s,i){s.style.marginLeft=i?off[i-1]/1000+'em':'0'})}
 function cl(v){return Math.max(-350,Math.min(150,v))}
-QFAJ.init({nombre:'Kerning',total:5,reset:function(){errs=[]},
-ronda:function(n,c){cur=W[n-1];off=cur[1].map(function(){return 0});rev=false;kw.className='stage kw';kw.innerHTML='';
- c.textContent='Equilibrá el espacio entre las letras de "'+cur[0]+'".';
- sp=cur[0].split('').map(function(ch,i){var s=document.createElement('span');s.textContent=ch;kw.appendChild(s);if(!i)return s;s.tabIndex=0;
+function fit(){if(!sp)return;kw.style.fontSize='';var cs=parseFloat(getComputedStyle(kw).fontSize),w=0;sp.forEach(function(s){w+=s.getBoundingClientRect().width});var mx=kw.clientWidth*.78;if(w>mx)kw.style.fontSize=(cs*mx/w)+'px'}
+window.addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+QFAJ.init({nombre:'Kerning',juego:'kerning',total:5,reset:function(){errs=[];W=QFAJ.sortear('kerning',BANCO,5)},
+ronda:function(n,c){cur=W[n-1];off=cur.p.map(function(){return 0});rev=false;kw.className='stage kw';kw.innerHTML='';
+ c.textContent='Equilibrá el espacio entre las letras de "'+cur.k+'".';
+ sp=cur.k.split('').map(function(ch,i){var s=document.createElement('span');s.textContent=ch;kw.appendChild(s);if(!i)return s;s.tabIndex=0;
   s.onpointerdown=function(e){if(rev)return;s.setPointerCapture(e.pointerId);var x0=e.clientX,o0=off[i-1],em=parseFloat(getComputedStyle(kw).fontSize);
    s.onpointermove=function(f){off[i-1]=cl(o0+(f.clientX-x0)/em*1000);place()};s.onpointerup=function(){s.onpointermove=null}};
-  s.onkeydown=function(e){if(rev||(e.key!='ArrowLeft'&&e.key!='ArrowRight'))return;e.preventDefault();off[i-1]=cl(off[i-1]+(e.key=='ArrowLeft'?-1:1)*(e.shiftKey?20:5));place()};return s});place()},
-medir:function(){var e=0;off.forEach(function(v,i){e+=Math.abs(v-cur[1][i])});e/=off.length;errs.push(e);rev=true;kw.classList.add('rev');off=cur[1].slice();place();
- return{pts:Math.round(200*Math.max(0,1-e/60)),txt:'te desviaste '+Math.round(e)+' unidades de media (1 unidad = 1/1000 del cuerpo). Así lo resolvió la fuente.'}},
+  s.onkeydown=function(e){if(rev||(e.key!='ArrowLeft'&&e.key!='ArrowRight'))return;e.preventDefault();off[i-1]=cl(off[i-1]+(e.key=='ArrowLeft'?-1:1)*(e.shiftKey?20:5));place()};return s});place();fit()},
+medir:function(){var e=0;off.forEach(function(v,i){e+=Math.abs(v-cur.p[i])});e/=off.length;errs.push(e);rev=true;kw.classList.add('rev');off=cur.p.slice();place();
+ return{pts:Math.round(200*Math.max(0,1-e/60)),txt:'te desviaste '+Math.round(e)+' unidades de media (1000 = el tamaño de la letra). Así lo resolvió la tipografía.'}},
 detalle:function(){var m=errs.reduce(function(a,b){return a+b},0)/errs.length;return[['PALABRAS','5'],['DESVÍO MEDIO',Math.round(m)+' unidades']]}});
 });</script>
 <style id="embebido">.embebido html,html.embebido,html.embebido body{background:transparent!important;min-height:0!important;height:auto!important}html.embebido body>*{min-height:0!important}html.embebido .volver{display:none!important}</style>
