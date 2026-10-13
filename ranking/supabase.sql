@@ -38,11 +38,18 @@ declare
   v_hash text;
   v_stored text;
   v_best int;
+  v_dia  date;
 begin
   -- puntaje máximo posible por juego (evita puntajes inventados)
-  v_max := case p_juego when 'color' then 5000 when 'tipografia' then 1500 when 'ahorcado' then 1250 else null end;
+  v_max := case p_juego when 'color' then 5000 when 'tipografia' then 1500 when 'ahorcado' then 1250 when 'diario' then 1000 else null end;
   if v_max is null then raise exception 'juego'; end if;
-  if p_modo not in ('Fácil','Medio','Difícil','Estándar','Con tiempo','Sin tiempo') then raise exception 'modo'; end if;
+  if p_juego = 'diario' then
+    -- desafío diario: el modo es la fecha (AAAA-MM-DD, hora de Argentina) y solo se acepta la de hoy o la de ayer
+    if p_modo !~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' then raise exception 'modo'; end if;
+    begin v_dia := p_modo::date; exception when others then raise exception 'modo'; end;
+    if v_dia < (now() at time zone 'America/Argentina/Buenos_Aires')::date - 1
+       or v_dia > (now() at time zone 'America/Argentina/Buenos_Aires')::date then raise exception 'modo'; end if;
+  elsif p_modo not in ('Fácil','Medio','Difícil','Estándar','Con tiempo','Sin tiempo') then raise exception 'modo'; end if;
   if p_puntaje is null or p_puntaje < 0 or p_puntaje > v_max then raise exception 'puntaje'; end if;
 
   p_apodo := btrim(coalesce(p_apodo, ''));

@@ -1,0 +1,65 @@
+-- qfadesign · Desafío diario (juego 'diario').
+-- Si ya tenés el ranking andando, correr SOLO este archivo: SQL Editor -> New query -> pegar TODO -> Run.
+-- Actualiza la función enviar_puntaje para aceptar el desafío del día (modo = fecha AAAA-MM-DD, hora de Argentina, puntaje máximo 1000).
+-- No toca jugadores ni puntajes existentes. Se puede volver a correr sin problema.
+-- (supabase.sql y numeros.sql ya incluyen este cambio, así que si los volvés a correr no se pierde.)
+
+create or replace function public.enviar_puntaje(
+  p_juego text, p_modo text, p_apodo text, p_tag text, p_token text, p_puntaje int
+) returns int
+language plpgsql security definer set search_path = public as $$
+declare
+  v_max  int;
+  v_id   bigint;
+  v_hash text;
+  v_stored text;
+  v_best int;
+  v_dia  date;
+begin
+  -- puntaje máximo posible por juego (evita puntajes inventados)
+  v_max := case p_juego when 'color' then 5000 when 'tipografia' then 1500 when 'ahorcado' then 1250 when 'diario' then 1000 else null end;
+  if v_max is null then raise exception 'juego'; end if;
+  if p_juego = 'diario' then
+    -- desafío diario: el modo es la fecha (AAAA-MM-DD, hora de Argentina) y solo se acepta la de hoy o la de ayer
+    if p_modo !~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' then raise exception 'modo'; end if;
+    begin v_dia := p_modo::date; exception when others then raise exception 'modo'; end;
+    if v_dia < (now() at time zone 'America/Argentina/Buenos_Aires')::date - 1
+       or v_dia > (now() at time zone 'America/Argentina/Buenos_Aires')::date then raise exception 'modo'; end if;
+  elsif p_modo not in ('Fácil','Medio','Difícil','Estándar','Con tiempo','Sin tiempo') then raise exception 'modo'; end if;
+  if p_puntaje is null or p_puntaje < 0 or p_puntaje > v_max then raise exception 'puntaje'; end if;
+
+  p_apodo := btrim(coalesce(p_apodo, ''));
+  if p_apodo !~ '^[[:alnum:] _.-]{2,16}$' then raise exception 'apodo'; end if;
+  if lower(p_apodo) ~ '(^|[^[:alpha:]])(puto|puta|mierda|verga|pija|forro|sorete|nazi)([^[:alpha:]]|$)'
+     or lower(p_apodo) ~ 'hitler|nigg|fuck|cunt'
+  then raise exception 'apodo_no_permitido'; end if;
+  if coalesce(p_tag, '') !~ '^[0-9]{1,6}$' then raise exception 'tag'; end if;
+  if char_length(coalesce(p_token, '')) < 16 then raise exception 'token'; end if;
+
+  v_hash := encode(sha256(convert_to(p_token, 'utf8')), 'hex');
+
+  select id, token_hash into v_id, v_stored
+    from players where lower(apodo) = lower(p_apodo) and tag = p_tag;
+
+  if not found then
+    begin
+      insert into players (apodo, tag, token_hash) values (p_apodo, p_tag, v_hash) returning id into v_id;
+    exception when unique_violation then
+      raise exception 'identidad';
+    end;
+  elsif v_stored <> v_hash then
+    raise exception 'identidad';
+  end if;
+
+  insert into scores (player_id, juego, modo, puntaje)
+  values (v_id, p_juego, p_modo, p_puntaje)
+  on conflict (player_id, juego, modo) do update
+    set puntaje    = greatest(scores.puntaje, excluded.puntaje),
+        updated_at = case when excluded.puntaje > scores.puntaje then now() else scores.updated_at end
+  returning puntaje into v_best;
+
+  return v_best;
+end $$;
+
+revoke all on function public.enviar_puntaje(text,text,text,text,text,int) from public;
+grant execute on function public.enviar_puntaje(text,text,text,text,text,int) to anon;

@@ -200,3 +200,28 @@ header h1.h1-st,.header h1.h1-st,h1.big-title.h1-st{display:block;background:non
 .rank-datos{display:flex;flex-direction:column;align-items:center;gap:10px;margin:0 0 14px;padding:14px;border-radius:16px;border:2px dashed currentColor;text-align:center}
 .rank-datos .rank-msg{margin:0}
 .rank-datos-txt{margin:0;font-weight:900;font-size:1.15em;letter-spacing:.02em;word-break:break-word}
+
+/* ===== PANTALLA GRANDE: sin cuadro, usa todo el ancho, fondo con grilla y brillo azul (todos los juegos) ===== */
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(55% 45% at 15% 8%,rgba(11,117,244,.38),transparent 70%),radial-gradient(50% 45% at 90% 92%,rgba(10,92,192,.42),transparent 70%),linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px) 0 0/72px 72px}
+.card,.start,.end,.gameplay,.game-card{background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;padding:0!important;width:100%!important;max-width:1240px!important}
+.app,.game,.screen{width:100%!important;max-width:1240px!important;margin-inline:auto!important;padding-inline:clamp(16px,3vw,40px)!important}
+.game .gameplay,.game .end{max-width:1240px!important}
+.target-color{width:100%!important;height:clamp(150px,30vh,320px)!important}
+
+/* jugando: el encabezado se compacta y el juego ocupa la pantalla */
+.app:has(#startScreen[hidden]) header p,.app:has(#introScreen.hidden) header p,.game:has(.screen.start:not(.active)) header p{display:none}
+.app:has(#startScreen[hidden]) header,.app:has(#introScreen.hidden) header{margin-bottom:12px!important}
+.app:has(#startScreen[hidden]) header h1:not(.h1-st){font-size:clamp(20px,2.2vw,30px)!important}
+/* tipografía: muestra gigante y opciones anchas */
+.sample{font-size:clamp(80px,15vw,210px)!important;min-height:clamp(140px,26vh,260px)!important}
+.answers{gap:16px!important}.answer{min-height:76px!important;font-size:clamp(17px,1.7vw,22px)!important}
+.timer-wrap{width:min(240px,60vw)!important}
+.game-info,.progress{font-size:14px!important}
+/* ahorcado: figura a la izquierda, palabra y teclado a la derecha */
+@media(min-width:1000px){
+ body:has(.hangman-area) #gameContent{display:grid!important;grid-template-columns:minmax(260px,1fr) minmax(0,1.5fr);column-gap:64px;align-items:center;max-width:1120px;margin-inline:auto}
+ body:has(.hangman-area) #gameContent>.top-info{grid-column:1/-1}
+ body:has(.hangman-area) #gameContent>.hangman-area{grid-column:1;grid-row:2/8;transform:scale(1.5);transform-origin:center}
+ body:has(.hangman-area) #gameContent>:not(.top-info):not(.hangman-area){grid-column:2}
+ body:has(.hangman-area) .key{min-height:56px}
+}
