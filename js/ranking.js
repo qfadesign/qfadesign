@@ -1,7 +1,7 @@
 /* qfadesign — ranking de los jueguitos (Supabase).
    Uso: QFARanking.montar(elementoReferencia, {juego:'color', modo:'Fácil', titulo:'Adivina el color', puntos:1234})
    Inserta el bloque de ranking justo antes del elemento de referencia.
-   Identidad: apodo + número de 4 cifras al azar + código de 4 números que elige cada jugador (con eso se arma el secreto,
+   Identidad: apodo + código de identificación (el número después del #) + contraseña de 4 dígitos que elige cada jugador (con eso se arma el secreto,
    así puede recuperar su nombre desde cualquier dispositivo). */
 (function(){
   'use strict';
@@ -129,10 +129,10 @@
     }
     /* se muestra una sola vez, justo al guardar el código: después el código ya no se puede volver a ver */
     function cajaDatos(yo, pin){
-      var texto = 'Mi nombre en qfadesign.com\nApodo: ' + yo.apodo + '\nNúmero: #' + yo.tag + '\nCódigo: ' + pin;
+      var texto = 'Mi nombre en qfadesign.com\nApodo: ' + yo.apodo + '\nCódigo de identificación: #' + yo.tag + '\nContraseña: ' + pin;
       var caja = el('div', 'rank-datos');
-      caja.appendChild(estado('Tu nombre quedó guardado. Copiá tus datos ahora: el código no se vuelve a mostrar.'));
-      caja.appendChild(el('p', 'rank-datos-txt', yo.apodo + '#' + yo.tag + ' · código ' + pin));
+      caja.appendChild(estado('Tu nombre quedó guardado. Copiá tus datos ahora: la contraseña no se vuelve a mostrar.'));
+      caja.appendChild(el('p', 'rank-datos-txt', yo.apodo + '#' + yo.tag + ' · contraseña ' + pin));
       var btn = el('button', 'rank-guardar', 'Copiar mis datos');
       btn.type = 'button';
       btn.addEventListener('click', function(){
@@ -163,7 +163,7 @@
           cuerpo.appendChild(linea);
           if (enApp && !yo.pin) cuerpo.appendChild(avisoApp());
           if (yo.pin && pinNuevo) cuerpo.appendChild(cajaDatos(yo, pinNuevo));
-          else if (yo.pin) cuerpo.appendChild(el('p', 'rank-msg', 'Para recuperar tu nombre en otro dispositivo necesitás tu apodo, el #' + yo.tag + ' y tu código de 4 números.'));
+          else if (yo.pin) cuerpo.appendChild(el('p', 'rank-msg', 'Para recuperar tu nombre en otro dispositivo necesitás tu apodo, tu código de identificación (#' + yo.tag + ') y tu contraseña de 4 dígitos.'));
         }
         if (!filas || !filas.length) {
           cuerpo.appendChild(estado('Todavía no hay puntajes. Sé el primero.'));
@@ -178,7 +178,7 @@
           cuerpo.appendChild(ol);
         }
         if (yo && !yo.pin) {
-          var poner = el('button', 'rank-link', 'Ponerle un código a mi nombre para no perderlo');
+          var poner = el('button', 'rank-link', 'Ponerle una contraseña a mi nombre para no perderlo');
           poner.type = 'button';
           poner.addEventListener('click', function(){ ponerCodigo(yo, mejor); });
           cuerpo.appendChild(poner);
@@ -262,10 +262,10 @@
       cuerpo.textContent = '';
       if (aviso) cuerpo.appendChild(estado(aviso, true));
       if (enApp) cuerpo.appendChild(avisoApp());
-      cuerpo.appendChild(el('p', 'rank-msg', 'Guardá tu puntaje (' + d.puntos + ' pts) con un apodo. Si querés recuperar tu nombre en otro dispositivo, sumá un código de 4 números (opcional).'));
+      cuerpo.appendChild(el('p', 'rank-msg', 'Guardá tu puntaje (' + d.puntos + ' pts) con un apodo. Al guardar, la web te da un código de identificación (el número que aparece después del #). Si querés recuperar tu nombre en otro dispositivo, sumá una contraseña de 4 dígitos (opcional).'));
       var fila = el('div', 'rank-form');
       var input = campoApodo();
-      var pin = campoNum('Código (opcional)', 'Código de 4 números, opcional: sirve para recuperar tu nombre en otro dispositivo');
+      var pin = campoNum('Contraseña (opcional)', 'Contraseña de 4 dígitos, opcional: sirve para recuperar tu nombre en otro dispositivo');
       var ok = el('button', 'rank-guardar', 'Guardar');
       ok.type = 'button';
       fila.appendChild(input); fila.appendChild(pin); fila.appendChild(ok);
@@ -284,7 +284,7 @@
       function enviar(){
         var apodo = limpiarApodo(input.value);
         if (!apodoValido(apodo)) return aviso_(err, 'Usá entre 2 y 16 caracteres: letras, números, espacio, punto, guion o guion bajo.');
-        if (pin.value && !/^\d{4}$/.test(pin.value)) return aviso_(err, 'El código tiene que ser de 4 números (o dejalo vacío). Anotalo: lo vas a necesitar para recuperar tu nombre.');
+        if (pin.value && !/^\d{4}$/.test(pin.value)) return aviso_(err, 'La contraseña tiene que ser de 4 dígitos (o dejala vacía). Anotala: la vas a necesitar para recuperar tu nombre.');
         err.hidden = true; ok.disabled = true; ok.textContent = 'Guardando…';
         registrar(apodo, pin.value, 0).then(function(r){
           guardar(r.yo);
@@ -302,10 +302,10 @@
     /* para quien ya jugó sin código: elige uno y cambia el secreto de su nombre (necesita tenerlo guardado en este navegador) */
     function ponerCodigo(yo, mejor){
       cuerpo.textContent = '';
-      cuerpo.appendChild(el('p', 'rank-msg', 'Elegí un código de 4 números para ' + yo.apodo + '#' + yo.tag + '. Con tu apodo, ese número y el código recuperás tu nombre desde cualquier dispositivo.'));
+      cuerpo.appendChild(el('p', 'rank-msg', 'Elegí una contraseña de 4 dígitos para ' + yo.apodo + '#' + yo.tag + '. Con tu apodo, tu código de identificación (#' + yo.tag + ') y la contraseña recuperás tu nombre desde cualquier dispositivo.'));
       var fila = el('div', 'rank-form');
-      var pn = campoNum('Tu código', 'Tu código de 4 números');
-      var ok = el('button', 'rank-guardar', 'Guardar código');
+      var pn = campoNum('Tu contraseña', 'Tu contraseña de 4 dígitos');
+      var ok = el('button', 'rank-guardar', 'Guardar contraseña');
       ok.type = 'button';
       fila.appendChild(pn); fila.appendChild(ok);
       cuerpo.appendChild(fila);
@@ -317,7 +317,7 @@
       cuerpo.appendChild(volver);
 
       function ir(){
-        if (!/^\d{4}$/.test(pn.value)) return aviso_(err, 'El código tiene que ser de 4 números.');
+        if (!/^\d{4}$/.test(pn.value)) return aviso_(err, 'La contraseña tiene que ser de 4 dígitos.');
         err.hidden = true; ok.disabled = true; ok.textContent = 'Guardando…';
         tokenDe(yo.apodo, yo.tag, pn.value).then(function(nuevo){
           return rpc('poner_codigo', { p_apodo: yo.apodo, p_tag: yo.tag, p_token: yo.token, p_token_nuevo: nuevo }).then(function(sirve){
@@ -328,8 +328,8 @@
           });
         }).catch(function(e){
           if (!vivo()) return;
-          ok.disabled = false; ok.textContent = 'Guardar código';
-          aviso_(err, e.message === 'nada' ? 'No pudimos verificar tu nombre. Probá jugar de nuevo y repetirlo.' : 'No se pudo guardar el código ahora. Probá de nuevo en un rato.');
+          ok.disabled = false; ok.textContent = 'Guardar contraseña';
+          aviso_(err, e.message === 'nada' ? 'No pudimos verificar tu nombre. Probá jugar de nuevo y repetirlo.' : 'No se pudo guardar la contraseña ahora. Probá de nuevo en un rato.');
         });
       }
       ok.addEventListener('click', ir);
@@ -338,9 +338,9 @@
 
     function recuperar(){
       cuerpo.textContent = '';
-      cuerpo.appendChild(el('p', 'rank-msg', 'Poné tu apodo, tu número (el que aparece después del #) y tu código de 4 números.'));
+      cuerpo.appendChild(el('p', 'rank-msg', 'Poné tu apodo, tu código de identificación (el número que aparece después del #) y tu contraseña de 4 dígitos.'));
       var fila = el('div', 'rank-form');
-      var ap = campoApodo(), tg = campoNum('# número', 'Tu número, el que aparece después del #', 6), pn = campoNum('Tu código', 'Tu código de 4 números');
+      var ap = campoApodo(), tg = campoNum('Código (#)', 'Tu código de identificación, el número que aparece después del #', 6), pn = campoNum('Contraseña', 'Tu contraseña de 4 dígitos');
       var ok = el('button', 'rank-guardar', 'Recuperar');
       ok.type = 'button';
       fila.appendChild(ap); fila.appendChild(tg); fila.appendChild(pn); fila.appendChild(ok);
@@ -354,7 +354,7 @@
 
       function ir(){
         var apodo = limpiarApodo(ap.value);
-        if (!apodoValido(apodo) || !/^\d{1,6}$/.test(tg.value) || !/^\d{4}$/.test(pn.value)) return aviso_(err, 'Revisá los datos: apodo, número (el de después del #) y código de 4 números.');
+        if (!apodoValido(apodo) || !/^\d{1,6}$/.test(tg.value) || !/^\d{4}$/.test(pn.value)) return aviso_(err, 'Revisá los datos: apodo, código de identificación (el de después del #) y contraseña de 4 dígitos.');
         err.hidden = true; ok.disabled = true; ok.textContent = 'Buscando…';
         tokenDe(apodo, tg.value, pn.value).then(function(token){
           return rpc('verificar_jugador', { p_apodo: apodo, p_tag: tg.value, p_token: token }).then(function(sirve){
@@ -366,7 +366,7 @@
         }).catch(function(e){
           if (!vivo()) return;
           ok.disabled = false; ok.textContent = 'Recuperar';
-          aviso_(err, e.message === 'nada' ? 'No encontramos ese nombre con ese código. Revisá el apodo, el número y el código.' : 'No se pudo verificar ahora. Probá de nuevo en un rato.');
+          aviso_(err, e.message === 'nada' ? 'No encontramos ese nombre con esa contraseña. Revisá el apodo, el código de identificación y la contraseña.' : 'No se pudo verificar ahora. Probá de nuevo en un rato.');
         });
       }
       ok.addEventListener('click', ir);

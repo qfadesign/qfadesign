@@ -194,7 +194,7 @@ header h1.h1-st,.header h1.h1-st,h1.big-title.h1-st{display:block;background:non
 /* ranking: apodo + código de 4 números (y recuperar nombre) */
 .rank-form{flex-wrap:wrap}
 .rank-form input{flex:1 1 140px}
-.rank-form .rank-pin{flex:0 1 112px;text-align:center;letter-spacing:.12em}
+.rank-form .rank-pin{flex:0 1 172px;text-align:center;letter-spacing:.12em}.rank-form .rank-pin::placeholder{letter-spacing:0}
 
 /* ranking: caja con los datos para copiar al guardar el código */
 .rank-datos{display:flex;flex-direction:column;align-items:center;gap:10px;margin:0 0 14px;padding:14px;border-radius:16px;border:2px dashed currentColor;text-align:center}
