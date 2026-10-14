@@ -106,7 +106,7 @@ html .hero .intro .bajada{text-shadow:0 1px 2px rgba(2,8,22,.5),0 2px 18px rgba(
 
 /* HERO: el bloque de texto baja y queda apoyado en la parte de abajo; arriba queda lugar para la estela de stickers */
 html .hero .intro{align-self:center;margin:auto auto clamp(26px,6vh,72px)}
-@media(max-width:760px){html .hero .intro{margin:auto 14px clamp(24px,5vh,48px)}}
+@media(max-width:760px){html .hero .intro{align-self:stretch;width:auto;margin:auto 14px clamp(24px,5vh,48px)}}
 
 
 /* ============================================================
@@ -151,3 +151,15 @@ html body .volver:not(.hp-vol .volver):not(.vol-wrap .volver),html body .hr-chip
 html body .resultado-acc button,html body .fd-btn,
 html body .hero .intro .acciones .btn,html body .cp-pdf .btn{border-radius:99px}
 html body .primary,html body .play-again,html body .key{border-radius:99px!important}
+
+/* HERO responsive.
+   1) El bloque de texto tiene container-type:inline-size: sin un ancho propio se achica a 0 y los textos se rompen letra por letra.
+      En celu ocupa todo el ancho disponible (align-self:stretch, arriba).
+   2) La marca gigante de arriba: en pantallas angostas su mitad visible quedaba escondida detrás de la barra de navegación.
+      En celu se ve entera, justo debajo de la barra; en tablet se corta a la altura de la barra para que se vea la mitad de abajo. */
+@media(max-width:760px){
+ html .hero .marca{margin-top:calc(var(--navh,72px) + 10px);margin-bottom:clamp(18px,3vh,32px)}
+}
+@media(min-width:761px) and (max-width:1100px){
+ html .hero .marca{margin-top:calc(var(--navh,72px) - 11.15%)}
+}

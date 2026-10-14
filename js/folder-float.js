@@ -45,7 +45,7 @@
     el.style.setProperty('--ease', 'cubic-bezier(.34,' + (1 + o.bounce * 1.8).toFixed(2) + ',.64,1)');
     el.classList.add('ff-ok');
     const pista = el.parentElement.querySelector('.ff-hint');
-    if (pista && !canHover) pista.textContent = 'Scrolleá y elegí un proyecto';
+    if (pista && !canHover) pista.textContent = 'Deslizá para ver los proyectos';
 
     // abanico: las hojas salen hacia arriba, abiertas en arco
     const pos = []; let repintar = () => {};
@@ -85,10 +85,11 @@
         const r = el.getBoundingClientRect(), vh = innerHeight;
         let p = clamp((vh * 0.92 - r.top) / (vh * 0.45));
         if (quieto) p = p > 0.5 ? 1 : 0;
+        const T = items[0].offsetHeight * 0.9 + 10; // cuánto están "metidas" en la carpeta cuando está cerrada
         items.forEach((a, i) => {
-          const q = pos[i]; if (!q) return;
           const k = quieto ? p : ease(clamp((p - i * 0.05) / 0.65));
-          a.style.transform = 'translate(' + (q.x * k).toFixed(1) + 'px,' + (q.y * k).toFixed(1) + 'px) rotate(' + (q.rot * k).toFixed(2) + 'deg) scale(' + (0.94 + 0.06 * k).toFixed(3) + ')';
+          a.style.transform = 'translateY(' + ((1 - k) * T).toFixed(1) + 'px) rotate(' + ((1 - k) * (i % 2 ? 6 : -6)).toFixed(2) + 'deg) scale(' + (0.9 + 0.1 * k).toFixed(3) + ')';
+          a.style.opacity = k.toFixed(2);
         });
         front.style.transform = 'rotateX(' + (-(o.rest + (o.flap - o.rest) * ease(p))).toFixed(2) + 'deg)';
         const abierta = p > 0.5;

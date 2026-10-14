@@ -38,3 +38,15 @@
 .f-portfolio .ph{margin-bottom:clamp(6px,1.2vw,14px)}
 /* celu: la carpeta se abre con el scroll, así que los movimientos los pone el JS cuadro a cuadro (sin transiciones) */
 .ff-scroll .ff-paper,.ff-scroll .ff-front{transition:none!important}
+
+/* CELU / TABLET: al abrirse, las hojas quedan en una fila que se desliza con el dedo (una al lado de la otra, bien visibles).
+   La fila nace detrás de la tapa de la carpeta, así que las hojas parecen salir de adentro. */
+.ff-scroll{--pw:148px;--ph:190px;--w:260px;--h:190px;margin-top:calc(var(--ph) - 34px)}
+.ff-scroll .ff-papers{inset:auto;left:50%;translate:-50% 0;width:100vw;max-width:none;top:calc(70px - var(--ph) - 24px);height:calc(var(--ph) + 24px);
+ display:flex;align-items:flex-end;gap:12px;box-sizing:border-box;padding:24px calc(50vw - var(--pw)/2) 0;
+ overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.ff-scroll .ff-papers::-webkit-scrollbar{display:none}
+.ff-scroll .ff-paper{position:relative;left:auto;bottom:auto;flex:none;scroll-snap-align:center;z-index:auto;padding:8px}
+.ff-scroll .ff-paper b{font-size:16px;margin-top:8px}
+.ff-scroll .ff-paper small{display:block}
+.ff-scroll.open .ff-in{animation:none}
