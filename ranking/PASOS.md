@@ -14,6 +14,7 @@ Mientras el archivo de config tenga el texto de ejemplo, el ranking queda apagad
 Si ya tenías el ranking andando, correr una vez `ranking/juegos-nuevos.sql` en Supabase (SQL Editor → New query → pegar → Run). Sin eso, esos tres juegos muestran el ranking pero no pueden guardar puntajes. Si armás todo de cero, alcanza con `supabase.sql` (ya los incluye).
 
 ## Cómo funciona
+- **Antes de jugar se pregunta quién juega** (pantalla de inicio de cada juego): si el navegador ya tiene un usuario guardado, pregunta "Soy Facu#7 / Soy otra persona"; si no, ofrece crear un usuario, entrar con uno que ya existe o jugar sin usuario. El botón "Empezar" queda bloqueado hasta responder. Al terminar, el puntaje se guarda solo con ese jugador. Un usuario nuevo se crea recién al terminar la partida (con su puntaje real), así no quedan usuarios con 0 puntos. Cambiar de jugador después de jugar solo afecta a la próxima partida: nunca reenvía el puntaje.
 - El jugador elige un apodo y, si quiere, un código de 4 números (opcional); el sistema le asigna un número correlativo (`Facu#7`: el primer jugador es #1, el segundo #2…; hay que correr `ranking/numeros.sql` una vez).
 - Con apodo + número + código se arma un secreto que queda guardado en su navegador. Solo quien lo tiene puede actualizar los puntajes de ese jugador.
 - Se guarda únicamente el mejor puntaje por jugador, juego y modo (el ranking es por dificultad).

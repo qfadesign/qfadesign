@@ -8,6 +8,7 @@
   var CFG = window.QFA_RANKING || {};
   var LS = 'qfa-jugador';
   var VERSION = String(CFG.version || '');
+  var sesion = null; /* quién juega: se explica más abajo, en quien() */
 
   function activo(){
     var s = String(CFG.url || '') + String(CFG.key || '');
@@ -22,8 +23,8 @@
       return j;
     } catch(e){ return null; }
   }
-  function guardar(j){ try { j.v = VERSION; localStorage.setItem(LS, JSON.stringify(j)); } catch(e){} }
-  function borrar(){ try { localStorage.removeItem(LS); } catch(e){} }
+  function guardar(j){ try { j.v = VERSION; localStorage.setItem(LS, JSON.stringify(j)); } catch(e){} sesion = { modo: 'yo', yo: j }; }
+  function borrar(){ try { localStorage.removeItem(LS); } catch(e){} if (sesion && sesion.modo === 'yo') sesion = null; }
 
   function azar(n){
     var a = new Uint32Array(1);
@@ -84,6 +85,166 @@
   function apodoValido(v){
     return /^[\p{L}\p{N} _.\-]{2,16}$/u.test(v);
   }
+
+  function campoNum(ph, etiqueta, max){
+    max = max || 4;
+    var i = el('input', 'rank-pin');
+    i.type = 'text'; i.inputMode = 'numeric'; i.maxLength = max; i.autocomplete = 'off';
+    i.placeholder = ph; i.setAttribute('aria-label', etiqueta);
+    i.addEventListener('input', function(){ i.value = i.value.replace(/\D/g, '').slice(0, max); });
+    return i;
+  }
+  function campoApodo(){
+    var i = el('input');
+    i.type = 'text'; i.maxLength = 16; i.autocomplete = 'nickname';
+    i.placeholder = 'Tu apodo'; i.setAttribute('aria-label', 'Tu apodo (2 a 16 caracteres)');
+    return i;
+  }
+  function aviso_(err, txt){ err.textContent = txt; err.hidden = false; }
+  function conEnter(campos, fn){
+    campos.forEach(function(c){ c.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); fn(); } }); });
+  }
+
+
+  function msg(txt, esError){
+    var p = el('p', 'rank-msg' + (esError ? ' rank-error' : ''), txt);
+    p.setAttribute('role', esError ? 'alert' : 'status');
+    return p;
+  }
+
+  /* QUIÉN JUEGA. Se pregunta ANTES de jugar y la respuesta queda en "sesion" mientras la página esté abierta.
+     Al terminar la partida el puntaje se guarda SOLO con ese jugador (nunca se reenvía a otro).
+       { modo:'yo', yo:{apodo,tag,token,pin} }  usuario que ya existe (el de este navegador o uno recuperado)
+       { modo:'nuevo', apodo, pin }              usuario nuevo: se crea al terminar la partida, con su puntaje
+       { modo:'invitado' }                       juega sin usuario: el puntaje no se guarda */
+  function quien(host, o){
+    o = o || {};
+    var guardado = leer();
+    function boton(txt, cls, fn){
+      var b = el('button', cls, txt); b.type = 'button';
+      b.addEventListener('click', fn);
+      return b;
+    }
+    function link(txt, fn){ return boton(txt, 'rank-link', fn); }
+    function listo(s){
+      sesion = s;
+      host.textContent = '';
+      var linea = el('p', 'rank-yo');
+      if (s.modo === 'yo') {
+        linea.appendChild(document.createTextNode('Jugás como '));
+        linea.appendChild(el('strong', null, s.yo.apodo + '#' + s.yo.tag));
+      } else if (s.modo === 'nuevo') {
+        linea.appendChild(document.createTextNode('Jugás como '));
+        linea.appendChild(el('strong', null, s.apodo));
+        linea.appendChild(document.createTextNode(' (tu usuario se crea cuando termines la partida)'));
+      } else {
+        linea.appendChild(document.createTextNode('Jugás sin usuario: tu puntaje no se va a guardar.'));
+      }
+      host.appendChild(linea);
+      host.appendChild(link('Cambiar de jugador', opciones));
+      if (o.alResolver) o.alResolver(s);
+    }
+    function pregunta(){
+      host.textContent = '';
+      host.appendChild(el('strong', 'rank-quien-t', '¿Quién va a jugar?'));
+      var p = el('p', 'rank-msg');
+      p.appendChild(document.createTextNode('La última vez se jugó como '));
+      p.appendChild(el('strong', null, guardado.apodo + '#' + guardado.tag));
+      p.appendChild(document.createTextNode('.'));
+      host.appendChild(p);
+      var fila = el('div', 'rank-quien-bt');
+      fila.appendChild(boton('Soy ' + guardado.apodo + '#' + guardado.tag, 'rank-guardar', function(){ listo({ modo: 'yo', yo: guardado }); }));
+      fila.appendChild(boton('Soy otra persona', 'rank-sec', opciones));
+      host.appendChild(fila);
+    }
+    function opciones(){
+      host.textContent = '';
+      host.appendChild(el('strong', 'rank-quien-t', '¿Cómo querés jugar?'));
+      var fila = el('div', 'rank-quien-bt rank-quien-col');
+      fila.appendChild(boton('Crear un usuario nuevo', 'rank-guardar', crear));
+      fila.appendChild(boton('Ya tengo usuario', 'rank-sec', existente));
+      fila.appendChild(boton('Jugar sin usuario', 'rank-sec', function(){ listo({ modo: 'invitado' }); }));
+      host.appendChild(fila);
+      if (o.alVolver) host.appendChild(link('Volver', o.alVolver));
+      else if (guardado && !sesion) host.appendChild(link('Volver', pregunta));
+      else if (sesion) host.appendChild(link('Volver', function(){ listo(sesion); }));
+    }
+    function crear(){
+      host.textContent = '';
+      host.appendChild(el('strong', 'rank-quien-t', 'Tu usuario nuevo'));
+      host.appendChild(msg('Elegí un apodo (2 a 16 caracteres). Si querés poder recuperarlo en otro dispositivo, sumá una contraseña de 4 dígitos (opcional). El usuario se crea cuando termines la partida, junto con tu puntaje.'));
+      var fila = el('div', 'rank-form');
+      var ap = campoApodo();
+      var pin = campoNum('Contraseña (opcional)', 'Contraseña de 4 dígitos, opcional: sirve para recuperar tu nombre en otro dispositivo');
+      var ok = el('button', 'rank-guardar', 'Listo');
+      ok.type = 'button';
+      fila.appendChild(ap); fila.appendChild(pin); fila.appendChild(ok);
+      host.appendChild(fila);
+      var err = el('p', 'rank-msg rank-error'); err.hidden = true; err.setAttribute('role', 'alert');
+      host.appendChild(err);
+      host.appendChild(link('Volver', opciones));
+      function ir(){
+        var apodo = limpiarApodo(ap.value);
+        if (!apodoValido(apodo)) return aviso_(err, 'Usá entre 2 y 16 caracteres: letras, números, espacio, punto, guion o guion bajo.');
+        if (pin.value && !/^\d{4}$/.test(pin.value)) return aviso_(err, 'La contraseña tiene que ser de 4 dígitos (o dejala vacía). Anotala: la vas a necesitar para recuperar tu nombre.');
+        listo({ modo: 'nuevo', apodo: apodo, pin: pin.value });
+      }
+      ok.addEventListener('click', ir);
+      conEnter([ap, pin], ir);
+    }
+    function existente(){
+      host.textContent = '';
+      host.appendChild(el('strong', 'rank-quien-t', 'Ya tengo usuario'));
+      host.appendChild(msg('Poné tu apodo, tu código de identificación (el número que aparece después del #) y tu contraseña de 4 dígitos.'));
+      var fila = el('div', 'rank-form');
+      var ap = campoApodo(), tg = campoNum('Código (#)', 'Tu código de identificación, el número que aparece después del #', 6), pn = campoNum('Contraseña', 'Tu contraseña de 4 dígitos');
+      var ok = el('button', 'rank-guardar', 'Entrar');
+      ok.type = 'button';
+      fila.appendChild(ap); fila.appendChild(tg); fila.appendChild(pn); fila.appendChild(ok);
+      host.appendChild(fila);
+      var err = el('p', 'rank-msg rank-error'); err.hidden = true; err.setAttribute('role', 'alert');
+      host.appendChild(err);
+      host.appendChild(link('Volver', opciones));
+      function ir(){
+        var apodo = limpiarApodo(ap.value);
+        if (!apodoValido(apodo) || !/^\d{1,6}$/.test(tg.value) || !/^\d{4}$/.test(pn.value)) return aviso_(err, 'Revisá los datos: apodo, código de identificación (el de después del #) y contraseña de 4 dígitos.');
+        err.hidden = true; ok.disabled = true; ok.textContent = 'Buscando…';
+        tokenDe(apodo, tg.value, pn.value).then(function(token){
+          return rpc('verificar_jugador', { p_apodo: apodo, p_tag: tg.value, p_token: token }).then(function(sirve){
+            if (!sirve) throw new Error('nada');
+            var yo = { apodo: apodo, tag: tg.value, token: token, pin: 1 };
+            guardar(yo);
+            listo({ modo: 'yo', yo: yo });
+          });
+        }).catch(function(e){
+          if (!host.isConnected) return;
+          ok.disabled = false; ok.textContent = 'Entrar';
+          aviso_(err, e.message === 'nada' ? 'No encontramos ese nombre con esa contraseña. Revisá el apodo, el código de identificación y la contraseña.' : 'No se pudo verificar ahora. Probá de nuevo en un rato.');
+        });
+      }
+      ok.addEventListener('click', ir);
+      conEnter([ap, tg, pn], ir);
+    }
+    if (guardado && !o.sinPregunta) pregunta(); else opciones();
+  }
+
+  /* Pantalla de inicio de cada juego: antes de poder empezar hay que decir quién juega */
+  function iniciarPuerta(){
+    if (!activo()) return;
+    var btn = document.getElementById('startBtn');
+    if (!btn || !btn.parentNode || !btn.parentNode.parentNode) return;
+    var host = el('section', 'rank-quien');
+    host.setAttribute('aria-label', '¿Quién va a jugar?');
+    btn.parentNode.parentNode.insertBefore(host, btn.parentNode);
+    btn.disabled = true;
+    btn.setAttribute('aria-describedby', 'rank-quien-nota');
+    var nota = el('p', 'rank-quien-nota', 'Primero elegí quién juega para poder empezar.');
+    nota.id = 'rank-quien-nota';
+    btn.parentNode.appendChild(nota);
+    quien(host, { alResolver: function(){ btn.disabled = false; nota.hidden = true; } });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarPuerta);
+  else iniciarPuerta();
 
   function montar(ref, d){
     if (!activo() || !ref || !ref.parentNode) return;
@@ -151,7 +312,7 @@
       return caja;
     }
 
-    function mostrarTop(yo, mejor, pinNuevo){
+    function mostrarTop(yo, mejor, pinNuevo, extra){
       rpc('top_ranking', { p_juego: d.juego, p_modo: d.modo, p_limite: 10 }).then(function(filas){
         if (!vivo()) return;
         cuerpo.textContent = '';
@@ -183,10 +344,11 @@
           poner.addEventListener('click', function(){ ponerCodigo(yo, mejor); });
           cuerpo.appendChild(poner);
         }
+        if (extra) extra(cuerpo);
         if (yo) {
-          var cambiar = el('button', 'rank-link', 'No soy ' + yo.apodo + '#' + yo.tag);
+          var cambiar = el('button', 'rank-link', '¿Va a jugar otra persona? Cambiar de jugador');
           cambiar.type = 'button';
-          cambiar.addEventListener('click', function(){ borrar(); formulario(); });
+          cambiar.addEventListener('click', function(){ cambiarJugador(yo, mejor); });
           cuerpo.appendChild(cambiar);
         }
       }).catch(function(){
@@ -237,25 +399,6 @@
         if (/identidad/.test(err.message) && intento < 6) return registrar(apodo, pin, intento + 1);
         throw err;
       });
-    }
-
-    function campoNum(ph, etiqueta, max){
-      max = max || 4;
-      var i = el('input', 'rank-pin');
-      i.type = 'text'; i.inputMode = 'numeric'; i.maxLength = max; i.autocomplete = 'off';
-      i.placeholder = ph; i.setAttribute('aria-label', etiqueta);
-      i.addEventListener('input', function(){ i.value = i.value.replace(/\D/g, '').slice(0, max); });
-      return i;
-    }
-    function campoApodo(){
-      var i = el('input');
-      i.type = 'text'; i.maxLength = 16; i.autocomplete = 'nickname';
-      i.placeholder = 'Tu apodo'; i.setAttribute('aria-label', 'Tu apodo (2 a 16 caracteres)');
-      return i;
-    }
-    function aviso_(err, txt){ err.textContent = txt; err.hidden = false; }
-    function conEnter(campos, fn){
-      campos.forEach(function(c){ c.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); fn(); } }); });
     }
 
     function formulario(aviso){
@@ -373,8 +516,79 @@
       conEnter([ap, tg, pn], ir);
     }
 
-    var yo = leer();
-    if (yo) enviarComoYo(yo); else formulario();
+    /* cambiar de jugador DESPUÉS de jugar: el puntaje de esta partida ya quedó con quien jugó; no se reenvía.
+       Solo cambia quién juega la próxima. */
+    function cambiarJugador(yo, mejor){
+      cuerpo.textContent = '';
+      cuerpo.appendChild(estado('El puntaje de esta partida ya quedó guardado con ' + yo.apodo + '#' + yo.tag + '. Esto solo cambia quién juega la próxima.'));
+      var h = el('div', 'rank-quien-in');
+      cuerpo.appendChild(h);
+      quien(h, {
+        sinPregunta: true,
+        alVolver: function(){ mostrarTop(yo, mejor); },
+        alResolver: function(s){
+          mostrarTop(s.modo === 'yo' ? s.yo : null, null, null, function(c){
+            if (s.modo === 'nuevo') c.appendChild(estado('La próxima partida jugás como ' + s.apodo + '. El usuario se crea cuando termines.'));
+            else if (s.modo === 'invitado') c.appendChild(estado('La próxima partida jugás sin usuario.'));
+          });
+        }
+      });
+    }
+
+    /* usuario nuevo elegido antes de jugar: se crea ahora, con el puntaje real */
+    function crearYEnviar(s){
+      cuerpo.textContent = '';
+      cuerpo.appendChild(estado('Creando tu usuario y guardando tu puntaje…'));
+      registrar(s.apodo, s.pin, 0).then(function(r){
+        guardar(r.yo);
+        if (vivo()) mostrarTop(r.yo, r.mejor, r.yo.pin ? s.pin : null);
+      }).catch(function(e){
+        if (!vivo()) return;
+        if (/apodo_no_permitido/.test(e.message)) { sesion = null; return formulario('Ese apodo no está permitido. Elegí otro para guardar tu puntaje.'); }
+        cuerpo.textContent = '';
+        cuerpo.appendChild(estado('No se pudo guardar el puntaje ahora.', true));
+        var b = el('button', 'rank-link', 'Reintentar');
+        b.type = 'button';
+        b.addEventListener('click', function(){ crearYEnviar(s); });
+        cuerpo.appendChild(b);
+      });
+    }
+
+    /* jugó sin usuario: se muestra el ranking y se ofrece guardar (todavía no se había guardado en ningún lado) */
+    function comoInvitado(){
+      cuerpo.textContent = '';
+      cuerpo.appendChild(estado('Cargando el ranking…'));
+      mostrarTop(null, null, null, function(c){
+        c.insertBefore(estado('Jugaste sin usuario, así que este puntaje (' + d.puntos + ' pts) no se guardó.'), c.firstChild);
+        var g = el('button', 'rank-link', 'Guardar este puntaje con un usuario');
+        g.type = 'button';
+        g.addEventListener('click', function(){ formulario(); });
+        c.appendChild(g);
+      });
+    }
+
+    /* sin pregunta previa (por ejemplo, se llegó directo al resultado): se pregunta antes de guardar nada */
+    function preguntarAntesDeGuardar(g){
+      cuerpo.textContent = '';
+      var p = el('p', 'rank-msg');
+      p.appendChild(document.createTextNode('Tu puntaje (' + d.puntos + ' pts) se guarda con el nombre de quien juega. ¿Sos '));
+      p.appendChild(el('strong', null, g.apodo + '#' + g.tag));
+      p.appendChild(document.createTextNode('?'));
+      cuerpo.appendChild(p);
+      var fila = el('div', 'rank-quien-bt');
+      var si = el('button', 'rank-guardar', 'Sí, guardar mi puntaje'); si.type = 'button';
+      si.addEventListener('click', function(){ enviarComoYo(g); });
+      var no = el('button', 'rank-sec', 'No, soy otra persona'); no.type = 'button';
+      no.addEventListener('click', function(){ formulario(); });
+      fila.appendChild(si); fila.appendChild(no);
+      cuerpo.appendChild(fila);
+    }
+
+    var s0 = sesion;
+    if (s0 && s0.modo === 'yo') enviarComoYo(s0.yo);
+    else if (s0 && s0.modo === 'nuevo') crearYEnviar(s0);
+    else if (s0 && s0.modo === 'invitado') comoInvitado();
+    else { var g0 = leer(); if (g0) preguntarAntesDeGuardar(g0); else formulario(); }
   }
 
   /* Top 3 para las pantallas de inicio: <aside data-rank-top data-juego="color" data-modo="Estándar"> */
@@ -433,5 +647,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarTop3);
   else iniciarTop3();
 
-  window.QFARanking = { montar: montar, top3: montarTop3 };
+  window.QFARanking = { montar: montar, top3: montarTop3, quien: quien };
 })();

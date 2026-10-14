@@ -225,3 +225,18 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
  body:has(.hangman-area) #gameContent>:not(.top-info):not(.hangman-area){grid-column:2}
  body:has(.hangman-area) .key{min-height:56px}
 }
+
+/* ¿QUIÉN JUEGA? (js/ranking.js): se pregunta antes de empezar, así el puntaje nunca queda en dos usuarios */
+.rank-quien{width:100%;max-width:420px;margin:22px auto 0;padding:16px 16px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.07);color:#fff;text-align:center;box-sizing:border-box}
+.rank-quien .rank-msg,.rank-quien .rank-yo{text-align:center;max-width:none!important;margin:0 0 12px!important}
+.rank-quien .rank-link{margin-left:auto;margin-right:auto}
+.rank-quien .rank-form{justify-content:center}
+.rank-quien-t{display:block;margin:0 0 10px;font-family:var(--fh);font-weight:900;font-style:normal;font-size:17px;line-height:1.1}
+.rank-quien-bt{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 6px}
+.rank-quien-col{flex-direction:column;align-items:stretch}
+.rank-sec{padding:11px 18px;border-radius:14px;border:1px solid rgba(255,255,255,.55);background:none;color:#fff;font-family:var(--fh);font-weight:900;font-size:15px;cursor:pointer}
+.rank-sec:hover,.rank-sec:focus-visible{background:rgba(255,255,255,.14)}
+.rank-quien-nota{margin:12px 0 0!important;font-size:13px;opacity:.8;text-align:center}
+.rank-quien-nota[hidden]{display:none}
+.rank-quien-in{margin-top:4px}
+.primary:disabled{opacity:.4;cursor:not-allowed;filter:saturate(.6)}
