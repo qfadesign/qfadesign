@@ -4,8 +4,8 @@
    </div>
    Opciones (data-*): spread (ancho total del abanico, px) · lift · tilt (grados) · flap (ángulo abierta) · rest (ángulo en reposo)
    · duration (ms) · stagger (ms entre hojas) · bounce (0–1) · drift (0–1) · trigger (hover | click).
-   En pantallas táctiles (sin hover) la carpeta se abre sola mientras se scrollea; con mouse, al pasar el cursor.
-   · data-href="portfolio" (solo celu/tablet): tocar la carpeta o cualquier hoja lleva a esa página en vez de abrir el proyecto.
+   En pantallas táctiles (sin hover) la carpeta se abre sola en abanico mientras se scrollea; con mouse, al pasar el cursor.
+   · data-href="portfolio" (solo celu/tablet): la carpeta nace cerrada, se abre en abanico al scrollear hasta ella, y tocar la carpeta o cualquier hoja lleva a esa página.
    Los tamaños (--w, --h, --pw, --ph) y los colores están en css/folder-float.css. */
 (() => {
   const num = (v, d) => (v === undefined || v === '' || isNaN(+v)) ? d : +v;
@@ -47,7 +47,7 @@
     el.classList.add('ff-ok');
     const pista = el.parentElement.querySelector('.ff-hint');
     const destino = !canHover && d.href ? d.href : '';
-    if (pista && !canHover) pista.textContent = destino ? 'Deslizá para ver los proyectos · tocá para ir al portfolio' : 'Deslizá para ver los proyectos';
+    if (pista && !canHover) pista.textContent = destino ? 'Tocá la carpeta o un proyecto para ir al portfolio' : 'Seguí bajando para abrir la carpeta';
     // celu con data-href: todas las hojas apuntan a esa página (pasa por la transición normal del sitio, js/anim.js)
     if (destino) items.forEach(a => a.setAttribute('href', destino));
 
@@ -60,8 +60,11 @@
       const step = n > 1 ? span / (n - 1) : 0;
       items.forEach((a, i) => {
         const c = i - (n - 1) / 2, norm = n > 1 ? c / ((n - 1) / 2) : 0;
-        const x = c * step, y = -(ph * 0.5 + o.lift * (1 - norm * norm)), rot = norm * o.tilt;
-        pos[i] = { x, y, rot };
+        // celu: abanico más cerrado y marcado (el centro queda arriba de todo y las hojas de los costados se asoman)
+        const lift = canHover ? o.lift : Math.max(o.lift, 34), tilt = canHover ? o.tilt : Math.max(o.tilt, 14);
+        const x = c * step, y = -(ph * 0.5 + lift * (1 - norm * norm)), rot = norm * tilt;
+        pos[i] = { x, y, rot, d: Math.abs(norm) };
+        if (!canHover) a.style.zIndex = String(100 - Math.round(Math.abs(c) * 10));
         a.style.setProperty('--x', x.toFixed(1) + 'px');
         a.style.setProperty('--y', y.toFixed(1) + 'px');
         a.style.setProperty('--rot', rot.toFixed(2) + 'deg');
@@ -89,11 +92,11 @@
         const r = el.getBoundingClientRect(), vh = innerHeight;
         let p = clamp((vh * 0.92 - r.top) / (vh * 0.45));
         if (quieto) p = p > 0.5 ? 1 : 0;
-        const T = items[0].offsetHeight * 0.9 + 10; // cuánto están "metidas" en la carpeta cuando está cerrada
         items.forEach((a, i) => {
-          const k = quieto ? p : ease(clamp((p - i * 0.05) / 0.65));
-          a.style.transform = 'translateY(' + ((1 - k) * T).toFixed(1) + 'px) rotate(' + ((1 - k) * (i % 2 ? 6 : -6)).toFixed(2) + 'deg) scale(' + (0.9 + 0.1 * k).toFixed(3) + ')';
-          a.style.opacity = k.toFixed(2);
+          // las hojas del centro salen primero y las de los costados las siguen: se abren en abanico
+          const q = pos[i] || { x: 0, y: 0, rot: 0, d: 0 };
+          const k = quieto ? p : ease(clamp((p - q.d * 0.12) / 0.7));
+          a.style.transform = 'translate(' + (q.x * k).toFixed(1) + 'px,' + (q.y * k).toFixed(1) + 'px) rotate(' + (q.rot * k).toFixed(2) + 'deg) scale(' + (0.94 + 0.06 * k).toFixed(3) + ')';
         });
         front.style.transform = 'rotateX(' + (-(o.rest + (o.flap - o.rest) * ease(p))).toFixed(2) + 'deg)';
         const abierta = p > 0.5;
