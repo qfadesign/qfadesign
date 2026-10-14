@@ -163,3 +163,33 @@ html body .primary,html body .play-again,html body .key{border-radius:99px!impor
 @media(min-width:761px) and (max-width:1100px){
  html .hero .marca{margin-top:calc(var(--navh,72px) - 11.15%)}
 }
+
+/* ============================================================
+   5. HERO EN CELULAR (hasta 760px)
+   - Titular en 2 renglones ("Soy Facundo, diseñador en" / "Comunicación Visual.") y más chico, para que ocupe poco.
+   - Los dos botones van uno al lado del otro y se ven como la barra de navegación (vidrio oscuro, borde fino, letras blancas), sin colores.
+   - La marca gigante de arriba la corta la barra de navegación: se ve solo su mitad de abajo, desde el borde inferior de la barra.
+   ============================================================ */
+@media(max-width:760px){
+ html .hero .intro .titular{font-size:clamp(19px,6.2cqw,30px);line-height:1.12;letter-spacing:-.015em;text-wrap:nowrap}
+ html .hero .intro .titular .sub{display:block;white-space:nowrap}
+ html .hero .intro .bajada{font-size:clamp(14px,3.9vw,16px)}
+
+ html .hero .intro .acciones{flex-direction:row;flex-wrap:nowrap;align-items:stretch;justify-content:center;gap:8px;margin-top:4px;width:100%}
+ html body .hero .intro .acciones .btn,html body .hero .intro .acciones .btn.claro,html body .hero .intro .acciones .btn:not(.claro){
+  flex:1 1 0;min-width:0;margin:0;display:inline-flex;align-items:center;justify-content:center;gap:.4em;white-space:nowrap;
+  padding:11px 10px 12px;font-size:clamp(12px,3.4vw,14px);line-height:1.1;
+  background:rgba(0,0,0,.22);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:99px;
+  box-shadow:0 10px 30px rgba(0,0,0,.22);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);text-shadow:none}
+ html body .hero .intro .acciones .btn::after,html body .hero .intro .acciones .btn.claro::after,html body .hero .intro .acciones .btn:not(.claro)::after{background:rgba(255,255,255,.18);animation:none}
+ html body .hero .intro .acciones .btn:hover,html body .hero .intro .acciones .btn:focus-visible,html body .hero .intro .acciones .btn.claro:hover,html body .hero .intro .acciones .btn.claro:focus-visible,html body .hero .intro .acciones .btn:not(.claro):hover,html body .hero .intro .acciones .btn:not(.claro):focus-visible{color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.22)}
+ html body .hero .intro .acciones .btn .fl,html body .hero .intro .acciones .btn.claro .fl{font-size:1em}
+}
+@media(max-width:400px){
+ html .hero .intro .acciones{flex-direction:row}
+ html body .hero .intro .acciones .btn{flex:1 1 0;font-size:12px;padding:11px 6px 12px}
+}
+@media(max-width:760px){
+ html .hero .marca{margin-top:var(--navh,72px);height:11.15vw;margin-bottom:clamp(18px,3vh,32px)}
+ html .hero .marca img{margin-top:-11.15%}
+}

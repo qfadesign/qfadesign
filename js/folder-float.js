@@ -5,6 +5,7 @@
    Opciones (data-*): spread (ancho total del abanico, px) · lift · tilt (grados) · flap (ángulo abierta) · rest (ángulo en reposo)
    · duration (ms) · stagger (ms entre hojas) · bounce (0–1) · drift (0–1) · trigger (hover | click).
    En pantallas táctiles (sin hover) la carpeta se abre sola mientras se scrollea; con mouse, al pasar el cursor.
+   · data-href="portfolio" (solo celu/tablet): tocar la carpeta o cualquier hoja lleva a esa página en vez de abrir el proyecto.
    Los tamaños (--w, --h, --pw, --ph) y los colores están en css/folder-float.css. */
 (() => {
   const num = (v, d) => (v === undefined || v === '' || isNaN(+v)) ? d : +v;
@@ -45,7 +46,10 @@
     el.style.setProperty('--ease', 'cubic-bezier(.34,' + (1 + o.bounce * 1.8).toFixed(2) + ',.64,1)');
     el.classList.add('ff-ok');
     const pista = el.parentElement.querySelector('.ff-hint');
-    if (pista && !canHover) pista.textContent = 'Deslizá para ver los proyectos';
+    const destino = !canHover && d.href ? d.href : '';
+    if (pista && !canHover) pista.textContent = destino ? 'Deslizá para ver los proyectos · tocá para ir al portfolio' : 'Deslizá para ver los proyectos';
+    // celu con data-href: todas las hojas apuntan a esa página (pasa por la transición normal del sitio, js/anim.js)
+    if (destino) items.forEach(a => a.setAttribute('href', destino));
 
     // abanico: las hojas salen hacia arriba, abiertas en arco
     const pos = []; let repintar = () => {};
@@ -100,6 +104,10 @@
         }
       };
       repintar = pintar;
+      // tocar la carpeta (la tapa) lleva a la página de destino; las hojas ya son links a esa página
+      if (destino) front.addEventListener('click', () => {
+        const l = document.createElement('a'); l.href = destino; l.hidden = true; el.appendChild(l); l.click(); l.remove();
+      });
       const pedir = () => { if (!tk) { tk = true; requestAnimationFrame(pintar); } };
       addEventListener('scroll', pedir, { passive: true });
       addEventListener('resize', pedir);
