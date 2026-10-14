@@ -1,0 +1,153 @@
+/* qfadesign: botones planos (sin vidrio ni bordes), hero simple y cursor azul redondo.
+   Se carga ÚLTIMO en todas las páginas, por eso pisa lo anterior. Si algo no te gusta, borrá el bloque correspondiente. */
+
+/* ============================================================
+   1. BOTONES: colores sólidos, sin vidrio y sin borde
+   ============================================================ */
+:root{--v-blur:none;--v-fondo:none;--v-luz:none;--v-btn:none;--v-btn-azul:none;--v-borde:transparent}
+
+/* principal: crema. Al pasar el mouse entra un barrido azul de izquierda a derecha */
+html body .btn{background:var(--crema);color:var(--azul-f);border:0;border-radius:12px;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+html body .btn::after{background:var(--azul)}
+html body .btn:hover,html body .btn:focus-visible{color:#fff;scale:1}
+html body .btn:active{scale:.97}
+/* secundario: azul oscuro sólido */
+html body .btn.claro{background:var(--nav);color:var(--crema);border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+html body .btn.claro::after{background:var(--crema)}
+html body .btn.claro:hover,html body .btn.claro:focus-visible{color:var(--azul-f)}
+/* Ver herramientas / Ver jueguitos / Copiar mail: azul sólido */
+html body .btn.negro{background:var(--azul);color:#fff;border:0;box-shadow:none}
+html body .btn.negro::after{background:var(--crema)}
+html body .btn.negro:hover,html body .btn.negro:focus-visible{color:var(--azul-f)}
+html body .btn.btn:hover,html body .btn.btn:focus-visible,html body .btn.btn.negro:hover,html body .btn.btn.negro:focus-visible{box-shadow:none}
+html body .btn.btn.btn:hover,html body .btn.btn.btn:focus-visible{color:#fff}
+html body .btn.claro.btn.btn:hover,html body .btn.claro.btn.btn:focus-visible,html body .btn.negro.btn.btn:hover,html body .btn.negro.btn.btn:focus-visible{color:var(--azul-f)}
+
+/* botones de los juegos */
+.primary,.play-again{background:var(--crema)!important;color:var(--az-f,var(--azul-f))!important;border:0!important;border-radius:12px!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.primary:hover:not(:disabled),.play-again:hover{background:var(--azul)!important;color:#fff!important;scale:1!important;box-shadow:none!important}
+.primary:active:not(:disabled),.play-again:active{scale:.97!important;box-shadow:none!important}
+
+/* chips y pastillas: azul oscuro sólido; al pasar el mouse (o al elegirlos) se ponen crema */
+.chip,.pills a,.enlaces a,.cp-mep-p,.br-op,.hp-otras a,.res-bajar,.cp-cli{background:var(--nav);color:var(--crema);border:0;border-radius:12px;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.chip:hover,.chip[aria-pressed=true],.pills a:hover,.enlaces a:hover,.enlaces a:focus-visible,.hp-otras a:hover,.hp-otras a:focus-visible,.res-bajar:hover,.cp-cli:hover,.cp-cli:focus-visible{background:var(--crema);color:var(--azul-f);box-shadow:none;transform:none}
+.br-op:hover{background:var(--azul);transform:none}
+.br-op.on,.br-op.on:hover{background:var(--crema);color:var(--azul-f);box-shadow:none}
+.cp-cli{border-radius:14px}
+.volver:not(.hp-vol .volver):not(.vol-wrap .volver){background:var(--nav);color:var(--crema);border:0;border-radius:12px;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.volver:not(.hp-vol .volver):not(.vol-wrap .volver):hover{background:var(--crema);color:var(--azul-f)}
+.hr-chips a{background:var(--crema);color:var(--nav);border:0;border-radius:12px;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.dd-b-btn{background:var(--crema);border-radius:12px}
+
+/* etiquetas y controles del portfolio de la home y de las tarjetas */
+.pf-info i,.pg-cap i,.pj .n,.pj .k,.js .pf-num{background:var(--crema);color:var(--nav);border:0;border-radius:8px;-webkit-backdrop-filter:none;backdrop-filter:none}
+.pf-fl{background:var(--crema);color:var(--azul-f);border:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+.js .pf-nav button{background:var(--nav);color:var(--crema);border:0;border-radius:12px;-webkit-backdrop-filter:none;backdrop-filter:none}
+.js .pf-nav button:hover,.js .pf-nav button:focus-visible{background:var(--crema);color:var(--azul-f)}
+.fd-list{-webkit-backdrop-filter:none;backdrop-filter:none;background:#0a0f1c;border:0;border-radius:16px}
+
+/* Herramientas: fichas sólidas (interactivas = negro, links = crema) */
+.tl{background:#05070d;border-color:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:20px}
+.tl.tl-links{background:var(--crema);border-color:transparent;color:var(--nav);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.tl:hover,.tl:focus-visible,.tl.tl-links:hover,.tl.tl-links:focus-visible{box-shadow:none;transform:translateY(-4px)}
+.tl:hover,.tl:focus-visible{background:var(--crema)}
+.tl.tl-links:hover,.tl.tl-links:focus-visible{background:#fff}
+
+/* ============================================================
+   2. HERO DE LA HOME: simple
+   Texto al medio, sin cursiva: la primera parte en el peso más pesado, el resto en medium. Sin adornos.
+   ============================================================ */
+html .hero .intro{align-self:center;margin:auto;width:min(900px,90vw);align-items:center;text-align:center;gap:clamp(12px,1.6vw,20px);padding:clamp(20px,2.4vw,36px) clamp(16px,3vw,40px)}
+html .hero .intro::before{inset:-60px -120px -60px -120px}
+html .hero .intro::after,html .hero .intro .regla,html .hero .intro .estrella{display:none}
+html .hero .intro .titular{font-family:var(--fh);font-style:normal;font-weight:900;font-size:clamp(34px,7.4cqw,82px);line-height:1.02;letter-spacing:-.02em;text-wrap:balance;text-shadow:0 2px 24px rgba(0,0,0,.45)}
+html .hero .intro .titular .sub{background:none;animation:none;padding:0}
+html .hero .intro .bajada{font-family:var(--f);font-style:normal;font-weight:500;font-size:clamp(17px,1.6vw,23px);line-height:1.35;max-width:34ch;color:#fff;text-shadow:0 1px 16px rgba(0,0,0,.45)}
+
+/* botones del hero: dos bloques sólidos, un solo efecto (barrido de color y la flecha avanza) */
+html .hero .intro .acciones{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:clamp(6px,1vw,14px)}
+html .hero .intro .acciones .btn{flex:0 1 auto;justify-content:center;gap:.7em;padding:16px clamp(22px,2.4vw,34px) 17px;border:0;border-radius:12px;font-size:clamp(16px,1.3vw,19px);text-shadow:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+html .hero .intro .acciones .btn:not(.claro){background:var(--azul);color:#fff}
+html .hero .intro .acciones .btn:not(.claro)::after{background:var(--crema);animation:none;translate:-101% 0;transition:translate .32s cubic-bezier(.2,.8,.2,1)}
+html .hero .intro .acciones .btn:not(.claro):hover,html .hero .intro .acciones .btn:not(.claro):focus-visible{color:var(--azul-f);box-shadow:none}
+html .hero .intro .acciones .btn:not(.claro):hover::after,html .hero .intro .acciones .btn:not(.claro):focus-visible::after{translate:0 0;animation:none}
+html .hero .intro .acciones .btn.claro{background:var(--crema);color:var(--azul-f)}
+html .hero .intro .acciones .btn.claro::after{background:var(--azul)}
+html .hero .intro .acciones .btn.claro:hover,html .hero .intro .acciones .btn.claro:focus-visible{color:#fff}
+html .hero .intro .acciones .btn .fl,html .hero .intro .acciones .btn.claro .fl{width:auto;height:auto;border-radius:0;border:0;background:none;box-shadow:none;color:inherit;font-size:1.1em;display:inline-block;transition:translate .3s cubic-bezier(.2,.8,.2,1)}
+html .hero .intro .acciones .btn:hover .fl,html .hero .intro .acciones .btn:focus-visible .fl,html .hero .intro .acciones .btn.claro:hover .fl,html .hero .intro .acciones .btn.claro:focus-visible .fl{translate:6px 0;rotate:0deg;background:none;color:inherit;border:0}
+@media(max-width:760px){
+ html .hero .intro{width:auto;margin:auto 14px;padding:22px 8px}
+ html .hero .intro .titular{font-size:clamp(30px,10cqw,46px)}
+ html .hero .intro .bajada{font-size:clamp(16px,4.4vw,19px)}
+ html .hero .intro .acciones .btn{padding:14px 22px 15px}
+}
+@media(max-width:400px){html .hero .intro .acciones{flex-direction:column;align-items:stretch}html .hero .intro .acciones .btn{flex:none}}
+
+/* ============================================================
+   3. CURSOR AZUL REDONDO (js/cursor.js)
+   Un punto azul. Sobre links y botones se agranda; sobre proyectos se hace un círculo grande con texto.
+   ============================================================ */
+html.qa,html.qa *{cursor:none!important}
+.qa-cur{position:fixed;left:0;top:0;width:0;height:0;z-index:2147483000;pointer-events:none;opacity:0;transition:opacity .15s ease}
+.qa-cur.vis{opacity:1}
+.qa-dot{position:absolute;left:0;top:0;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--azul,#0b75f4);display:grid;place-items:center;transition:width .25s cubic-bezier(.2,.8,.2,1),height .25s cubic-bezier(.2,.8,.2,1),margin .25s cubic-bezier(.2,.8,.2,1),scale .15s}
+.qa-dot span{color:#fff;font:900 italic 17px/1 var(--fh,system-ui,sans-serif);opacity:0;transition:opacity .15s}
+.qa-cur.on .qa-dot{width:30px;height:30px;margin:-15px 0 0 -15px}
+.qa-cur.on.hay .qa-dot{width:88px;height:88px;margin:-44px 0 0 -44px}
+.qa-cur.hay .qa-dot span{opacity:1}
+.qa-cur.down .qa-dot{scale:.85}
+@media(prefers-reduced-motion:reduce){.qa-dot,.qa-dot span,.qa-cur{transition:none}}
+
+/* HERO: el texto va directo sobre la foto, sin halo oscuro detrás. La legibilidad la da una sombra suave en las letras. */
+html .hero .intro::before{content:none;display:none;background:none}
+html .hero .intro .titular{text-shadow:0 1px 2px rgba(2,8,22,.45),0 4px 28px rgba(2,8,22,.55)}
+html .hero .intro .bajada{text-shadow:0 1px 2px rgba(2,8,22,.5),0 2px 18px rgba(2,8,22,.55)}
+
+/* HERO: el bloque de texto baja y queda apoyado en la parte de abajo; arriba queda lugar para la estela de stickers */
+html .hero .intro{align-self:center;margin:auto auto clamp(26px,6vh,72px)}
+@media(max-width:760px){html .hero .intro{margin:auto 14px clamp(24px,5vh,48px)}}
+
+
+/* ============================================================
+   2. BOTÓN DE PDF (.b-peel): al pasar el mouse se despega una esquina
+   ============================================================ */
+html body .b-peel{position:relative;overflow:hidden;display:inline-block;text-align:center;font:900 italic 18px/1 var(--fh);color:var(--azul-f);background:var(--crema);border:0;padding:17px 34px;border-radius:12px;cursor:pointer;box-shadow:0 8px 16px rgba(0,0,0,.4);-webkit-tap-highlight-color:transparent;transition:opacity .2s,scale .2s}
+.b-peel::before,.b-peel::after{content:"";position:absolute;right:0;bottom:0;width:0;height:0;pointer-events:none;transition:width .3s,height .3s}
+.b-peel::before{background:linear-gradient(to left top,#02122e 50%,transparent 50%)}
+.b-peel::after{background:linear-gradient(to right bottom,#c9d6ee 50%,transparent 50%);filter:drop-shadow(-2px -2px 3px rgba(0,0,0,.3))}
+.b-peel:hover:not(:disabled)::before,.b-peel:hover:not(:disabled)::after,.b-peel:focus-visible::before,.b-peel:focus-visible::after{width:30px;height:30px}
+.b-peel:active:not(:disabled){scale:.97}
+.b-peel:disabled{opacity:.4;cursor:not-allowed}
+.b-peel:focus-visible{outline:3px solid var(--crema);outline-offset:3px}
+/* dentro de la tarjeta blanca de la calculadora: azul, para que se lea sobre el blanco */
+html body .cp-pdf .b-peel{display:block;width:100%;margin-top:10px;font-size:15px;line-height:1.15;padding:16px 14px;background:var(--azul-f);color:#fff;box-shadow:0 8px 16px rgba(6,33,77,.28)}
+.cp-pdf .b-peel:focus-visible{outline-color:var(--nav)}
+.cp-pdf .b-peel::after{background:linear-gradient(to right bottom,#b8cdf5 50%,transparent 50%)}
+
+/* ============================================================
+   3. BOTÓN ENVIAR CONSULTA (.b-env): se achica a un círculo y muestra un tilde
+   ============================================================ */
+html body .b-env{position:relative;display:grid;place-items:center;height:54px;width:190px;padding:0;font:900 italic 18px/1 var(--fh);color:var(--nav);background:var(--crema);border:0;border-radius:99px;box-shadow:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:width .4s cubic-bezier(.2,.8,.2,1),background .3s}
+.b-env span{white-space:nowrap;transition:opacity .2s}
+.b-env svg{position:absolute;width:26px;height:26px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:30;stroke-dashoffset:30}
+.b-env.go{width:54px;background:var(--azul);cursor:progress}
+.b-env.go span{opacity:0}
+.b-env.ok svg{stroke-dashoffset:0;transition:stroke-dashoffset .4s .1s}
+/* mientras se envía (antes del tilde): anillo girando */
+.b-env.go:not(.ok)::after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;animation:b-env-giro .8s linear infinite}
+@keyframes b-env-giro{to{rotate:360deg}}
+.b-env:active:not(.go){scale:.97}
+.b-env:focus-visible{outline:3px solid var(--crema);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.b-env,.b-env svg,.b-peel,.b-peel::before,.b-peel::after{transition:none!important}.b-env.go:not(.ok)::after{animation-duration:2s}}
+
+/* ============================================================
+   4. TODOS LOS BOTONES REDONDEADOS (pastilla), igual que la barra de navegación
+   Va al final a propósito: pisa los radios de arriba. Para volver a esquinas más rectas, cambiá 99px por 12px.
+   ============================================================ */
+html body .btn,html body .btn.claro,html body .btn.negro,html body .b-peel,html body .chip,html body .pills a,html body .enlaces a,
+html body .cp-mep-p,html body .br-op,html body .hp-otras a,html body .res-bajar,html body .cp-cli,html body .cp-borrar,
+html body .volver:not(.hp-vol .volver):not(.vol-wrap .volver),html body .hr-chips a,html body .dd-b-btn,html body .js .pf-nav button,
+html body .resultado-acc button,html body .fd-btn,
+html body .hero .intro .acciones .btn,html body .cp-pdf .btn{border-radius:99px}
+html body .primary,html body .play-again,html body .key{border-radius:99px!important}

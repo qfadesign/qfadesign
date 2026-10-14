@@ -2,10 +2,10 @@
 :root{--f:"articulat-cf",system-ui,sans-serif;--fh:"articulat-heavy-cf","articulat-cf",system-ui,sans-serif;--fp:"podium-soft-variable","articulat-cf",sans-serif;--azul:#0b75f4;--azul-f:#0a5cc0;--fondo:#0847a3;--nav:#06214d;--crema:#f9fbf2;--plato:0 1px 0 rgba(0,0,0,.22),0 6px 14px rgba(0,0,0,.28);--st-sombra:drop-shadow(0 1px 0 rgba(0,0,0,.3)) drop-shadow(0 4px 6px rgba(0,0,0,.38));--v-fondo:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06));--v-borde:rgba(255,255,255,.26);--v-blur:blur(14px) saturate(1.5);--v-luz:inset 0 1px 0 rgba(255,255,255,.48),inset 0 -1px 0 rgba(255,255,255,.07),0 8px 20px rgba(0,0,0,.16);--v-btn:inset 0 1px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(255,255,255,.25),0 10px 24px rgba(0,0,0,.22);--v-btn-azul:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(0,0,0,.14),0 10px 24px rgba(0,30,100,.4)}
 
 /* NAV: fija al scrollear, con efecto vidrio */
-html{scroll-padding-top:84px}
-nav{position:sticky;top:0;z-index:50;background:rgba(0,0,0,.55);backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid rgba(255,255,255,.2);box-shadow:0 8px 28px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.16);display:flex;justify-content:space-between;align-items:center;gap:10px 24px;padding:14px clamp(16px,2vw,28px)}
+html{scroll-padding-top:100px;overflow-x:clip}
+nav{--nav-sep:14px;position:sticky;top:var(--nav-sep);z-index:50;box-sizing:border-box;width:calc(100% - 2*clamp(12px,2vw,28px));max-width:1360px;margin:var(--nav-sep) auto 0;background:rgba(0,0,0,.22);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);border:1px solid rgba(255,255,255,.2);border-radius:99px;box-shadow:0 10px 30px rgba(0,0,0,.22);display:flex;justify-content:space-between;align-items:center;gap:10px 24px;padding:10px clamp(20px,2.4vw,34px)}
 nav img{height:30px;width:auto}
-nav ul{--fs:clamp(18.7px,1.5vw,22px);--k:1.22;align-items:center;display:flex;gap:clamp(14px,2.4vw,36px);list-style:none;padding:0;font-size:var(--fs);font-weight:300;font-style:italic}
+nav ul{margin:0;--fs:clamp(18.7px,1.5vw,22px);--k:1.22;align-items:center;display:flex;gap:clamp(14px,2.4vw,36px);list-style:none;padding:0;font-size:var(--fs);font-weight:300;font-style:italic}
 nav ul a{position:relative;isolation:isolate;display:inline-block;color:#fff;font-weight:300;-webkit-tap-highlight-color:transparent;transition:color .2s ease,font-weight .2s ease,text-shadow .3s ease,scale .25s ease,translate .25s ease}
 /* reserva el ancho de la versión bold para que el menú no se corra al pasar el mouse */
 nav ul a::after{content:attr(data-t);display:block;height:0;overflow:hidden;visibility:hidden;font-weight:700;pointer-events:none}
@@ -60,12 +60,12 @@ nav>a:first-child:focus-visible::before{opacity:1;scale:1;rotate:-1.5deg}
 .burger:active{scale:.92}
 .burger[aria-expanded=true]{background:var(--crema);color:var(--azul);rotate:3deg;transform:rotate(90deg)}
 @media(max-width:760px){
- html{scroll-padding-top:80px}
- nav{padding-block:9px}
+ html{scroll-padding-top:84px}
+ nav{--nav-sep:10px;padding:7px 10px 7px 20px}
  nav img{height:26px}
  .burger{display:block}
  /* MENÚ MÓVIL = hoja de stickers: panel de vidrio flotante y cada link es su sticker, apenas torcido, que se "pega" con rebote al abrir */
- nav ul{--fs:clamp(18px,5.4vw,24px);align-items:center;position:absolute;top:calc(100% + 10px);left:12px;right:12px;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:14px 14px;padding:30px 16px 32px;font-size:0;
+ nav ul{--fs:clamp(18px,5.4vw,24px);align-items:center;position:absolute;top:calc(100% + 10px);left:0;right:0;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:14px 14px;padding:30px 16px 32px;font-size:0;
   background:rgba(5,28,68,.88);-webkit-backdrop-filter:blur(26px) saturate(1.5);backdrop-filter:blur(26px) saturate(1.5);border:1px solid rgba(255,255,255,.2);border-radius:30px;
   box-shadow:0 24px 50px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.22);
   clip-path:inset(0 -40px 100% -40px);visibility:hidden;pointer-events:none;transition:clip-path .45s cubic-bezier(.65,0,.35,1),visibility 0s .45s}
@@ -121,6 +121,14 @@ footer{position:relative;z-index:1;background:none;color:#fff;overflow:hidden}
 .f-trazo{--g:radial-gradient(85vw 60vw at 50% -8%,rgba(40,205,255,.68),transparent 64%),radial-gradient(55vw 45vw at 104% 72%,rgba(2,30,100,.85),transparent 62%),radial-gradient(50vw 35vw at -5% 85%,rgba(60,140,255,.4),transparent 60%),linear-gradient(#0a5cc0,#0847a3)}
 .f-f1{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(235,40,55,.62),transparent 64%),radial-gradient(55vw 45vw at -5% 52%,rgba(2,25,90,.9),transparent 60%),radial-gradient(50vw 35vw at 92% 94%,rgba(70,160,255,.36),transparent 62%),linear-gradient(#a10f1c,#5a0710)}
 .f-e404{--g:radial-gradient(60vw 45vw at 50% 0%,rgba(120,190,255,.45),transparent 62%),radial-gradient(50vw 40vw at 0% 90%,rgba(3,40,120,.75),transparent 60%),linear-gradient(#0a5cc0,#0847a3)}
+
+/* FONDO DE CADA HERRAMIENTA: el color de su tarjeta en el índice. Mismo recurso que los proyectos del portfolio */
+.f-h-calculadora{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(37,209,142,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(37,209,142,.34),transparent 62%),linear-gradient(#0d6e55,#07493a)}
+.f-h-paletas{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(255,95,168,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(255,95,168,.34),transparent 62%),linear-gradient(#b02a6e,#7a1c4c)}
+.f-h-contraste{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(255,194,51,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(255,194,51,.34),transparent 62%),linear-gradient(#a8780a,#6b4a05)}
+.f-h-convertidor{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(40,205,255,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(40,205,255,.34),transparent 62%),linear-gradient(#0a5cc0,#0847a3)}
+.f-h-unidades{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(255,122,61,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(255,122,61,.34),transparent 62%),linear-gradient(#b4531f,#7d3512)}
+.f-h-brief{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(138,91,255,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(138,91,255,.34),transparent 62%),linear-gradient(#4a23b8,#2a1180)}
 
 /* TRANSICIÓN ENTRE PÁGINAS (js/anim.js): la barra queda quieta; el contenido de la página que se va se desvanece sobre su propio fondo
    (el degradé se apaga y el color base pasa al de la página nueva) y la página nueva aparece de a poco */

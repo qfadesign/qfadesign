@@ -2,6 +2,9 @@
 (()=>{
   const fine=matchMedia('(hover:hover) and (pointer:fine)').matches,still=matchMedia('(prefers-reduced-motion:reduce)').matches;
   const pg=document.querySelector('.pg'),row=pg&&pg.querySelector('.pg-row');
+  // frase de la banda: se subrayan las ideas clave al entrar en pantalla
+  const banda=document.querySelector('.banda');
+  if(banda){if(still||!('IntersectionObserver' in window))banda.classList.add('in');else new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){banda.classList.add('in');o.disconnect()}},{threshold:.45}).observe(banda)}
   if(row){
     const glow=document.createElement('div');glow.className='pg-glow';glow.setAttribute('aria-hidden','true');pg.prepend(glow);
     const sync=()=>{const on=row.querySelector('.pg-s.on');if(on)pg.style.setProperty('--tc',on.dataset.c)};

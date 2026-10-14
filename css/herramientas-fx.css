@@ -1,0 +1,7 @@
+/* HERRAMIENTAS: al pasar el mouse por una herramienta, el fondo se tiñe apenas con su color (igual que el portfolio, pero suave) */
+@property --tc{syntax:'<color>';inherits:true;initial-value:#0b75f4}
+.tinte{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s,--tc .5s ease;
+ background:radial-gradient(75vw 60vw at 88% 10%,color-mix(in srgb,var(--tc) 85%,transparent),transparent 68%),radial-gradient(60vw 45vw at 4% 96%,color-mix(in srgb,var(--tc) 45%,transparent),transparent 66%),linear-gradient(rgba(0,0,0,.88),rgba(0,0,0,.88))}
+.tinte.on{opacity:1}
+/* la barra NO se toca acá: es sticky con z-index 50 (shared.css). Si queda en z-index 1 igual que main, los títulos tapan el menú del celu */
+.f-herramientas main,.f-herramientas footer{position:relative;z-index:1}

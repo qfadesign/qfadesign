@@ -1,0 +1,40 @@
+/* FolderFloat (versión JS puro, sin React): una carpeta de la que flotan los proyectos como hojas.
+   Se usa en portfolio.html. Los tamaños se cambian acá (--w, --h, --pw, --ph); el resto (spread, lift, tilt...) son data-atributos del div. */
+.ff-sec{display:flex;flex-direction:column;align-items:center;padding:clamp(8px,2vw,24px) 0 clamp(8px,2vw,20px)}
+.ff{--w:320px;--h:232px;--pw:150px;--ph:196px;--r:14px;
+ --back:#0a5cc0;--front:#0b75f4;--paper:#f9fbf2;--paper-txt:#06214d;--label:#f9fbf2;
+ --rest:16;--flap:34;--dur:520ms;--stag:45;--drift:.5;--ease:cubic-bezier(.34,1.54,.64,1);
+ position:relative;width:var(--w);height:var(--h);margin:calc(var(--ph)*.5 + 14px) auto 0;perspective:1700px;-webkit-tap-highlight-color:transparent}
+.ff-back{position:absolute;inset:0;border-radius:var(--r);background:var(--back);box-shadow:0 22px 44px rgba(0,0,0,.45)}
+.ff-back::before{content:"";position:absolute;left:0;top:-13px;width:42%;height:26px;border-radius:var(--r) var(--r) 0 0;background:var(--back)}
+.ff-papers{position:absolute;inset:0;z-index:1;pointer-events:none}
+.ff.open .ff-papers{pointer-events:auto}
+.ff-paper{position:absolute;left:calc(50% - var(--pw)/2);bottom:10px;width:var(--pw);height:var(--ph);box-sizing:border-box;display:block;padding:8px;border-radius:10px;background:var(--paper);color:var(--paper-txt);text-decoration:none;box-shadow:0 8px 22px rgba(0,0,0,.35);transform-origin:50% 100%;z-index:var(--i);
+ transform:translate(0,0) rotate(0deg) scale(.94);transition:transform .28s ease,box-shadow .3s}
+.ff.open .ff-paper{transform:translate(var(--x),var(--y)) rotate(var(--rot)) scale(1);transition:transform var(--dur) var(--ease) calc(var(--i)*var(--stag)*1ms),box-shadow .3s}
+.ff.open .ff-paper:hover,.ff.open .ff-paper:focus-visible{transform:translate(var(--x),calc(var(--y) - 22px)) rotate(0deg) scale(1.07);z-index:40;transition:transform .3s var(--ease),box-shadow .3s;box-shadow:0 16px 32px rgba(0,0,0,.45);outline:none}
+.ff-paper:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
+.ff-in{display:block;height:100%}
+.ff.open .ff-in{animation:ff-drift var(--dd,5s) ease-in-out var(--dl,0s) infinite alternate}
+@keyframes ff-drift{to{translate:calc(var(--drift)*5px*var(--sx,1)) calc(var(--drift)*-7px);rotate:calc(var(--drift)*1.6deg*var(--sx,1))}}
+.ff-paper img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:6px;background:#dfe6f3}
+.ff-paper b{display:block;margin-top:8px;font:900 italic 16px/1.1 var(--fh);letter-spacing:-.01em}
+.ff-paper small{display:block;margin-top:3px;font:500 12px/1.25 var(--f);color:#4a5a75}
+.ff-front{position:absolute;left:0;right:0;bottom:0;height:78%;z-index:2;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;gap:2px;padding:0 20px 18px;border:0;border-radius:var(--r);background:var(--front);color:var(--label);text-align:left;cursor:pointer;
+ transform-origin:50% 100%;transform:rotateX(calc(var(--rest)*-1deg));transition:transform var(--dur) var(--ease);box-shadow:0 -4px 14px rgba(0,0,0,.18)}
+.ff.open .ff-front{transform:rotateX(calc(var(--flap)*-1deg))}
+.ff-front:focus-visible{outline:3px solid var(--paper);outline-offset:4px}
+.ff-label{font:900 italic clamp(22px,2.2vw,28px)/1 var(--fh)}
+.ff-sub{font:500 14px/1.2 var(--f);opacity:.8}
+.ff-hint{margin:22px 0 0;font:500 14px/1.3 var(--f);color:rgba(255,255,255,.7);text-align:center}
+/* sin JS: las hojas se ven como una lista de botones */
+.ff:not(.ff-ok){width:auto;height:auto;margin:0;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.ff:not(.ff-ok) a{padding:10px 18px;border-radius:99px;background:var(--paper);color:var(--paper-txt);font:900 italic 16px var(--fh);text-decoration:none}
+.ff:not(.ff-ok) img,.ff:not(.ff-ok) small{display:none}
+@media(max-width:600px){.ff{--w:250px;--h:182px;--pw:112px;--ph:150px}.ff-paper{padding:6px}.ff-paper b{font-size:13px;margin-top:6px}.ff-paper small{display:none}.ff-label{font-size:21px}.ff-sub{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.ff-front,.ff-paper{transition-duration:.01ms!important;transition-delay:0s!important}.ff.open .ff-in{animation:none}}
+
+/* más cerca del título (en la página de Portfolio también) */
+.f-portfolio .ph{margin-bottom:clamp(6px,1.2vw,14px)}
+/* celu: la carpeta se abre con el scroll, así que los movimientos los pone el JS cuadro a cuadro (sin transiciones) */
+.ff-scroll .ff-paper,.ff-scroll .ff-front{transition:none!important}

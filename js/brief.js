@@ -160,7 +160,7 @@
     });
     fr.appendChild(lista);
     var acc = el("div", "br-acc");
-    var bp = el("button", "btn negro", "Descargar brief en PDF"); bp.type = "button";
+    var bp = el("button", "b-peel", "Descargar brief en PDF"); bp.type = "button";
     var bm = el("button", "btn", "Enviármelo por mail"); bm.type = "button";
     var msg = el("p", "br-m"); msg.setAttribute("role", "status"); msg.setAttribute("aria-live", "polite");
     acc.appendChild(bp); acc.appendChild(bm);

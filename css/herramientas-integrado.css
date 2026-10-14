@@ -1,0 +1,116 @@
+/* HERRAMIENTAS INTEGRADAS
+   · mismo azul de la web en el índice y en cada herramienta; el color de cada una apenas asoma
+   · sin cajas grandes: el índice es una lista con líneas finas y cada herramienta se apoya directo sobre el fondo */
+
+/* 1. FONDO: igual que al pasar el mouse en el índice: negro con el color de cada herramienta */
+.f-h-calculadora{--tc:#25d18e}
+.f-h-paletas{--tc:#ff5fa8}
+.f-h-contraste{--tc:#ffc233}
+.f-h-convertidor{--tc:#28cdff}
+.f-h-unidades{--tc:#ff7a3d}
+.f-h-brief{--tc:#8a5bff}
+:is(.f-h-calculadora,.f-h-paletas,.f-h-contraste,.f-h-convertidor,.f-h-unidades,.f-h-brief){
+ --fondo:#000;
+ --g:radial-gradient(75vw 55vw at 92% 0%,color-mix(in srgb,var(--tc) 78%,transparent),transparent 66%),radial-gradient(60vw 45vw at 2% 100%,color-mix(in srgb,var(--tc) 40%,transparent),transparent 66%),linear-gradient(#050505,#000)}
+
+/* 2. ÍNDICE: lista en vez de tarjetas */
+body.f-herramientas .hgs-sq{display:block;max-width:1000px;margin:clamp(26px,3.4vw,44px) auto 0;border-top:1px solid rgba(255,255,255,.3)}
+body.f-herramientas .hgs-sq .tl{
+ display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;column-gap:clamp(14px,2.2vw,30px);
+ width:auto;aspect-ratio:auto;min-height:0;margin:0;
+ padding:clamp(18px,2.2vw,28px) clamp(2px,.8vw,10px);
+ border:0;border-bottom:1px solid rgba(255,255,255,.3);border-radius:0;
+ background:none;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none;
+ color:#fff;transform:none;
+ transition:padding-left .35s cubic-bezier(.2,.8,.2,1),background .35s,color .25s}
+body.f-herramientas .hgs-sq .tl::after{content:"→";order:4;font-family:var(--fh);font-weight:900;font-size:clamp(20px,2vw,28px);line-height:1;opacity:.45;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s}
+body.f-herramientas .hgs-sq .tl-top{display:contents}
+body.f-herramientas .hgs-sq .tl-ic{order:1;width:clamp(40px,3.8vw,50px);background:var(--c);border:1px solid rgba(255,255,255,.55);box-shadow:0 6px 18px color-mix(in srgb,var(--c) 45%,transparent);color:#06214d;rotate:0deg;transition:background .3s,border-color .3s,color .3s}
+body.f-herramientas .hgs-sq .tl-tx{order:2;min-width:0}
+body.f-herramientas .hgs-sq .tl-t{font-size:clamp(23px,2.9vw,38px);line-height:1.05;overflow-wrap:normal;hyphens:none}
+body.f-herramientas .hgs-sq .tl-d{display:block;overflow:visible;-webkit-line-clamp:unset;line-clamp:unset;max-width:54ch;margin-top:6px;font-size:clamp(14px,1.2vw,16px);line-height:1.4;opacity:.85}
+body.f-herramientas .hgs-sq .tl-tag{order:3;display:inline-flex;rotate:0deg;padding:0;background:none;box-shadow:none;border:0;color:rgba(255,255,255,.8);font-size:12px;letter-spacing:.06em;white-space:nowrap}
+body.f-herramientas .hgs-sq .tl-tag::before{background:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 35%,transparent);width:8px;height:8px}
+body.f-herramientas .hgs-sq .tl-links .tl-tag{display:none}
+/* hover y foco: se corre apenas hacia la derecha y aparece un velo de luz; nada de tarjeta crema */
+body.f-herramientas .hgs-sq .tl:hover,body.f-herramientas .hgs-sq .tl:focus-visible,body.f-herramientas .hgs-sq .tl.tl-on{
+ background:linear-gradient(90deg,color-mix(in srgb,var(--c) 22%,transparent),transparent 75%);color:#fff;box-shadow:none;transform:none;padding-left:clamp(12px,2vw,26px)}
+body.f-herramientas .hgs-sq .tl:hover::after,body.f-herramientas .hgs-sq .tl:focus-visible::after,body.f-herramientas .hgs-sq .tl.tl-on::after{transform:translateX(6px);opacity:1}
+body.f-herramientas .hgs-sq .tl:hover .tl-ic,body.f-herramientas .hgs-sq .tl:focus-visible .tl-ic,body.f-herramientas .hgs-sq .tl.tl-on .tl-ic{background:var(--c);border-color:#fff;color:#06214d;rotate:0deg}
+body.f-herramientas .hgs-sq .tl:hover .tl-tag,body.f-herramientas .hgs-sq .tl:focus-visible .tl-tag{background:none;color:#fff}
+body.f-herramientas .hgs-sq .tl:hover .tl-tag::before,body.f-herramientas .hgs-sq .tl:focus-visible .tl-tag::before{background:var(--c)}
+body.f-herramientas .hgs-sq .tl:focus-visible{outline:2px solid #fff;outline-offset:-2px}
+/* Links y recursos: misma fila, sin estilo aparte */
+body.f-herramientas .hgs-sq .tl.tl-links{grid-column:auto;flex-direction:row;border-radius:0;color:#fff;padding:clamp(18px,2.2vw,28px) clamp(2px,.8vw,10px)}
+body.f-herramientas .hgs-sq .tl.tl-links .tl-ic{background:rgba(255,255,255,.9);border-color:#fff;color:#06214d}
+body.f-herramientas .hgs-sq .tl.tl-links:hover,body.f-herramientas .hgs-sq .tl.tl-links:focus-visible{background:linear-gradient(90deg,rgba(255,255,255,.1),rgba(255,255,255,0) 75%);color:#fff}
+@media(max-width:640px){
+ body.f-herramientas .hgs-sq .tl{grid-template-columns:auto minmax(0,1fr);row-gap:8px;padding:16px 2px}
+ body.f-herramientas .hgs-sq .tl::after{display:none}
+ body.f-herramientas .hgs-sq .tl-ic{grid-column:1;grid-row:1/span 2;align-self:start;width:40px}
+ body.f-herramientas .hgs-sq .tl-tx{grid-column:2;grid-row:1}
+ body.f-herramientas .hgs-sq .tl-tag{grid-column:2;grid-row:2;justify-self:start;display:inline-flex}
+ body.f-herramientas .hgs-sq .tl-t{font-size:clamp(20px,6vw,25px)}
+ body.f-herramientas .hgs-sq .tl-d{font-size:13.5px}
+ body.f-herramientas .hgs-sq .tl:hover,body.f-herramientas .hgs-sq .tl.tl-on{padding-left:2px}
+}
+@media(prefers-reduced-motion:reduce){body.f-herramientas .hgs-sq .tl,body.f-herramientas .hgs-sq .tl::after{transition:none}}
+
+/* 3. CADA HERRAMIENTA: sin panel azul grande, apoyada directo sobre el fondo */
+.f-herramientas .md.md-pg{background:none;border:0;box-shadow:none;border-radius:0;margin-top:clamp(18px,2.4vw,30px)}
+.f-herramientas .md-pg .md-b{border-radius:0;padding-top:clamp(6px,1vw,12px)}
+.f-herramientas .md-pg .md-b>div{padding-left:0;padding-right:0}
+
+/* calculadora: categorías como filas con línea fina */
+.f-herramientas .cp-cat,.f-herramientas .cp-fuentes{background:none;border:0;border-top:1px solid rgba(255,255,255,.3);border-radius:0;margin-bottom:0}
+.f-herramientas .cp-cat:last-of-type{border-bottom:1px solid rgba(255,255,255,.3)}
+.f-herramientas .cp-fuentes{border-bottom:1px solid rgba(255,255,255,.3);margin-top:clamp(18px,2vw,26px)}
+.f-herramientas .cp-ch,.f-herramientas .cp-fuentes summary{padding-left:2px;padding-right:2px}
+.f-herramientas .cp-row{padding-left:2px;padding-right:2px}
+.f-herramientas .cp-cli{background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:16px}
+.f-herramientas .cp-cli.on{background:rgba(255,255,255,.16);color:#fff;box-shadow:inset 0 0 0 1.5px #fff}
+
+/* resumen de la calculadora y resultado del contraste: texto blanco con una línea a la izquierda, sin tarjeta blanca */
+.f-herramientas :is(.cp-res,.ct-res){background:none;box-shadow:none;border-radius:0;color:#fff;padding:0 0 0 clamp(16px,2vw,28px);border-left:1px solid rgba(255,255,255,.35)}
+.f-herramientas :is(.cp-res,.ct-res) :is(h4,.cp-tt,.ct-ratio,.cp-m b,.cp-tu,.ct-sug h4){color:#fff}
+.f-herramientas :is(.cp-vacio,.cp-m small,.cp-tot small,.cp-nota,.cp-pdf label,.cp-pdf-m,.ct-top small,.ct-chk small,.ct-nota,.ct-sug p,.ct-op-t){color:rgba(255,255,255,.8)}
+.f-herramientas .ct-op-t b,.f-herramientas .ct-op-u{color:#fff}
+.f-herramientas :is(.cp-lin,.cp-pdf){border-color:rgba(255,255,255,.28)}
+.f-herramientas .ct-chk li,.f-herramientas .ct-sug{border-top-color:rgba(255,255,255,.28)}
+.f-herramientas .ct-op{background:none;border-color:rgba(255,255,255,.4)}
+.f-herramientas .ct-op:hover{background:rgba(255,255,255,.12);border-color:#fff}
+.f-herramientas .cp-borrar{background:none;border-color:rgba(255,255,255,.5);color:#fff}
+.f-herramientas .cp-borrar:hover:not(:disabled){background:#fff;border-color:#fff;color:var(--azul-f)}
+.f-herramientas .cp-pdf .btn{background:#fff;color:var(--azul-f)}
+.f-herramientas .cp-pdf .btn::after{background:var(--crema)}
+.f-herramientas .ct-prev{box-shadow:none;border-radius:18px}
+
+/* brief: la explicación sin caja */
+.f-herramientas .br-que{background:none;border:0;border-top:1px solid rgba(255,255,255,.35);border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:clamp(16px,2vw,24px) 0 0}
+
+/* conversor: resultados como columnas con línea, sin tarjetas blancas */
+.f-herramientas .un-card{background:none;color:#fff;box-shadow:none;border-radius:0;border-top:1px solid rgba(255,255,255,.4);padding:12px 2px}
+.f-herramientas .un-card:hover{background:rgba(255,255,255,.08);transform:none}
+.f-herramientas .un-card small{color:rgba(255,255,255,.8)}
+.f-herramientas .un-card.ok small{color:#b8f5cf}
+.f-herramientas .un-frase{background:none;padding:10px 0;border-radius:0;border-top:1px solid rgba(255,255,255,.28)}
+
+/* paletas y convertidor: zona de carga liviana, filas de archivos sin tarjeta blanca */
+.f-herramientas :is(.pl-drop,.cv-drop){background:none;box-shadow:none;border-radius:20px;border:1.5px dashed rgba(255,255,255,.55)}
+.f-herramientas :is(.pl-drop,.cv-drop):hover,.f-herramientas :is(.pl-drop,.cv-drop).over{background:rgba(255,255,255,.12);color:#fff;border-color:#fff}
+.f-herramientas .pl-prev{background:none;border-radius:18px}
+.f-herramientas .cv-it{background:none;color:#fff;box-shadow:none;border-radius:0;border-bottom:1px solid rgba(255,255,255,.28);padding:10px 2px}
+.f-herramientas .cv-it.err{background:none}
+.f-herramientas .cv-it .cv-m,.f-herramientas .cv-m .igual{color:rgba(255,255,255,.8)}
+.f-herramientas .cv-m b{color:#b8f5cf}
+.f-herramientas .cv-m b.mas,.f-herramientas .cv-it.err .cv-m{color:#ffc7c7}
+.f-herramientas .cv-x{border-color:rgba(255,255,255,.45);color:#fff}
+.f-herramientas .cv-x:hover{background:#fff;color:#7a1b1b}
+.f-herramientas .cv-d{background:#fff;color:var(--azul-f)}
+.f-herramientas .cv-d:hover{background:var(--crema);color:var(--nav)}
+
+/* ajustes: sin el recuadro, todo se alinea con el título */
+.f-herramientas :is(.un,.cv,.br,.ct,.cp,.pl){padding-left:0;padding-right:0}
+.f-herramientas .un-n{color:#fff}
+.f-herramientas .br{margin-inline:0}
+.f-herramientas :is(.un,.cv){margin-left:0;margin-right:0}

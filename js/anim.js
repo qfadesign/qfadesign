@@ -5,8 +5,8 @@ document.documentElement.classList.add('js');
   const root=document.documentElement;
   if(self!==top||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
   const OSCURAS=['','index','portfolio','jueguitos','ahorcado','adivina-el-color','adivina-la-tipografia']; // fondo base negro
-  const AZULES=['acerca','herramientas','contacto','404','proyecto-arbol','proyecto-bleko','proyecto-dulcemente','proyecto-miga','proyecto-ros','proyecto-trazo','proyecto-f1']; // fondo base azul
-  const PJB={'proyecto-bleko':'#82301b','proyecto-dulcemente':'#7a1c40','proyecto-ros':'#14073d','proyecto-f1':'#5a0710'}; // fondo de cada proyecto mientras cambia la página
+  const AZULES=['acerca','herramientas','contacto','404','proyecto-arbol','proyecto-bleko','proyecto-dulcemente','proyecto-miga','proyecto-ros','proyecto-trazo','proyecto-f1','calculadora-de-precios','generador-de-paletas','contraste-de-color','convertidor-de-imagenes','conversor-de-unidades','brief']; // fondo base azul
+  const PJB={'proyecto-bleko':'#82301b','proyecto-dulcemente':'#7a1c40','proyecto-ros':'#14073d','proyecto-f1':'#5a0710','calculadora-de-precios':'#07493a','generador-de-paletas':'#7a1c4c','contraste-de-color':'#6b4a05','conversor-de-unidades':'#7d3512','brief':'#2a1180'}; // fondo de cada proyecto mientras cambia la página
   const seg=p=>p.replace(/\/+$/,'').split('/').pop().replace(/\.html$/,'');
   const flag=(k,v)=>{try{v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){}};
 
@@ -52,8 +52,10 @@ document.documentElement.classList.add('js');
     const po=pj&&pj.s===seg(location.pathname)?pjCartel(pj):null;
     if(po){root.classList.add('qst-in');root.style.background=PJB[pj.s]||'#0847a3'} // el mismo sticker grande que quedó en el centro de la página anterior
     if(el){root.classList.add('qst-in');root.style.background=st.o?'#000':'#0847a3'}
+    const hb=!po&&!el&&PJB[seg(location.pathname)]; // herramienta: entra desde el color de su tarjeta
+    if(hb)root.style.background=hb;
     let listo=false;
-    const abrir=()=>{if(listo)return;listo=true;if(el)volar(el);if(po)volarPj(po);root.classList.remove('t-in','t-wait')};
+    const abrir=()=>{if(listo)return;listo=true;if(el)volar(el);if(po)volarPj(po);if(hb)setTimeout(()=>{root.style.background=''},700);root.classList.remove('t-in','t-wait')};
     addEventListener('DOMContentLoaded',()=>{
       Promise.race([document.fonts?document.fonts.ready:0,new Promise(r=>setTimeout(r,600))]).then(()=>requestAnimationFrame(abrir));
     });
@@ -77,12 +79,12 @@ document.documentElement.classList.add('js');
     if(document.body)document.body.style.setProperty('--fondo',oscura?'#000':(PJB[s]||'#0847a3'));
     flag('qfa-t','1');
     let espera=320;
-    const pjc=a.closest('.pj,.pg-s'),pim=pjc&&pjc.querySelector('img'),pr=pim&&pjc.getBoundingClientRect();
+    const pjc=a.closest('.pj,.pg-s,.ff-paper'),pim=pjc&&pjc.querySelector('img'),hoja=pjc&&pjc.classList.contains('ff-paper'),pr=pim&&(hoja?pim:pjc).getBoundingClientRect(),rad=hoja?'6px':'28px';
     if(pr&&pr.width>60&&root.animate){ // tarjeta del portfolio: la imagen se agranda hasta ocupar la pantalla
       const u=pim.currentSrc||pim.src,p=getComputedStyle(pim).objectPosition,o=document.createElement('div');
-      o.className='qpj';o.style.cssText='left:'+pr.left+'px;top:'+pr.top+'px;width:'+pr.width+'px;height:'+pr.height+'px;border-radius:28px;background-image:url('+u+');background-position:'+p;
+      o.className='qpj';o.style.cssText='left:'+pr.left+'px;top:'+pr.top+'px;width:'+pr.width+'px;height:'+pr.height+'px;border-radius:'+rad+';background-image:url('+u+');background-position:'+p;
       root.appendChild(o);
-      o.animate([{left:pr.left+'px',top:pr.top+'px',width:pr.width+'px',height:pr.height+'px',borderRadius:'28px'},{left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px'}],{duration:520,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'});
+      o.animate([{left:pr.left+'px',top:pr.top+'px',width:pr.width+'px',height:pr.height+'px',borderRadius:rad},{left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px'}],{duration:520,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'});
       flag('qfa-pj',JSON.stringify({s,u,p}));espera=560;
     }
     const k=STK[s];
@@ -103,7 +105,7 @@ document.documentElement.classList.add('js');
   // volver con el botón "atrás" (página guardada en memoria): devolver la página a su estado normal
   addEventListener('pageshow',e=>{if(e.persisted){root.classList.remove('sale','t-in','t-wait','qst-in');root.style.background='';document.querySelectorAll('.qst,.qpj').forEach(n=>n.remove());flag('qfa-st',null);if(document.body)document.body.style.removeProperty('--fondo');flag('qfa-t',null)}});
 })();
-addEventListener('DOMContentLoaded',()=>{const n=document.querySelector('nav');if(!n)return;const set=()=>document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');set();new ResizeObserver(set).observe(n)});
+addEventListener('DOMContentLoaded',()=>{const n=document.querySelector('nav');if(!n)return;const set=()=>document.documentElement.style.setProperty('--navh',(n.offsetHeight+(parseFloat(getComputedStyle(n).marginTop)||0))+'px');set();new ResizeObserver(set).observe(n)});
 addEventListener('DOMContentLoaded',()=>{
   const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
   // orden escalonado
@@ -118,7 +120,7 @@ addEventListener('DOMContentLoaded',()=>{
     else io.observe(el);
   });
   // textos de la home (menos el hero): se ven de entrada con poca opacidad y, al scrollear, se van poniendo blancos letra por letra
-  const tw=[...document.querySelectorAll('.sobre .txt>*,.lema,.ayuda h3,.ayuda p,.hr-home p')];
+  const tw=[...document.querySelectorAll('.sobre .txt>*,.lema,.banda p,.ayuda h3,.ayuda p,.hr-home p')];
   if(tw.length){
     const partir=(nodo,out)=>{
       [...nodo.childNodes].forEach(n=>{

@@ -9,7 +9,6 @@
   if (!form) return;
   const aviso = document.getElementById('aviso');
   const boton = form.querySelector('button[type=submit]');
-  const textoBoton = boton.textContent;
   let enviando = false;
 
   const decir = (txt, tipo) => {
@@ -47,8 +46,9 @@
     if (mal) { decir(mal[2], 'err'); mal[0].focus(); return; }
 
     enviando = true;
-    boton.disabled = true;
-    boton.textContent = 'Enviando…';
+    let exito = false;
+    boton.classList.add('go');            // el botón se achica a un círculo
+    boton.setAttribute('aria-busy', 'true');
     decir('Enviando tu consulta…');
 
     const ctrl = new AbortController();
@@ -73,6 +73,7 @@
       if (r.ok && (data.ok === true || String(data.success) === 'true')) {
         form.reset();
         campos.forEach(([c]) => c.removeAttribute('aria-invalid'));
+        exito = true;
         decir('¡Listo! Recibí tu consulta y te respondo por mail lo antes posible.', 'ok');
       } else {
         planB('No pude enviar la consulta desde acá.');
@@ -81,9 +82,14 @@
       planB('No pude enviar la consulta, revisá tu conexión.');
     } finally {
       clearTimeout(corte);
-      enviando = false;
-      boton.disabled = false;
-      boton.textContent = textoBoton;
+      boton.removeAttribute('aria-busy');
+      if (exito) {
+        boton.classList.add('ok');         // aparece el tilde y, a los 2,4 s, vuelve a ser botón
+        setTimeout(() => { boton.classList.remove('go', 'ok'); enviando = false; }, 2400);
+      } else {
+        boton.classList.remove('go', 'ok');
+        enviando = false;
+      }
     }
   });
 })();

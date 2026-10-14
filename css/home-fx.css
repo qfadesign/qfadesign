@@ -1,11 +1,10 @@
 /* HOME: efectos nuevos (brillo por marca en el portfolio, sobre mí, banda de color, Herramientas/Jueguitos con imágenes, servicios) */
 @property --tc{syntax:'<color>';inherits:true;initial-value:#0b75f4}
 .pg{position:relative}
-.pg-glow{position:absolute;inset:-8% -4%;z-index:0;pointer-events:none;background:radial-gradient(55% 60% at 50% 45%,var(--tc),transparent 72%);opacity:.5;transition:--tc .8s ease}
+.pg-glow{position:absolute;inset:-8% 0;z-index:0;pointer-events:none;background:radial-gradient(55% 60% at 50% 45%,var(--tc),transparent 72%);opacity:.5;transition:--tc .8s ease}
 .pg-wrap{position:relative;z-index:1}
 .pg-cap b{display:block;line-height:0}
 .pg-logo{display:block;height:clamp(54px,6.5vw,84px);width:auto;max-width:78vw}
-html.qc .pg-s{cursor:none}
 /* sobre mí */
 .sobre .txt p{font-size:clamp(16px,1.35vw,19px)!important;line-height:1.5}
 .js .tw-c{opacity:.5}
@@ -16,7 +15,6 @@ html.qc .pg-s{cursor:none}
 /* banda de color */
 .banda{margin:clamp(40px,6vw,90px) 0;padding:clamp(54px,8vw,120px) clamp(20px,6vw,80px);text-align:center;color:#fff;background:radial-gradient(60vw 40vw at 90% 0,rgba(120,190,255,.55),transparent 62%),linear-gradient(#0b75f4,#0a5cc0)}
 .banda p{max-width:21ch;margin:0 auto;font:900 italic clamp(32px,6vw,84px)/1 var(--fh);letter-spacing:-.02em}
-.banda span{display:inline-block;margin-top:clamp(18px,2.4vw,30px);padding:8px 18px 9px;border-radius:99px;background:var(--crema);color:var(--azul-f);font:900 italic 15px var(--fh);rotate:-2deg}
 /* Herramientas + Jueguitos lado a lado, con imagen */
 .hj{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.4vw,32px);max-width:1240px;margin:0 auto clamp(44px,6vw,84px);padding:0 clamp(12px,3vw,32px)}
 .oscuro .hj .hr-home{width:auto;max-width:none;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -49,7 +47,6 @@ html.qc .pg-s{cursor:none}
 .banda{position:relative;isolation:isolate;background:none;padding:clamp(40px,5.5vw,76px) clamp(20px,6vw,80px);margin:clamp(24px,4vw,56px) 0}
 .banda::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(60vw 40vw at 90% 0,rgba(120,190,255,.45),transparent 62%),linear-gradient(#0b75f4,#0a5cc0);-webkit-mask-image:linear-gradient(transparent,#000 32%,#000 68%,transparent);mask-image:linear-gradient(transparent,#000 32%,#000 68%,transparent);opacity:.92}
 .banda p{font-size:clamp(26px,4.2vw,58px)}
-.banda span{margin-top:clamp(12px,1.6vw,20px);padding:0;background:none;color:inherit;rotate:0deg;opacity:.8;font-size:14px;letter-spacing:.04em}
 .ayuda.sv-sec{max-width:1100px;padding:clamp(26px,3.6vw,48px) clamp(20px,4vw,56px)}
 .sv-sec h3{font-size:clamp(24px,2.8vw,36px)}
 .sv-sec .sv-sub{font-size:clamp(15px,1.4vw,18px);margin:6px 0 clamp(14px,2vw,24px)}
@@ -73,3 +70,94 @@ html.qc .pg-s{cursor:none}
 .lf img{max-width:none;position:absolute;left:0;top:0;width:clamp(150px,15vw,220px);aspect-ratio:4/3;object-fit:cover;border-radius:16px;border:1px solid rgba(255,255,255,.35);box-shadow:0 22px 50px rgba(0,0,0,.5);margin:calc(clamp(150px,15vw,220px)*-.375) 0 0 calc(clamp(150px,15vw,220px)*-.5);opacity:0;translate:calc(var(--dx)*.4) 14px;scale:.6;rotate:var(--r);transition:opacity .25s,translate .45s cubic-bezier(.2,.8,.2,1),scale .45s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d)}
 .lf.on img{opacity:1;translate:calc(var(--dx)*1) 0;scale:1}
 .lf.uno img{width:clamp(220px,22vw,320px);margin:calc(clamp(220px,22vw,320px)*-.375) 0 0 calc(clamp(220px,22vw,320px)*-.5)}
+
+/* ===== HERO: botones y detalles de diseño (solo estética, el texto no cambia) ===== */
+.hero .intro::before{background:radial-gradient(55% 55% at 78% 28%,rgba(11,117,244,.3),transparent 70%),radial-gradient(closest-side,rgba(2,8,22,.74),rgba(2,8,22,.5) 62%,rgba(2,8,22,.18) 86%,rgba(2,8,22,0) 100%)}
+
+/* marcas de corte en las esquinas, como en un archivo de imprenta */
+.hero .intro::after{content:"";position:absolute;inset:-4px;pointer-events:none;--m:rgba(255,255,255,.75);
+ background:linear-gradient(var(--m),var(--m)) 0 0/18px 1.5px,linear-gradient(var(--m),var(--m)) 0 0/1.5px 18px,
+  linear-gradient(var(--m),var(--m)) 100% 0/18px 1.5px,linear-gradient(var(--m),var(--m)) 100% 0/1.5px 18px,
+  linear-gradient(var(--m),var(--m)) 0 100%/18px 1.5px,linear-gradient(var(--m),var(--m)) 0 100%/1.5px 18px,
+  linear-gradient(var(--m),var(--m)) 100% 100%/18px 1.5px,linear-gradient(var(--m),var(--m)) 100% 100%/1.5px 18px;
+ background-repeat:no-repeat;animation:hero-marcas 1s cubic-bezier(.2,.8,.2,1) calc(var(--d0,.35s) + 1.2s) both}
+
+/* regla de diseñador con un punto azul */
+.hero .intro .regla{display:block;position:relative;flex:none;width:min(240px,70%);height:16px;margin-bottom:-2px;transform-origin:left center;
+ background:repeating-linear-gradient(90deg,rgba(255,255,255,.85) 0 1.5px,transparent 1.5px 40px) left bottom/100% 16px no-repeat,
+  repeating-linear-gradient(90deg,rgba(255,255,255,.5) 0 1px,transparent 1px 8px) left bottom/100% 7px no-repeat,
+  linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.5)) left bottom/100% 1px no-repeat;
+ -webkit-mask-image:linear-gradient(90deg,#000 72%,transparent);mask-image:linear-gradient(90deg,#000 72%,transparent);
+ animation:hero-reg 1s cubic-bezier(.2,.8,.2,1) calc(var(--d0,.35s) + .7s) both}
+.hero .intro .regla::after{content:"";position:absolute;left:46%;bottom:-4px;width:9px;height:9px;border-radius:50%;background:#0b75f4;box-shadow:0 0 0 3px rgba(11,117,244,.35),0 0 18px 4px rgba(11,117,244,.85)}
+
+/* estrella-sticker que gira despacio */
+.hero .intro .estrella{position:absolute;top:clamp(-30px,-2.4vw,-18px);right:clamp(2px,1vw,14px);width:clamp(40px,4.4vw,62px);height:auto;z-index:2;pointer-events:none;filter:drop-shadow(0 4px 10px rgba(0,0,0,.45));
+ animation:hero-estrella 18s linear infinite,hero-aparece .8s cubic-bezier(.34,1.56,.64,1) calc(var(--d0,.35s) + 1.3s) both}
+
+/* subrayado resaltador en azul de marca */
+.hero .intro .titular .sub{padding:0 .06em;-webkit-box-decoration-break:clone;box-decoration-break:clone;
+ background:linear-gradient(transparent 60%,rgba(11,117,244,.92) 60%,rgba(11,117,244,.92) 90%,transparent 90%) 0 0/0% 100% no-repeat;
+ animation:hero-sub 1s cubic-bezier(.2,.8,.2,1) calc(var(--d0,.35s) + 1.5s) forwards}
+
+/* botones */
+.hero .intro .acciones{gap:12px}
+.hero .intro .acciones .btn{justify-content:space-between;gap:1.1em;padding:8px 9px 8px clamp(20px,2.2vw,28px);border-radius:99px;font-size:clamp(15px,1.25vw,18px)}
+.hero .intro .acciones .btn:not(.claro){background:linear-gradient(180deg,#3b93ff 0%,#0b75f4 55%,#0a5cc0 100%);color:#fff;border:1px solid rgba(255,255,255,.55);text-shadow:0 1px 0 rgba(6,33,77,.35);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.65),inset 0 -2px 0 rgba(6,33,77,.25),0 10px 28px rgba(11,117,244,.55),0 2px 0 rgba(0,0,0,.25)}
+.hero .intro .acciones .btn:not(.claro)::after{background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);translate:-130% 0;transition:none;animation:hero-brillo 4.4s ease-in-out 2.8s infinite}
+.hero .intro .acciones .btn:not(.claro):hover,.hero .intro .acciones .btn:not(.claro):focus-visible{color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 -2px 0 rgba(6,33,77,.25),0 14px 36px rgba(11,117,244,.75),0 2px 0 rgba(0,0,0,.25)}
+.hero .intro .acciones .btn:not(.claro):hover::after,.hero .intro .acciones .btn:not(.claro):focus-visible::after{translate:-130% 0;animation:hero-brillo2 .8s ease both}
+.hero .intro .acciones .btn.claro{background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06));color:#fff;border:1px solid rgba(255,255,255,.5);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 8px 22px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(14px) saturate(1.5);backdrop-filter:blur(14px) saturate(1.5)}
+.hero .intro .acciones .btn.claro:hover,.hero .intro .acciones .btn.claro:focus-visible{color:var(--azul-f)}
+
+/* flecha dentro de un círculo que gira al pasar el mouse */
+.hero .intro .acciones .btn .fl{flex:none;width:clamp(30px,2.5vw,36px);height:clamp(30px,2.5vw,36px);border-radius:50%;display:grid;place-items:center;font-size:clamp(15px,1.3vw,18px);line-height:1;font-style:normal;text-shadow:none;
+ background:var(--crema);color:var(--azul-f);border:0;box-shadow:0 2px 6px rgba(0,0,0,.28);transition:rotate .4s cubic-bezier(.34,1.56,.64,1),background .25s,color .25s}
+.hero .intro .acciones .btn.claro .fl{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.45);box-shadow:none}
+.hero .intro .acciones .btn:hover .fl,.hero .intro .acciones .btn:focus-visible .fl{translate:0 0;rotate:-45deg}
+.hero .intro .acciones .btn.claro:hover .fl,.hero .intro .acciones .btn.claro:focus-visible .fl{background:var(--azul-f);color:#fff;border-color:transparent}
+
+@keyframes hero-brillo{0%,55%{translate:-130% 0}100%{translate:130% 0}}
+@keyframes hero-brillo2{from{translate:-130% 0}to{translate:130% 0}}
+@keyframes hero-sub{to{background-size:100% 100%}}
+@keyframes hero-reg{from{scale:0 1;opacity:0}to{scale:1 1;opacity:1}}
+@keyframes hero-marcas{from{opacity:0;scale:1.08}to{opacity:1;scale:1}}
+@keyframes hero-estrella{to{rotate:360deg}}
+@keyframes hero-aparece{from{opacity:0;scale:.2}to{opacity:1;scale:1}}
+
+@media(max-width:520px){
+ .hero .intro .acciones .btn{padding:7px 8px 7px 16px;font-size:13px;gap:.5em}
+ .hero .intro .acciones .btn .fl{width:26px;height:26px;font-size:14px}
+ .hero .intro .estrella{width:38px}
+}
+@media(max-width:400px){.hero .intro .acciones{flex-direction:column}.hero .intro .acciones .btn{flex:none;font-size:15px}}
+@media(prefers-reduced-motion:reduce){
+ .hero .intro .estrella,.hero .intro .acciones .btn:not(.claro)::after{animation:none}
+ .hero .intro .titular .sub{animation:none;background-size:100% 100%}
+}
+
+/* ===== PORTFOLIO de la home: la misma carpeta que en la página de Portfolio ===== */
+.trabajos.pg .pg-wrap{gap:clamp(10px,1.6vw,20px)}
+.pg-lead{margin:0;max-width:34ch;text-align:center;font-size:clamp(17px,1.7vw,22px);line-height:1.3;color:rgba(255,255,255,.78)}
+.trabajos.pg .ff-sec{width:100%;padding:0}
+
+/* ===== FRASE "Diseñar es...": parte del flujo de la página, no un bloque pegado ===== */
+.banda{padding:clamp(60px,7.5vw,112px) clamp(20px,6vw,80px);margin:clamp(8px,2vw,28px) 0 clamp(20px,3vw,44px)}
+/* sin rectángulo: un resplandor azul que se funde con el negro por todos lados */
+.banda::before{background:radial-gradient(ellipse 62% 58% at 50% 50%,rgba(11,117,244,.6),rgba(10,92,192,.32) 55%,transparent 80%),radial-gradient(38vw 24vw at 90% 6%,rgba(120,190,255,.26),transparent 70%);-webkit-mask-image:none;mask-image:none;opacity:1}
+.banda p{max-width:19ch;font-size:clamp(30px,5vw,70px);line-height:1.03}
+/* las tres ideas clave, subrayadas con el mismo gesto del resaltador del inicio */
+.banda mark{color:inherit;padding:0 .04em;background:linear-gradient(var(--crema),var(--crema)) 0 94%/100% .085em no-repeat;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.js .banda mark{background-size:0% .085em;transition:background-size .9s cubic-bezier(.2,.8,.2,1)}
+.js .banda.in mark{background-size:100% .085em}
+.js .banda.in mark:nth-of-type(1){transition-delay:.5s}.js .banda.in mark:nth-of-type(2){transition-delay:.95s}.js .banda.in mark:nth-of-type(3){transition-delay:1.4s}
+/* firma: la marca entre dos filetes */
+.banda-firma{display:flex;align-items:center;justify-content:center;gap:clamp(12px,2vw,24px);margin-top:clamp(22px,3vw,40px)}
+.banda-firma i{flex:0 1 clamp(40px,9vw,120px);height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7))}
+.banda-firma i:last-child{background:linear-gradient(270deg,transparent,rgba(255,255,255,.7))}
+.banda-firma img{height:clamp(20px,2.2vw,30px);width:auto}
+.js .banda-firma{opacity:0;translate:0 10px;transition:opacity .8s 1.7s,translate .8s 1.7s cubic-bezier(.2,.8,.2,1)}
+.js .banda.in .banda-firma{opacity:1;translate:0 0}
+@media(prefers-reduced-motion:reduce){.js .banda mark,.js .banda-firma{transition:none}}

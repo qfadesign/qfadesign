@@ -24,12 +24,6 @@ h1.st-h1{line-height:0;letter-spacing:0;animation:none}
 .hueco{color:transparent;-webkit-text-stroke:clamp(1.5px,.32vw,4px) #fff}
 .lead{font-size:clamp(18px,1.9vw,26px);max-width:620px;margin-top:clamp(16px,2.2vw,28px)}
 
-/* cinta inclinada */
-.tira{position:relative;z-index:2;margin:clamp(34px,5vw,72px) -6vw;transform:rotate(-2deg);background:#fff;color:var(--azul-f);overflow:hidden;white-space:nowrap;padding:12px 0;box-shadow:0 12px 30px rgba(0,0,0,.22)}
-.tira div{display:inline-block;animation:mover 30s linear infinite;font-weight:900;font-style:italic;font-size:clamp(20px,2.4vw,30px);font-family:var(--fh)}
-.tira span{margin:0 .6em}
-@keyframes mover{to{transform:translateX(-50%)}}
-
 /* vidrio */
 .vid{padding:clamp(20px,2.6vw,32px);border-radius:28px;background:rgba(255,255,255,.13);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.42);box-shadow:0 20px 50px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.45)}
 h2{font-weight:900;font-style:italic;line-height:1;font-family:var(--fh)}
@@ -127,7 +121,7 @@ h2{font-weight:900;font-style:italic;line-height:1;font-family:var(--fh)}
  .pjs{grid-template-columns:1fr;grid-auto-rows:clamp(220px,62vw,300px)}
  .pj,.pj.w,.pjs.f .pj,.pjs.f .pj.solo{grid-column:auto}
 }
-@media(prefers-reduced-motion:reduce){.tira div{animation:none}html{scroll-behavior:auto}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 /* PÁGINA DE PROYECTO */
 .volver{display:inline-block;font-weight:900;font-style:italic;font-size:clamp(15px,1.4vw,18px);padding:10px 20px;border-radius:99px;border:1px solid var(--v-borde);background-image:var(--v-fondo);-webkit-backdrop-filter:var(--v-blur);backdrop-filter:var(--v-blur);box-shadow:var(--v-luz);transition:background .2s,color .2s;font-family:var(--fh)}
@@ -733,10 +727,10 @@ html:has(.f-herramientas){scrollbar-gutter:stable}
 .br-res-vacio{opacity:.6;font-style:italic}
 .br-ed{position:absolute;right:0;top:10px;font-size:14px}
 .br-acc{display:flex;flex-wrap:wrap;gap:12px}
-.br-acc .btn:disabled{opacity:.55;cursor:wait}
+.br-acc .btn:disabled,.br-acc .b-peel:disabled{opacity:.55;cursor:wait}
 .br-m{margin:12px 0 0;min-height:1.4em;font-size:14.5px}
 .br-link{display:inline-block;margin-top:14px;font-size:14px}
-@media(max-width:600px){.br{padding-inline:16px}.br-nav .btn,.br-acc .btn{flex:1 1 100%}.br-nav .br-sig{margin-left:0}.br-nav{flex-wrap:wrap}.br-atras{order:2;margin:0 auto}}
+@media(max-width:600px){.br{padding-inline:16px}.br-nav .btn,.br-acc .btn,.br-acc .b-peel{flex:1 1 100%}.br-nav .br-sig{margin-left:0}.br-nav{flex-wrap:wrap}.br-atras{order:2;margin:0 auto}}
 @media(prefers-reduced-motion:reduce){.br-prog span,.br-op{transition:none}}
 
 /* ===== Jueguitos: banner del desafío diario ===== */
@@ -781,3 +775,34 @@ html:has(.f-herramientas){scrollbar-gutter:stable}
 .cn-brief .cn-brief-b{margin:0;font-size:clamp(17px,1.5vw,20px);padding:15px 30px 16px}
 .cn-redes{margin:clamp(24px,2.8vw,34px) 0 0;font-family:var(--f);font-weight:700;font-style:italic;font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
 .cn-redes+.pills{margin-top:12px}
+
+
+/* ===== PORTADA COMPARTIDA (Portfolio · Herramientas · Jueguitos): mismo título, misma bajada, mismo selector y mismo ancho de contenido ===== */
+.f-portfolio .ph,.f-herramientas .ph,.f-jueguitos .ph{padding-bottom:0}
+.f-portfolio .ph .lead,.f-herramientas .ph .lead,.f-jueguitos .ph .lead{font-size:clamp(17px,1.7vw,22px);line-height:1.4;max-width:34em;margin-top:clamp(14px,1.8vw,22px);text-wrap:balance}
+.f-portfolio .ph,.f-herramientas .ph,.f-jueguitos .ph{margin-bottom:clamp(30px,4vw,52px)}
+
+/* ===== CONTENIDO INTEGRADO: tarjetas de vidrio con el mismo borde, radio y sombra, para que se fundan con el fondo de cada página ===== */
+.ph+.filtros,.ph+.hgs,.ph+.dd-banner{margin-top:0}
+
+/* herramientas: vidrio claro sobre el azul (antes eran cajas negras sueltas) */
+.f-herramientas .tl{background:linear-gradient(160deg,rgba(255,255,255,.24),rgba(255,255,255,.08));border-color:rgba(255,255,255,.42);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);box-shadow:0 18px 40px rgba(2,20,60,.28),inset 0 1px 0 rgba(255,255,255,.45)}
+.f-herramientas .tl .tl-ic{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.45)}
+.f-herramientas .tl:hover,.f-herramientas .tl:focus-visible{background:var(--crema);color:var(--azul-f);box-shadow:0 24px 50px rgba(2,20,60,.4)}
+.f-herramientas .tl.tl-on{background:var(--crema);color:var(--azul-f)}
+
+/* jueguitos: tarjeta de vidrio con la portada arriba y el texto adentro, abajo (la portada ya trae el nombre dibujado, no se tapa) */
+.f-jueguitos .jg{display:flex;flex-direction:column;overflow:hidden;border-radius:28px;background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,.04));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 18px 40px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.22),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .3s,background .3s}
+.f-jueguitos .jg-img{position:relative;overflow:hidden;filter:none;transform:none!important;transition:none;border-radius:0}
+.f-jueguitos .jg-img img{transition:scale .8s cubic-bezier(.2,.8,.2,1)}
+.f-jueguitos .jg h2{margin:0;padding:clamp(14px,1.6vw,20px) clamp(16px,1.8vw,24px) 0}
+.f-jueguitos .jg p{margin:4px 0 0;padding:0 clamp(16px,1.8vw,24px) clamp(14px,1.6vw,20px)}
+.f-jueguitos .jg:hover,.f-jueguitos .jg:focus-visible{transform:translateY(-6px);background:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,.07));box-shadow:0 26px 50px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.45),inset 0 1px 0 rgba(255,255,255,.4)}
+.f-jueguitos .jg:hover .jg-img img,.f-jueguitos .jg:focus-visible .jg-img img{scale:1.07}
+/* banner del color del día: mismo vidrio, teñido del azul de la marca */
+.f-jueguitos .dd-banner{background:linear-gradient(120deg,rgba(11,117,244,.38),rgba(255,255,255,.07) 70%);border-color:rgba(255,255,255,.34);box-shadow:0 18px 40px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.4)}
+.f-jueguitos .dd-banner:hover,.f-jueguitos .dd-banner:focus-visible{background:linear-gradient(120deg,rgba(11,117,244,.52),rgba(255,255,255,.12) 70%)}
+
+/* portfolio: mismo aro de luz en las tarjetas (no en la vista lista) */
+.pjs:not(.lista) .pj{box-shadow:0 18px 40px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.2)}
+.pjs:not(.lista) .pj:hover{box-shadow:0 26px 50px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.45)}
