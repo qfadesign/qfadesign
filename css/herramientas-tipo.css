@@ -1,0 +1,107 @@
+/* HERRAMIENTAS · JERARQUÍA TIPOGRÁFICA
+   Antes casi todo era Articulat Heavy itálica en tamaños parecidos, así que nada mandaba sobre nada.
+   Ahora cada nivel tiene su propia voz (se carga AL FINAL, después de herramientas-integrado.css):
+
+   1. TÍTULO DE PÁGINA ....... Heavy 900 recta, enorme, apretada
+   2. TÍTULO DE BLOQUE ....... Heavy 900 recta, algo más grande que el texto (nada gigante: todo comparte la misma escala moderada) (la pregunta de la calculadora, cada paso del brief, "¿Charlamos?")
+   3. TÍTULO DE ÍTEM ......... Heavy 900 recta mediana (categorías) · Bold 700 recta (servicios, tipo de cliente)
+   4. RESULTADO CLAVE ........ Heavy 900 ITÁLICA gigante (total, ratio, medida convertida): la única itálica pesada que queda, así el ojo va ahí
+   5. ETIQUETA ............... Podium Soft en mayúsculas chicas, con aire entre letras (campos, pasos, unidades, "Tu presupuesto")
+   6. BAJADA ................. Light 300 grande
+   7. TEXTO .................. Regular 400, un poco más tenue
+   8. PASTILLAS Y CHIPS ...... Bold 700 recta, sin itálica */
+
+body.f-herramientas{--eb:var(--fp)}
+
+/* 5. ETIQUETA: un solo estilo para todo lo que "nombra" un campo o un dato */
+body.f-herramientas :is(.cp-tot small,.ct-top small,.ct-f label,.cv-l,.un-l,.pl-rng label,.cp-pdf label,.hp-otras p,.cp-count,.cp-u,.un-u,.cp-res h4,.hp-vol .volver){
+ font-family:var(--eb);font-weight:500;font-style:normal;font-size:12.5px;line-height:1.2;letter-spacing:.14em;text-transform:uppercase}
+body.f-herramientas .cv-l span{text-transform:none;letter-spacing:0;font-size:inherit}
+body.f-herramientas .cp-pdf label span{text-transform:none;letter-spacing:0}
+body.f-herramientas .cp-res h4{margin-bottom:14px;font-size:13px}
+body.f-herramientas .cp-tot small{margin-bottom:4px}
+body.f-herramientas .cp-u{font-size:11.5px;opacity:.7}
+body.f-herramientas .un-u{font-size:13px;margin-top:2px}
+body.f-herramientas .hp-otras p{margin-bottom:14px}
+body.f-herramientas .hp-vol .volver{font-size:12px}
+
+/* 1. TÍTULO DE PÁGINA (cada herramienta) */
+body.f-herramientas h1.hp-t{font-weight:900;font-style:normal;font-size:clamp(32px,5.4vw,72px);line-height:.95;letter-spacing:-.04em;text-wrap:balance;max-width:14ch}
+body.f-herramientas .hp-h{padding-top:clamp(14px,2.4vw,32px)}
+
+/* 6. BAJADA: liviana y grande, para que el título pese más por contraste */
+body.f-herramientas .lead{font-weight:300;font-style:normal;font-size:clamp(17px,1.6vw,22px);line-height:1.3;letter-spacing:-.01em;max-width:34ch;opacity:.92;text-wrap:pretty}
+body.f-herramientas .hp-h .lead{margin-top:clamp(14px,1.8vw,24px)}
+
+/* 2. TÍTULO DE BLOQUE */
+body.f-herramientas :is(.cp-top h3,.br-que h2){font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(26px,3vw,40px);line-height:1;letter-spacing:-.035em;max-width:18ch;text-wrap:balance}
+body.f-herramientas .br-que h2{font-size:clamp(21px,2.1vw,28px);max-width:none}
+body.f-herramientas .cp-top p{font-weight:400;opacity:.85}
+body.f-herramientas .cp-cta p{font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(21px,2.1vw,28px);line-height:1.05;letter-spacing:-.03em}
+body.f-herramientas .br-t{font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(23px,2.5vw,34px);line-height:1.05;letter-spacing:-.03em;margin-bottom:10px;text-wrap:balance}
+body.f-herramientas .pl-drop strong{font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(21px,2.1vw,28px);line-height:1.05;letter-spacing:-.025em}
+
+/* paso de la calculadora: separa las zonas y se lee como capítulo */
+body.f-herramientas .cp-paso{font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(18px,1.7vw,23px);line-height:1.1;letter-spacing:-.02em;margin:clamp(28px,3.4vw,44px) 0 clamp(12px,1.4vw,16px);padding-top:clamp(16px,1.8vw,22px);border-top:1px solid rgba(255,255,255,.3)}
+
+/* 3. TÍTULO DE ÍTEM */
+body.f-herramientas .cp-cn{font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(18px,1.7vw,23px);line-height:1.05;letter-spacing:-.02em}
+body.f-herramientas .cp-inf label{font-family:var(--f);font-weight:700;font-style:normal;font-size:clamp(15.5px,1.2vw,17px);line-height:1.25;letter-spacing:0}
+body.f-herramientas .cp-inf p{font-weight:400;opacity:.78}
+body.f-herramientas .cp-cli strong{font-family:var(--f);font-weight:700;font-style:normal;font-size:clamp(15.5px,1.2vw,17px);line-height:1.2}
+body.f-herramientas .cp-cli span{font-weight:400;opacity:.8}
+body.f-herramientas .cp-fuentes summary{font-family:var(--f);font-weight:700;font-style:normal;font-size:clamp(15px,1.2vw,16.5px)}
+body.f-herramientas .ct-sug h4{font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(17px,1.5vw,20px);letter-spacing:-.02em}
+body.f-herramientas .br-que-l b{font-family:var(--f);font-weight:700;font-style:normal;font-size:clamp(15px,1.2vw,16.5px)}
+body.f-herramientas .br-que-l span{font-weight:400;opacity:.8}
+
+/* 4. RESULTADO CLAVE: la única itálica pesada, grande y con la unidad chica al lado */
+body.f-herramientas :is(.cp-tt,.un-n,.ct-ratio){font-family:var(--fh);font-weight:900;font-style:italic;letter-spacing:-.045em;font-variant-numeric:tabular-nums;line-height:.92}
+body.f-herramientas .cp-tt{font-size:clamp(30px,2.8vw,40px);margin-top:4px;overflow-wrap:anywhere}
+body.f-herramientas .cp-tt::after,body.f-herramientas .cp-pr b::after{font-family:var(--eb);font-style:normal;font-weight:500;letter-spacing:.12em;opacity:.75}
+body.f-herramientas .cp-tt::after{font-size:.28em;margin-left:.5em}
+body.f-herramientas .cp-pr b{font-style:normal;font-weight:900;letter-spacing:-.02em}
+body.f-herramientas .cp-pr b::after{font-size:.5em}
+body.f-herramientas .cp-tu{font-family:var(--f);font-weight:700;font-style:normal;font-size:clamp(16px,1.3vw,18px);opacity:.85;margin-top:6px}
+body.f-herramientas .un-n{font-size:clamp(24px,2.8vw,36px);margin-top:2px}
+body.f-herramientas .ct-ratio{font-size:clamp(42px,5vw,68px)}
+
+/* 8. PASTILLAS, CHIPS Y ENLACES: Bold recta, sin competir con los títulos */
+body.f-herramientas :is(.chip,.hp-otras a,.cp-mep-p,.ct-pill,.br-op,.enlaces a:not(.t),.cv-d,.cv-x){font-family:var(--f);font-weight:700;font-style:normal;letter-spacing:0}
+body.f-herramientas .cp-mep-p b{font-weight:900}
+body.f-herramientas .br-op.on{font-weight:700}
+body.f-herramientas .ct-ver{font-family:var(--fh);font-weight:900;font-style:normal;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+body.f-herramientas .pl-col span{font-family:var(--f);font-weight:700;font-style:normal;font-size:14px}
+body.f-herramientas .pl-v b{font-family:var(--f);font-weight:700;font-style:normal;letter-spacing:.02em}
+body.f-herramientas .ct-op-t b{font-family:var(--f);font-weight:700;font-style:normal}
+body.f-herramientas .ct-op-u{font-family:var(--f);font-weight:700;font-style:normal}
+
+/* campos de texto: lo que escribe quien usa la herramienta */
+body.f-herramientas .un-fila input{font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(24px,2.5vw,30px);letter-spacing:-.025em;width:min(100%,240px)}
+body.f-herramientas :is(.cv-px input,.un-otra input,.ct-in input[type=text]){font-family:var(--f);font-weight:700;font-style:normal}
+body.f-herramientas .un-otra{font-style:normal}
+body.f-herramientas :is(.br-ex,.br-atras,.br-link,.br-ed){font-style:normal}
+
+/* ===== ÍNDICE (herramientas.html) ===== */
+body.f-herramientas .hgs-sq{counter-reset:tl}
+body.f-herramientas .hgs-sq .tl{counter-increment:tl}
+/* número de orden: etiqueta chica arriba del título */
+body.f-herramientas .hgs-sq .tl-tx::before{content:counter(tl,decimal-leading-zero);display:block;margin-bottom:10px;font-family:var(--eb);font-weight:500;font-size:12.5px;letter-spacing:.16em;line-height:1;opacity:.7;transition:color .25s,opacity .25s}
+body.f-herramientas .hgs-sq .tl:hover .tl-tx::before,body.f-herramientas .hgs-sq .tl:focus-visible .tl-tx::before,body.f-herramientas .hgs-sq .tl.tl-on .tl-tx::before{color:var(--c);opacity:1}
+body.f-herramientas .hgs-sq .tl-t{font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(21px,2.8vw,36px);line-height:1;letter-spacing:-.03em;text-wrap:balance}
+body.f-herramientas .hgs-sq .tl-d{font-weight:300;font-style:normal;font-size:clamp(14px,1.15vw,16px);line-height:1.4;max-width:52ch;margin-top:6px;opacity:.82}
+body.f-herramientas .hgs-sq .tl-tag{font-family:var(--eb);font-weight:500;font-style:normal;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+@media(max-width:640px){
+ body.f-herramientas .hgs-sq .tl-t{font-size:clamp(20px,6vw,25px)}
+ body.f-herramientas .hgs-sq .tl-d{font-size:13.5px}
+ body.f-herramientas .hgs-sq .tl-tx::before{margin-bottom:8px}
+}
+
+/* ===== LINKS Y RECURSOS (herramientas.html) ===== */
+body.f-herramientas .lk .hl-t{font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(23px,2.6vw,34px);line-height:1;letter-spacing:-.03em}
+body.f-herramientas .lk .hl-sub .hl-t{font-family:var(--f);font-weight:700;font-style:normal;font-size:clamp(16.5px,1.5vw,20px);line-height:1.15;letter-spacing:-.01em}
+body.f-herramientas .lk .hl-d{font-weight:300;font-size:clamp(14px,1.1vw,16px);line-height:1.4;opacity:.82}
+body.f-herramientas .lk .hl-sub .hl-d{font-weight:400;font-size:clamp(13.5px,1.1vw,15.5px)}
+body.f-herramientas .enlaces a:not(.t){font-size:clamp(14.5px,1.1vw,16px)}
+body.f-herramientas .enlaces a.t .n{font-family:var(--f);font-weight:700;font-style:normal;font-size:clamp(15px,1.2vw,17px)}
+body.f-herramientas .enlaces a.t small{font-weight:300;font-size:13px;opacity:.78}

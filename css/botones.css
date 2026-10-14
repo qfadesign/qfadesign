@@ -155,20 +155,19 @@ html body .primary,html body .play-again,html body .key{border-radius:99px!impor
 /* HERO responsive.
    1) El bloque de texto tiene container-type:inline-size: sin un ancho propio se achica a 0 y los textos se rompen letra por letra.
       En celu ocupa todo el ancho disponible (align-self:stretch, arriba).
-   2) La marca gigante de arriba: en pantallas angostas su mitad visible quedaba escondida detrás de la barra de navegación.
-      En celu se ve entera, justo debajo de la barra; en tablet se corta a la altura de la barra para que se vea la mitad de abajo. */
-@media(max-width:760px){
- html .hero .marca{margin-top:calc(var(--navh,72px) + 10px);margin-bottom:clamp(18px,3vh,32px)}
-}
-@media(min-width:761px) and (max-width:1100px){
- html .hero .marca{margin-top:calc(var(--navh,72px) - 11.15%)}
+   2) La marca gigante de arriba se ve ENTERA (sin recortar) y queda DETRÁS de la barra de navegación: el centro de la marca coincide con el borde de abajo de la barra,
+      así la barra tapa la mitad de arriba (se ve a través del vidrio). Alto de la marca = 11,15vw x 2. Si la pantalla es tan ancha que no entra, se apoya a 6px del borde de arriba.
+      En escritorio sigue saliendo por el borde de arriba de la pantalla, como en el diseño original. */
+@media(max-width:1100px){
+ html .hero .marca{margin-top:max(6px,calc(var(--navh,72px) - 11.15vw));height:auto;margin-bottom:clamp(18px,3vh,32px)}
+ html .hero .marca img{display:block;margin-top:0}
 }
 
 /* ============================================================
    5. HERO EN CELULAR (hasta 760px)
    - Titular en 2 renglones ("Soy Facundo, diseñador en" / "Comunicación Visual.") y más chico, para que ocupe poco.
    - Los dos botones van uno al lado del otro y se ven como la barra de navegación (vidrio oscuro, borde fino, letras blancas), sin colores.
-   - La marca gigante de arriba la corta la barra de navegación: se ve solo su mitad de abajo, desde el borde inferior de la barra.
+   - La marca gigante de arriba se ve entera, detrás de la barra (regla en la sección HERO responsive).
    ============================================================ */
 @media(max-width:760px){
  html .hero .intro .titular{font-size:clamp(19px,6.2cqw,30px);line-height:1.12;letter-spacing:-.015em;text-wrap:nowrap}
@@ -189,7 +188,4 @@ html body .primary,html body .play-again,html body .key{border-radius:99px!impor
  html .hero .intro .acciones{flex-direction:row}
  html body .hero .intro .acciones .btn{flex:1 1 0;font-size:12px;padding:11px 6px 12px}
 }
-@media(max-width:760px){
- html .hero .marca{margin-top:var(--navh,72px);height:11.15vw;margin-bottom:clamp(18px,3vh,32px)}
- html .hero .marca img{margin-top:-11.15%}
-}
+
