@@ -91,8 +91,8 @@ html .hero .intro .acciones .btn:hover .fl,html .hero .intro .acciones .btn:focu
 html.qa,html.qa *{cursor:none!important}
 .qa-cur{position:fixed;left:0;top:0;width:0;height:0;z-index:2147483000;pointer-events:none;opacity:0;transition:opacity .15s ease}
 .qa-cur.vis{opacity:1}
-.qa-dot{position:absolute;left:0;top:0;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--azul,#0b75f4);display:grid;place-items:center;transition:width .25s cubic-bezier(.2,.8,.2,1),height .25s cubic-bezier(.2,.8,.2,1),margin .25s cubic-bezier(.2,.8,.2,1),scale .15s}
-.qa-dot span{color:#fff;font:900 italic 17px/1 var(--fh,system-ui,sans-serif);opacity:0;transition:opacity .15s}
+.qa-dot{position:absolute;left:0;top:0;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--qa-c,var(--azul,#0b75f4));display:grid;place-items:center;transition:background-color .2s,width .25s cubic-bezier(.2,.8,.2,1),height .25s cubic-bezier(.2,.8,.2,1),margin .25s cubic-bezier(.2,.8,.2,1),scale .15s}
+.qa-dot span{color:var(--qa-t,#fff);font:900 italic 17px/1 var(--fh,system-ui,sans-serif);opacity:0;transition:opacity .15s}
 .qa-cur.on .qa-dot{width:30px;height:30px;margin:-15px 0 0 -15px}
 .qa-cur.on.hay .qa-dot{width:88px;height:88px;margin:-44px 0 0 -44px}
 .qa-cur.hay .qa-dot span{opacity:1}
