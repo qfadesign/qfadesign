@@ -209,10 +209,24 @@ addEventListener('DOMContentLoaded',()=>{
 /* menú hamburguesa */
 addEventListener('DOMContentLoaded',()=>{
   const nav=document.querySelector('nav'),b=nav&&nav.querySelector('.burger');if(!b)return;
-  const set=o=>{nav.classList.toggle('abierto',o);b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Cerrar menú':'Abrir menú')};
+  const logo=nav.querySelector('a'),ul=nav.querySelector('ul'),lis=[...ul.children],ESC=2;
+  /* mide cuánto tiene que bajar el logo (hasta el borde de abajo, sin moverse de la izquierda) y cuánto tiene que subir cada sticker
+     para "caer" desde la barra. Usa offsetLeft/offsetTop (que ignoran las transformaciones) para poder medir aunque el menú esté a medio animar. */
+  const geo=()=>{
+    if(!matchMedia('(max-width:760px)').matches)return;
+    const nr=nav.getBoundingClientRect(),ur=ul.getBoundingClientRect();
+    const cy=nr.top+nav.clientTop+logo.offsetTop+logo.offsetHeight/2;
+    const fy=ur.top+ur.height-30-logo.offsetHeight*ESC/2;
+    nav.style.setProperty('--ly',(fy-cy)+'px');
+    nav.style.setProperty('--ls',ESC);
+    lis.forEach(li=>li.style.setProperty('--up',(cy-(ur.top+li.offsetTop+li.offsetHeight/2))+'px'));
+  };
+  const set=o=>{if(o){nav.classList.remove('rapido');if(!nav.classList.contains('abierto'))geo()}nav.classList.toggle('abierto',o);b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Cerrar menú':'Abrir menú')};
   b.addEventListener('click',()=>set(!nav.classList.contains('abierto')));
-  nav.querySelectorAll('ul a').forEach(a=>a.addEventListener('click',()=>set(false)));
+  nav.querySelectorAll('ul a').forEach(a=>a.addEventListener('click',()=>{nav.classList.add('rapido');set(false)}));
+  ul.addEventListener('click',e=>{if(e.target===e.currentTarget)set(false)}); // tocar el vidrio (fuera de los stickers) cierra
   addEventListener('keydown',e=>{if(e.key==='Escape'&&nav.classList.contains('abierto')){set(false);b.focus()}});
   document.addEventListener('click',e=>{if(!nav.contains(e.target))set(false)});
+  addEventListener('resize',()=>{if(nav.classList.contains('abierto'))geo()});
   matchMedia('(min-width:761px)').addEventListener('change',e=>{if(e.matches)set(false)});
 });
