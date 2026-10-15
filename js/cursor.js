@@ -2,6 +2,7 @@
    Sobre links y botones se agranda un poco; sobre proyectos (.pj, .pg-s) y fotos ampliables (.zoom) se vuelve un
    círculo grande con texto ("Ver" / "Ampliar"). Para sumar otro elemento: data-cursor="Texto" (o data-cursor="" sin texto).
    En campos de texto y en las pantallas de juego se queda el mouse normal. Solo con mouse (no en celulares).
+   Sobre links y proyectos el círculo sigue al mouse con un pequeño retraso y se estira con la velocidad; el punto chico va exacto.
    Si el fondo que hay debajo es azul (o muy parecido al azul del cursor), el punto cambia solo a blanco o negro para que no se pierda. */
 (()=>{
   if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
@@ -58,7 +59,23 @@
   }
 
   let x=-100,y=-100,visible=false,raf=0,lab=null,nat=false,ult=null,tCol=0;
-  const render=()=>{raf=0;c.style.transform='translate('+x+'px,'+y+'px)'};
+  // inercia: el contenedor va siempre exacto; el círculo (.qa-dot) se atrasa un poco cuando está "activo" y se estira hacia donde va
+  const dot=c.firstChild,quieto=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let px=-100,py=-100,k=1;                      // posición del círculo y su "suavizado" (1 = exacto, .16 = con retraso)
+  const render=()=>{
+    raf=0;
+    c.style.transform='translate('+x+'px,'+y+'px)';
+    const meta=(lab!==null&&!quieto)?.16:1;
+    k+=(meta-k)*.22;
+    px+=(x-px)*k;py+=(y-py)*k;
+    const dx=px-x,dy=py-y,d=Math.hypot(dx,dy);
+    const st=Math.min(d/110,.32);                // cuánto se estira (máx. 32%)
+    dot.style.setProperty('--qx',dx.toFixed(2)+'px');dot.style.setProperty('--qy',dy.toFixed(2)+'px');
+    dot.style.setProperty('--qr',Math.atan2(dy,dx).toFixed(3)+'rad');
+    dot.style.setProperty('--qsx',(1+st).toFixed(3));dot.style.setProperty('--qsy',(1-st*.55).toFixed(3));
+    if(d>.05||Math.abs(meta-k)>.004)raf=requestAnimationFrame(render);   // sigue hasta que el círculo alcanza al mouse
+    else{px=x;py=y;k=meta;dot.style.setProperty('--qx','0px');dot.style.setProperty('--qy','0px');dot.style.setProperty('--qsx',1);dot.style.setProperty('--qsy',1)}
+  };
   const modal=()=>!!document.querySelector('dialog[open]');
   function sync(){
     const mostrar=visible&&!nat&&!modal();
@@ -77,7 +94,7 @@
   }
   addEventListener('pointermove',e=>{
     if(e.pointerType&&e.pointerType!=='mouse')return;
-    x=e.clientX;y=e.clientY;visible=true;
+    x=e.clientX;y=e.clientY;if(!visible){px=x;py=y;k=1}visible=true;
     const t=e.target;
     nat=!!(t&&t.closest&&t.closest(NATIVO));
     estado(!nat&&t&&t.closest?t.closest(SEL):null);

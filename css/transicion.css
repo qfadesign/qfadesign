@@ -1,0 +1,18 @@
+/* Transición entre páginas con View Transitions (navegadores que la soportan; en el resto queda la transición de siempre, js/anim.js).
+   Solo hace de puente entre el portfolio / inicio y las páginas de proyecto:
+   la tarjeta se estira hasta ser la portada del proyecto, y al volver la portada se achica hasta su tarjeta.
+   La lógica está al final de js/anim.js. No corre con "reducir movimiento". */
+@media (prefers-reduced-motion:no-preference){
+  @view-transition{navigation:auto}
+}
+/* el resto de la página: la que se va se disuelve rápido, la nueva sube suave */
+::view-transition-old(root){animation:vt-sale .5s ease both}
+::view-transition-new(root){animation:vt-entra .65s cubic-bezier(.2,.8,.2,1) both}
+@keyframes vt-sale{to{opacity:0;scale:.99}}
+@keyframes vt-entra{from{opacity:0;translate:0 14px}}
+/* la imagen que viaja (tarjeta ⇄ portada) */
+::view-transition-group(vt-portada){animation-duration:.8s;animation-timing-function:cubic-bezier(.7,0,.2,1);overflow:clip;border-radius:28px}
+::view-transition-image-pair(vt-portada){isolation:auto}
+::view-transition-old(vt-portada),::view-transition-new(vt-portada){width:100%;height:100%;object-fit:cover;mix-blend-mode:normal;animation-duration:.8s}
+/* durante el viaje la tarjeta va sin sus textos (número, categoría, título) */
+.vt-card .n,.vt-card .k,.vt-card .et{visibility:hidden}
