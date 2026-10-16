@@ -50,6 +50,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
+@font-face{font-family:"qk-syne";src:url("../fonts/juegos/qk-syne.woff2") format("woff2");font-weight:400;font-style:normal;font-display:block}@font-face{font-family:"qk-dmserif";src:url("../fonts/juegos/qk-dmserif.woff2") format("woff2");font-weight:400;font-style:normal;font-display:block}@font-face{font-family:"qk-archivo";src:url("../fonts/juegos/qk-archivo.woff2") format("woff2");font-weight:400;font-style:normal;font-display:block}@font-face{font-family:"qk-playfair";src:url("../fonts/juegos/qk-playfair.woff2") format("woff2");font-weight:400;font-style:normal;font-display:block}@font-face{font-family:"qk-instrument";src:url("../fonts/juegos/qk-instrument.woff2") format("woff2");font-weight:400;font-style:normal;font-display:block}@font-face{font-family:"qk-grotesk";src:url("../fonts/juegos/qk-grotesk.woff2") format("woff2");font-weight:400;font-style:normal;font-display:block}
 [hidden]{display:none!important}
 *{box-sizing:border-box}
 .app{display:flex;flex-direction:column;align-items:center}
@@ -66,7 +67,7 @@
 .final-screen{display:none;text-align:center;width:100%}.final-screen.show{display:block}
 .final-label{margin-inline:auto}.final-title{margin:6px 0}.final-copy{margin:0 0 16px}
 svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28))}svg.stage rect:active{cursor:grabbing}svg.stage rect:focus-visible{outline:3px solid #ff4d8d;outline-offset:2px}
-.kw{display:flex;justify-content:center;align-items:center;width:min(100%,1180px);min-height:clamp(260px,52vh,520px);overflow:hidden;font-family:'articulat-heavy-cf','Arial Black',sans-serif;font-weight:900;font-style:normal;font-size:clamp(80px,17vw,230px);line-height:1;color:var(--azul);font-kerning:none;font-feature-settings:"kern" 0;white-space:nowrap}
+.kw{display:flex;justify-content:center;align-items:center;width:min(100%,1180px);min-height:clamp(260px,52vh,520px);overflow:hidden;font-family:'qk-syne','Arial Black',sans-serif;font-weight:400;font-style:normal;font-size:clamp(80px,17vw,230px);line-height:1;color:var(--azul);font-kerning:none;font-feature-settings:"kern" 0;white-space:nowrap}
 .kw span{display:inline-block;cursor:ew-resize;touch-action:none;outline-offset:6px;border-radius:6px}.kw span:first-child{cursor:default}.kw span:hover:not(:first-child){color:#06214d}.kw.rev span{transition:margin-left .6s;cursor:default}
 </style>
 <script>if(self!==top){document.write('<style>html,body{background:transparent!important}#volver{display:none!important}</style>')}</script>
@@ -80,7 +81,7 @@ svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28
 <header class="header"><h1 class="h1-st"><img src="../img/stickers/juego-kerning.webp" alt="Ajustá el kerning" width="1200" height="729" decoding="async"></h1><p class="subtitle">Ajustá el espacio entre letras como lo haría un tipógrafo.</p></header>
 <section class="game-card">
 <div class="start-screen" id="startScreen"><div class="inicio"><div class="inicio-reglas">
-<div class="start-title">Cinco palabras sin kerning</div><p class="start-copy">Cada palabra aparece sin ajustar. Corregí el espacio a ojo y acercate a lo que dibujó el tipógrafo. Cada partida sortea palabras nuevas, de las más fáciles a las más difíciles.</p>
+<div class="start-title">Cinco palabras sin kerning</div><p class="start-copy">Cada palabra aparece sin ajustar y en una tipografía distinta. Corregí el espacio a ojo y acercate a lo que dibujó el tipógrafo. Cada partida sortea palabras nuevas, de las más fáciles a las más difíciles.</p>
 <div class="how-to"><strong>¿Cómo se juega?</strong><p>Arrastrá una letra a izquierda o derecha para cambiar su espacio con la anterior (con el teclado: flechas, y Shift para más). Tocá Listo y vas a ver cómo lo resolvió la tipografía.</p></div>
 <div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div></div>
 <aside class="rank-top" data-rank-top data-juego="kerning" data-modo="Estándar" aria-label="Los 3 mejores puntajes"></aside></div></div>
@@ -94,38 +95,41 @@ svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28
 <script>window.addEventListener('load',function(){
 var $=function(i){return document.getElementById(i)};
 /* banco: k = palabra, n = nivel (1 fácil … 5 difícil), p = kerning de la fuente para cada par (1 unidad = 1/1000 del cuerpo) */
-var BANCO=[{k:"TAXI",n:1,p:[-100,0,0]},
-{k:"LAVA",n:1,p:[0,-133,-133]},
-{k:"YOGA",n:1,p:[-50,0,-35]},
-{k:"TAPA",n:1,p:[-100,0,-90]},
-{k:"WAVE",n:1,p:[-103,-133,0]},
-{k:"WATER",n:2,p:[-103,-100,0,0]},
-{k:"PATIO",n:2,p:[-90,-100,0,0]},
-{k:"PLAYA",n:2,p:[0,0,-140,-140]},
-{k:"VALOR",n:2,p:[-133,0,-20,0]},
-{k:"AWAKE",n:2,p:[-103,-103,0,0]},
-{k:"FAVOR",n:3,p:[-80,-133,-35,0]},
-{k:"KAYAK",n:3,p:[-10,-140,-140,0]},
-{k:"PALTA",n:3,p:[-90,0,-80,-100]},
-{k:"TRATAR",n:3,p:[0,-5,-100,-100,0]},
-{k:"VOLTAJE",n:3,p:[-35,0,-80,-100,0,0]},
-{k:"PAYASO",n:4,p:[-90,-140,-140,-20,0]},
-{k:"AVATAR",n:4,p:[-133,-133,-100,-100,0]},
-{k:"TOYOTA",n:4,p:[-30,-50,-50,-30,-100]},
-{k:"TARTAS",n:4,p:[-100,0,-20,-100,-20]},
-{k:"VAYAMOS",n:4,p:[-133,-140,-140,0,0,0]},
-{k:"PAPAYAS",n:5,p:[-90,0,-90,-140,-140,-20]},
-{k:"PAYASOS",n:5,p:[-90,-140,-140,-20,0,0]},
-{k:"TOYOTAS",n:5,p:[-30,-50,-50,-30,-100,-20]},
-{k:"WAYFARER",n:5,p:[-103,-140,0,-80,0,0,0]},
-{k:"AVATARES",n:5,p:[-133,-133,-100,-100,0,0,0]}],W,kw=$('kw'),cur,off,sp,rev,errs=[];
+var TIPOS={syne:["qk-syne","Syne ExtraBold"],dmserif:["qk-dmserif","DM Serif Display"],archivo:["qk-archivo","Archivo ExtraBold"],playfair:["qk-playfair","Playfair Display Black"],instrument:["qk-instrument","Instrument Serif"],grotesk:["qk-grotesk","Space Grotesk Bold"]};
+/* banco: k = palabra, n = nivel, f = tipografía, p = kerning real de esa fuente para cada par (1 unidad = 1/1000 del cuerpo), medido con HarfBuzz sobre los archivos de fonts/juegos */
+var BANCO=[
+{k:"TAXI",n:1,f:"syne",p:[-130, 0, 0]},
+{k:"LAVA",n:1,f:"dmserif",p:[0, -113, -120]},
+{k:"TAPA",n:1,f:"archivo",p:[-82, 0, -50]},
+{k:"PAVO",n:1,f:"playfair",p:[-67, -90, -30]},
+{k:"RAYA",n:1,f:"instrument",p:[-50, -68, -68]},
+{k:"PLAYA",n:2,f:"syne",p:[0, 0, -170, -170]},
+{k:"PATIO",n:2,f:"grotesk",p:[-54, -64, 0, 0]},
+{k:"PALTA",n:2,f:"dmserif",p:[-82, -4, -80, -76]},
+{k:"TARTA",n:2,f:"archivo",p:[-82, 0, -15, -82]},
+{k:"VALOR",n:2,f:"playfair",p:[-80, -20, 0, -8]},
+{k:"FAVOR",n:3,f:"dmserif",p:[-92, -113, -44, -17]},
+{k:"PAYASO",n:3,f:"instrument",p:[-40, -68, -68, -12, 0]},
+{k:"AVIÓN",n:3,f:"playfair",p:[-90, 0, -8, -8]},
+{k:"TARTAS",n:3,f:"syne",p:[-130, 0, 0, -130, -30]},
+{k:"PALTAS",n:3,f:"grotesk",p:[-54, 0, -96, -64, 0]},
+{k:"VAYAMOS",n:4,f:"syne",p:[-135, -170, -170, 0, 0, 0]},
+{k:"VOLTAJE",n:4,f:"playfair",p:[-30, -8, -65, -65, 0, 0]},
+{k:"TAXISTA",n:4,f:"instrument",p:[-42, -80, -38, 0, -8, -42]},
+{k:"TOLTECA",n:4,f:"archivo",p:[-28, 0, -101, 0, 0, -11]},
+{k:"PAPAYAS",n:4,f:"grotesk",p:[-54, 0, -54, -72, -72, 0]},
+{k:"PARAGUAY",n:5,f:"dmserif",p:[-82, -4, 10, -29, -23, -86, -90]},
+{k:"AVALANCHA",n:5,f:"instrument",p:[-68, -68, -10, 0, -10, -12, 0, -16]},
+{k:"PATAGONIA",n:5,f:"playfair",p:[-67, -80, -65, -10, 0, -8, 0, 0]},
+{k:"TAXISTAS",n:5,f:"syne",p:[-130, 0, 0, 0, 0, -130, -30]},
+{k:"AVATARES",n:5,f:"archivo",p:[-43, -43, -82, -82, 0, 0, 0]}],W,kw=$('kw'),cur,off,sp,rev,errs=[];
 function place(){sp.forEach(function(s,i){s.style.marginLeft=i?off[i-1]/1000+'em':'0'})}
 function cl(v){return Math.max(-350,Math.min(150,v))}
 function fit(){if(!sp)return;kw.style.fontSize='';var cs=parseFloat(getComputedStyle(kw).fontSize),w=0;sp.forEach(function(s){w+=s.getBoundingClientRect().width});var mx=kw.clientWidth*.78;if(w>mx)kw.style.fontSize=(cs*mx/w)+'px'}
 window.addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
 QFAJ.init({nombre:'Kerning',juego:'kerning',total:5,reset:function(){errs=[];W=QFAJ.sortear('kerning',BANCO,5)},
 ronda:function(n,c){cur=W[n-1];off=cur.p.map(function(){return 0});rev=false;kw.className='stage kw';kw.innerHTML='';
- c.textContent='Equilibrá el espacio entre las letras de "'+cur.k+'".';
+ var tp=TIPOS[cur.f];kw.style.fontFamily='"'+tp[0]+'",sans-serif';c.textContent='Equilibrá el espacio entre las letras de "'+cur.k+'" ('+tp[1]+').';if(document.fonts&&document.fonts.load)document.fonts.load('100px "'+tp[0]+'"',cur.k).then(fit,fit);
  sp=cur.k.split('').map(function(ch,i){var s=document.createElement('span');s.textContent=ch;kw.appendChild(s);if(!i)return s;s.tabIndex=0;
   s.onpointerdown=function(e){if(rev)return;s.setPointerCapture(e.pointerId);var x0=e.clientX,o0=off[i-1],em=parseFloat(getComputedStyle(kw).fontSize);
    s.onpointermove=function(f){off[i-1]=cl(o0+(f.clientX-x0)/em*1000);place()};s.onpointerup=function(){s.onpointermove=null}};

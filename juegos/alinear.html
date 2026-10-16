@@ -65,6 +65,7 @@
 .message:not(:empty){display:inline-block;background:var(--crema);color:#06214d!important;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(14px,1.4vw,17px)!important;line-height:1.25;padding:10px 20px 12px;border-radius:16px;rotate:-1deg;box-shadow:0 12px 30px rgba(0,0,0,.4)}
 .final-screen{display:none;text-align:center;width:100%}.final-screen.show{display:block}
 .final-label{margin-inline:auto}.final-title{margin:6px 0}.final-copy{margin:0 0 16px}
+svg.stage g[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28));outline:none}svg.stage g:active{cursor:grabbing}svg.stage g:focus-visible>:not(.hit){stroke:#ff4d8d;stroke-width:3}svg.stage .hit{stroke:none!important}
 svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28))}svg.stage rect:active{cursor:grabbing}svg.stage rect:focus-visible{outline:3px solid #ff4d8d;outline-offset:2px}
 
 </style>
@@ -79,8 +80,8 @@ svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28
 <header class="header"><h1 class="h1-st"><img src="../img/stickers/juego-alinear.webp" alt="Alineá los elementos" width="1200" height="625" decoding="async"></h1><p class="subtitle">¿Qué tan fino es tu ojo? Alineá a mano, sin ajuste automático.</p></header>
 <section class="game-card">
 <div class="start-screen" id="startScreen"><div class="inicio"><div class="inicio-reglas">
-<div class="start-title">Cinco ejercicios, a pulso</div><p class="start-copy">Sin ajuste automático ni ayudas: solo tu pulso y tu ojo. Mové los bloques hasta dejarlos donde piden. Cada partida sortea ejercicios nuevos, de los más simples a los más complejos.</p>
-<div class="how-to"><strong>¿Cómo se juega?</strong><p>Arrastrá cada bloque (o usá las flechas del teclado: 1 px, y 10 px con Shift). Tocá Listo y vas a ver cuántos píxeles te desviaste en promedio. En los últimos ejercicios hay que acertar en dos direcciones a la vez.</p></div>
+<div class="start-title">Cinco ejercicios, a pulso</div><p class="start-copy">Sin guías ni ajuste automático: solo tu pulso y tu ojo. Cada ejercicio trae objetos de formas distintas y tenés que alinearlos entre sí, en cualquier parte del espacio. Cada partida sortea ejercicios nuevos, de los más simples a los más complejos.</p>
+<div class="how-to"><strong>¿Cómo se juega?</strong><p>Arrastrá cada objeto (o usá las flechas del teclado: 1 px, y 10 px con Shift). Los bordes, centros y esquinas se miden sobre la caja que contiene a cada forma. Repartir significa que el espacio vacío entre un objeto y el siguiente sea igual (no la distancia entre centros). Tocá Listo y aparece una línea guía que sale de uno de los objetos: ahí ves cuántos píxeles se desvió cada uno. En los últimos ejercicios hay que acertar en dos direcciones a la vez.</p></div>
 <div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div></div>
 <aside class="rank-top" data-rank-top data-juego="alinear" data-modo="Estándar" aria-label="Los 3 mejores puntajes"></aside></div></div>
 <div id="gameContent" style="display:none">
@@ -92,50 +93,96 @@ svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28
 </section></main>
 <script>window.addEventListener('load',function(){
 var $=function(i){return document.getElementById(i)};
-var NS='http://www.w3.org/2000/svg',sv=$('sv'),B,G,Gx,Gy,T,V,cur,lock,errs=[];
-/* banco: k = clave, n = nivel (1 simple … 5 complejo), t = tipo (x / y / xy / dx / dy), f = punto del bloque que se alinea (0 = borde de arriba o izquierdo, .5 = centro, 1 = borde de abajo o derecho) */
+var NS='http://www.w3.org/2000/svg',sv=$('sv'),W=600,H=360,B,cur,lock,V,errs=[],PINK='#ff4d8d';
+var COL=['#0b75f4','#06214d','#ff4d8d','#5fa8ff','#0b75f4','#06214d'],SH=['circle','square','tri','diamond','hex','star','pill','rect'];
+/* banco: k = clave, n = nivel (1 simple … 5 complejo), o = cantidad de objetos, a = alineaciones [eje, punto del objeto] (x = línea vertical, y = línea horizontal; 0 = borde izquierdo/superior, .5 = centro, 1 = borde derecho/inferior), d = eje de distribución (espacios iguales) */
 var BANCO=[
-{k:'izq',n:1,t:'x',f:0,c:'Alineá el borde izquierdo de todos los bloques con la guía.'},
-{k:'der',n:1,t:'x',f:1,c:'Alineá el borde derecho de todos los bloques con la guía.'},
-{k:'sup',n:1,t:'y',f:0,c:'Alineá el borde de arriba de todos los bloques con la guía.'},
-{k:'centro',n:2,t:'x',f:.5,c:'Centrá los bloques sobre la guía.'},
-{k:'medio',n:2,t:'y',f:.5,c:'Centrá los bloques en vertical sobre la guía.'},
-{k:'base',n:2,t:'y',f:1,c:'Apoyá todos los bloques sobre la línea de base.'},
-{k:'dx',n:3,t:'dx',c:'Distribuí los 3 bloques del medio con espacios iguales entre los cinco.'},
-{k:'dy',n:3,t:'dy',c:'Distribuí los 3 bloques del medio, en vertical, con espacios iguales entre los cinco.'},
-{k:'esq',n:4,t:'xy',f:[0,0],b:3,c:'Llevá la esquina de arriba a la izquierda de cada bloque al cruce de las guías.'},
-{k:'esqInf',n:4,t:'xy',f:[1,1],b:3,c:'Llevá la esquina de abajo a la derecha de cada bloque al cruce de las guías.'},
-{k:'cen2',n:5,t:'xy',f:[.5,.5],b:4,c:'Llevá el centro de cada bloque al cruce de las guías.'},
-{k:'esqSD',n:5,t:'xy',f:[1,0],b:4,c:'Llevá la esquina de arriba a la derecha de cada bloque al cruce de las guías.'},
-{k:'esqII',n:5,t:'xy',f:[0,1],b:4,c:'Llevá la esquina de abajo a la izquierda de cada bloque al cruce de las guías.'}];
-function E(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);sv.appendChild(e);return e}
+{k:'izq',n:1,o:3,a:[['x',0]],c:'Alineá los objetos a la izquierda: sus bordes izquierdos sobre una misma línea vertical.'},
+{k:'der',n:1,o:3,a:[['x',1]],c:'Alineá los objetos a la derecha: sus bordes derechos sobre una misma línea vertical.'},
+{k:'sup',n:1,o:3,a:[['y',0]],c:'Alineá los objetos arriba: sus bordes superiores sobre una misma línea horizontal.'},
+{k:'cenV',n:2,o:4,a:[['x',.5]],c:'Centrá los objetos en columna: todos los centros sobre una misma línea vertical.'},
+{k:'cenH',n:2,o:4,a:[['y',.5]],c:'Centrá los objetos en fila: todos los centros sobre una misma línea horizontal.'},
+{k:'base',n:2,o:4,a:[['y',1]],c:'Alineá los objetos abajo: sus bordes inferiores sobre una misma línea horizontal.'},
+{k:'dx',n:3,o:4,d:'x',c:'Repartí los objetos de izquierda a derecha con el mismo espacio vacío entre cada par.'},
+{k:'dy',n:3,o:4,d:'y',c:'Repartí los objetos de arriba hacia abajo con el mismo espacio vacío entre cada par.'},
+{k:'dx5',n:3,o:5,d:'x',c:'Repartí los 5 objetos de izquierda a derecha con el mismo espacio vacío entre cada par.'},
+{k:'cenDx',n:4,o:5,a:[['y',.5]],d:'x',c:'Poné los centros sobre una misma línea horizontal y repartí los objetos con espacios iguales entre sí.'},
+{k:'izqDy',n:4,o:5,a:[['x',0]],d:'y',c:'Poné los bordes izquierdos sobre una misma línea vertical y repartí los objetos de arriba hacia abajo con espacios iguales.'},
+{k:'baseDx',n:4,o:5,a:[['y',1]],d:'x',c:'Poné los bordes inferiores sobre una misma línea horizontal y repartí los objetos de izquierda a derecha con espacios iguales.'},
+{k:'cen2',n:5,o:4,bx:1,a:[['x',.5],['y',.5]],c:'Llevá el centro de todos los objetos al mismo punto.'},
+{k:'esqSD',n:5,o:4,bx:1,a:[['x',1],['y',0]],c:'Llevá la esquina superior derecha de todos los objetos al mismo punto.'},
+{k:'esqII',n:5,o:4,bx:1,a:[['x',0],['y',1]],c:'Llevá la esquina inferior izquierda de todos los objetos al mismo punto.'}];
+function ne(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e}
+function add(t,a,p){var e=ne(t,a);(p||sv).appendChild(e);return e}
 function R(a,b){return Math.round(a+Math.random()*(b-a))}
 function pt(e){var p=sv.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(sv.getScreenCTM().inverse())}
 function cl(v,a,b){return Math.max(a,Math.min(b,v))}
-function guia(x1,y1,x2,y2){E('line',{x1:x1,y1:y1,x2:x2,y2:y2,stroke:'#ff4d8d','stroke-width':2,'stroke-dasharray':'6 6'})}
-function mv(b,dx,dy){if(b.fixed||lock)return;if(T=='x'||T=='dx'||T=='xy')b.x=cl(b.x+dx,0,600-b.w);if(T=='y'||T=='dy'||T=='xy')b.y=cl(b.y+dy,0,360-b.h);b.el.setAttribute('x',b.x);b.el.setAttribute('y',b.y)}
-function bloque(b,i){var r=E('rect',{x:b.x,y:b.y,width:b.w,height:b.h,rx:6,fill:b.fixed?'#06214d':'#0b75f4','fill-opacity':T=='xy'?.78:1,stroke:T=='xy'?'#fff':'none','stroke-width':1.5,tabindex:b.fixed?-1:0,'aria-label':'Bloque '+(i+1)});b.el=r;B.push(b);
- if(b.fixed)return;
- r.onpointerdown=function(e){if(lock)return;r.setPointerCapture(e.pointerId);var d=pt(e),x0=b.x,y0=b.y;
-  r.onpointermove=function(f){var p=pt(f);mv(b,x0+p.x-d.x-b.x,y0+p.y-d.y-b.y)};r.onpointerup=function(){r.onpointermove=null}};
- r.onkeydown=function(e){var k=e.key,s=e.shiftKey?10:1,dx=k=='ArrowRight'?s:k=='ArrowLeft'?-s:0,dy=k=='ArrowDown'?s:k=='ArrowUp'?-s:0;if(dx||dy){e.preventDefault();mv(b,dx,dy)}}}
+function val(b,ax,f){return ax=='x'?b.x+b.w*f:b.y+b.h*f}
+function poly(t,w,h){var p;
+ if(t=='tri')p=[[w/2,0],[w,h],[0,h]];
+ else if(t=='diamond')p=[[w/2,0],[w,h/2],[w/2,h],[0,h/2]];
+ else if(t=='hex')p=[[w*.25,0],[w*.75,0],[w,h/2],[w*.75,h],[w*.25,h],[0,h/2]];
+ else{p=[];for(var i=0;i<10;i++){var a=-Math.PI/2+i*Math.PI/5,r=i%2?.42:1;p.push([Math.cos(a)*r,Math.sin(a)*r])}
+  var x0=Math.min.apply(0,p.map(function(q){return q[0]})),x1=Math.max.apply(0,p.map(function(q){return q[0]})),y0=Math.min.apply(0,p.map(function(q){return q[1]})),y1=Math.max.apply(0,p.map(function(q){return q[1]}));
+  p=p.map(function(q){return[(q[0]-x0)/(x1-x0)*w,(q[1]-y0)/(y1-y0)*h]})}
+ return p.map(function(q){return q[0].toFixed(1)+','+q[1].toFixed(1)}).join(' ')}
+function forma(g,b,i){var t=b.type,w=b.w,h=b.h,e;
+ if(t=='circle')e=ne('ellipse',{cx:w/2,cy:h/2,rx:w/2,ry:h/2});
+ else if(t=='square'||t=='rect')e=ne('rect',{x:0,y:0,width:w,height:h,rx:6});
+ else if(t=='pill')e=ne('rect',{x:0,y:0,width:w,height:h,rx:h/2});
+ else e=ne('polygon',{points:poly(t,w,h),'stroke-linejoin':'round'});
+ e.setAttribute('fill',COL[i%COL.length]);g.appendChild(e);b.sh=e}
+function crear(){var o=cur.o,sm=o>=5,tipos=SH.slice().sort(function(){return Math.random()-.5}).slice(0,o),objs=tipos.map(function(t){var s=R(sm?40:46,sm?56:90),b={type:t,w:s,h:s};
+  if(t=='tri')b.w=Math.round(s*1.15);if(t=='rect'){b.w=Math.round(s*1.35);b.h=Math.round(s*.78)}if(t=='pill'){b.w=Math.round(s*1.5);b.h=Math.max(34,Math.round(s*.62))}return b});
+ for(var t=0;t<700;t++){objs.forEach(function(b){b.x=R(10,W-b.w-10);b.y=R(10,H-b.h-10)});if(libre(objs)&&desorden(objs))break}
+ return objs}
+function libre(bs){for(var i=0;i<bs.length;i++)for(var j=i+1;j<bs.length;j++){var a=bs[i],b=bs[j];if(a.x<b.x+b.w+8&&b.x<a.x+a.w+8&&a.y<b.y+b.h+8&&b.y<a.y+a.h+8)return false}return true}
+function desorden(bs){var ok=true;(cur.a||[]).forEach(function(c){var v=bs.map(function(b){return val(b,c[0],c[1])});if(Math.max.apply(0,v)-Math.min.apply(0,v)<45)ok=false});
+ if(cur.d){var g=huecos(bs,cur.d).g;if(Math.max.apply(0,g)-Math.min.apply(0,g)<35)ok=false}return ok}
+function huecos(bs,ax){var k=ax,s=ax=='x'?'w':'h',o=bs.slice().sort(function(a,b){return a[k]+a[s]/2-b[k]-b[s]/2}),g=[];for(var i=0;i<o.length-1;i++)g.push(o[i+1][k]-o[i][k]-o[i][s]);return{o:o,g:g,k:k,s:s}}
+function mv(b,dx,dy){if(lock)return;b.x=cl(b.x+dx,0,W-b.w);b.y=cl(b.y+dy,0,H-b.h);b.g.setAttribute('transform','translate('+b.x+' '+b.y+')')}
+function objeto(b,i){var g=add('g',{transform:'translate('+b.x+' '+b.y+')',tabindex:0,role:'img','aria-label':'Objeto '+(i+1)});b.g=g;forma(g,b,i);B.push(b);
+ /* área de agarre: toda la caja de la forma (+6 px). Sin esto, en estrellas, triángulos o rombos solo se agarraba tocando justo la parte pintada */
+ g.appendChild(ne('rect',{'class':'hit',x:-6,y:-6,width:b.w+12,height:b.h+12,fill:'transparent'}));
+ var ayuda=null;
+ if(cur.bx){ayuda=ne('g',{'pointer-events':'none'});g.appendChild(ayuda);ayuda.appendChild(ne('rect',{x:0,y:0,width:b.w,height:b.h,fill:'none',stroke:'rgba(255,255,255,.75)','stroke-width':1.5,'stroke-dasharray':'4 4','pointer-events':'none'}));
+  var fx=.5,fy=.5;(cur.a||[]).forEach(function(c){if(c[0]=='x')fx=c[1];else fy=c[1]});
+  ayuda.appendChild(ne('circle',{cx:b.w*fx,cy:b.h*fy,r:4.5,fill:PINK,stroke:'#fff','stroke-width':1.8}))}
+ /* la ayuda (caja + punto) se ve hasta que se toca el objeto */
+ function sinAyuda(){if(ayuda){ayuda.remove();ayuda=null}}
+ g.onpointerdown=function(e){if(lock)return;sinAyuda();
+  /* primero se sube al frente y recién después se captura el puntero: reinsertar el nodo con el puntero ya capturado cortaba el arrastre */
+  if(g!==sv.lastChild)sv.appendChild(g);
+  try{g.setPointerCapture(e.pointerId)}catch(_){}
+  var d=pt(e),x0=b.x,y0=b.y;
+  g.onpointermove=function(f){var p=pt(f);mv(b,x0+p.x-d.x-b.x,y0+p.y-d.y-b.y)};
+  g.onpointerup=g.onpointercancel=function(){g.onpointermove=null}};
+ g.onkeydown=function(e){var k=e.key,s=e.shiftKey?10:1,dx=k=='ArrowRight'?s:k=='ArrowLeft'?-s:0,dy=k=='ArrowDown'?s:k=='ArrowUp'?-s:0;if(dx||dy){e.preventDefault();sinAyuda();mv(b,dx,dy)}}}
+function tx(x,y,s,anc){var t=add('text',{x:x,y:y,'text-anchor':anc||'middle','font-family':'Arial,sans-serif','font-size':12,'font-weight':800,fill:PINK,stroke:'#fff','stroke-width':3.5,'paint-order':'stroke','pointer-events':'none'});t.textContent=s;return t}
+function ln(x1,y1,x2,y2,w,d){return add('line',{x1:x1,y1:y1,x2:x2,y2:y2,stroke:PINK,'stroke-width':w||2,'stroke-dasharray':d||'0','stroke-linecap':'round','pointer-events':'none'})}
 QFAJ.init({nombre:'Alinear',juego:'alinear',total:5,reset:function(){errs=[];V=QFAJ.sortear('alinear',BANCO,5)},
-ronda:function(n,c){cur=V[n-1];T=cur.t;c.textContent=cur.c;sv.innerHTML='';B=[];lock=false;var i,b;
- if(T=='x'){G=cur.f==0?R(120,240):cur.f==1?R(360,480):R(240,360);guia(G,10,G,350);
-  for(i=0;i<4;i++){b={w:R(50,130),h:R(34,60),fixed:false};b.x=R(20,540-b.w+20);b.y=24+i*84;bloque(b,i)}}
- else if(T=='y'){G=cur.f==0?R(60,120):cur.f==1?R(280,320):R(150,210);guia(10,G,590,G);
-  for(i=0;i<5;i++){b={w:R(50,90),h:R(40,140),fixed:false};b.x=40+i*110;b.y=R(20,340-b.h);bloque(b,i)}}
- else if(T=='dx'){for(i=0;i<5;i++){b={w:R(50,90),h:R(44,80),y:140,fixed:i==0||i==4};b.x=i==0?30:i==4?570-b.w:R(100,440);b.y=140+Math.round((80-b.h)/2);bloque(b,i)}}
- else if(T=='dy'){for(i=0;i<5;i++){b={w:R(60,90),h:R(26,44),fixed:i==0||i==4};b.x=40+i*110;b.y=i==0?14:i==4?346-b.h:R(70,250);bloque(b,i)}}
- else{Gx=R(170,430);Gy=R(120,240);guia(Gx,10,Gx,350);guia(10,Gy,590,Gy);
-  for(i=0;i<cur.b;i++){b={w:R(50,110),h:R(40,90),fixed:false};var t=0;do{b.x=R(10,590-b.w);b.y=R(10,350-b.h);t++}while(t<20&&Math.hypot(b.x+b.w*cur.f[0]-Gx,b.y+b.h*cur.f[1]-Gy)<80);bloque(b,i)}}},
-medir:function(){var m=B.filter(function(b){return!b.fixed}),v,div=20;lock=true;
- if(T=='dx'||T=='dy'){var k=T=='dx'?'x':'y',s=T=='dx'?'w':'h',o=B.slice().sort(function(a,b){return a[k]-b[k]}),g=[];for(var i=0;i<4;i++)g.push(o[i+1][k]-o[i][k]-o[i][s]);var mg=g.reduce(function(a,b){return a+b},0)/4;v=g.map(function(x){return Math.abs(x-mg)})}
- else if(T=='xy'){div=28;v=m.map(function(b){return Math.hypot(b.x+b.w*cur.f[0]-Gx,b.y+b.h*cur.f[1]-Gy)})}
- else if(T=='x')v=m.map(function(b){return Math.abs(b.x+b.w*cur.f-G)});
- else v=m.map(function(b){return Math.abs(b.y+b.h*cur.f-G)});
- var e=v.reduce(function(a,b){return a+b},0)/v.length;errs.push(e);
- return{pts:Math.round(200*Math.max(0,1-e/div)),txt:'error medio de '+e.toFixed(1)+' px'+(e<1?'. Pulso de cirujano.':'.')}},
+ronda:function(n,c){cur=V[n-1];c.textContent=cur.c;sv.innerHTML='';B=[];lock=false;crear().forEach(objeto)},
+medir:function(){lock=true;var n=B.length,A=cur.a||[],es=[],ref=-1,aire='',mg=null;
+ if(A.length){var md=A.map(function(c){var v=B.map(function(b){return val(b,c[0],c[1])}).sort(function(a,b){return a-b});return n%2?v[(n-1)/2]:(v[n/2-1]+v[n/2])/2}),best=1e9;
+  B.forEach(function(b,i){var s=0;A.forEach(function(c,j){s+=Math.abs(val(b,c[0],c[1])-md[j])});if(s<best){best=s;ref=i}});
+  var rb=B[ref];
+  A.forEach(function(c){var r=val(rb,c[0],c[1]),tot=0,x=c[0]=='x';
+   if(x)ln(r,0,r,H,2,'7 6');else ln(0,r,W,r,2,'7 6');
+   B.forEach(function(b,i){if(i==ref)return;var v=val(b,c[0],c[1]),d=v-r;tot+=Math.abs(d);if(Math.abs(d)<.5)return;
+    if(x){var y=b.y+b.h/2;ln(v,y,r,y,3);add('circle',{cx:v,cy:y,r:4,fill:PINK});tx((v+r)/2,y-7,Math.abs(d).toFixed(1)+' px')}
+    else{var xx=b.x+b.w/2;ln(xx,v,xx,r,3);add('circle',{cx:xx,cy:v,r:4,fill:PINK});tx(xx+8,(v+r)/2+4,Math.abs(d).toFixed(1)+' px','start')}});
+   es.push(tot/(n-1))});
+  rb.sh.setAttribute('stroke',PINK);rb.sh.setAttribute('stroke-width',4);sv.appendChild(rb.g)}
+ if(cur.d){var h=huecos(B,cur.d),x=cur.d=='x';mg=h.g.reduce(function(a,b){return a+b},0)/h.g.length;
+  var yb=x?Math.min(H-14,Math.max.apply(0,B.map(function(b){return b.y+b.h}))+20):0,xb=x?0:Math.min(W-44,Math.max.apply(0,B.map(function(b){return b.x+b.w}))+20);
+  h.g.forEach(function(g,i){var a=h.o[i],b=h.o[i+1],p1=a[h.k]+a[h.s],p2=b[h.k];
+   if(x){ln(p1,a.y+a.h,p1,yb,1.5,'3 4');ln(p2,b.y+b.h,p2,yb,1.5,'3 4');ln(p1,yb,p2,yb,3);add('circle',{cx:p1,cy:yb,r:3.5,fill:PINK});add('circle',{cx:p2,cy:yb,r:3.5,fill:PINK});tx((p1+p2)/2,yb-7,g.toFixed(1)+' px')}
+   else{ln(a.x+a.w,p1,xb,p1,1.5,'3 4');ln(b.x+b.w,p2,xb,p2,1.5,'3 4');ln(xb,p1,xb,p2,3);add('circle',{cx:xb,cy:p1,r:3.5,fill:PINK});add('circle',{cx:xb,cy:p2,r:3.5,fill:PINK});tx(xb+8,(p1+p2)/2+4,g.toFixed(1)+' px','start')}});
+  var ed=h.g.reduce(function(a,g){return a+Math.abs(g-mg)},0)/h.g.length;
+  if(mg<14){ed+=(14-mg)*.6;aire=' Los objetos están pegados: dejá aire entre ellos.'}
+  es.push(ed)}
+ var e=es.reduce(function(a,b){return a+b},0)/es.length;errs.push(e);
+ return{pts:Math.round(200*Math.max(0,1-e/20)),txt:'error medio de '+e.toFixed(1)+' px'+(e<1?'. Pulso de cirujano.':'.')+(A.length?' La guía sale del objeto resaltado.':' Mirá los espacios entre objetos.')+aire}},
 detalle:function(){var m=errs.reduce(function(a,b){return a+b},0)/errs.length;return[['EJERCICIOS','5'],['ERROR MEDIO',m.toFixed(1)+' px']]}});
 });</script>
 <style id="embebido">.embebido html,html.embebido,html.embebido body{background:transparent!important;min-height:0!important;height:auto!important}html.embebido body>*{min-height:0!important}html.embebido .volver{display:none!important}</style>
