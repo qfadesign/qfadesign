@@ -137,6 +137,7 @@ footer{position:relative;z-index:1;background:none;color:#fff;overflow:hidden}
 .redes a{text-underline-offset:6px;text-decoration-thickness:2px}
 .redes a:hover{text-decoration:underline}
 .firma{background:none;color:rgba(255,255,255,.72);text-align:center;font-style:italic;font-weight:400;font-size:14px;padding:0 16px 22px}
+.firma a{color:inherit;text-decoration:underline;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:3px;transition:text-decoration-color .2s}.firma a:hover,.firma a:focus-visible{text-decoration-color:#fff}
 @media(max-width:700px){.redes{gap:6px 18px;justify-content:center}}
 
 /* texto solo para lectores de pantalla y buscadores */

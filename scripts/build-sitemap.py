@@ -21,7 +21,7 @@ def fecha(ruta):
         pass
     return datetime.date.fromtimestamp(ruta.stat().st_mtime).isoformat()
 
-orden = ["index.html", "portfolio.html", "acerca.html", "contacto.html", "herramientas.html", "jueguitos.html"]
+orden = ["index.html", "portfolio.html", "acerca.html", "contacto.html", "herramientas.html", "jueguitos.html", "privacidad.html"]
 paginas = [p for p in orden if (raiz / p).exists()]
 paginas += sorted(p.name for p in raiz.glob("proyecto-*.html"))
 paginas += sorted(f"juegos/{p.name}" for p in (raiz / "juegos").glob("*.html"))
@@ -35,7 +35,7 @@ for p in paginas:
     if re.search(r'<meta name="robots" content="[^"]*noindex', html):
         continue
     url = f"{dominio}/" if p == "index.html" else f"{dominio}/{p.removesuffix('.html')}"  # URLs sin .html
-    prio = "1.0" if p == "index.html" else "0.9" if p == "portfolio.html" else "0.8" if p.startswith("proyecto-") else "0.6"
+    prio = "1.0" if p == "index.html" else "0.9" if p == "portfolio.html" else "0.8" if p.startswith("proyecto-") else "0.3" if p == "privacidad.html" else "0.6"
     img = ""
     if p.startswith("proyecto-"):
         m = re.search(r'class="pr-portada[^"]*".*?(?:src|poster)="([^"]+)"', html, re.S)
