@@ -21,6 +21,8 @@
   var LOGO_RATIO = 223 / 1000;
   var TITULO = "img/pdf-titulo-presupuesto.png";     /* sticker del título de la portada */
   var TITULO_RATIO = 290 / 1600;
+  var TITULO_BRIEF = "img/pdf-titulo-brief.png";     /* sticker del título de la portada del brief */
+  var TITULO_BRIEF_RATIO = 232 / 1600;
   var STICKER = "img/pdf-sticker-qfadesign.png";     /* sticker de la marca, arriba a la derecha */
   var STICKER_RATIO = 184 / 700;
   var SITIO = "qfadesign.com";
@@ -63,7 +65,7 @@
   var cacheRecursos = null;
   function cargarRecursos() {
     if (cacheRecursos) return cacheRecursos;
-    var rec = { fonts: null, logo: null, titulo: null, sticker: null };
+    var rec = { fonts: null, logo: null, titulo: null, tituloBrief: null, sticker: null };
     var tareas = [];
     var fuentes = {}, pend = [];
     Object.keys(FUENTES_TTF).forEach(function (fam) {
@@ -77,6 +79,7 @@
     tareas.push(Promise.all(pend).then(function () { rec.fonts = fuentes; }).catch(function () { rec.fonts = null; }));
     tareas.push(pedir(BASE + LOGO).then(function (buf) { rec.logo = "data:image/png;base64," + aBase64(buf); }).catch(function () { rec.logo = null; }));
     tareas.push(pedir(BASE + TITULO).then(function (buf) { rec.titulo = "data:image/png;base64," + aBase64(buf); }).catch(function () { rec.titulo = null; }));
+    tareas.push(pedir(BASE + TITULO_BRIEF).then(function (buf) { rec.tituloBrief = "data:image/png;base64," + aBase64(buf); }).catch(function () { rec.tituloBrief = null; }));
     tareas.push(pedir(BASE + STICKER).then(function (buf) { rec.sticker = "data:image/png;base64," + aBase64(buf); }).catch(function () { rec.sticker = null; }));
     cacheRecursos = Promise.all(tareas).then(function () { return rec; });
     return cacheRecursos;
@@ -441,10 +444,15 @@
     f("b", 8.5, C.gris); doc.text("N.º " + d.ref, ML, TOP + 24);
     trazo(C.linea, 0.75); doc.line(ML, TOP + 40, PW - ML, TOP + 40);
     y = TOP + 96;
-    f("h", 44, C.azul); doc.text("Brief", ML, y, { charSpace: -1.3 });
-    var wb = doc.getTextWidth("Brief") - 1.3 * 5;
-    trazo(C.azul, 1.3); f("h", 44, C.azul);
-    doc.text("de proyecto", ML + wb + 12, y, { renderingMode: "stroke", charSpace: -1.3 });
+    if (rec && rec.tituloBrief) {
+      var tw = 330, th = tw * TITULO_BRIEF_RATIO;           /* sticker del título (con su borde negro) */
+      doc.addImage(rec.tituloBrief, "PNG", ML - 3, y - 42, tw, th);
+    } else {                                              /* si no carga la imagen, vuelve al título en texto */
+      f("h", 44, C.azul); doc.text("Brief", ML, y, { charSpace: -1.3 });
+      var wb = doc.getTextWidth("Brief") - 1.3 * 5;
+      trazo(C.azul, 1.3); f("h", 44, C.azul);
+      doc.text("de proyecto", ML + wb + 12, y, { renderingMode: "stroke", charSpace: -1.3 });
+    }
     y += 24;
     f("b", 11, C.gris); doc.text("Lo que necesito para arrancar, ordenado en una hoja.", ML, y);
     y += 26;
