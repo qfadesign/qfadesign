@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GRQW2ECVME"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GRQW2ECVME');
+</script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- SEO:start -->
+<title>La pluma: calcá curvas Bézier como en Illustrator | qfadesign</title>
+<meta name="description" content="Practicá la herramienta pluma: calcá cinco formas con curvas Bézier usando la menor cantidad de puntos posible.">
+<link rel="canonical" href="https://qfadesign.com/juegos/pluma">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="author" content="Facundo">
+<meta name="theme-color" content="#0a5cc0">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="icon" href="../favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../favicon-16x16.png" type="image/png" sizes="16x16">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="qfadesign">
+<meta property="og:locale" content="es_LA">
+<meta property="og:url" content="https://qfadesign.com/juegos/pluma">
+<meta property="og:title" content="La pluma: calcá curvas Bézier como en Illustrator | qfadesign">
+<meta property="og:description" content="Practicá la herramienta pluma: calcá cinco formas con curvas Bézier usando la menor cantidad de puntos posible.">
+<meta property="og:image" content="https://qfadesign.com/img/og/og-jueguitos.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="La pluma, un jueguito de qfadesign">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="La pluma: calcá curvas Bézier como en Illustrator | qfadesign">
+<meta name="twitter:description" content="Practicá la herramienta pluma: calcá cinco formas con curvas Bézier usando la menor cantidad de puntos posible.">
+<meta name="twitter:image" content="https://qfadesign.com/img/og/og-jueguitos.jpg">
+<meta name="twitter:image:alt" content="La pluma, un jueguito de qfadesign">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"La pluma","description":"Practicá la herramienta pluma: calcá cinco formas con curvas Bézier usando la menor cantidad de puntos posible.","url":"https://qfadesign.com/juegos/pluma","applicationCategory":"GameApplication","operatingSystem":"Web","inLanguage":"es","image":"https://qfadesign.com/img/og/og-jueguitos.jpg","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@id":"https://qfadesign.com/#facundo"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://qfadesign.com/"},{"@type":"ListItem","position":2,"name":"Jueguitos","item":"https://qfadesign.com/jueguitos"},{"@type":"ListItem","position":3,"name":"La pluma","item":"https://qfadesign.com/juegos/pluma"}]},{"@type":"Person","@id":"https://qfadesign.com/#facundo","name":"Facundo","alternateName":"qfadesign","jobTitle":"Diseñador en Comunicación Visual","url":"https://qfadesign.com/","image":"https://qfadesign.com/img/perfil.jpg","email":"mailto:qfadesignn@gmail.com","knowsAbout":["Branding","Identidad visual","Motion graphics","Diseño editorial","Social media","Diseño de logos"],"sameAs":["https://www.instagram.com/qfadesign/","https://www.tiktok.com/@qfadesign","https://www.behance.net/facundocruz5","https://www.linkedin.com/in/facundo-cruz-19a581303/"]}]}</script>
+<!-- SEO:end -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+.app{display:flex;flex-direction:column;align-items:center}
+.game-card{display:flex;flex-direction:column;align-items:center}
+.top-info{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:22px;width:min(100%,max(320px,calc((100svh - 400px)*var(--ar,1.6))),1180px);margin:0 auto 14px}
+#roundText{display:flex;gap:9px}.dot{width:14px;height:14px;border-radius:50%;border:2px solid #fff;opacity:.55}.dot.on{background:#fff;opacity:1;scale:1.2}.dot.ok{background:var(--blue);border-color:var(--blue);opacity:1}
+#scoreText{font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(26px,3.4vw,44px);line-height:1;color:#fff}
+#gameContent{--ar:1.5;width:100%;display:flex;flex-direction:column;align-items:center}
+.consigna{text-align:center;color:#fff;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(15px,1.9vw,26px);line-height:1.1;letter-spacing:-.01em;margin:0;text-align:center}
+.stage{display:block;width:min(100%,max(320px,calc((100svh - 400px)*var(--ar,1.6))),1180px);margin:0 auto;border-radius:22px;background:var(--crema);background-image:radial-gradient(rgba(10,92,192,.2) 1.6px,transparent 1.7px);background-size:30px 30px;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 6px rgba(255,255,255,.08);touch-action:none;user-select:none;-webkit-user-select:none}
+.acc{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0 6px}
+.message{min-height:0;text-align:center;margin-top:10px;max-width:760px}
+.message:not(:empty){display:inline-block;background:var(--crema);color:#06214d!important;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(14px,1.4vw,17px)!important;line-height:1.25;padding:10px 20px 12px;border-radius:16px;rotate:-1deg;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.final-screen{display:none;text-align:center;width:100%}.final-screen.show{display:block}
+.final-label{margin-inline:auto}.final-title{margin:6px 0}.final-copy{margin:0 0 16px}
+svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28))}svg.stage rect:active{cursor:grabbing}svg.stage rect:focus-visible{outline:3px solid #ff4d8d;outline-offset:2px}
+svg.stage{cursor:crosshair}.sec{min-height:0!important;padding:11px 20px 12px!important;font-size:14px!important}
+.consejo{display:inline-block;max-width:460px;margin:0 auto 20px;padding:8px 18px;border:2px solid #fff;border-radius:99px;color:#fff;font-family:var(--fp);font-size:12px;letter-spacing:.05em;text-transform:uppercase;line-height:1.4}
+</style>
+<script>if(self!==top){document.write('<style>html,body{background:transparent!important}#volver{display:none!important}</style>')}</script>
+<link rel="preconnect" href="https://use.typekit.net" crossorigin><link rel="preconnect" href="https://p.typekit.net" crossorigin><link rel="stylesheet" href="https://use.typekit.net/ftd7ahn.css">
+<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/ranking-config.js" defer></script><script src="../js/ranking.js" defer></script><script src="../js/juego-base.js" defer></script>
+<link rel="stylesheet" href="../css/botones.css"><script src="../js/cursor.js" defer></script></head>
+
+<body class="f-juegos"><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca" data-t="Acerca de">Acerca de</a></li><li><a href="../portfolio" data-t="Portfolio">Portfolio</a></li><li><a href="../herramientas" data-t="Herramientas">Herramientas</a></li><li><a href="../jueguitos" data-t="Jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../contacto" data-t="Contacto">Contacto</a></li></ul></nav>
+<div class="vol-wrap"><a class="volver" href="../jueguitos" aria-label="Volver a Jueguitos"><span>Volver a</span><img src="../img/stickers/jueguitos.svg" alt="" width="488.7" height="126.74"></a></div>
+  <main class="app">
+<header class="header"><h1 class="h1-st"><img src="../img/stickers/juego-pluma.webp" alt="Vectorizá con la pluma" width="1200" height="806" decoding="async"></h1><p class="subtitle">Calcá formas con curvas Bézier como en Illustrator.</p></header>
+<section class="game-card">
+<div class="start-screen" id="startScreen"><div class="inicio"><div class="inicio-reglas">
+<div class="start-title">Cinco formas, pocos puntos</div><p class="start-copy">Calcá cada forma con la pluma y la menor cantidad de puntos posible. Menos puntos, mejor curva. Cada partida sortea formas nuevas, de las más simples a las más complejas.</p>
+<p class="consejo">Recomendado: jugalo con mouse</p>
+<div class="how-to"><strong>¿Cómo se juega?</strong><p>Clic para poner un punto. Clic y arrastrá para sacar las manijas y curvar el trazo. Para cerrar la forma, hacé clic sobre el primer punto (se marca cuando estás cerca); si arrastrás al cerrar, también curvás ese punto. Después de cerrar podés seguir ajustando: arrastrá cualquier punto o manija. Con Alt (Opción) rompés una manija para moverla sola, y con doble clic en un punto lo pasás de esquina a curva y viceversa. Podés deshacer o borrar. Con el mouse es mucho más fácil ser preciso que con el dedo.</p></div>
+<div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div></div>
+<aside class="rank-top" data-rank-top data-juego="pluma" data-modo="Estándar" aria-label="Los 3 mejores puntajes"></aside></div></div>
+<div id="gameContent" style="display:none">
+<div class="top-info"><span id="roundText"></span><p class="consigna" id="consigna"></p><span class="score" id="scoreText">0 pts</span></div>
+<svg class="stage" id="sv" style="--ar:1.5" viewBox="0 0 600 400" role="img" aria-label="Zona de dibujo con la pluma"><path id="tg" fill="none" stroke="rgba(10,92,192,.45)" stroke-width="3" stroke-dasharray="6 8"/><path id="us" fill="none" stroke="#0b75f4" stroke-width="4" stroke-linejoin="round"/><g id="hd"></g></svg>
+<div class="acc"><button class="primary sec" type="button" id="undo">Deshacer</button><button class="primary sec" type="button" id="clr">Borrar</button><button class="primary" type="button" id="okBtn">Listo</button><button class="primary" type="button" id="nextBtn" hidden>Siguiente</button></div>
+<div class="message" id="message" aria-live="polite"></div></div>
+<div class="final-screen" id="finalScreen"><div class="final-label">Partida terminada</div><div class="final-title">¡Terminaste las 5 rondas!</div><div class="final-score" id="finalScore">0 pts</div><p class="final-copy">Tu puntaje en La pluma. El máximo es 1000.</p><div id="shareBox" class="share-box"></div><button class="play-again" id="playAgain" type="button">Jugar de nuevo</button></div>
+</section></main>
+<script>window.addEventListener('load',function(){
+var $=function(i){return document.getElementById(i)};
+var NS='http://www.w3.org/2000/svg',sv=$('sv'),tg=$('tg'),us=$('us'),hd=$('hd'),A,closed,lock,drag,cur,pcts=[],P;
+/* banco: k = clave, n = nivel (1 simple … 5 compleja), d = forma, m = máximo de puntos, h = pista */
+var BANCO=[{k:"triangulo",n:1,d:"M300 70C300 70 520 330 520 330C520 330 80 330 80 330C80 330 300 70 300 70Z",m:4,h:"Tres vértices: solo clics, sin arrastrar. Cerrá sobre el primero."},
+{k:"rombo",n:1,d:"M300 50C300 50 520 200 520 200C520 200 300 350 300 350C300 350 80 200 80 200C80 200 300 50 300 50Z",m:5,h:"Cuatro vértices: solo clics. Cerrá sobre el primero."},
+{k:"zigzag",n:2,d:"M60 300L180 100L300 300L420 100L540 300",m:6,h:"Solo clics, sin arrastrar: un punto por vértice."},
+{k:"rayo",n:2,d:"M340 40C340 40 180 220 180 220C180 220 290 220 290 220C290 220 250 360 250 360C250 360 420 160 420 160C420 160 310 160 310 160C310 160 340 40 340 40Z",m:7,h:"Seis vértices, solo clics. Cerrá sobre el primero."},
+{k:"flecha",n:2,d:"M80 160C80 160 330 160 330 160C330 160 330 70 330 70C330 70 520 200 520 200C520 200 330 330 330 330C330 330 330 240 330 240C330 240 80 240 80 240C80 240 80 160 80 160Z",m:8,h:"Siete vértices, solo clics. Cerrá sobre el primero."},
+{k:"onda",n:3,d:"M60 200C150 20 250 20 300 200S450 380 540 200",m:5,h:"Tres puntos alcanzan: arrastrá en cada uno para sacar las manijas largas hacia arriba y abajo."},
+{k:"circulo",n:3,d:"M300 70C371.8 70 430 128.2 430 200C430 271.8 371.8 330 300 330C228.2 330 170 271.8 170 200C170 128.2 228.2 70 300 70Z",m:5,h:"Un círculo se hace con 4 puntos: arrastrá en cada uno siguiendo la curva. Cerrá sobre el primero."},
+{k:"gota",n:4,d:"M300 50C360 140 440 210 440 280C440 350 380 380 300 380C220 380 160 350 160 280C160 210 240 140 300 50Z",m:6,h:"La punta de arriba es un vértice: ahí solo clic, sin manijas. Los demás puntos llevan manijas."},
+{k:"corazon",n:4,d:"M300 360C120 240 90 150 150 100C210 55 280 90 300 140C320 90 390 55 450 100C510 150 480 240 300 360Z",m:7,h:"Las dos puntas (abajo y arriba al centro) van con clic; en los lóbulos arrastrá para curvar. Podés usar puntos extra para ajustar."},
+{k:"luna",n:5,d:"M400 60C400 60 130 100 130 200C130 300 400 340 400 340C400 340 250 280 250 200C250 120 400 60 400 60Z",m:6,h:"Las dos puntas son vértices (clic); en los otros puntos arrastrá para curvar."},
+{k:"infinito",n:5,d:"M500 200C500 300 370 270 300 200C230 130 100 100 100 200C100 300 230 270 300 200C370 130 500 100 500 200Z",m:6,h:"El centro se cruza dos veces: poné ahí un punto al pasar y otro al volver. Cerrá sobre el primero."},
+{k:"pez",n:5,d:"M80 200C80 200 160 120 230 110C300 100 400 170 400 170C400 170 520 100 520 100C520 100 490 200 490 200C490 200 520 300 520 300C520 300 400 230 400 230C400 230 300 280 230 290C160 300 80 200 80 200Z",m:10,h:"Cuerpo con curvas y cola con una muesca en el medio."}];
+function pt(e){var p=sv.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(sv.getScreenCTM().inverse())}
+/* Cada punto lleva dos manijas (relativas al punto): salida (ox,oy) y entrada (ix,iy). lk = manijas enlazadas (punto suave). */
+function mk(x,y){return{x:x,y:y,ox:0,oy:0,ix:0,iy:0,lk:true}}
+function seg(a,b){return'C'+(a.x+a.ox)+' '+(a.y+a.oy)+' '+(b.x+b.ix)+' '+(b.y+b.iy)+' '+b.x+' '+b.y}
+function ds(){if(!A.length)return'';var d='M'+A[0].x+' '+A[0].y,n=A.length;for(var i=1;i<n;i++)d+=seg(A[i-1],A[i]);if(closed&&n>2)d+=seg(A[n-1],A[0])+'Z';return d}
+function E(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);hd.appendChild(e)}
+function esc(){var m=sv.getScreenCTM();return m&&m.a>0?m.a:1}
+function puedeCerrar(){return!closed&&A.length>2}
+function draw(){var k=esc(),sz=6/k,hr=4.5/k;us.setAttribute('d',ds());us.setAttribute('fill',closed?'rgba(11,117,244,.14)':'none');hd.innerHTML='';
+ /* vista previa del próximo tramo, como en Illustrator */
+ if(mouse&&!closed&&!lock&&!drag&&A.length&&!hv){var l=A[A.length-1];E('path',{d:'M'+l.x+' '+l.y+'C'+(l.x+l.ox)+' '+(l.y+l.oy)+' '+mouse.x+' '+mouse.y+' '+mouse.x+' '+mouse.y,fill:'none',stroke:'rgba(11,117,244,.5)','stroke-width':2/k,'stroke-dasharray':(6/k)+' '+(5/k),'pointer-events':'none'})}
+ A.forEach(function(a,i){var ho=Math.hypot(a.ox,a.oy)>.5,hi=Math.hypot(a.ix,a.iy)>.5;
+  if(ho)E('line',{x1:a.x,y1:a.y,x2:a.x+a.ox,y2:a.y+a.oy,stroke:'#0b75f4','stroke-width':1.5/k});
+  if(hi)E('line',{x1:a.x,y1:a.y,x2:a.x+a.ix,y2:a.y+a.iy,stroke:'#0b75f4','stroke-width':1.5/k});
+  if(ho)E('circle',{cx:a.x+a.ox,cy:a.y+a.oy,r:hr,fill:'#fff',stroke:'#0b75f4','stroke-width':2/k});
+  if(hi)E('circle',{cx:a.x+a.ix,cy:a.y+a.iy,r:hr,fill:'#fff',stroke:'#0b75f4','stroke-width':2/k});
+  var on=hv&&hv.t=='a'&&hv.i==i;
+  if(i==0&&on&&puedeCerrar())E('circle',{cx:a.x,cy:a.y,r:sz*2,fill:'none',stroke:'#ff4d8d','stroke-width':2.5/k});
+  E('rect',{x:a.x-sz,y:a.y-sz,width:sz*2,height:sz*2,fill:i?'#fff':'#0b75f4',stroke:on?'#ff4d8d':'#0b75f4','stroke-width':2.5/k})})}
+/* qué hay bajo el puntero: manija (hin/hout) o punto (a). Gana el más cercano; a igual distancia, la manija */
+function hit(p){var k=esc(),r=13/k,best=null,bd=1e9;
+ A.forEach(function(a,i){
+  [['hout',a.ox,a.oy],['hin',a.ix,a.iy]].forEach(function(h){if(Math.hypot(h[1],h[2])<=.5)return;var d=Math.hypot(p.x-(a.x+h[1]),p.y-(a.y+h[2]))-3/k;if(d<r&&d<bd){bd=d;best={t:h[0],i:i}}});
+  var d=Math.hypot(p.x-a.x,p.y-a.y);if(d<r&&d<bd){bd=d;best={t:'a',i:i}}});
+ return best}
+function snap(){H.push(JSON.stringify({A:A,c:closed}));if(H.length>200)H.shift()}
+function restaurar(){var o=JSON.parse(H.pop());A=o.A;closed=o.c}
+/* doble clic / doble toque sobre un punto: alterna entre esquina (sin manijas) y curva (manijas enlazadas) */
+function alternar(i){var a=A[i],n=A.length,tiene=Math.hypot(a.ox,a.oy)>.5||Math.hypot(a.ix,a.iy)>.5;
+ if(tiene){a.ox=a.oy=a.ix=a.iy=0;a.lk=true;return}
+ var pv_=A[i-1]||(closed?A[n-1]:null),nx=A[i+1]||(closed?A[0]:null);if(!pv_&&!nx)return;
+ var ax=(nx||a).x-(pv_||a).x,ay=(nx||a).y-(pv_||a).y,L=Math.hypot(ax,ay)||1,dp=pv_?Math.hypot(a.x-pv_.x,a.y-pv_.y):1e9,dn=nx?Math.hypot(a.x-nx.x,a.y-nx.y):1e9,m=Math.min(dp,dn)/3;
+ a.ox=ax/L*m;a.oy=ay/L*m;a.ix=-a.ox;a.iy=-a.oy;a.lk=true}
+function fijarSalida(a,vx,vy){a.ox=vx;a.oy=vy;if(a.lk){a.ix=-vx;a.iy=-vy}}
+function mu(d){var t=document.createElementNS(NS,'path');t.setAttribute('d',d);sv.appendChild(t);var L=t.getTotalLength(),a=[];for(var i=0;i<=80;i++){var q=t.getPointAtLength(L*i/80);a.push([q.x,q.y])}t.remove();return a}
+function ch(a,b){var s=0;a.forEach(function(p){var m=1e9;b.forEach(function(q){m=Math.min(m,Math.hypot(p[0]-q[0],p[1]-q[1]))});s+=m});return s/a.length}
+sv.onpointerdown=function(e){if(lock)return;var p=pt(e),h=hit(p),k=esc(),ahora=Date.now();
+ mouse=null;
+ if(h&&h.t=='a'){var dbl=ult&&ult.i==h.i&&ahora-ult.t<380&&!(puedeCerrar()&&h.i==0);ult=dbl?null:{i:h.i,t:ahora};
+  if(dbl){snap();alternar(h.i);draw();return}}else ult=null;
+ if(h){
+  if(h.t=='a'&&h.i==0&&puedeCerrar()){snap();closed=true;ult=null;drag={t:'close',i:0,sx:p.x,sy:p.y,k:k}}
+  else if(h.t=='a')drag={t:'a',i:h.i,sx:p.x,sy:p.y,x0:A[h.i].x,y0:A[h.i].y,k:k};
+  else drag={t:h.t,i:h.i,sx:p.x,sy:p.y,k:k};
+  try{sv.setPointerCapture(e.pointerId)}catch(_){}draw();return}
+ if(closed)return;
+ if(A.length>=cur.m){$('message').textContent='Llegaste al máximo de '+cur.m+' puntos. Deshacé o borrá.';return}
+ snap();$('message').textContent='';var a=mk(p.x,p.y);A.push(a);hv={t:'a',i:A.length-1};
+ drag={t:'new',i:A.length-1,sx:p.x,sy:p.y,k:k};try{sv.setPointerCapture(e.pointerId)}catch(_){}draw()};
+sv.onpointermove=function(e){var p=pt(e);
+ if(!drag){if(lock)return;var h=hit(p);hv=h;if(e.pointerType!='touch')mouse=p;
+  sv.style.cursor=h?(h.t=='a'&&h.i==0&&puedeCerrar()?'pointer':'move'):'crosshair';draw();return}
+ var dx=p.x-drag.sx,dy=p.y-drag.sy;
+ if(!drag.mov){if(Math.hypot(dx,dy)<4/drag.k)return;drag.mov=true;if(drag.t=='a'||drag.t=='hin'||drag.t=='hout')snap()}
+ var a=A[drag.i];
+ if(drag.t=='new'||drag.t=='close'){fijarSalida(a,p.x-a.x,p.y-a.y)}
+ else if(drag.t=='a'){a.x=Math.max(0,Math.min(600,drag.x0+dx));a.y=Math.max(0,Math.min(400,drag.y0+dy))}
+ else{var out=drag.t=='hout',vx=p.x-a.x,vy=p.y-a.y;
+  if(e.altKey)a.lk=false; /* Alt/Opción: rompe la manija, el otro lado no se mueve */
+  if(out){a.ox=vx;a.oy=vy}else{a.ix=vx;a.iy=vy}
+  if(a.lk){var L=Math.hypot(out?a.ix:a.ox,out?a.iy:a.oy),v=Math.hypot(vx,vy)||1;if(L<.5)L=v;
+   if(out){a.ix=-vx/v*L;a.iy=-vy/v*L}else{a.ox=-vx/v*L;a.oy=-vy/v*L}}}
+ draw()};
+function suelta(){drag=null;draw()}
+sv.onpointerup=suelta;sv.onpointercancel=suelta;
+sv.onpointerleave=function(){if(drag)return;mouse=null;hv=null;sv.style.cursor='crosshair';draw()};
+$('undo').onclick=function(){if(lock||!H.length)return;restaurar();hv=null;$('message').textContent='';draw()};
+$('clr').onclick=function(){if(lock||!A.length)return;snap();A=[];closed=false;hv=null;$('message').textContent='';draw()};
+QFAJ.init({nombre:'La pluma',juego:'pluma',total:5,reset:function(){pcts=[];P=QFAJ.sortear('pluma',BANCO,5)},
+ronda:function(n,c){cur=P[n-1];A=[];H=[];hv=null;mouse=null;ult=null;closed=false;lock=false;drag=null;sv.style.cursor='crosshair';tg.setAttribute('d',cur.d);tg.setAttribute('stroke','rgba(10,92,192,.45)');tg.setAttribute('stroke-dasharray','6 8');draw();
+ c.textContent='Calcá la forma con un máximo de '+cur.m+' puntos. '+cur.h},
+medir:function(){if(A.length<2){$('message').textContent='Poné al menos 2 puntos.';return null}
+ if(/Z$/.test(cur.d)&&!closed){$('message').textContent='Esta forma es cerrada: cerrala haciendo clic sobre el primer punto.';return null}
+ var d=(ch(mu(ds()),mu(cur.d))+ch(mu(cur.d),mu(ds())))/2;lock=true;mouse=null;hv=null;drag=null;sv.style.cursor='default';draw();tg.setAttribute('stroke','#ff4d8d');tg.setAttribute('stroke-dasharray','0');pcts.push(Math.max(0,1-d/30)*100);
+ return{pts:Math.round(200*Math.max(0,1-d/30)),txt:'desvío medio de '+d.toFixed(1)+' px respecto de la forma.'}},
+detalle:function(){var m=pcts.reduce(function(a,b){return a+b},0)/pcts.length;return[['FORMAS','5'],['PRECISIÓN MEDIA',Math.round(m)+'%']]}});
+});</script>
+<style id="embebido">.embebido html,html.embebido,html.embebido body{background:transparent!important;min-height:0!important;height:auto!important}html.embebido body>*{min-height:0!important}html.embebido .volver{display:none!important}</style>
+<script>if(top!==self){document.documentElement.classList.add('embebido');const s=()=>parent.postMessage({altoJuego:document.body.getBoundingClientRect().height+16},'*');addEventListener('load',()=>{s();new ResizeObserver(s).observe(document.body)})}</script>
+<footer>
+ <div class="gran" aria-hidden="true"><img src="../img/Marca_qfadesign_blanco.svg" alt=""></div>
+ <div class="pie"><div class="redes"><a href="https://www.instagram.com/qfadesign/" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@qfadesign" target="_blank" rel="noopener">Tiktok</a><a href="https://www.behance.net/facundocruz5" target="_blank" rel="noopener">Behance</a><a href="https://www.linkedin.com/in/facundo-cruz-19a581303/" target="_blank" rel="noopener">LinkedIn</a></div></div>
+ <p class="firma">web diseñada por qfadesign</p>
+</footer>
+</body>
+</html>

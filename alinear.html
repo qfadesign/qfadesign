@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GRQW2ECVME"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GRQW2ECVME');
+</script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- SEO:start -->
+<title>Alinear: el juego de precisión para diseñadores | qfadesign</title>
+<meta name="description" content="Cinco desafíos de alineación y distribución: ¿qué tan preciso es tu ojo de diseñador? Probalo.">
+<link rel="canonical" href="https://qfadesign.com/juegos/alinear">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="author" content="Facundo">
+<meta name="theme-color" content="#0a5cc0">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="icon" href="../favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../favicon-16x16.png" type="image/png" sizes="16x16">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="qfadesign">
+<meta property="og:locale" content="es_LA">
+<meta property="og:url" content="https://qfadesign.com/juegos/alinear">
+<meta property="og:title" content="Alinear: el juego de precisión para diseñadores | qfadesign">
+<meta property="og:description" content="Cinco desafíos de alineación y distribución: ¿qué tan preciso es tu ojo de diseñador? Probalo.">
+<meta property="og:image" content="https://qfadesign.com/img/og/og-jueguitos.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Alinear, un jueguito de qfadesign">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Alinear: el juego de precisión para diseñadores | qfadesign">
+<meta name="twitter:description" content="Cinco desafíos de alineación y distribución: ¿qué tan preciso es tu ojo de diseñador? Probalo.">
+<meta name="twitter:image" content="https://qfadesign.com/img/og/og-jueguitos.jpg">
+<meta name="twitter:image:alt" content="Alinear, un jueguito de qfadesign">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Alinear","description":"Cinco desafíos de alineación y distribución: ¿qué tan preciso es tu ojo de diseñador? Probalo.","url":"https://qfadesign.com/juegos/alinear","applicationCategory":"GameApplication","operatingSystem":"Web","inLanguage":"es","image":"https://qfadesign.com/img/og/og-jueguitos.jpg","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@id":"https://qfadesign.com/#facundo"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://qfadesign.com/"},{"@type":"ListItem","position":2,"name":"Jueguitos","item":"https://qfadesign.com/jueguitos"},{"@type":"ListItem","position":3,"name":"Alinear","item":"https://qfadesign.com/juegos/alinear"}]},{"@type":"Person","@id":"https://qfadesign.com/#facundo","name":"Facundo","alternateName":"qfadesign","jobTitle":"Diseñador en Comunicación Visual","url":"https://qfadesign.com/","image":"https://qfadesign.com/img/perfil.jpg","email":"mailto:qfadesignn@gmail.com","knowsAbout":["Branding","Identidad visual","Motion graphics","Diseño editorial","Social media","Diseño de logos"],"sameAs":["https://www.instagram.com/qfadesign/","https://www.tiktok.com/@qfadesign","https://www.behance.net/facundocruz5","https://www.linkedin.com/in/facundo-cruz-19a581303/"]}]}</script>
+<!-- SEO:end -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+.app{display:flex;flex-direction:column;align-items:center}
+.game-card{display:flex;flex-direction:column;align-items:center}
+.top-info{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:22px;width:min(100%,max(320px,calc((100svh - 400px)*var(--ar,1.6))),1180px);margin:0 auto 14px}
+#roundText{display:flex;gap:9px}.dot{width:14px;height:14px;border-radius:50%;border:2px solid #fff;opacity:.55}.dot.on{background:#fff;opacity:1;scale:1.2}.dot.ok{background:var(--blue);border-color:var(--blue);opacity:1}
+#scoreText{font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(26px,3.4vw,44px);line-height:1;color:#fff}
+#gameContent{--ar:1.667;width:100%;display:flex;flex-direction:column;align-items:center}
+.consigna{text-align:center;color:#fff;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(15px,1.9vw,26px);line-height:1.1;letter-spacing:-.01em;margin:0;text-align:center}
+.stage{display:block;width:min(100%,max(320px,calc((100svh - 400px)*var(--ar,1.6))),1180px);margin:0 auto;border-radius:22px;background:var(--crema);background-image:radial-gradient(rgba(10,92,192,.2) 1.6px,transparent 1.7px);background-size:30px 30px;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 6px rgba(255,255,255,.08);touch-action:none;user-select:none;-webkit-user-select:none}
+.acc{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0 6px}
+.message{min-height:0;text-align:center;margin-top:10px;max-width:760px}
+.message:not(:empty){display:inline-block;background:var(--crema);color:#06214d!important;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(14px,1.4vw,17px)!important;line-height:1.25;padding:10px 20px 12px;border-radius:16px;rotate:-1deg;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.final-screen{display:none;text-align:center;width:100%}.final-screen.show{display:block}
+.final-label{margin-inline:auto}.final-title{margin:6px 0}.final-copy{margin:0 0 16px}
+svg.stage g[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28));outline:none}svg.stage g:active{cursor:grabbing}svg.stage g:focus-visible>:not(.hit){stroke:#ff4d8d;stroke-width:3}svg.stage .hit{stroke:none!important}
+svg.stage rect[tabindex]{cursor:grab;filter:drop-shadow(0 4px 0 rgba(6,33,77,.28))}svg.stage rect:active{cursor:grabbing}svg.stage rect:focus-visible{outline:3px solid #ff4d8d;outline-offset:2px}
+
+</style>
+<script>if(self!==top){document.write('<style>html,body{background:transparent!important}#volver{display:none!important}</style>')}</script>
+<link rel="preconnect" href="https://use.typekit.net" crossorigin><link rel="preconnect" href="https://p.typekit.net" crossorigin><link rel="stylesheet" href="https://use.typekit.net/ftd7ahn.css">
+<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/ranking-config.js" defer></script><script src="../js/ranking.js" defer></script><script src="../js/juego-base.js" defer></script>
+<link rel="stylesheet" href="../css/botones.css"><script src="../js/cursor.js" defer></script></head>
+
+<body class="f-juegos"><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign"></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca" data-t="Acerca de">Acerca de</a></li><li><a href="../portfolio" data-t="Portfolio">Portfolio</a></li><li><a href="../herramientas" data-t="Herramientas">Herramientas</a></li><li><a href="../jueguitos" data-t="Jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../contacto" data-t="Contacto">Contacto</a></li></ul></nav>
+<div class="vol-wrap"><a class="volver" href="../jueguitos" aria-label="Volver a Jueguitos"><span>Volver a</span><img src="../img/stickers/jueguitos.svg" alt="" width="488.7" height="126.74"></a></div>
+  <main class="app">
+<header class="header"><h1 class="h1-st"><img src="../img/stickers/juego-alinear.webp" alt="Alineá los elementos" width="1200" height="625" decoding="async"></h1><p class="subtitle">¿Qué tan fino es tu ojo? Alineá a mano, sin ajuste automático.</p></header>
+<section class="game-card">
+<div class="start-screen" id="startScreen"><div class="inicio"><div class="inicio-reglas">
+<div class="start-title">Cinco ejercicios, a pulso</div><p class="start-copy">Sin guías ni ajuste automático: solo tu pulso y tu ojo. Cada ejercicio trae objetos de formas distintas y tenés que alinearlos entre sí, en cualquier parte del espacio. Cada partida sortea ejercicios nuevos, de los más simples a los más complejos.</p>
+<div class="how-to"><strong>¿Cómo se juega?</strong><p>Arrastrá cada objeto (o usá las flechas del teclado: 1 px, y 10 px con Shift). Los bordes, centros y esquinas se miden sobre la caja que contiene a cada forma. Repartir significa que el espacio vacío entre un objeto y el siguiente sea igual (no la distancia entre centros). Tocá Listo y aparece una línea guía que sale de uno de los objetos: ahí ves cuántos píxeles se desvió cada uno. En los últimos ejercicios hay que acertar en dos direcciones a la vez.</p></div>
+<div class="actions-inicio"><button class="primary" type="button" id="startBtn">Empezar</button></div></div>
+<aside class="rank-top" data-rank-top data-juego="alinear" data-modo="Estándar" aria-label="Los 3 mejores puntajes"></aside></div></div>
+<div id="gameContent" style="display:none">
+<div class="top-info"><span id="roundText"></span><p class="consigna" id="consigna"></p><span class="score" id="scoreText">0 pts</span></div>
+<svg class="stage" id="sv" style="--ar:1.667" viewBox="0 0 600 360" role="group" aria-label="Zona de juego"></svg>
+<div class="acc"><button class="primary" type="button" id="okBtn">Listo</button><button class="primary" type="button" id="nextBtn" hidden>Siguiente</button></div>
+<div class="message" id="message" aria-live="polite"></div></div>
+<div class="final-screen" id="finalScreen"><div class="final-label">Partida terminada</div><div class="final-title">¡Terminaste las 5 rondas!</div><div class="final-score" id="finalScore">0 pts</div><p class="final-copy">Tu puntaje en Alinear. El máximo es 1000.</p><div id="shareBox" class="share-box"></div><button class="play-again" id="playAgain" type="button">Jugar de nuevo</button></div>
+</section></main>
+<script>window.addEventListener('load',function(){
+var $=function(i){return document.getElementById(i)};
+var NS='http://www.w3.org/2000/svg',sv=$('sv'),W=600,H=360,B,cur,lock,V,errs=[],PINK='#ff4d8d';
+var COL=['#0b75f4','#06214d','#ff4d8d','#5fa8ff','#0b75f4','#06214d'],SH=['circle','square','tri','diamond','hex','star','pill','rect'];
+/* banco: k = clave, n = nivel (1 simple … 5 complejo), o = cantidad de objetos, a = alineaciones [eje, punto del objeto] (x = línea vertical, y = línea horizontal; 0 = borde izquierdo/superior, .5 = centro, 1 = borde derecho/inferior), d = eje de distribución (espacios iguales) */
+var BANCO=[
+{k:'izq',n:1,o:3,a:[['x',0]],c:'Alineá los objetos a la izquierda: sus bordes izquierdos sobre una misma línea vertical.'},
+{k:'der',n:1,o:3,a:[['x',1]],c:'Alineá los objetos a la derecha: sus bordes derechos sobre una misma línea vertical.'},
+{k:'sup',n:1,o:3,a:[['y',0]],c:'Alineá los objetos arriba: sus bordes superiores sobre una misma línea horizontal.'},
+{k:'cenV',n:2,o:4,a:[['x',.5]],c:'Centrá los objetos en columna: todos los centros sobre una misma línea vertical.'},
+{k:'cenH',n:2,o:4,a:[['y',.5]],c:'Centrá los objetos en fila: todos los centros sobre una misma línea horizontal.'},
+{k:'base',n:2,o:4,a:[['y',1]],c:'Alineá los objetos abajo: sus bordes inferiores sobre una misma línea horizontal.'},
+{k:'dx',n:3,o:4,d:'x',c:'Repartí los objetos de izquierda a derecha con el mismo espacio vacío entre cada par.'},
+{k:'dy',n:3,o:4,d:'y',c:'Repartí los objetos de arriba hacia abajo con el mismo espacio vacío entre cada par.'},
+{k:'dx5',n:3,o:5,d:'x',c:'Repartí los 5 objetos de izquierda a derecha con el mismo espacio vacío entre cada par.'},
+{k:'cenDx',n:4,o:5,a:[['y',.5]],d:'x',c:'Poné los centros sobre una misma línea horizontal y repartí los objetos con espacios iguales entre sí.'},
+{k:'izqDy',n:4,o:5,a:[['x',0]],d:'y',c:'Poné los bordes izquierdos sobre una misma línea vertical y repartí los objetos de arriba hacia abajo con espacios iguales.'},
+{k:'baseDx',n:4,o:5,a:[['y',1]],d:'x',c:'Poné los bordes inferiores sobre una misma línea horizontal y repartí los objetos de izquierda a derecha con espacios iguales.'},
+{k:'cen2',n:5,o:4,bx:1,a:[['x',.5],['y',.5]],c:'Llevá el centro de todos los objetos al mismo punto.'},
+{k:'esqSD',n:5,o:4,bx:1,a:[['x',1],['y',0]],c:'Llevá la esquina superior derecha de todos los objetos al mismo punto.'},
+{k:'esqII',n:5,o:4,bx:1,a:[['x',0],['y',1]],c:'Llevá la esquina inferior izquierda de todos los objetos al mismo punto.'}];
+function ne(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e}
+function add(t,a,p){var e=ne(t,a);(p||sv).appendChild(e);return e}
+function R(a,b){return Math.round(a+Math.random()*(b-a))}
+function pt(e){var p=sv.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(sv.getScreenCTM().inverse())}
+function cl(v,a,b){return Math.max(a,Math.min(b,v))}
+function val(b,ax,f){return ax=='x'?b.x+b.w*f:b.y+b.h*f}
+function poly(t,w,h){var p;
+ if(t=='tri')p=[[w/2,0],[w,h],[0,h]];
+ else if(t=='diamond')p=[[w/2,0],[w,h/2],[w/2,h],[0,h/2]];
+ else if(t=='hex')p=[[w*.25,0],[w*.75,0],[w,h/2],[w*.75,h],[w*.25,h],[0,h/2]];
+ else{p=[];for(var i=0;i<10;i++){var a=-Math.PI/2+i*Math.PI/5,r=i%2?.42:1;p.push([Math.cos(a)*r,Math.sin(a)*r])}
+  var x0=Math.min.apply(0,p.map(function(q){return q[0]})),x1=Math.max.apply(0,p.map(function(q){return q[0]})),y0=Math.min.apply(0,p.map(function(q){return q[1]})),y1=Math.max.apply(0,p.map(function(q){return q[1]}));
+  p=p.map(function(q){return[(q[0]-x0)/(x1-x0)*w,(q[1]-y0)/(y1-y0)*h]})}
+ return p.map(function(q){return q[0].toFixed(1)+','+q[1].toFixed(1)}).join(' ')}
+function forma(g,b,i){var t=b.type,w=b.w,h=b.h,e;
+ if(t=='circle')e=ne('ellipse',{cx:w/2,cy:h/2,rx:w/2,ry:h/2});
+ else if(t=='square'||t=='rect')e=ne('rect',{x:0,y:0,width:w,height:h,rx:6});
+ else if(t=='pill')e=ne('rect',{x:0,y:0,width:w,height:h,rx:h/2});
+ else e=ne('polygon',{points:poly(t,w,h),'stroke-linejoin':'round'});
+ e.setAttribute('fill',COL[i%COL.length]);g.appendChild(e);b.sh=e}
+function crear(){var o=cur.o,sm=o>=5,tipos=SH.slice().sort(function(){return Math.random()-.5}).slice(0,o),objs=tipos.map(function(t){var s=R(sm?40:46,sm?56:90),b={type:t,w:s,h:s};
+  if(t=='tri')b.w=Math.round(s*1.15);if(t=='rect'){b.w=Math.round(s*1.35);b.h=Math.round(s*.78)}if(t=='pill'){b.w=Math.round(s*1.5);b.h=Math.max(34,Math.round(s*.62))}return b});
+ for(var t=0;t<700;t++){objs.forEach(function(b){b.x=R(10,W-b.w-10);b.y=R(10,H-b.h-10)});if(libre(objs)&&desorden(objs))break}
+ return objs}
+function libre(bs){for(var i=0;i<bs.length;i++)for(var j=i+1;j<bs.length;j++){var a=bs[i],b=bs[j];if(a.x<b.x+b.w+8&&b.x<a.x+a.w+8&&a.y<b.y+b.h+8&&b.y<a.y+a.h+8)return false}return true}
+function desorden(bs){var ok=true;(cur.a||[]).forEach(function(c){var v=bs.map(function(b){return val(b,c[0],c[1])});if(Math.max.apply(0,v)-Math.min.apply(0,v)<45)ok=false});
+ if(cur.d){var g=huecos(bs,cur.d).g;if(Math.max.apply(0,g)-Math.min.apply(0,g)<35)ok=false}return ok}
+function huecos(bs,ax){var k=ax,s=ax=='x'?'w':'h',o=bs.slice().sort(function(a,b){return a[k]+a[s]/2-b[k]-b[s]/2}),g=[];for(var i=0;i<o.length-1;i++)g.push(o[i+1][k]-o[i][k]-o[i][s]);return{o:o,g:g,k:k,s:s}}
+function mv(b,dx,dy){if(lock)return;b.x=cl(b.x+dx,0,W-b.w);b.y=cl(b.y+dy,0,H-b.h);b.g.setAttribute('transform','translate('+b.x+' '+b.y+')')}
+function objeto(b,i){var g=add('g',{transform:'translate('+b.x+' '+b.y+')',tabindex:0,role:'img','aria-label':'Objeto '+(i+1)});b.g=g;forma(g,b,i);B.push(b);
+ /* área de agarre: toda la caja de la forma (+6 px). Sin esto, en estrellas, triángulos o rombos solo se agarraba tocando justo la parte pintada */
+ g.appendChild(ne('rect',{'class':'hit',x:-6,y:-6,width:b.w+12,height:b.h+12,fill:'transparent'}));
+ var ayuda=null;
+ if(cur.bx){ayuda=ne('g',{'pointer-events':'none'});g.appendChild(ayuda);ayuda.appendChild(ne('rect',{x:0,y:0,width:b.w,height:b.h,fill:'none',stroke:'rgba(255,255,255,.75)','stroke-width':1.5,'stroke-dasharray':'4 4','pointer-events':'none'}));
+  var fx=.5,fy=.5;(cur.a||[]).forEach(function(c){if(c[0]=='x')fx=c[1];else fy=c[1]});
+  ayuda.appendChild(ne('circle',{cx:b.w*fx,cy:b.h*fy,r:4.5,fill:PINK,stroke:'#fff','stroke-width':1.8}))}
+ /* la ayuda (caja + punto) se ve hasta que se toca el objeto */
+ function sinAyuda(){if(ayuda){ayuda.remove();ayuda=null}}
+ g.onpointerdown=function(e){if(lock)return;sinAyuda();
+  /* primero se sube al frente y recién después se captura el puntero: reinsertar el nodo con el puntero ya capturado cortaba el arrastre */
+  if(g!==sv.lastChild)sv.appendChild(g);
+  try{g.setPointerCapture(e.pointerId)}catch(_){}
+  var d=pt(e),x0=b.x,y0=b.y;
+  g.onpointermove=function(f){var p=pt(f);mv(b,x0+p.x-d.x-b.x,y0+p.y-d.y-b.y)};
+  g.onpointerup=g.onpointercancel=function(){g.onpointermove=null}};
+ g.onkeydown=function(e){var k=e.key,s=e.shiftKey?10:1,dx=k=='ArrowRight'?s:k=='ArrowLeft'?-s:0,dy=k=='ArrowDown'?s:k=='ArrowUp'?-s:0;if(dx||dy){e.preventDefault();sinAyuda();mv(b,dx,dy)}}}
+function tx(x,y,s,anc){var t=add('text',{x:x,y:y,'text-anchor':anc||'middle','font-family':'Arial,sans-serif','font-size':12,'font-weight':800,fill:PINK,stroke:'#fff','stroke-width':3.5,'paint-order':'stroke','pointer-events':'none'});t.textContent=s;return t}
+function ln(x1,y1,x2,y2,w,d){return add('line',{x1:x1,y1:y1,x2:x2,y2:y2,stroke:PINK,'stroke-width':w||2,'stroke-dasharray':d||'0','stroke-linecap':'round','pointer-events':'none'})}
+QFAJ.init({nombre:'Alinear',juego:'alinear',total:5,reset:function(){errs=[];V=QFAJ.sortear('alinear',BANCO,5)},
+ronda:function(n,c){cur=V[n-1];c.textContent=cur.c;sv.innerHTML='';B=[];lock=false;crear().forEach(objeto)},
+medir:function(){lock=true;var n=B.length,A=cur.a||[],es=[],ref=-1,aire='',mg=null;
+ if(A.length){var md=A.map(function(c){var v=B.map(function(b){return val(b,c[0],c[1])}).sort(function(a,b){return a-b});return n%2?v[(n-1)/2]:(v[n/2-1]+v[n/2])/2}),best=1e9;
+  B.forEach(function(b,i){var s=0;A.forEach(function(c,j){s+=Math.abs(val(b,c[0],c[1])-md[j])});if(s<best){best=s;ref=i}});
+  var rb=B[ref];
+  A.forEach(function(c){var r=val(rb,c[0],c[1]),tot=0,x=c[0]=='x';
+   if(x)ln(r,0,r,H,2,'7 6');else ln(0,r,W,r,2,'7 6');
+   B.forEach(function(b,i){if(i==ref)return;var v=val(b,c[0],c[1]),d=v-r;tot+=Math.abs(d);if(Math.abs(d)<.5)return;
+    if(x){var y=b.y+b.h/2;ln(v,y,r,y,3);add('circle',{cx:v,cy:y,r:4,fill:PINK});tx((v+r)/2,y-7,Math.abs(d).toFixed(1)+' px')}
+    else{var xx=b.x+b.w/2;ln(xx,v,xx,r,3);add('circle',{cx:xx,cy:v,r:4,fill:PINK});tx(xx+8,(v+r)/2+4,Math.abs(d).toFixed(1)+' px','start')}});
+   es.push(tot/(n-1))});
+  rb.sh.setAttribute('stroke',PINK);rb.sh.setAttribute('stroke-width',4);sv.appendChild(rb.g)}
+ if(cur.d){var h=huecos(B,cur.d),x=cur.d=='x';mg=h.g.reduce(function(a,b){return a+b},0)/h.g.length;
+  var yb=x?Math.min(H-14,Math.max.apply(0,B.map(function(b){return b.y+b.h}))+20):0,xb=x?0:Math.min(W-44,Math.max.apply(0,B.map(function(b){return b.x+b.w}))+20);
+  h.g.forEach(function(g,i){var a=h.o[i],b=h.o[i+1],p1=a[h.k]+a[h.s],p2=b[h.k];
+   if(x){ln(p1,a.y+a.h,p1,yb,1.5,'3 4');ln(p2,b.y+b.h,p2,yb,1.5,'3 4');ln(p1,yb,p2,yb,3);add('circle',{cx:p1,cy:yb,r:3.5,fill:PINK});add('circle',{cx:p2,cy:yb,r:3.5,fill:PINK});tx((p1+p2)/2,yb-7,g.toFixed(1)+' px')}
+   else{ln(a.x+a.w,p1,xb,p1,1.5,'3 4');ln(b.x+b.w,p2,xb,p2,1.5,'3 4');ln(xb,p1,xb,p2,3);add('circle',{cx:xb,cy:p1,r:3.5,fill:PINK});add('circle',{cx:xb,cy:p2,r:3.5,fill:PINK});tx(xb+8,(p1+p2)/2+4,g.toFixed(1)+' px','start')}});
+  var ed=h.g.reduce(function(a,g){return a+Math.abs(g-mg)},0)/h.g.length;
+  if(mg<14){ed+=(14-mg)*.6;aire=' Los objetos están pegados: dejá aire entre ellos.'}
+  es.push(ed)}
+ var e=es.reduce(function(a,b){return a+b},0)/es.length;errs.push(e);
+ return{pts:Math.round(200*Math.max(0,1-e/20)),txt:'error medio de '+e.toFixed(1)+' px'+(e<1?'. Pulso de cirujano.':'.')+(A.length?' La guía sale del objeto resaltado.':' Mirá los espacios entre objetos.')+aire}},
+detalle:function(){var m=errs.reduce(function(a,b){return a+b},0)/errs.length;return[['EJERCICIOS','5'],['ERROR MEDIO',m.toFixed(1)+' px']]}});
+});</script>
+<style id="embebido">.embebido html,html.embebido,html.embebido body{background:transparent!important;min-height:0!important;height:auto!important}html.embebido body>*{min-height:0!important}html.embebido .volver{display:none!important}</style>
+<script>if(top!==self){document.documentElement.classList.add('embebido');const s=()=>parent.postMessage({altoJuego:document.body.getBoundingClientRect().height+16},'*');addEventListener('load',()=>{s();new ResizeObserver(s).observe(document.body)})}</script>
+<footer>
+ <div class="gran" aria-hidden="true"><img src="../img/Marca_qfadesign_blanco.svg" alt=""></div>
+ <div class="pie"><div class="redes"><a href="https://www.instagram.com/qfadesign/" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@qfadesign" target="_blank" rel="noopener">Tiktok</a><a href="https://www.behance.net/facundocruz5" target="_blank" rel="noopener">Behance</a><a href="https://www.linkedin.com/in/facundo-cruz-19a581303/" target="_blank" rel="noopener">LinkedIn</a></div></div>
+ <p class="firma">web diseñada por qfadesign</p>
+</footer>
+</body>
+</html>
