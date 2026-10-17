@@ -1,0 +1,24 @@
+/* HERRAMIENTAS · FOCO
+   Menos detalle, más jerarquía: cada herramienta tiene UNA cosa que manda (el resultado, en grande y con el color de la herramienta),
+   los títulos de paso se leen como capítulos y todo lo demás (etiquetas, aclaraciones, líneas) baja de volumen.
+   Se carga al final, después de herramientas-tipo.css. */
+
+/* 1. EL RESULTADO MANDA: grande y con el color de la herramienta */
+html body.f-herramientas .ct-ratio{font-size:clamp(64px,9vw,128px);line-height:.88;color:var(--tc)}
+html body.f-herramientas .un-n{font-size:clamp(38px,5.4vw,78px);line-height:.9;color:var(--tc)}
+html body.f-herramientas .cp-tt{font-size:clamp(44px,5vw,76px);line-height:.9;color:var(--tc)}
+body.f-herramientas .cp-tt::after{color:#fff}
+
+/* 2. TÍTULOS: cada paso se lee como un capítulo */
+body.f-herramientas .cp-paso{font-size:clamp(24px,2.6vw,34px);letter-spacing:-.03em;border-top-color:rgba(255,255,255,.2)}
+body.f-herramientas :is(.cp-top h3,.br-t,.pl-drop strong){font-size:clamp(28px,3.2vw,44px)}
+body.f-herramientas .br-que h2{font-size:clamp(24px,2.6vw,34px)}
+
+/* 3. LO DEMÁS BAJA DE VOLUMEN: etiquetas, aclaraciones y líneas finas */
+body.f-herramientas :is(.cp-tot small,.ct-top small,.ct-f label,.cv-l,.un-l,.pl-rng label,.cp-pdf label,.cp-count,.cp-u,.un-u,.cp-res h4){opacity:.7}
+body.f-herramientas :is(.cp-cat,.cp-fuentes,.ct-sug,.br-que-l,.hp-otras){border-color:rgba(255,255,255,.18)}
+body.f-herramientas .hp-otras{margin-top:clamp(44px,6vw,80px)}
+
+/* 4. AIRE: más espacio entre bloques para que el ojo descanse */
+body.f-herramientas .md.md-pg{margin-top:clamp(28px,4vw,52px)}
+body.f-herramientas .md-pg .md-b{padding-top:0}
