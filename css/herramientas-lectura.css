@@ -1,0 +1,64 @@
+/* HERRAMIENTAS · LECTURA
+   Objetivo: que cada herramienta se lea fácil, sin sumar elementos nuevos.
+   Niveles de lectura: nada de texto de 12–13 px, las etiquetas pasan de "susurro" a legibles,
+      y los textos de ayuda se ven completos (antes bajaban a 70 % de opacidad).
+   Se carga al final de todo, después de herramientas-foco.css. Para volver atrás, sacá el <link> de las páginas. */
+
+/* ===== 1. NIVELES DE LECTURA ===== */
+/* etiquetas de campos y datos: un punto más grandes, algo menos separadas y a volumen casi pleno */
+html body.f-herramientas :is(.cp-tot small,.ct-top small,.ct-f label,.cv-l,.un-l,.pl-rng label,.cp-pdf label,.hp-otras p,.cp-count,.cp-u,.un-u,.cp-res h4,.br-cont,.br-res-f strong){
+ font-size:14.5px;font-weight:700;letter-spacing:.09em;opacity:.95}
+html body.f-herramientas .cp-res h4{font-size:15px}
+html body.f-herramientas .hp-vol .volver{font-size:14px;letter-spacing:0;text-transform:none;font-weight:900;font-style:italic;font-family:var(--fh)}
+
+/* textos de ayuda, notas y avisos: mínimo 15 px y a opacidad plena */
+html body.f-herramientas :is(.ct-ayuda,.ct-nota,.pl-nota,.pl-drop small,.un-pie,.cp-nota,.cp-aviso,.cp-pdf-m,.cp-mep small,.cp-cli span,.cp-pr small,.cp-fuentes-in li span,.cv-m,.un-card small,.ct-chk small,.ct-op-t,.ct-op-t i,.br-n){
+ font-size:clamp(15px,1.15vw,16px);line-height:1.5;opacity:1}
+html body.f-herramientas :is(.cp-aviso,.pl-nota,.un-pie,.cv-nota){max-width:68ch}
+
+/* texto corrido de las tarjetas y de las explicaciones */
+html body.f-herramientas :is(.cp-inf p,.cp-top p,.br-que-l span,.cp-cli span){opacity:.95}
+html body.f-herramientas .cp-top p,html body.f-herramientas .br-que-p{font-size:clamp(16px,1.3vw,18px);line-height:1.5;max-width:62ch}
+html body.f-herramientas .br-que-l span{font-size:clamp(15.5px,1.2vw,17px);line-height:1.45}
+
+/* campos y chips: letra cómoda para tocar y leer */
+html body.f-herramientas :is(.chip,.br-op,.cv-d,.cv-x,.ct-pill){font-size:15px}
+html body.f-herramientas :is(.ct-in input[type=text],.cv-px input,.un-otra input,.cp-pdf input){font-size:16px}
+html body.f-herramientas .pl-col span,html body.f-herramientas .pl-v span,html body.f-herramientas .pl-v i{font-size:14px}
+html body.f-herramientas .ct-ver{font-size:14px}
+
+/* pasos de la calculadora: línea más visible para separar zonas */
+html body.f-herramientas .cp-paso{border-top-color:rgba(255,255,255,.4)}
+
+/* foco visible para quien navega con teclado */
+html body.f-herramientas :is(.chip,.br-op,input,button,summary,.pl-drop):focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+/* hub de herramientas (herramientas.html): descripciones legibles */
+body.f-herramientas .lk .hl-d{font-size:clamp(15px,1.2vw,17px);opacity:.95}
+body.f-herramientas .lk .hl-sub .hl-d{font-size:clamp(14.5px,1.2vw,16px)}
+body.f-herramientas .enlaces a.t small{font-size:14px;opacity:.95}
+
+/* ===== 2. NADA GIGANTE, NADA CORTADO =====
+   Los resultados clave eran enormes (hasta 128 px) y en columnas angostas se partían en varios renglones.
+   Ahora tienen un tope razonable, nunca se cortan al medio y, si no entran, baja la unidad (ARS) y no el número. */
+html body.f-herramientas h1.hp-t{font-size:clamp(30px,4.4vw,58px);max-width:18ch}
+
+/* total de la calculadora: se achica solo según el ancho de su columna */
+html body.f-herramientas .cp-tot{container-type:inline-size}
+html body.f-herramientas .cp-tt{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.4em;white-space:nowrap;overflow-wrap:normal;word-break:normal;font-size:clamp(28px,2.6vw,38px);line-height:1}
+@supports(font-size:1cqw){html body.f-herramientas .cp-tt{font-size:clamp(26px,12cqw,40px)}}
+html body.f-herramientas .cp-tt::after{margin-left:0;font-size:max(13px,.3em)}
+html body.f-herramientas .cp-tu{font-size:clamp(16px,1.3vw,18px)}
+html body.f-herramientas .cp-bar b{font-size:clamp(18px,5.4vw,22px)}
+
+/* renglones del presupuesto: el nombre cede lugar al precio, y el precio nunca se corta */
+html body.f-herramientas .cp-lin>*:first-child{min-width:0;overflow-wrap:anywhere}
+html body.f-herramientas .cp-m{flex:none}
+html body.f-herramientas .cp-pr{flex:none}
+html body.f-herramientas .cp-pr b{font-size:clamp(16px,1.3vw,18px)}
+
+/* resultados de las otras herramientas */
+html body.f-herramientas .ct-ratio{font-size:clamp(40px,5vw,64px);white-space:nowrap}
+html body.f-herramientas .un-n{font-size:clamp(26px,3vw,42px);white-space:nowrap;overflow-wrap:normal}
+html body.f-herramientas .un-card{min-width:0}
+html body.f-herramientas .un-fila input{font-size:clamp(22px,2.2vw,28px)}

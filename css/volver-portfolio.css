@@ -1,0 +1,12 @@
+/* VOLVER A PORTFOLIO (páginas de proyecto)
+   Mismo botón que ya tienen Herramientas y Jueguitos: texto "Volver a" + sticker de la sección, sin pastilla ni borde.
+   Se carga al final para pisar el estilo de pastilla que tenía el "← Portfolio". */
+.hp-vol{padding:clamp(16px,2.4vw,26px) 0 0}
+html body .hp-vol .volver{display:inline-flex;align-items:center;gap:8px;padding:0;border:0;border-radius:0;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(14px,1.2vw,16px);line-height:1;color:#fff}
+html body .hp-vol .volver:hover{background:none;color:#fff}
+.hp-vol .volver img{display:block;width:clamp(92px,9vw,112px);height:auto;filter:var(--st-sombra);transition:rotate .25s ease,scale .25s ease}
+.hp-vol .volver:hover img,.hp-vol .volver:focus-visible img{rotate:-4deg;scale:1.1}
+.hp-vol .volver:active img{scale:.95}
+.hp-vol .volver:focus-visible{outline:2px solid #fff;outline-offset:6px;border-radius:10px}
+.hp-vol+.pr-h{padding-top:clamp(10px,1.6vw,20px)}
+@media(prefers-reduced-motion:reduce){.hp-vol .volver img{transition:none}}
