@@ -1,0 +1,32 @@
+/* Explicaciones desplegables dentro de cada herramienta: cerradas por defecto para que no ocupen lugar. */
+.f-herramientas :is(.hp-det,.br-det)>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;-webkit-tap-highlight-color:transparent}
+.f-herramientas :is(.hp-det,.br-det)>summary::-webkit-details-marker{display:none}
+.f-herramientas :is(.hp-det,.br-det)>summary::after{content:"+";flex:none;font-size:26px;line-height:1;font-style:normal;transition:rotate .3s}
+.f-herramientas :is(.hp-det,.br-det)[open]>summary::after{rotate:45deg}
+.f-herramientas :is(.hp-det,.br-det)>summary:focus-visible{outline:3px solid #fff;outline-offset:3px;border-radius:8px}
+.f-herramientas :is(.hp-det,.br-det)[open]>:not(summary){animation:hpdet .3s ease both}
+@keyframes hpdet{from{opacity:0;translate:0 -6px}to{opacity:1;translate:0 0}}
+.f-herramientas .hp-det[hidden]{display:none}
+
+/* bloque simple: línea arriba y abajo, como "¿De dónde salen estos valores?" */
+.f-herramientas .hp-det{margin-top:clamp(12px,1.6vw,18px);border-top:1px solid rgba(255,255,255,.3);border-bottom:1px solid rgba(255,255,255,.3)}
+.f-herramientas .hp-det>summary{padding:12px 2px;font-family:var(--f);font-weight:700;font-style:normal;font-size:clamp(15px,1.2vw,16.5px)}
+.f-herramientas .hp-det>:not(summary){margin-top:0;margin-bottom:14px}
+.f-herramientas .hp-det[open]>summary{padding-bottom:8px}
+
+/* ¿Qué es un brief? */
+.f-herramientas .br-que{border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:0}
+.f-herramientas .br-det>summary{padding:0 0 clamp(14px,1.8vw,20px)}
+.f-herramientas .br-det>summary h2{margin:0}
+.f-herramientas .br-det[open]>summary{padding-bottom:clamp(10px,1.4vw,14px)}
+.f-herramientas .br-det[open]>.br-que-l{margin-bottom:clamp(16px,2vw,24px)}
+
+/* calculadora de precios */
+.f-herramientas .cp-top>div:first-child{flex:1 1 min(100%,420px);max-width:60ch}
+.f-herramientas .cp-fuentes-in .cp-aviso{margin-top:0;margin-bottom:0}
+.f-herramientas .cp-fuentes+.cp-fuentes{margin-top:12px}
+
+@media(prefers-reduced-motion:reduce){
+  .f-herramientas :is(.hp-det,.br-det)>summary::after{transition:none}
+  .f-herramientas :is(.hp-det,.br-det)[open]>:not(summary){animation:none}
+}
