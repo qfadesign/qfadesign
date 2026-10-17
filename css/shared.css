@@ -53,7 +53,7 @@ nav>a:first-child:focus-visible::before{opacity:1;scale:1;rotate:-1.5deg}
 @media(prefers-reduced-motion:reduce){nav>a:first-child::before,nav>a:first-child img{transition:none!important}}
 /* HAMBURGUESA (solo celular)
    Abrir: la PASTILLA de la barra se convierte en el menú. Crece (mismo borde, mismo vidrio, mismo radio) hasta ocupar TODA la pantalla,
-   y mientras crece el logo blanco BAJA hasta el borde de abajo, siempre pegado a la izquierda; los títulos de las páginas caen desde la barra
+   y mientras crece el logo blanco BAJA (mismo tamaño) hasta el borde de abajo, siempre pegado a la izquierda; los títulos de las páginas caen desde la barra
    como stickers y se asientan con rebote. Cerrar: exactamente lo inverso.
    El logo y la pastilla usan la misma duración y curva, así el logo siempre queda dentro del vidrio mientras crece.
    Las distancias dependen de cada pantalla: las calcula js/anim.js (variables --ly, --up).
@@ -79,9 +79,9 @@ nav>a:first-child:focus-visible::before{opacity:1;scale:1;rotate:-1.5deg}
  /* abierta, el vidrio de la barra pasa a la pastilla que crece (nav ul::before), que arranca idéntica; si no, se duplicaría y el desenfoque de la barra taparía al otro */
  nav.abierto{background-color:transparent;border-color:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;transition-delay:0s}
  nav>a:first-child,.burger{position:relative;z-index:2}
- /* LOGO: al abrir baja hasta el borde de abajo (--ly lo calcula el JS) y se agranda sin moverse de la izquierda; al cerrar vuelve a la barra */
- nav>a:first-child{transform-origin:left center;transition:translate .8s cubic-bezier(.65,0,.2,1) .3s,scale .8s cubic-bezier(.65,0,.2,1) .3s}
- nav.abierto>a:first-child{translate:0 var(--ly,0px);scale:var(--ls,2);transition-delay:0s;transition-duration:.85s}
+ /* LOGO: al abrir baja hasta el borde de abajo (--ly lo calcula el JS) en su mismo tamaño y sin moverse de la izquierda; al cerrar vuelve a la barra */
+ nav>a:first-child{transition:translate .8s cubic-bezier(.65,0,.2,1) .3s}
+ nav.abierto>a:first-child{translate:0 var(--ly,0px);transition-delay:0s;transition-duration:.85s}
  .burger{display:block}
  /* PANEL: una caja de pantalla completa, transparente. El vidrio es su ::before, que de cerrado calza EXACTO con la pastilla de la barra y al abrir crece hasta los bordes. */
  nav ul{--fs:clamp(30px,10vw,44px);position:absolute;z-index:1;box-sizing:border-box;
@@ -121,7 +121,7 @@ nav>a:first-child:focus-visible::before{opacity:1;scale:1;rotate:-1.5deg}
  nav ul a:active,nav ul a[aria-current]:active{scale:.92}
  nav ul a:focus-visible{outline-offset:4px;border-radius:12px}
 }
-@media(max-width:760px) and (prefers-reduced-motion:reduce){nav ul,nav ul::before,nav ul li,nav>a:first-child{transition:none!important}nav ul li{translate:none;scale:1;rotate:var(--r)}nav.abierto>a:first-child{translate:none;scale:1}}
+@media(max-width:760px) and (prefers-reduced-motion:reduce){nav ul,nav ul::before,nav ul li,nav>a:first-child{transition:none!important}nav ul li{translate:none;scale:1;rotate:var(--r)}nav.abierto>a:first-child{translate:none}}
 
 /* onda al tocar un botón (js/anim.js) */
 .rip{position:absolute;border-radius:50%;background:currentColor;opacity:.3;pointer-events:none;transform:scale(0);animation:rip .6s ease-out forwards}
