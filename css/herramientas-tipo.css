@@ -82,21 +82,6 @@ body.f-herramientas :is(.cv-px input,.un-otra input,.ct-in input[type=text]){fon
 body.f-herramientas .un-otra{font-style:normal}
 body.f-herramientas :is(.br-ex,.br-atras,.br-link,.br-ed){font-style:normal}
 
-/* ===== ÍNDICE (herramientas.html) ===== */
-body.f-herramientas .hgs-sq{counter-reset:tl}
-body.f-herramientas .hgs-sq .tl{counter-increment:tl}
-/* número de orden: etiqueta chica arriba del título */
-body.f-herramientas .hgs-sq .tl-tx::before{content:counter(tl,decimal-leading-zero);display:block;margin-bottom:10px;font-family:var(--eb);font-weight:500;font-size:12.5px;letter-spacing:.16em;line-height:1;opacity:.7;transition:color .25s,opacity .25s}
-body.f-herramientas .hgs-sq .tl:hover .tl-tx::before,body.f-herramientas .hgs-sq .tl:focus-visible .tl-tx::before,body.f-herramientas .hgs-sq .tl.tl-on .tl-tx::before{color:var(--c);opacity:1}
-body.f-herramientas .hgs-sq .tl-t{font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(21px,2.8vw,36px);line-height:1;letter-spacing:-.03em;text-wrap:balance}
-body.f-herramientas .hgs-sq .tl-d{font-weight:300;font-style:normal;font-size:clamp(14px,1.15vw,16px);line-height:1.4;max-width:52ch;margin-top:6px;opacity:.82}
-body.f-herramientas .hgs-sq .tl-tag{font-family:var(--eb);font-weight:500;font-style:normal;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
-@media(max-width:640px){
- body.f-herramientas .hgs-sq .tl-t{font-size:clamp(20px,6vw,25px)}
- body.f-herramientas .hgs-sq .tl-d{font-size:13.5px}
- body.f-herramientas .hgs-sq .tl-tx::before{margin-bottom:8px}
-}
-
 /* ===== LINKS Y RECURSOS (herramientas.html) ===== */
 body.f-herramientas .lk .hl-t{font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(23px,2.6vw,34px);line-height:1;letter-spacing:-.03em}
 body.f-herramientas .lk .hl-sub .hl-t{font-family:var(--f);font-weight:700;font-style:normal;font-size:clamp(16.5px,1.5vw,20px);line-height:1.15;letter-spacing:-.01em}

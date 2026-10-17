@@ -13,49 +13,6 @@
  --fondo:#000;
  --g:radial-gradient(75vw 55vw at 92% 0%,color-mix(in srgb,var(--tc) 78%,transparent),transparent 66%),radial-gradient(60vw 45vw at 2% 100%,color-mix(in srgb,var(--tc) 40%,transparent),transparent 66%),linear-gradient(#050505,#000)}
 
-/* 2. ÍNDICE: lista en vez de tarjetas */
-body.f-herramientas .hgs-sq{display:block;max-width:1000px;margin:clamp(26px,3.4vw,44px) auto 0;border-top:1px solid rgba(255,255,255,.3)}
-body.f-herramientas .hgs-sq .tl{
- display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;column-gap:clamp(14px,2.2vw,30px);
- width:auto;aspect-ratio:auto;min-height:0;margin:0;
- padding:clamp(18px,2.2vw,28px) clamp(2px,.8vw,10px);
- border:0;border-bottom:1px solid rgba(255,255,255,.3);border-radius:0;
- background:none;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none;
- color:#fff;transform:none;
- transition:padding-left .35s cubic-bezier(.2,.8,.2,1),background .35s,color .25s}
-body.f-herramientas .hgs-sq .tl::after{content:"→";order:4;font-family:var(--fh);font-weight:900;font-size:clamp(20px,2vw,28px);line-height:1;opacity:.45;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s}
-body.f-herramientas .hgs-sq .tl-top{display:contents}
-body.f-herramientas .hgs-sq .tl-ic{order:1;width:clamp(40px,3.8vw,50px);background:var(--c);border:1px solid rgba(255,255,255,.55);box-shadow:0 6px 18px color-mix(in srgb,var(--c) 45%,transparent);color:#06214d;rotate:0deg;transition:background .3s,border-color .3s,color .3s}
-body.f-herramientas .hgs-sq .tl-tx{order:2;min-width:0}
-body.f-herramientas .hgs-sq .tl-t{font-size:clamp(23px,2.9vw,38px);line-height:1.05;overflow-wrap:normal;hyphens:none}
-body.f-herramientas .hgs-sq .tl-d{display:block;overflow:visible;-webkit-line-clamp:unset;line-clamp:unset;max-width:54ch;margin-top:6px;font-size:clamp(14px,1.2vw,16px);line-height:1.4;opacity:.85}
-body.f-herramientas .hgs-sq .tl-tag{order:3;display:inline-flex;rotate:0deg;padding:0;background:none;box-shadow:none;border:0;color:rgba(255,255,255,.8);font-size:12px;letter-spacing:.06em;white-space:nowrap}
-body.f-herramientas .hgs-sq .tl-tag::before{background:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 35%,transparent);width:8px;height:8px}
-body.f-herramientas .hgs-sq .tl-links .tl-tag{display:none}
-/* hover y foco: se corre apenas hacia la derecha y aparece un velo de luz; nada de tarjeta crema */
-body.f-herramientas .hgs-sq .tl:hover,body.f-herramientas .hgs-sq .tl:focus-visible,body.f-herramientas .hgs-sq .tl.tl-on{
- background:linear-gradient(90deg,color-mix(in srgb,var(--c) 22%,transparent),transparent 75%);color:#fff;box-shadow:none;transform:none;padding-left:clamp(12px,2vw,26px)}
-body.f-herramientas .hgs-sq .tl:hover::after,body.f-herramientas .hgs-sq .tl:focus-visible::after,body.f-herramientas .hgs-sq .tl.tl-on::after{transform:translateX(6px);opacity:1}
-body.f-herramientas .hgs-sq .tl:hover .tl-ic,body.f-herramientas .hgs-sq .tl:focus-visible .tl-ic,body.f-herramientas .hgs-sq .tl.tl-on .tl-ic{background:var(--c);border-color:#fff;color:#06214d;rotate:0deg}
-body.f-herramientas .hgs-sq .tl:hover .tl-tag,body.f-herramientas .hgs-sq .tl:focus-visible .tl-tag{background:none;color:#fff}
-body.f-herramientas .hgs-sq .tl:hover .tl-tag::before,body.f-herramientas .hgs-sq .tl:focus-visible .tl-tag::before{background:var(--c)}
-body.f-herramientas .hgs-sq .tl:focus-visible{outline:2px solid #fff;outline-offset:-2px}
-/* Links y recursos: misma fila, sin estilo aparte */
-body.f-herramientas .hgs-sq .tl.tl-links{grid-column:auto;flex-direction:row;border-radius:0;color:#fff;padding:clamp(18px,2.2vw,28px) clamp(2px,.8vw,10px)}
-body.f-herramientas .hgs-sq .tl.tl-links .tl-ic{background:rgba(255,255,255,.9);border-color:#fff;color:#06214d}
-body.f-herramientas .hgs-sq .tl.tl-links:hover,body.f-herramientas .hgs-sq .tl.tl-links:focus-visible{background:linear-gradient(90deg,rgba(255,255,255,.1),rgba(255,255,255,0) 75%);color:#fff}
-@media(max-width:640px){
- body.f-herramientas .hgs-sq .tl{grid-template-columns:auto minmax(0,1fr);row-gap:8px;padding:16px 2px}
- body.f-herramientas .hgs-sq .tl::after{display:none}
- body.f-herramientas .hgs-sq .tl-ic{grid-column:1;grid-row:1/span 2;align-self:start;width:40px}
- body.f-herramientas .hgs-sq .tl-tx{grid-column:2;grid-row:1}
- body.f-herramientas .hgs-sq .tl-tag{grid-column:2;grid-row:2;justify-self:start;display:inline-flex}
- body.f-herramientas .hgs-sq .tl-t{font-size:clamp(20px,6vw,25px)}
- body.f-herramientas .hgs-sq .tl-d{font-size:13.5px}
- body.f-herramientas .hgs-sq .tl:hover,body.f-herramientas .hgs-sq .tl.tl-on{padding-left:2px}
-}
-@media(prefers-reduced-motion:reduce){body.f-herramientas .hgs-sq .tl,body.f-herramientas .hgs-sq .tl::after{transition:none}}
-
 /* 3. CADA HERRAMIENTA: sin panel azul grande, apoyada directo sobre el fondo */
 .f-herramientas .md.md-pg{background:none;border:0;box-shadow:none;border-radius:0;margin-top:clamp(18px,2.4vw,30px)}
 .f-herramientas .md-pg .md-b{border-radius:0;padding-top:clamp(6px,1vw,12px)}

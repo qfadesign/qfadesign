@@ -1,0 +1,137 @@
+/* HERRAMIENTAS · ESTÉTICA DE TALLER
+   Todo el sector se lee como un banco de trabajo / plano técnico:
+   · fondo con cuadrícula de plano (líneas finas blancas, igual que la línea fina del resto de la web)
+   · el índice es un tablero de teclas físicas con regla y marcas de registro; cada tecla dice qué entra y qué sale
+   · cada herramienta lleva su ficha técnica (n.º, entrada, salida), una regla sobre el área de trabajo
+     y los interruptores (chips) como teclas que se hunden y prenden una luz
+   Sin color propio: blanco sobre el azul / negro de cada página. Se carga al final. */
+
+/* 0. CUADRÍCULA DE PLANO detrás de todo */
+body.f-herramientas main{position:relative;z-index:1}
+body.f-herramientas main::before{
+ content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:
+  linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px) 0 0/160px 160px,
+  linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px) 0 0/160px 160px,
+  linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/32px 32px,
+  linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/32px 32px;
+ -webkit-mask-image:radial-gradient(ellipse 85% 70% at 50% 30%,#000 30%,transparent 100%);
+ mask-image:radial-gradient(ellipse 85% 70% at 50% 30%,#000 30%,transparent 100%)}
+
+/* 1. ÍNDICE: tablero de teclas */
+body.f-herramientas .hgs.hgs-sq{
+ position:relative;box-sizing:border-box;display:grid;grid-template-columns:repeat(3,minmax(0,190px));justify-content:center;
+ gap:clamp(16px,2.2vw,24px);width:fit-content;max-width:100%;margin:clamp(30px,4vw,52px) auto 0;
+ padding:58px clamp(22px,3vw,40px);counter-reset:tl;border:1px solid rgba(255,255,255,.34);border-radius:26px;
+ background-color:rgba(0,0,0,.14);box-shadow:inset 0 2px 16px rgba(0,0,0,.28);
+ background-image:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13'%3E%3Cpath d='M6.5 0v13M0 6.5h13' stroke='white' stroke-opacity='.65'/%3E%3C/svg%3E"),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13'%3E%3Cpath d='M6.5 0v13M0 6.5h13' stroke='white' stroke-opacity='.65'/%3E%3C/svg%3E"),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13'%3E%3Cpath d='M6.5 0v13M0 6.5h13' stroke='white' stroke-opacity='.65'/%3E%3C/svg%3E"),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13'%3E%3Cpath d='M6.5 0v13M0 6.5h13' stroke='white' stroke-opacity='.65'/%3E%3C/svg%3E");
+ background-repeat:no-repeat;
+ background-position:left 11px top 11px,right 11px top 11px,left 11px bottom 11px,right 11px bottom 11px}
+/* regla arriba */
+body.f-herramientas .hgs.hgs-sq::before{
+ content:"";position:absolute;left:clamp(40px,4.4vw,58px);right:clamp(40px,4.4vw,58px);top:16px;height:16px;pointer-events:none;
+ background:
+  repeating-linear-gradient(90deg,rgba(255,255,255,.55) 0 1px,transparent 1px 8px) left bottom/100% 6px no-repeat,
+  repeating-linear-gradient(90deg,rgba(255,255,255,.95) 0 1px,transparent 1px 40px) left bottom/100% 12px no-repeat}
+/* rótulo abajo */
+body.f-herramientas .hgs.hgs-sq::after{
+ content:"Taller qfadesign · 06 herramientas";position:absolute;left:clamp(40px,4.4vw,58px);right:clamp(40px,4.4vw,58px);bottom:17px;
+ font-family:var(--fp);font-weight:500;font-size:11px;line-height:1;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.7);pointer-events:none;
+ text-align:left}
+
+/* la tecla */
+body.f-herramientas .hgs.hgs-sq .tl{
+ position:relative;box-sizing:border-box;aspect-ratio:1;width:auto;min-height:0;margin:0;
+ display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:clamp(13px,1.4vw,17px);
+ background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.07));color:#fff;
+ border:1px solid rgba(255,255,255,.42);border-radius:20px;
+ -webkit-backdrop-filter:blur(14px) saturate(1.5);backdrop-filter:blur(14px) saturate(1.5);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -5px 0 rgba(255,255,255,.1),0 5px 0 rgba(0,16,60,.5),0 14px 22px rgba(0,0,0,.22);
+ counter-increment:tl;transform:none;
+ transition:transform .14s ease-out,box-shadow .14s ease-out,background .25s,border-color .25s}
+/* luz indicadora */
+body.f-herramientas .hgs.hgs-sq .tl::before{
+ content:"";position:absolute;left:50%;top:13px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;
+ background:rgba(255,255,255,.22);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);transition:background .2s,box-shadow .2s}
+body.f-herramientas .hgs.hgs-sq .tl:hover,
+body.f-herramientas .hgs.hgs-sq .tl:focus-visible{
+ background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,.1));color:#fff;border-color:rgba(255,255,255,.8);
+ transform:translateY(-3px);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -5px 0 rgba(255,255,255,.12),0 8px 0 rgba(0,16,60,.5),0 18px 26px rgba(0,0,0,.26)}
+body.f-herramientas .hgs.hgs-sq .tl:hover::before,
+body.f-herramientas .hgs.hgs-sq .tl:focus-visible::before{background:#fff;box-shadow:0 0 9px 2px rgba(255,255,255,.75)}
+/* al apretar: la tecla se hunde */
+body.f-herramientas .hgs.hgs-sq .tl:active{
+ transform:translateY(4px);transition-duration:.06s;
+ box-shadow:inset 0 2px 6px rgba(0,0,0,.25),inset 0 -2px 0 rgba(255,255,255,.1),0 1px 0 rgba(0,16,60,.5)}
+body.f-herramientas .hgs.hgs-sq .tl:focus-visible{outline:2px solid #fff;outline-offset:5px}
+
+/* arriba: n.º (izq.) · ícono (der.) */
+body.f-herramientas .hgs.hgs-sq .tl-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+body.f-herramientas .hgs.hgs-sq .tl-top::before{content:counter(tl,decimal-leading-zero);font-family:var(--fp);font-weight:500;font-size:12px;line-height:1;letter-spacing:.16em;color:rgba(255,255,255,.75)}
+body.f-herramientas .hgs.hgs-sq .tl-ic{order:2;flex:none;width:24px;height:24px;margin:0;background:none;border:0;border-radius:0;box-shadow:none;rotate:0deg;color:rgba(255,255,255,.85)}
+body.f-herramientas .hgs.hgs-sq .tl:hover .tl-ic,body.f-herramientas .hgs.hgs-sq .tl:focus-visible .tl-ic{background:none;color:#fff;rotate:0deg}
+body.f-herramientas .hgs.hgs-sq .tl-ic svg{width:100%;height:100%}
+body.f-herramientas .hgs.hgs-sq .tl-tag{display:none}
+/* abajo: nombre grabado + qué entra y qué sale */
+body.f-herramientas .hgs.hgs-sq .tl-tx{min-width:0}
+body.f-herramientas .hgs.hgs-sq .tl-t{display:block;font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(15px,1.45vw,18px);line-height:1.08;letter-spacing:-.025em;color:#fff;overflow-wrap:normal;hyphens:none;text-wrap:balance}
+body.f-herramientas .hgs.hgs-sq .tl-io{display:block;margin-top:8px;padding-top:7px;border-top:1px solid rgba(255,255,255,.3);font-family:var(--fp);font-weight:500;font-size:9.5px;line-height:1.25;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.78)}
+body.f-herramientas .hgs.hgs-sq .tl-d{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+
+@media(max-width:900px){body.f-herramientas .hgs.hgs-sq{grid-template-columns:repeat(3,minmax(0,1fr));width:100%;max-width:660px}}
+@media(max-width:640px){
+ body.f-herramientas .hgs.hgs-sq{grid-template-columns:repeat(2,minmax(0,1fr));max-width:430px;gap:14px;padding:52px 16px 48px}
+ body.f-herramientas .hgs.hgs-sq::before{left:30px;right:30px}
+ body.f-herramientas .hgs.hgs-sq::after{left:30px;right:30px;font-size:9.5px;letter-spacing:.14em}
+ body.f-herramientas .hgs.hgs-sq .tl{padding:12px;border-radius:18px}
+ body.f-herramientas .hgs.hgs-sq .tl-t{font-size:clamp(13.5px,3.9vw,16px)}
+ body.f-herramientas .hgs.hgs-sq .tl-io{font-size:8.5px;margin-top:6px;padding-top:6px}
+ body.f-herramientas .hgs.hgs-sq .tl-top{flex-direction:row;align-items:flex-start;justify-content:space-between}
+ body.f-herramientas .hgs.hgs-sq .tl-ic{width:21px;height:21px}
+ body.f-herramientas .hgs.hgs-sq .tl:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){body.f-herramientas .hgs.hgs-sq .tl{transition:none}}
+
+/* 2. CADA HERRAMIENTA: ficha técnica arriba */
+body.f-herramientas .hp-spec{
+ display:flex;flex-wrap:wrap;width:fit-content;max-width:100%;margin:clamp(14px,2vw,22px) 0 0;padding:0;
+ border-top:1px solid rgba(255,255,255,.4);border-bottom:1px solid rgba(255,255,255,.4);
+ font-family:var(--fp);font-weight:500;font-size:11.5px;line-height:1;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.88)}
+body.f-herramientas .hp-spec span{display:inline-flex;align-items:center;padding:10px clamp(12px,1.8vw,22px) 10px 0;margin-right:clamp(12px,1.8vw,22px);border-right:1px solid rgba(255,255,255,.28)}
+body.f-herramientas .hp-spec span:last-child{margin-right:0;padding-right:0;border-right:0}
+body.f-herramientas .hp-spec span:first-child::before{content:"";width:7px;height:7px;margin-right:10px;border-radius:50%;background:#fff;box-shadow:0 0 8px 2px rgba(255,255,255,.7)}
+@media(max-width:560px){body.f-herramientas .hp-spec{font-size:10px;letter-spacing:.1em}body.f-herramientas .hp-spec span{padding-top:9px;padding-bottom:9px}}
+
+/* regla sobre el área de trabajo */
+body.f-herramientas .md.md-pg::before{
+ content:"Área de trabajo";display:block;height:28px;margin-bottom:clamp(10px,1.6vw,18px);
+ font-family:var(--fp);font-weight:500;font-size:11px;line-height:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);
+ background:
+  repeating-linear-gradient(90deg,rgba(255,255,255,.55) 0 1px,transparent 1px 8px) left bottom/100% 6px no-repeat,
+  repeating-linear-gradient(90deg,rgba(255,255,255,.95) 0 1px,transparent 1px 40px) left bottom/100% 12px no-repeat}
+
+/* 3. INTERRUPTORES: los chips y las opciones son teclas que se hunden; los que quedan elegidos prenden una luz */
+html body.f-herramientas :is(.chip,.br-op){
+ background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06));color:#fff;
+ border:1px solid rgba(255,255,255,.42);border-radius:99px;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 3px 0 rgba(0,0,0,.34);
+ transform:none;scale:1;transition:transform .12s ease-out,box-shadow .12s ease-out,background .2s,border-color .2s}
+html body.f-herramientas :is(.chip,.br-op):hover{
+ background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,.1));color:#fff;border-color:rgba(255,255,255,.75);
+ transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 4px 0 rgba(0,0,0,.34)}
+html body.f-herramientas :is(.chip:active,.br-op:active),
+html body.f-herramientas :is(.chip[aria-pressed=true],.br-op.on),
+html body.f-herramientas :is(.chip[aria-pressed=true],.br-op.on):hover{
+ background:rgba(0,0,0,.34);color:#fff;border-color:rgba(255,255,255,.8);
+ transform:translateY(2px);box-shadow:inset 0 3px 8px rgba(0,0,0,.55),0 0 0 rgba(0,0,0,0)}
+html body.f-herramientas .chip[aria-pressed]::before{
+ content:"";display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;vertical-align:middle;position:relative;top:-1px;
+ background:rgba(255,255,255,.25);box-shadow:inset 0 0 0 1px rgba(255,255,255,.4);transition:background .2s,box-shadow .2s}
+html body.f-herramientas .chip[aria-pressed=true]::before{background:#fff;box-shadow:0 0 8px 2px rgba(255,255,255,.75)}
+html body.f-herramientas :is(.chip,.br-op):focus-visible{outline:2px solid #fff;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){html body.f-herramientas :is(.chip,.br-op){transition:none}}
