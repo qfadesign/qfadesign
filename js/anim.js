@@ -9,7 +9,6 @@ document.documentElement.classList.add('js');
   const PJB={'proyecto-bleko':'#82301b','proyecto-dulcemente':'#7a1c40','proyecto-ros':'#14073d','proyecto-f1':'#5a0710','calculadora-de-precios':'#07493a','generador-de-paletas':'#7a1c4c','contraste-de-color':'#6b4a05','conversor-de-unidades':'#7d3512','brief':'#2a1180'}; // fondo de cada proyecto mientras cambia la página
   const seg=p=>p.replace(/\/+$/,'').split('/').pop().replace(/\.html$/,'');
   const flag=(k,v)=>{try{v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){}};
-  const VT='PageRevealEvent' in self&&'PageSwapEvent' in self;
 
   // stickers de título de las páginas de la barra: al ir a una, el sticker aparece grande en el centro; ya en la página nueva vuela hasta su lugar y se pega como título
   const STK={acerca:['titulo-acerca',493.04,102.69,0],portfolio:['portfolio',445.32,124.86,1],herramientas:['titulo-herramientas',672.35,107.44,0],jueguitos:['jueguitos',488.7,126.74,1],contacto:['titulo-contacto',453.24,98.03,0]}; // [archivo, ancho, alto, fondo negro]
@@ -69,8 +68,6 @@ document.documentElement.classList.add('js');
     const a=e.target.closest&&e.target.closest('a[href]');
     if(!a||(a.target&&a.target!=='_self')||a.hasAttribute('download')||a.origin!==location.origin||a.pathname===location.pathname)return;
     const s=seg(a.pathname),oscura=OSCURAS.includes(s);
-    // navegadores con View Transitions: tarjeta → proyecto y "← Portfolio" los hace el navegador (ver final de este archivo)
-    if(VT&&((s.indexOf('proyecto-')===0&&a.closest('.pj,.pg-s'))||(s==='portfolio'&&seg(location.pathname).indexOf('proyecto-')===0&&a.closest('.volver'))))return;
     if(!oscura&&!AZULES.includes(s))return;
     if(root.classList.contains('sale')){e.preventDefault();return}
     if(s===''||s==='index'){ // al inicio, la primera vez de la visita, va la pantalla de entrada: sin transición
@@ -212,71 +209,10 @@ addEventListener('DOMContentLoaded',()=>{
 /* menú hamburguesa */
 addEventListener('DOMContentLoaded',()=>{
   const nav=document.querySelector('nav'),b=nav&&nav.querySelector('.burger');if(!b)return;
-  const logo=nav.querySelector('a'),ul=nav.querySelector('ul'),lis=[...ul.children],ESC=2;
-  /* mide cuánto tiene que bajar el logo (hasta el borde de abajo, sin moverse de la izquierda) y cuánto tiene que subir cada sticker
-     para "caer" desde la barra. Usa offsetLeft/offsetTop (que ignoran las transformaciones) para poder medir aunque el menú esté a medio animar. */
-  const geo=()=>{
-    if(!matchMedia('(max-width:760px)').matches)return;
-    const nr=nav.getBoundingClientRect(),ur=ul.getBoundingClientRect();
-    const cy=nr.top+nav.clientTop+logo.offsetTop+logo.offsetHeight/2;
-    const fy=ur.top+ur.height-30-logo.offsetHeight*ESC/2;
-    nav.style.setProperty('--ly',(fy-cy)+'px');
-    nav.style.setProperty('--ls',ESC);
-    lis.forEach(li=>li.style.setProperty('--up',(cy-(ur.top+li.offsetTop+li.offsetHeight/2))+'px'));
-  };
-  const set=o=>{if(o){nav.classList.remove('rapido');if(!nav.classList.contains('abierto'))geo()}nav.classList.toggle('abierto',o);b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Cerrar menú':'Abrir menú')};
+  const set=o=>{nav.classList.toggle('abierto',o);b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Cerrar menú':'Abrir menú')};
   b.addEventListener('click',()=>set(!nav.classList.contains('abierto')));
-  nav.querySelectorAll('ul a').forEach(a=>a.addEventListener('click',()=>{nav.classList.add('rapido');set(false)}));
-  ul.addEventListener('click',e=>{if(e.target===e.currentTarget)set(false)}); // tocar el vidrio (fuera de los stickers) cierra
+  nav.querySelectorAll('ul a').forEach(a=>a.addEventListener('click',()=>set(false)));
   addEventListener('keydown',e=>{if(e.key==='Escape'&&nav.classList.contains('abierto')){set(false);b.focus()}});
   document.addEventListener('click',e=>{if(!nav.contains(e.target))set(false)});
-  addEventListener('resize',()=>{if(nav.classList.contains('abierto'))geo()});
   matchMedia('(min-width:761px)').addEventListener('change',e=>{if(e.matches)set(false)});
 });
-
-/* View Transitions entre el portfolio / inicio y los proyectos (estilos en css/transicion.css).
-   Ir:     la tarjeta se llama "vt-portada" en la página que se va y la portada del proyecto en la que llega: el navegador anima de una a otra.
-   Volver: al revés, la portada del proyecto → su tarjeta (el portfolio hace scroll hasta ella antes de pintar).
-   Todo lo demás (barra, stickers, herramientas…) sigue con la transición de siempre: acá se cancela la View Transition. */
-(()=>{
-  if(!('PageRevealEvent' in self&&'PageSwapEvent' in self)||self!==top||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-  const root=document.documentElement;
-  const seg=p=>p.replace(/\/+$/,'').split('/').pop().replace(/\.html$/,'');
-  const lista=()=>root.classList.contains('lista-on')||(()=>{try{return sessionStorage.getItem('qfa-vista')==='lista'}catch(e){return false}})();
-  const tarjeta=slug=>{const a=[...document.querySelectorAll('a[href$="'+slug+'"]')].find(x=>x.closest('.pj,.pg-s'));return a&&a.closest('.pj,.pg-s')};
-  const visible=el=>{const r=el.getBoundingClientRect(),h=Math.min(r.bottom,innerHeight)-Math.max(r.top,0);return h>Math.min(r.height,innerHeight)*.3};
-  const destino=()=>{const f=document.querySelector('.pr-fondo'),p=document.querySelector('.pr-portada');return f&&(visible(f)||!p||!visible(p))?f:p};   // lo que se ve: el fondo (arriba de todo) o, scrolleando, la portada
-  const poner=(el,hide)=>{el.style.viewTransitionName='vt-portada';if(hide)el.classList.add('vt-card')};
-  const sacar=el=>{el.style.viewTransitionName='';el.classList.remove('vt-card')};
-
-  addEventListener('pageswap',e=>{
-    const vt=e.viewTransition;if(!vt)return;
-    const skip=()=>{try{vt.skipTransition()}catch(_){}};
-    const url=e.activation&&e.activation.entry&&e.activation.entry.url;
-    let to=null;try{to=new URL(url)}catch(_){}
-    if(!to||to.origin!==location.origin||root.classList.contains('sale')){skip();return}  // 'sale' = la transición de siempre ya está en marcha
-    const de=seg(location.pathname),a=seg(to.pathname);
-    if(a.indexOf('proyecto-')===0&&de.indexOf('proyecto-')!==0){
-      const t=lista()?null:tarjeta(a);
-      if(!t){skip();return}
-      poner(t,true);
-    }else if(de.indexOf('proyecto-')===0&&a==='portfolio'){
-      const p=destino();
-      if(!p){skip();return}
-      poner(p,false);
-      try{sessionStorage.setItem('qfa-vt',de)}catch(_){}
-    }else skip();
-  });
-
-  addEventListener('pagereveal',e=>{
-    let back=null;try{back=sessionStorage.getItem('qfa-vt');sessionStorage.removeItem('qfa-vt')}catch(_){}
-    const vt=e.viewTransition;if(!vt)return;
-    const de=seg(location.pathname);let el=null;
-    if(de.indexOf('proyecto-')===0){el=document.querySelector('.pr-fondo')||document.querySelector('.pr-portada');if(el)poner(el,false)}
-    else if(back&&!lista()){
-      el=tarjeta(back);
-      if(el){poner(el,true);el.scrollIntoView({block:'center',behavior:'instant'})}
-    }
-    if(el)vt.finished.finally(()=>sacar(el));
-  });
-})();

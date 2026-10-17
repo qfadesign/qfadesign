@@ -6,7 +6,7 @@
   const f=[...fila.children];
   const cap=sec.querySelector('.pg-cap'),cb=cap.querySelector('b'),ci=cap.querySelector('i');
   let cur=-1,tm=0;
-  const texto=e=>{cb.textContent=e.dataset.n;ci.textContent=e.dataset.t};
+  const texto=e=>{ci.textContent=e.dataset.t;cb.textContent='';if(e.dataset.l){const l=new Image();l.className='pg-logo';l.alt=e.dataset.n;l.src='img/marcas/'+e.dataset.l+'.svg';cb.appendChild(l)}else cb.textContent=e.dataset.n};
   const poner=i=>{
     f.forEach((e,k)=>e.classList.toggle('on',k===i));
     if(i===cur)return;
