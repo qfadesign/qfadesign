@@ -209,7 +209,19 @@ addEventListener('DOMContentLoaded',()=>{
 /* menú hamburguesa */
 addEventListener('DOMContentLoaded',()=>{
   const nav=document.querySelector('nav'),b=nav&&nav.querySelector('.burger');if(!b)return;
-  const set=o=>{nav.classList.toggle('abierto',o);b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Cerrar menú':'Abrir menú')};
+  const logo=nav.querySelector(':scope>a:first-child'),ul=nav.querySelector('ul'),lis=[...nav.querySelectorAll('ul li')];
+  /* distancias que usa el CSS: --ly (cuánto baja el logo hasta el borde de abajo) y --up (desde dónde caen los stickers) */
+  const medir=()=>{
+    if(!logo||!ul)return;
+    const bb=b.getBoundingClientRect(),barY=bb.top+bb.height/2,
+      pad=parseFloat(getComputedStyle(ul).paddingBottom)||96,
+      destino=innerHeight-pad/2; // centro del logo, en el espacio reservado abajo del panel
+    nav.style.setProperty('--ly',Math.max(0,destino-barY)+'px');
+    const ur=ul.getBoundingClientRect();
+    lis.forEach(li=>{const cy=ur.top+li.offsetTop+li.offsetHeight/2;li.style.setProperty('--up',(barY-cy)+'px')});
+  };
+  const set=o=>{if(o&&!nav.classList.contains('abierto'))medir();nav.classList.toggle('abierto',o);b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Cerrar menú':'Abrir menú')};
+  addEventListener('resize',()=>{if(nav.classList.contains('abierto'))medir()});
   b.addEventListener('click',()=>set(!nav.classList.contains('abierto')));
   nav.querySelectorAll('ul a').forEach(a=>a.addEventListener('click',()=>set(false)));
   addEventListener('keydown',e=>{if(e.key==='Escape'&&nav.classList.contains('abierto')){set(false);b.focus()}});
