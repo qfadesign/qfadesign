@@ -1,30 +1,51 @@
-/* Páginas de proyecto más integradas:
-   1) la portada y la ficha (qué incluye, sobre el proyecto, decisiones) forman una sola pieza
-   2) acceso al siguiente proyecto antes del cierre */
-:root{--pr-r:clamp(18px,2.4vw,34px)}
+/* Páginas de proyecto: título con la marca → qué es → qué incluye y descripciones (ficha) → mosaico con todas las imágenes → cierre.
+   Al final, muy sutil, el link al próximo proyecto. */
+:root{--pr-r:clamp(18px,2.4vw,34px);--pr-g:clamp(8px,1vw,14px);--pr-rt:clamp(12px,1.6vw,22px)}
 
-/* portada + ficha = una tarjeta */
-.pr-portada:has(+.pr-info){border-bottom-left-radius:0;border-bottom-right-radius:0;box-shadow:none;position:relative;z-index:1}
-.pr-portada+.pr-info{display:block;margin-top:0;padding:clamp(4px,.8vw,10px) clamp(18px,2.6vw,36px);border:1px solid rgba(255,255,255,.42);border-top:0;border-radius:0 0 var(--pr-r) var(--pr-r);background:rgba(255,255,255,.13);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);box-shadow:0 24px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.35)}
-.pr-portada+.pr-info>.vid,.pr-portada+.pr-info>.pr-proc{margin:0;padding:clamp(14px,1.8vw,22px) 0;border:0;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
-.pr-portada+.pr-info>.vid:not(:first-child),.pr-portada+.pr-info>.pr-proc,.pr-portada+.pr-info>.pr-links{border-top:1px solid rgba(255,255,255,.3)}
-.pr-portada+.pr-info>.pr-links{margin:0;padding:clamp(14px,1.8vw,22px) 0}
-.pr-portada+.pr-info .pr-det[open]>summary{margin-bottom:clamp(12px,1.6vw,18px)}
-.pr-info+.pr-gal{margin-top:clamp(26px,3.6vw,48px)}
+/* ficha: tarjeta de vidrio como el resto de la web */
+.pr-info{display:block;padding:clamp(4px,.8vw,10px) clamp(18px,2.6vw,36px);border:1px solid rgba(255,255,255,.42);border-radius:var(--pr-r);background:rgba(255,255,255,.13);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);box-shadow:0 20px 50px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.45)}
+.pr-info>.vid,.pr-info>.pr-proc{margin:0;padding:clamp(14px,1.8vw,22px) 0;border:0;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.pr-info>.vid:not(:first-child),.pr-info>.pr-proc,.pr-info>.pr-links{border-top:1px solid rgba(255,255,255,.3)}
+.pr-info>.pr-links{margin:0;padding:clamp(14px,1.8vw,22px) 0}
+.pr-info .pr-det[open]>summary{margin-bottom:clamp(12px,1.6vw,18px)}
 
-/* siguiente proyecto */
-.pr-next{margin-top:clamp(38px,5.4vw,76px)}
-.pr-next a{display:grid;grid-template-columns:clamp(104px,18vw,230px) 1fr auto;align-items:center;gap:clamp(14px,2.4vw,34px);padding:clamp(10px,1.4vw,16px);border:1px solid rgba(255,255,255,.42);border-radius:var(--pr-r);background:rgba(255,255,255,.13);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);box-shadow:0 20px 50px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.45);color:#fff;text-decoration:none;transition:transform .35s cubic-bezier(.2,.8,.2,1),background .3s}
-.pr-next a:hover,.pr-next a:focus-visible{transform:translateY(-4px);background:rgba(255,255,255,.2)}
-.pr-next a:focus-visible{outline:3px solid #fff;outline-offset:4px}
-.pr-next img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:calc(var(--pr-r) - 8px)}
-.pr-next .k{display:block;margin-bottom:6px;font:900 italic 13px var(--fh);letter-spacing:.02em;opacity:.85}
-.pr-next b{display:block;font:900 italic clamp(26px,4vw,52px)/1 var(--fh);letter-spacing:-.01em;overflow-wrap:anywhere}
-.pr-next small{display:block;margin-top:8px;font-size:clamp(14px,1.2vw,16px);opacity:.85}
-.pr-next .fl{flex:none;width:clamp(40px,4vw,56px);height:clamp(40px,4vw,56px);margin-right:clamp(4px,1.2vw,16px);border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);font-size:clamp(20px,2vw,28px);line-height:1;transition:translate .3s cubic-bezier(.2,.8,.2,1)}
-.pr-next a:hover .fl,.pr-next a:focus-visible .fl{translate:6px 0}
+/* mosaico: filas que se completan solas; cada fila tiene la proporción de la suma de sus piezas */
+.pr-mos{display:flex;flex-direction:column;gap:var(--pr-g);margin-top:clamp(20px,3vw,40px)}
+.pr-row{display:flex;gap:var(--pr-g);aspect-ratio:var(--sum)}
+.pr-row>figure,.pr-st{flex:var(--ar) 1 0;min-width:0}
+.pr-st{display:flex;flex-direction:column;gap:var(--pr-g)}
+.pr-st>figure{flex:1 1 0;min-height:0}
+.pr-mos figure{position:relative;margin:0;overflow:hidden;border-radius:var(--pr-rt);background:var(--nav);box-shadow:0 14px 36px rgba(0,0,0,.22)}
+.pr-mos .zoom{position:absolute;inset:0;width:100%;height:100%}
+.pr-mos .zoom img{width:100%;height:100%;object-fit:cover}
+.js .pr-mos figure.rv{scale:.96;transition:opacity .9s,translate 1s cubic-bezier(.16,.9,.2,1),scale 1s cubic-bezier(.16,.9,.2,1)}
+.js .pr-mos figure.rv.in{scale:1}
+.pr-info~.pr-video,.pr-info+.pr-portada{margin-top:clamp(20px,3vw,40px)}
 @media(max-width:560px){
-  .pr-next a{grid-template-columns:92px 1fr}
-  .pr-next .fl{display:none}
+  .pr-row{flex-wrap:wrap;aspect-ratio:auto}
+  .pr-row>figure{flex:0 0 100%;aspect-ratio:var(--ar)}
+  .pr-st{flex:0 0 100%;flex-direction:row}
+  .pr-st>figure{flex:1 1 0;aspect-ratio:var(--ar)}
 }
-@media(prefers-reduced-motion:reduce){.pr-next a,.pr-next .fl{transition:none}.pr-next a:hover,.pr-next a:focus-visible{transform:none}}
+@media(prefers-reduced-motion:reduce){.js .pr-mos figure.rv{scale:1}}
+
+/* próximo proyecto: abajo del todo y muy sutil */
+.pr-sig{margin:clamp(4px,1vw,12px) 0 clamp(36px,5vw,64px);text-align:center}
+.pr-sig a{display:inline-flex;align-items:baseline;gap:.6em;padding:8px 4px;font-family:var(--f);font-size:14px;line-height:1;color:#fff;opacity:.55;transition:opacity .25s}
+.pr-sig a:hover,.pr-sig a:focus-visible{opacity:1}
+.pr-sig a:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:8px}
+.pr-sig b{font-family:var(--fh);font-weight:900;font-style:italic;font-size:15px}
+.pr-sig i{font-style:normal;transition:translate .25s}
+.pr-sig a:hover i,.pr-sig a:focus-visible i{translate:4px 0}
+@media(prefers-reduced-motion:reduce){.pr-sig a,.pr-sig i{transition:none}}
+
+/* proporciones exactas (sin recortar las imágenes) donde el navegador soporta unidades de contenedor */
+@supports (width:1cqw){
+  .pr-mos{container-type:inline-size}
+  .pr-row{aspect-ratio:auto;height:calc((100cqw - (var(--n,1) - 1)*var(--pr-g))/var(--sum))}
+  .pr-row.has-st{height:calc((100cqw - var(--pr-g) + var(--pr-g)*var(--a)/2)/(var(--ab) + var(--a)/2))}
+  .pr-row.has-st>figure{flex:1 1 0}
+  .pr-row.has-st{--pr-h:calc((100cqw - var(--pr-g) + var(--pr-g)*var(--a)/2)/(var(--ab) + var(--a)/2))}
+  .pr-row.has-st>.pr-st{flex:0 0 calc((var(--pr-h) - var(--pr-g))*var(--a)/2)}
+  @media(max-width:560px){.pr-row,.pr-row.has-st{height:auto}.pr-row.has-st>figure{flex:0 0 100%}.pr-row.has-st>.pr-st{flex:0 0 100%}}
+}
