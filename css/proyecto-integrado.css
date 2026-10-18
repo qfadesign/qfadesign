@@ -1,0 +1,30 @@
+/* Páginas de proyecto más integradas:
+   1) la portada y la ficha (qué incluye, sobre el proyecto, decisiones) forman una sola pieza
+   2) acceso al siguiente proyecto antes del cierre */
+:root{--pr-r:clamp(18px,2.4vw,34px)}
+
+/* portada + ficha = una tarjeta */
+.pr-portada:has(+.pr-info){border-bottom-left-radius:0;border-bottom-right-radius:0;box-shadow:none;position:relative;z-index:1}
+.pr-portada+.pr-info{display:block;margin-top:0;padding:clamp(4px,.8vw,10px) clamp(18px,2.6vw,36px);border:1px solid rgba(255,255,255,.42);border-top:0;border-radius:0 0 var(--pr-r) var(--pr-r);background:rgba(255,255,255,.13);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);box-shadow:0 24px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.35)}
+.pr-portada+.pr-info>.vid,.pr-portada+.pr-info>.pr-proc{margin:0;padding:clamp(14px,1.8vw,22px) 0;border:0;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.pr-portada+.pr-info>.vid:not(:first-child),.pr-portada+.pr-info>.pr-proc,.pr-portada+.pr-info>.pr-links{border-top:1px solid rgba(255,255,255,.3)}
+.pr-portada+.pr-info>.pr-links{margin:0;padding:clamp(14px,1.8vw,22px) 0}
+.pr-portada+.pr-info .pr-det[open]>summary{margin-bottom:clamp(12px,1.6vw,18px)}
+.pr-info+.pr-gal{margin-top:clamp(26px,3.6vw,48px)}
+
+/* siguiente proyecto */
+.pr-next{margin-top:clamp(38px,5.4vw,76px)}
+.pr-next a{display:grid;grid-template-columns:clamp(104px,18vw,230px) 1fr auto;align-items:center;gap:clamp(14px,2.4vw,34px);padding:clamp(10px,1.4vw,16px);border:1px solid rgba(255,255,255,.42);border-radius:var(--pr-r);background:rgba(255,255,255,.13);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);box-shadow:0 20px 50px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.45);color:#fff;text-decoration:none;transition:transform .35s cubic-bezier(.2,.8,.2,1),background .3s}
+.pr-next a:hover,.pr-next a:focus-visible{transform:translateY(-4px);background:rgba(255,255,255,.2)}
+.pr-next a:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.pr-next img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:calc(var(--pr-r) - 8px)}
+.pr-next .k{display:block;margin-bottom:6px;font:900 italic 13px var(--fh);letter-spacing:.02em;opacity:.85}
+.pr-next b{display:block;font:900 italic clamp(26px,4vw,52px)/1 var(--fh);letter-spacing:-.01em;overflow-wrap:anywhere}
+.pr-next small{display:block;margin-top:8px;font-size:clamp(14px,1.2vw,16px);opacity:.85}
+.pr-next .fl{flex:none;width:clamp(40px,4vw,56px);height:clamp(40px,4vw,56px);margin-right:clamp(4px,1.2vw,16px);border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);font-size:clamp(20px,2vw,28px);line-height:1;transition:translate .3s cubic-bezier(.2,.8,.2,1)}
+.pr-next a:hover .fl,.pr-next a:focus-visible .fl{translate:6px 0}
+@media(max-width:560px){
+  .pr-next a{grid-template-columns:92px 1fr}
+  .pr-next .fl{display:none}
+}
+@media(prefers-reduced-motion:reduce){.pr-next a,.pr-next .fl{transition:none}.pr-next a:hover,.pr-next a:focus-visible{transform:none}}
