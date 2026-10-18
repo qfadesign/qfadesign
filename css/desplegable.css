@@ -34,3 +34,18 @@
 .inicio-reglas .dsp .dsp-t{font-size:clamp(20px,2vw,26px)}
 
 @media(prefers-reduced-motion:reduce){.dsp[open]>:not(summary){animation:none}.dsp>summary::after{transition:none}}
+
+/* ---- Jerarquía del texto dentro de los desplegables (para leerlo en diagonal) ----
+   dsp-lead = la idea principal en una línea · dsp-l = pasos o puntos (ol numerada / ul con punto)
+   <b> al inicio de cada paso = acción o etiqueta · <strong> = palabra clave dentro de la frase */
+.dsp .dsp-lead{margin:0!important;font-family:var(--f);font-size:clamp(17px,1.5vw,20px)!important;line-height:1.4!important;font-weight:600;font-style:normal;color:#fff!important;max-width:none!important;text-align:left!important}
+.dsp .dsp-p{font-family:var(--f);font-size:clamp(15px,1.25vw,17px)!important;line-height:1.55!important;font-weight:400;font-style:normal;color:rgba(255,255,255,.88)!important;max-width:62ch;text-align:left}
+.dsp .dsp-lead+.dsp-p,.dsp .dsp-p+.dsp-p{margin-top:12px!important}
+.dsp strong{font-weight:800;color:#fff}
+.dsp-l{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:11px;counter-reset:dsp}
+.dsp-lead+.dsp-l{margin-top:16px}
+.dsp-l li{position:relative;padding-left:40px;counter-increment:dsp;font-family:var(--f);font-size:clamp(15px,1.25vw,17px);line-height:1.5;font-weight:400;color:rgba(255,255,255,.88);text-align:left;max-width:62ch}
+ol.dsp-l li::before{content:counter(dsp);position:absolute;left:0;top:-.05em;width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);color:#fff;font-family:var(--fh,"articulat-cf",sans-serif);font-weight:900;font-style:italic;font-size:13px;line-height:1}
+ul.dsp-l li::before{content:"";position:absolute;left:10px;top:.62em;width:8px;height:8px;border-radius:50%;background:#fff}
+.dsp-l li>b:first-child{font-family:var(--fh,"articulat-cf",sans-serif);font-weight:900;font-style:italic;color:#fff}
+@media(max-width:560px){.dsp-l li{padding-left:36px}}
