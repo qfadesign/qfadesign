@@ -1,0 +1,141 @@
+/* qfadesign -- Acerca de, versión integrada (compu y celular).
+   Se carga DESPUÉS de botones.css en acerca.html. Sin tarjetas de vidrio: el texto vive sobre el fondo,
+   la foto se funde con la página, "Qué hago" es una lista y la foto del sillón lleva la frase encima.
+   Si algo no te gusta, sacá el <link> de css/acerca.css en acerca.html y vuelve todo como antes. */
+
+/* hero un poco más bajo en compu para que el texto se vea sin scrollear */
+@media(min-width:1101px){html body.f-acerca .ah{height:clamp(560px,58vw,800px)}}
+
+/* ---------- HERO: título detrás, retrato al frente y fundido hacia abajo ---------- */
+html body.f-acerca .ah-bg{z-index:0;top:9%}
+html body.f-acerca .ah-foto{z-index:1;filter:none;
+  -webkit-mask-image:linear-gradient(#000 72%,transparent 99%);mask-image:linear-gradient(#000 72%,transparent 99%)}
+
+/* texto sin caja: directamente sobre el fondo */
+html body.f-acerca .ah-a.vid{background:none;border:0;box-shadow:none;padding:0;border-radius:0;
+  -webkit-backdrop-filter:none;backdrop-filter:none;width:min(440px,36%);text-shadow:0 2px 22px rgba(3,24,70,.55)}
+html body.f-acerca .ah-a h2{font-size:clamp(22px,2.2vw,32px)}
+html body.f-acerca .ah-a p{color:rgba(255,255,255,.9)}
+
+/* palabras clave: texto con línea, no pastillas */
+html body.f-acerca .ah-chips{gap:0;width:clamp(170px,17vw,240px)}
+html body.f-acerca .ah-chips li{background:none;border:0;border-radius:0;box-shadow:none;
+  -webkit-backdrop-filter:none;backdrop-filter:none;text-align:right;padding:12px 0 10px;
+  border-bottom:1px solid rgba(255,255,255,.35);font-size:clamp(15px,1.5vw,21px)}
+html body.f-acerca .ah-chips li:first-child{border-top:1px solid rgba(255,255,255,.35)}
+
+/* ---------- QUÉ HAGO: lista editorial en vez de 6 tarjetas ---------- */
+html body.f-acerca .qh{display:block;counter-reset:qh}
+html body.f-acerca .qh .vid{counter-increment:qh;display:grid;grid-template-columns:clamp(44px,5vw,72px) minmax(0,1fr) minmax(0,1.05fr);
+  align-items:start;column-gap:clamp(14px,2vw,32px);min-height:0;gap:0 clamp(14px,2vw,32px);
+  padding:clamp(22px,2.4vw,34px) 0;border:0;border-top:1px solid rgba(255,255,255,.3);border-radius:0;
+  background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;transform:none;
+  transition:opacity .35s,translate 1s cubic-bezier(.16,.9,.2,1)}
+html body.f-acerca .qh .vid:last-child{border-bottom:1px solid rgba(255,255,255,.3)}
+html body.f-acerca .qh .vid::before{content:counter(qh,decimal-leading-zero);padding-top:.5em;font-family:var(--fh);font-weight:900;font-style:italic;
+  font-size:clamp(13px,1.2vw,16px);letter-spacing:.08em;opacity:.7}
+html body.f-acerca .qh h3{font-size:clamp(30px,4vw,60px);transition:translate .35s cubic-bezier(.2,.8,.2,1)}
+html body.f-acerca .qh p{max-width:46ch;justify-self:end;padding-top:clamp(6px,.9vw,14px);color:rgba(255,255,255,.88)}
+@media(hover:hover){
+  html body.f-acerca .qh:hover .vid:not(:hover){opacity:.5}
+  html body.f-acerca .qh .vid:hover{background:none;transform:none}
+  html body.f-acerca .qh .vid:hover h3{translate:14px 0}
+}
+
+/* ---------- APLICACIONES: misma grilla que la lista ---------- */
+html body.f-acerca .apps-col{grid-template-columns:calc(clamp(44px,5vw,72px) + clamp(14px,2vw,32px)) 1fr}
+
+/* ---------- FOTO DEL SILLÓN: frase encima, sin caja, con degradé del azul de la web ---------- */
+html body.f-acerca .foto-band{border-radius:clamp(20px,3vw,36px)}
+html body.f-acerca .foto-band::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(to top,rgba(6,33,77,.92) 0%,rgba(6,33,77,.55) 32%,rgba(6,33,77,0) 66%)}
+html body.f-acerca .foto-band .vid{z-index:2;left:clamp(18px,3vw,44px);bottom:clamp(18px,3vw,40px);max-width:min(720px,88%);
+  background:none;border:0;box-shadow:none;padding:0;border-radius:0;color:#fff;
+  -webkit-backdrop-filter:none;backdrop-filter:none}
+html body.f-acerca .foto-band p{font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(22px,3vw,44px);line-height:1.05;letter-spacing:-.01em}
+
+/* ---------- TABLET Y CELULAR ---------- */
+@media(max-width:1100px){
+  html body.f-acerca .ah{gap:0}
+  html body.f-acerca .ah-bg{z-index:0}
+  html body.f-acerca .ah-foto{position:relative;left:auto;bottom:auto;transform:none;width:min(100%,600px);margin-top:-7vw}
+  html body.f-acerca .ah-a.vid{position:relative;z-index:2;width:auto;max-width:62ch;margin:-24vw 0 0}
+  html body.f-acerca .ah-chips{width:auto;display:grid;grid-template-columns:repeat(2,max-content);justify-content:start;gap:8px clamp(26px,8vw,60px);margin:clamp(18px,3vw,26px) 0 0;max-width:62ch;width:100%;position:relative;z-index:2}
+  html body.f-acerca .ah-chips li,html body.f-acerca .ah-chips li:first-child{border:0;padding:0;font-size:clamp(13px,3.4vw,16px);text-align:left;letter-spacing:.08em;opacity:.9}
+  html body.f-acerca .ah-chips li::before{content:"+ ";opacity:.7}
+}
+@media(max-width:760px){
+  /* en celular el contenido se alinea a la izquierda y la lista pasa a dos columnas: número + título / texto */
+  html body.f-acerca .ah-a.vid{margin-top:-26vw}
+  html body.f-acerca .qh .vid{grid-template-columns:40px minmax(0,1fr);padding:22px 0}
+  html body.f-acerca .qh .vid::before{grid-row:1}
+  html body.f-acerca .qh h3{font-size:clamp(28px,8.4vw,38px)}
+  html body.f-acerca .qh p{grid-column:2;justify-self:start;margin-top:10px;max-width:none}
+  html body.f-acerca .apps-col{grid-template-columns:1fr}
+  html body.f-acerca .foto-band{aspect-ratio:4/5;margin-inline:calc(clamp(20px,4vw,40px) * -1);border-radius:0}
+  html body.f-acerca .foto-band .vid{left:clamp(20px,4vw,40px);right:clamp(20px,4vw,40px);max-width:none}
+  html body.f-acerca .foto-band p{font-size:clamp(24px,7.4vw,32px)}
+}
+@media(prefers-reduced-motion:reduce){html body.f-acerca .qh h3,html body.f-acerca .qh .vid{transition:none}}
+
+
+/* ============================================================
+   ANIMACIONES REUTILIZADAS DE LA HOME Y DE OTRAS PÁGINAS
+   (las dos primeras ya vienen de js/anim.js y js/home-fx.js; acá solo está el estilo que les falta)
+   ============================================================ */
+
+/* 1) texto que se enciende letra por letra al scrollear (igual que en la home) */
+.js .tw-c{opacity:.5}
+
+/* 2) frase "Para mí, diseñar es..." con subrayado que se dibuja (misma banda que la home) */
+html body.f-acerca .banda{position:relative;isolation:isolate;text-align:center;color:#fff;
+  padding:clamp(60px,7.5vw,112px) clamp(20px,6vw,80px);margin:clamp(8px,2vw,28px) 0 0}
+html body.f-acerca .banda::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 62% 58% at 50% 50%,rgba(11,117,244,.6),rgba(10,92,192,.32) 55%,transparent 80%),radial-gradient(38vw 24vw at 90% 6%,rgba(120,190,255,.26),transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 30%,transparent 100%)}
+html body.f-acerca .banda p{max-width:19ch;margin:0 auto;font:900 italic clamp(26px,5vw,70px)/1.05 var(--fh);letter-spacing:-.02em}
+html body.f-acerca .banda mark{color:inherit;padding:0 .04em;background:linear-gradient(var(--crema),var(--crema)) 0 94%/100% .085em no-repeat;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone}
+.js body.f-acerca .banda mark{background-size:0% .085em;transition:background-size .9s cubic-bezier(.2,.8,.2,1)}
+.js body.f-acerca .banda.in mark{background-size:100% .085em}
+.js body.f-acerca .banda.in mark:nth-of-type(1){transition-delay:.5s}
+.js body.f-acerca .banda.in mark:nth-of-type(2){transition-delay:.95s}
+.js body.f-acerca .banda.in mark:nth-of-type(3){transition-delay:1.4s}
+.banda-firma{display:flex;align-items:center;justify-content:center;gap:clamp(12px,2vw,24px);margin-top:clamp(22px,3vw,40px)}
+.banda-firma i{flex:0 1 clamp(40px,9vw,120px);height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7))}
+.banda-firma i:last-child{background:linear-gradient(270deg,transparent,rgba(255,255,255,.7))}
+.banda-firma img{height:clamp(20px,2.2vw,30px);width:auto}
+.js .banda-firma{opacity:0;translate:0 10px;transition:opacity .8s 1.7s,translate .8s 1.7s cubic-bezier(.2,.8,.2,1)}
+.js .banda.in .banda-firma{opacity:1;translate:0 0}
+
+/* 3) "Qué hago": al pasar por cada servicio el fondo toma el color del proyecto y salen sus portadas siguiendo al cursor (como "En qué puedo ayudarte" de la home) */
+@property --tc{syntax:'<color>';inherits:true;initial-value:#0b75f4}
+.tinte{position:fixed;inset:0;z-index:5;mix-blend-mode:screen;pointer-events:none;opacity:0;
+  background:radial-gradient(70vw 55vw at 80% 20%,color-mix(in srgb,var(--tc,#0b75f4) 58%,transparent),transparent 65%),radial-gradient(60vw 45vw at 10% 85%,color-mix(in srgb,var(--tc,#0b75f4) 36%,transparent),transparent 65%);
+  transition:opacity .6s,--tc .5s ease}
+.tinte.on{opacity:1}
+.lf{position:fixed;left:0;top:0;width:0;height:0;z-index:30;pointer-events:none}
+.lf img{max-width:none;position:absolute;left:0;top:0;width:clamp(150px,15vw,220px);aspect-ratio:4/3;object-fit:cover;border-radius:16px;border:1px solid rgba(255,255,255,.35);box-shadow:0 22px 50px rgba(0,0,0,.5);margin:calc(clamp(150px,15vw,220px)*-.375) 0 0 calc(clamp(150px,15vw,220px)*-.5);opacity:0;translate:calc(var(--dx)*.4) 14px;scale:.6;rotate:var(--r);transition:opacity .25s,translate .45s cubic-bezier(.2,.8,.2,1),scale .45s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d)}
+.lf.on img{opacity:1;translate:calc(var(--dx)*1) 0;scale:1}
+.lf.uno img{width:clamp(220px,22vw,320px);margin:calc(clamp(220px,22vw,320px)*-.375) 0 0 calc(clamp(220px,22vw,320px)*-.5)}
+
+/* 4) entrada del hero: texto que sube y palabras clave que "saltan" una por una (rise y pop de las otras páginas) */
+html body.f-acerca .ah-a{animation:rise .8s cubic-bezier(.2,.8,.2,1) .45s both}
+html body.f-acerca .ah-chips li{animation:pop .8s cubic-bezier(.2,.8,.2,1) calc(.7s + var(--i,0)*.12s) both}
+
+/* 5) parallax suave del retrato al scrollear (mismo --py que usa el hero de la home) */
+html body.f-acerca .ah-foto{translate:0 calc(var(--py,0px)*.8)}
+
+/* 6) la foto del sillón se abre de abajo hacia arriba al llegar (como las fotos de la home) */
+.js body.f-acerca .foto-band.rv{opacity:1;translate:0 0;clip-path:inset(100% 0 0 0 round clamp(20px,3vw,36px));transition:clip-path 1.3s cubic-bezier(.7,0,.2,1)}
+.js body.f-acerca .foto-band.rv.in{clip-path:inset(0 0 0 0 round clamp(20px,3vw,36px))}
+.js body.f-acerca .foto-band.rv>img{scale:1.12;transition:scale 1.6s cubic-bezier(.16,.9,.2,1)}
+.js body.f-acerca .foto-band.rv.in>img{scale:1}
+@media(max-width:760px){
+  .js body.f-acerca .foto-band.rv{clip-path:inset(100% 0 0 0)}
+  .js body.f-acerca .foto-band.rv.in{clip-path:inset(0 0 0 0)}
+}
+@media(prefers-reduced-motion:reduce){
+  .js body.f-acerca .foto-band.rv{clip-path:none}.js body.f-acerca .foto-band.rv>img{scale:1}
+  html body.f-acerca .ah-a,html body.f-acerca .ah-chips li{animation:none}
+}

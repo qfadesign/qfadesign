@@ -10,7 +10,7 @@
   document.body.appendChild(c);
   const txt=c.querySelector('span');
 
-  const SEL='a[href],button,[data-cursor],.pj,.pg-s,.zoom,.sv li';
+  const SEL='a[href],button,[data-cursor],.pj,.pg-s,.zoom,.sv li,.qh .vid[data-p]';
   const NATIVO='input,textarea,select,[contenteditable],svg.stage,.kw,canvas';
   function etiqueta(el){
     if(el.dataset&&el.dataset.cursor!==undefined)return el.dataset.cursor;

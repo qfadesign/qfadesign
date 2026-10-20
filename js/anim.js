@@ -109,18 +109,18 @@ addEventListener('DOMContentLoaded',()=>{const n=document.querySelector('nav');i
 addEventListener('DOMContentLoaded',()=>{
   const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
   // orden escalonado
-  document.querySelectorAll('.pj,.jg,.hg').forEach((el,i)=>el.style.setProperty('--i',i));
+  document.querySelectorAll('.pj,.jg,.hg,.ah-chips li').forEach((el,i)=>el.style.setProperty('--i',i));
   if(still)return;
   // aparición al hacer scroll
-  document.querySelectorAll('.sobre img,.mas,.ayuda,.gran').forEach(el=>el.classList.add('rv'));
+  document.querySelectorAll('.sobre img,.mas,.ayuda,.gran,.foto-band,.qh .vid,.apps-col,.cta>*').forEach(el=>el.classList.add('rv'));
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.2});
   document.querySelectorAll('.rv').forEach(el=>{
     // la foto recortada con clip-path no "intersecta": observamos su contenedor
-    if(el.matches('.sobre img')){const ob=new IntersectionObserver(es=>{if(es[0].isIntersecting){el.classList.add('in');ob.disconnect()}},{threshold:.25});ob.observe(el.parentElement)}
+    if(el.matches('.sobre img,.foto-band')){const ob=new IntersectionObserver(es=>{if(es[0].isIntersecting){el.classList.add('in');ob.disconnect()}},{threshold:.25});ob.observe(el.parentElement)}
     else io.observe(el);
   });
   // textos de la home (menos el hero): se ven de entrada con poca opacidad y, al scrollear, se van poniendo blancos letra por letra
-  const tw=[...document.querySelectorAll('.sobre .txt>*,.lema,.banda p,.ayuda h3,.ayuda p,.hr-home p')];
+  const tw=[...document.querySelectorAll('.sobre .txt>*,.lema,.banda p,.ayuda h3,.ayuda p,.hr-home p,.ah-a p,.qh p,.foto-band p')];
   if(tw.length){
     const partir=(nodo,out)=>{
       [...nodo.childNodes].forEach(n=>{
@@ -190,7 +190,7 @@ addEventListener('DOMContentLoaded',()=>{
     new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){pf.classList.add('in');o.disconnect()}},{rootMargin:'0px 0px -12% 0px'}).observe(pf);
   }
   // parallax del hero
-  const hero=document.querySelector('.hero');
+  const hero=document.querySelector('.hero,.ah');
   if(hero){let t=false;addEventListener('scroll',()=>{if(t)return;t=true;requestAnimationFrame(()=>{hero.style.setProperty('--py',Math.min(scrollY,600)*.15+'px');t=false})},{passive:true})}
   // botones: se acercan un poco al cursor (con elevación) y sale una onda al tocarlos
   document.querySelectorAll('.btn,.primary,.play-again').forEach(b=>{
