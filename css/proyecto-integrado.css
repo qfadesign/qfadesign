@@ -30,7 +30,7 @@
 @media(prefers-reduced-motion:reduce){.js .pr-mos figure.rv{scale:1}}
 
 /* próximo proyecto: abajo del todo y muy sutil */
-.pr-sig{margin:clamp(4px,1vw,12px) 0 clamp(36px,5vw,64px);text-align:center}
+.pr-sig{margin:clamp(26px,4vw,52px) 0 clamp(4px,1vw,14px);text-align:center}
 .pr-sig a{display:inline-flex;align-items:baseline;gap:.6em;padding:8px 4px;font-family:var(--f);font-size:14px;line-height:1;color:#fff;opacity:.55;transition:opacity .25s}
 .pr-sig a:hover,.pr-sig a:focus-visible{opacity:1}
 .pr-sig a:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:8px}
@@ -75,3 +75,4 @@
 .pr-tags{gap:7px}
 .pr-tags li{padding:5px 13px 6px;font-size:14px;font-weight:700;line-height:1.2;background:none;border:1px solid rgba(255,255,255,.4);opacity:.94}
 @media(min-width:1100px){.pr-inc .pr-tags{flex-wrap:wrap}}
+

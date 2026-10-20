@@ -1,4 +1,5 @@
 /* Libro de páginas (js/libro-paginas.js). Botones planos y sólidos, sin vidrio, como el resto de la web. */
+.lp-sec-w{margin-top:clamp(52px,7vw,104px)}
 .lp{--lp-d:1.05s;--lp-e:cubic-bezier(.5,.04,.18,1);margin-top:clamp(38px,5.4vw,76px)}
 .lp-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 20px;margin-bottom:clamp(14px,2vw,24px)}
 .lp-head h2{margin:0;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(22px,2.6vw,36px);line-height:1.05;letter-spacing:-.01em}
