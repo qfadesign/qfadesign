@@ -1,26 +1,22 @@
 /* Desplegable con la misma estética que "Sobre el proyecto" y "Decisiones de diseño" de las páginas de proyecto:
    panel de vidrio, título en itálica pesada y flecha que gira al abrir. Se usa en juegos y herramientas.
-   Uso: <details class="dsp"><summary><span class="dsp-t">Título</span></summary>…</details>  (dsp-s = versión compacta) */
-.dsp{padding:clamp(20px,2.6vw,32px);border-radius:28px;background:rgba(255,255,255,.13);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.42);box-shadow:0 20px 50px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.45);color:#fff;text-align:left}
+   Uso: <details class="dsp"><summary><span class="dsp-t">Título</span></summary>…</details>  (todos tienen el mismo tamaño; dsp-s es equivalente) */
+.dsp{padding:clamp(14px,1.7vw,20px) clamp(18px,2.2vw,26px);border-radius:22px;background:rgba(255,255,255,.13);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.42);box-shadow:0 20px 50px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.45);color:#fff;text-align:left}
 .dsp>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;-webkit-tap-highlight-color:transparent}
 .dsp>summary::-webkit-details-marker{display:none}
 .dsp>summary::after{content:"";flex:none;width:11px;height:11px;border-right:3px solid currentColor;border-bottom:3px solid currentColor;transform:rotate(45deg) translate(-2px,-2px);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
 .dsp[open]>summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
 .dsp>summary:focus-visible{outline:2px solid currentColor;outline-offset:6px;border-radius:8px}
-.dsp[open]>summary{margin-bottom:clamp(14px,2vw,22px)}
+.dsp[open]>summary{margin-bottom:clamp(10px,1.4vw,14px)}
 .dsp[open]>:not(summary){animation:dsp .35s ease both}
 .dsp[hidden]{display:none}
-.dsp .dsp-t{margin:0;font-family:var(--fh,"articulat-cf",sans-serif);font-weight:900;font-style:italic;font-size:clamp(22px,2.3vw,32px);line-height:1.1;letter-spacing:0;text-align:left}
+.dsp .dsp-t{margin:0;font-family:var(--fh,"articulat-cf",sans-serif);font-weight:900;font-style:italic;font-size:clamp(17px,1.5vw,21px);line-height:1.1;letter-spacing:0;text-align:left}
 @keyframes dsp{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 
-/* compacto, para notas cortas dentro de una herramienta */
-.dsp-s{padding:clamp(14px,1.7vw,20px) clamp(18px,2.2vw,26px);border-radius:22px}
-.dsp-s .dsp-t{font-size:clamp(17px,1.5vw,21px)}
-.dsp-s[open]>summary{margin-bottom:clamp(10px,1.4vw,14px)}
+/* todos los desplegables (juegos y herramientas) comparten el mismo tamaño, el de "¿Cómo funciona?" de la calculadora; dsp-s queda como sinónimo */
 
 /* herramientas */
-.f-herramientas .dsp{margin-top:clamp(14px,2vw,26px)}
-.f-herramientas .dsp-s{margin-top:clamp(12px,1.6vw,18px)}
+.f-herramientas .dsp{margin-top:clamp(12px,1.6vw,18px)}
 .f-herramientas .dsp>p{margin:0}
 .f-herramientas .dsp .cp-fuentes-in{padding:0}
 .f-herramientas .dsp .cp-aviso{max-width:none}
@@ -31,7 +27,6 @@
 .inicio-reglas .dsp p{max-width:none!important;margin:0!important;text-align:left!important}
 .inicio-reglas .dsp p+p,.inicio-reglas .dsp p+.how-to{margin-top:12px!important}
 .inicio-reglas .dsp .how-to{max-width:none!important;margin:0!important;padding:0!important;text-align:left!important}
-.inicio-reglas .dsp .dsp-t{font-size:clamp(20px,2vw,26px)}
 
 @media(prefers-reduced-motion:reduce){.dsp[open]>:not(summary){animation:none}.dsp>summary::after{transition:none}}
 
