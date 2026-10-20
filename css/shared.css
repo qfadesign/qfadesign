@@ -192,3 +192,10 @@ html.t-wait *,html.t-wait *::before,html.t-wait *::after{animation-play-state:pa
 /* sticker grande de la transición entre páginas de la barra (js/anim.js): aparece centrado y después vuela hasta ser el título */
 .qst{position:fixed;inset:0;margin:auto;z-index:41;width:min(84vw,calc(var(--qw)*1.5px),calc(40vh*var(--qa)));height:auto;max-width:none;pointer-events:none;transform:rotate(-2deg);filter:drop-shadow(0 26px 16px rgba(0,0,0,.42)) drop-shadow(0 4px 6px rgba(0,0,0,.3))}
 html.qst-in.t-in body>*:not(nav){translate:0 0!important;filter:none!important}
+
+/* imágenes con medidas declaradas (data-ar): el navegador reserva el espacio con la proporción, pero el tamaño lo siguen mandando los estilos de cada sección */
+:where(img[data-ar]){width:auto;height:auto}
+/* enlace "Saltar al contenido": aparece solo al navegar con teclado (Tab) */
+.saltar{position:fixed;top:12px;left:12px;z-index:9999;padding:12px 18px;border-radius:999px;background:#fff;color:#0b1b6b;font:700 16px/1 var(--f,sans-serif);text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.3);transform:translateY(-200%);transition:transform .2s}
+.saltar:focus{transform:none;outline:3px solid #0b1b6b;outline-offset:2px}
+#contenido:focus{outline:none}

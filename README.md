@@ -10,7 +10,7 @@ Es un sitio estático (HTML, CSS y JavaScript, sin frameworks ni paso de compila
 index.html                  Inicio
 acerca.html · portfolio.html · herramientas.html · jueguitos.html · contacto.html
 proyecto-*.html             Una página por proyecto (Árbol, Bleko, Dulcemente, Miga, ROS.exe, Trazo, F1)
-juegos/                     Los tres jueguitos
+juegos/                     Los siete jueguitos (color, tipografía, ahorcado, desafío diario, kerning, alinear, pluma)
 herramienta/                  Una página por herramienta: calculadora de precios, paletas, contraste, convertidor de imágenes, unidades y brief
 404.html                    Página de error
 css/ · js/                 Estilos y scripts (js/vendor: jsPDF, para el PDF de la calculadora)
@@ -108,3 +108,4 @@ python3 scripts/build-sitemap.py   # regenera sitemap.xml después de agregar o 
 [Instagram](https://www.instagram.com/qfadesign/) · [TikTok](https://www.tiktok.com/@qfadesign) · [Behance](https://www.behance.net/facundocruz5) · [LinkedIn](https://www.linkedin.com/in/facundo-cruz-19a581303/) · qfadesignn@gmail.com
 
 © 2026 Facundo Cruz. Todos los derechos reservados (ver `LICENSE`).
+
