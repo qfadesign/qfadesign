@@ -250,3 +250,33 @@ html body .primary,html body .play-again,html body .key{border-radius:99px!impor
  -webkit-mask-image:linear-gradient(transparent 0,#000 30%,#000 70%,transparent 100%);
  mask-image:linear-gradient(transparent 0,#000 30%,#000 70%,transparent 100%);
  opacity:1}
+
+
+/* ============================================================
+   HERO ↔ SIGUIENTE SECCIÓN: la foto se funde con el fondo de abajo (#050b18, el mismo del inicio de .cuerpo), sin corte ni franja.
+   ============================================================ */
+.hero::after{height:58%;background:linear-gradient(to top,#050b18 0,rgba(5,11,24,.92) 14%,rgba(5,11,24,.6) 38%,rgba(5,11,24,.2) 70%,rgba(5,11,24,0) 100%)}
+@media(max-width:760px){.hero::after{height:50%}}
+/* el resplandor azul de arriba a la derecha baja un poco: así no hay un borde recto donde termina el hero */
+.cuerpo{background:
+ radial-gradient(60vw 36vw at 92% 20%,rgba(11,117,244,.22),transparent 62%),
+ radial-gradient(60vw 45vw at -6% 34%,rgba(3,40,120,.28),transparent 60%),
+ radial-gradient(55vw 40vw at 104% 66%,rgba(11,117,244,.14),transparent 60%),
+ linear-gradient(#050b18 0,#030712 100%)}
+
+/* ============================================================
+   HERO ↔ CUERPO: al scrollear, el hero queda fijo y la parte de abajo sube y lo tapa.
+   .hero-pin mide el hero + una pantalla de recorrido; el cuerpo se superpone esa pantalla (margen negativo) y tiene borde superior redondeado y sombra.
+   ============================================================ */
+.hero-pin{position:relative}
+.hero-pin::after{content:"";display:block;height:100svh} /* recorrido extra: tiene que estar DENTRO del contenido del contenedor para que el hero pueda quedarse fijo */
+.hero-pin .hero{position:sticky;top:0;z-index:0}
+.cuerpo{position:relative;z-index:2;margin-top:-100svh;border-radius:clamp(26px,3.4vw,52px) clamp(26px,3.4vw,52px) 0 0;border-top:1px solid rgba(255,255,255,.09);box-shadow:0 -30px 70px rgba(0,0,0,.55)}
+@keyframes hero-tapa{to{filter:brightness(.4)}}
+@supports(animation-timeline:scroll()){
+ .hero-pin .hero{animation:hero-tapa linear both;animation-timeline:scroll(root);animation-range:0 90svh}
+}
+@media(prefers-reduced-motion:reduce){
+ .hero-pin::after{display:none}.hero-pin .hero{position:relative}.cuerpo{margin-top:0;border-radius:0;box-shadow:none;border-top:0}
+ .hero-pin .hero{animation:none}
+}
