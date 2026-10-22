@@ -192,3 +192,61 @@ html body .primary,html body .play-again,html body .key{border-radius:99px!impor
  html body .hero .intro .acciones .btn{flex:1 1 0;font-size:12px;padding:11px 6px 12px}
 }
 
+
+/* ============================================================
+   6. HOME, PRIMERA PARTE: botones negros (como en celular) y menos azul
+   Va al final a propósito: pisa lo de arriba y lo de home-fx.css. Para volver atrás, borrá todo este bloque.
+   ============================================================ */
+
+/* 6.1 Botones del hero en escritorio = los del celular: negros, borde fino, letras blancas, sin azul (sólidos, sin vidrio) */
+@media(min-width:761px){
+ html body .hero .intro .acciones .btn,
+ html body .hero .intro .acciones .btn.claro,
+ html body .hero .intro .acciones .btn:not(.claro){
+  background:#000;color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:99px;
+  box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;
+  text-shadow:none;justify-content:center;gap:.5em;padding:15px clamp(22px,2.2vw,30px) 16px}
+ html body .hero .intro .acciones .btn::after,
+ html body .hero .intro .acciones .btn.claro::after,
+ html body .hero .intro .acciones .btn:not(.claro)::after{background:rgba(255,255,255,.18);animation:none;translate:-101% 0;transition:translate .32s cubic-bezier(.2,.8,.2,1)}
+ html body .hero .intro .acciones .btn:hover::after,
+ html body .hero .intro .acciones .btn:focus-visible::after,
+ html body .hero .intro .acciones .btn.claro:hover::after,
+ html body .hero .intro .acciones .btn.claro:focus-visible::after,
+ html body .hero .intro .acciones .btn:not(.claro):hover::after,
+ html body .hero .intro .acciones .btn:not(.claro):focus-visible::after{translate:0 0;animation:none}
+ html body .hero .intro .acciones .btn:hover,
+ html body .hero .intro .acciones .btn:focus-visible,
+ html body .hero .intro .acciones .btn.claro:hover,
+ html body .hero .intro .acciones .btn.claro:focus-visible,
+ html body .hero .intro .acciones .btn:not(.claro):hover,
+ html body .hero .intro .acciones .btn:not(.claro):focus-visible{color:#fff;box-shadow:none}
+ html body .hero .intro .acciones .btn .fl,
+ html body .hero .intro .acciones .btn.claro .fl{width:auto;height:auto;background:none;border:0;box-shadow:none;color:inherit;font-size:1em}
+}
+
+/* 6.2 Menos azul: la cinta pasa a crema, y el fondo de "Un poco de qfadesign" se apaga a un azul marino casi negro */
+.cinta .tanda{color:var(--crema)}
+.cuerpo{background:
+ radial-gradient(70vw 50vw at 92% 3%,rgba(11,117,244,.22),transparent 62%),
+ radial-gradient(60vw 45vw at -6% 34%,rgba(3,40,120,.28),transparent 60%),
+ radial-gradient(55vw 40vw at 104% 66%,rgba(11,117,244,.14),transparent 60%),
+ linear-gradient(#050b18 0,#030712 100%)}
+
+/* el halo azul de la marca sobre la foto del hero también se baja */
+.hero .intro::before{background:none}
+
+/* ============================================================
+   7. HOME: la frase "Diseñar es tomar decisiones…" integrada al fondo
+   Antes el brillo azul se cortaba en seco contra el borde de arriba y la mancha se veía como un óvalo aparte.
+   Ahora el resplandor sale de la propia sección (sin bordes), es más suave y se funde con el fondo oscuro de arriba y de abajo.
+   Para volver atrás, borrá este bloque.
+   ============================================================ */
+.banda::before{
+ inset:-45% 0 -45% 0;
+ background:
+  radial-gradient(ellipse 52% 40% at 50% 50%,rgba(11,117,244,.30),rgba(10,92,192,.14) 48%,transparent 78%),
+  radial-gradient(ellipse 80% 55% at 50% 50%,rgba(8,71,163,.16),transparent 75%);
+ -webkit-mask-image:linear-gradient(transparent 0,#000 30%,#000 70%,transparent 100%);
+ mask-image:linear-gradient(transparent 0,#000 30%,#000 70%,transparent 100%);
+ opacity:1}
