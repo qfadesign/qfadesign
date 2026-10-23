@@ -15,11 +15,17 @@
   const cs=document.currentScript;
   const base=new URL('../audio/',cs?cs.src:location.href).href;
   const K='qfa-musica';
-  let st={i:0,t:0,p:false,o:false,v:.2,m:false}; // v: volumen (0 a 1), arranca bajo
+  let st={i:0,t:0,p:false,o:false,v:.15,m:false}; // v: volumen (0 a 1), arranca bajo (15%)
   try{Object.assign(st,JSON.parse(localStorage.getItem(K)||'{}'))}catch(e){}
   if(!(st.i>=0&&st.i<LISTA.length))st.i=0;
-  if(!(st.v>=0&&st.v<=1))st.v=.2;
+  if(!(st.v>=0&&st.v<=1))st.v=.15;
   st.o=false; // en cada página arranca escondido
+  // visita nueva (pestaña nueva o volviste otro día): arranca de cero: canción al azar, segundo 0 y volumen en 15%.
+  // Si ya venías navegando en esta pestaña, sigue por donde iba (solo si estaba sonando; si estaba en pausa, empieza de nuevo).
+  try{
+    if(!sessionStorage.getItem('qfa-musica-s')){st.i=Math.floor(Math.random()*LISTA.length);st.t=0;st.p=false;st.v=.15;st.m=false;sessionStorage.setItem('qfa-musica-s','1')}
+    else if(!st.p)st.t=0;
+  }catch(e){}
   const guardar=()=>{try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}};
 
   const IC={
@@ -30,12 +36,12 @@
   };
   const el=document.createElement('div');el.className='mp';el.setAttribute('role','region');el.setAttribute('aria-label','Música');
   el.innerHTML='<button class="mp-fab" type="button" aria-label="Música" aria-expanded="false"><svg class="mp-nota" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></button>'+
-    '<div class="mp-panel"><div class="mp-txt"><span class="mp-t"></span><span class="mp-a"></span></div>'+
+    '<div class="mp-panel"><div class="mp-txt"><span class="mp-t"></span><span class="mp-a"></span><div class="mp-bar" aria-hidden="true"><i></i></div></div>'+
     '<button class="mp-c mp-pv" type="button" aria-label="Canción anterior">'+IC.prev+'</button>'+
     '<button class="mp-c mp-pp" type="button" aria-label="Reproducir">'+IC.play+'</button>'+
     '<button class="mp-c mp-n" type="button" aria-label="Canción siguiente">'+IC.next+'</button>'+
     '<div class="mp-v"><button class="mp-c mp-m" type="button" aria-label="Silenciar">'+IC.vol+'</button><input class="mp-r" type="range" min="0" max="100" step="1" aria-label="Volumen"></div>'+
-    '<div class="mp-bar" aria-hidden="true"><i></i></div></div>';
+    '</div>';
   const q=s=>el.querySelector(s);
   const rng=q('.mp-r'),mute=q('.mp-m'),vbox=q('.mp-v');
   const fab=q('.mp-fab'),pp=q('.mp-pp'),tit=q('.mp-t'),art=q('.mp-a'),bar=q('.mp-bar'),fill=q('.mp-bar i');
@@ -85,8 +91,14 @@
   const esconder=()=>{clearTimeout(idle);idle=setTimeout(()=>{if(el.matches(':hover')||el.contains(document.activeElement)&&el.matches(':focus-within')&&document.activeElement.matches(':focus-visible')){esconder();return}st.o=false;ui()},4000)};
   el.addEventListener('pointerdown',()=>{if(st.o)esconder()});
   el.addEventListener('input',()=>{if(st.o)esconder()});
+  // en el celu: se cierra al tocar afuera o al hacer scroll
+  const celu=()=>matchMedia('(max-width:760px)').matches;
+  const cerrar=()=>{if(st.o){st.o=false;clearTimeout(idle);ui()}};
+  document.addEventListener('pointerdown',e=>{if(celu()&&st.o&&!el.contains(e.target))cerrar()},true);
+  let sy=scrollY;
+  addEventListener('scroll',()=>{if(!celu()){sy=scrollY;return}if(st.o&&Math.abs(scrollY-sy)>6)cerrar();else if(!st.o)sy=scrollY},{passive:true});
   fab.addEventListener('click',()=>{
-    if(!st.o){st.o=true;esconder();if(au.paused&&!iniciado&&!quiere){iniciado=true;tocar(false)}}
+    if(!st.o){st.o=true;sy=scrollY;esconder();if(au.paused&&!iniciado&&!quiere){iniciado=true;tocar(false)}}
     else{st.o=false;clearTimeout(idle)}
     ui();
   });
@@ -99,7 +111,7 @@
     const r=bar.getBoundingClientRect();if(au.duration)au.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*au.duration;
   });
   rng.addEventListener('input',()=>{st.v=rng.value/100;st.m=false;au.volume=st.v;aplicarVol();guardar()});
-  mute.addEventListener('click',()=>{if(st.v===0){st.v=.2;au.volume=st.v}else st.m=!st.m;aplicarVol();guardar()});
+  mute.addEventListener('click',()=>{if(st.v===0){st.v=.15;au.volume=st.v}else st.m=!st.m;aplicarVol();guardar()});
   au.addEventListener('play',ui);au.addEventListener('pause',ui);
   au.addEventListener('ended',()=>cambiar(1));
   let ult=0;
