@@ -204,3 +204,8 @@ html body.f-acerca .dest-f{margin-top:clamp(28px,4vw,48px)}
 @media(max-width:640px){
   html body.f-acerca .dest-g{grid-template-columns:1fr}
 }
+
+/* Reparto de renglones: que los textos cortos queden parejos y no con una línea larga arriba y una corta abajo */
+html body.f-acerca :is(.banda p,.svc-x p,.dc p,.dc h3,.quien-d dd,.foto-band p,.cta h2,.sec>h2,.apps p,.ah-a p,.ah-t p){text-wrap:balance}
+html body.f-acerca :is(.quien-t p,.dc-c){text-wrap:pretty}
+html body.f-acerca .cta h2{max-width:22ch;font-size:clamp(28px,4vw,56px)}
