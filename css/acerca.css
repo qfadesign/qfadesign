@@ -27,20 +27,23 @@ html body.f-acerca .ah-chips li:first-child{border-top:1px solid rgba(255,255,25
 /* ---------- QUÉ HAGO: lista editorial en vez de 6 tarjetas ---------- */
 html body.f-acerca .qh{display:block;counter-reset:qh}
 html body.f-acerca .qh .vid{counter-increment:qh;display:grid;grid-template-columns:clamp(44px,5vw,72px) minmax(0,1fr) minmax(0,1.05fr);
-  align-items:start;column-gap:clamp(14px,2vw,32px);min-height:0;gap:0 clamp(14px,2vw,32px);
-  padding:clamp(22px,2.4vw,34px) 0;border:0;border-top:1px solid rgba(255,255,255,.3);border-radius:0;
+  align-items:center;column-gap:clamp(14px,2vw,32px);min-height:0;gap:0 clamp(14px,2vw,32px);
+  padding:clamp(14px,1.5vw,20px) 0;border:0;border-top:1px solid rgba(255,255,255,.3);border-radius:0;
   background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;transform:none;
   transition:opacity .35s,translate 1s cubic-bezier(.16,.9,.2,1)}
 html body.f-acerca .qh .vid:last-child{border-bottom:1px solid rgba(255,255,255,.3)}
-html body.f-acerca .qh .vid::before{content:counter(qh,decimal-leading-zero);padding-top:.5em;font-family:var(--fh);font-weight:900;font-style:italic;
+html body.f-acerca .qh .vid::before{content:counter(qh,decimal-leading-zero);padding-top:0;font-family:var(--fh);font-weight:900;font-style:italic;
   font-size:clamp(13px,1.2vw,16px);letter-spacing:.08em;opacity:.7}
-html body.f-acerca .qh h3{font-size:clamp(30px,4vw,60px);transition:translate .35s cubic-bezier(.2,.8,.2,1)}
-html body.f-acerca .qh p{max-width:46ch;justify-self:end;padding-top:clamp(6px,.9vw,14px);color:rgba(255,255,255,.88)}
+html body.f-acerca .qh h3{font-size:clamp(24px,2.9vw,42px);line-height:1;transition:translate .35s cubic-bezier(.2,.8,.2,1)}
+html body.f-acerca .qh p{max-width:40ch;justify-self:end;padding-top:0;font-size:clamp(14px,1.15vw,16px);line-height:1.4;color:rgba(255,255,255,.88)}
 @media(hover:hover){
   html body.f-acerca .qh:hover .vid:not(:hover){opacity:.5}
   html body.f-acerca .qh .vid:hover{background:none;transform:none}
-  html body.f-acerca .qh .vid:hover h3{translate:14px 0}
+  html body.f-acerca .qh .vid:hover h3{translate:10px 0}
 }
+
+/* títulos de sección más medidos */
+html body.f-acerca .sec>h2{font-size:clamp(28px,4vw,54px)}
 
 /* ---------- APLICACIONES: misma grilla que la lista ---------- */
 html body.f-acerca .apps-col{grid-template-columns:calc(clamp(44px,5vw,72px) + clamp(14px,2vw,32px)) 1fr}
@@ -52,7 +55,7 @@ html body.f-acerca .foto-band::after{content:"";position:absolute;inset:0;z-inde
 html body.f-acerca .foto-band .vid{z-index:2;left:clamp(18px,3vw,44px);bottom:clamp(18px,3vw,40px);max-width:min(720px,88%);
   background:none;border:0;box-shadow:none;padding:0;border-radius:0;color:#fff;
   -webkit-backdrop-filter:none;backdrop-filter:none}
-html body.f-acerca .foto-band p{font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(22px,3vw,44px);line-height:1.05;letter-spacing:-.01em}
+html body.f-acerca .foto-band p{font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(20px,2.4vw,34px);line-height:1.08;letter-spacing:-.01em}
 
 /* ---------- TABLET Y CELULAR ---------- */
 @media(max-width:1100px){
@@ -67,14 +70,14 @@ html body.f-acerca .foto-band p{font-family:var(--fh);font-weight:900;font-style
 @media(max-width:760px){
   /* en celular el contenido se alinea a la izquierda y la lista pasa a dos columnas: número + título / texto */
   html body.f-acerca .ah-a.vid{margin-top:-26vw}
-  html body.f-acerca .qh .vid{grid-template-columns:40px minmax(0,1fr);padding:22px 0}
-  html body.f-acerca .qh .vid::before{grid-row:1}
-  html body.f-acerca .qh h3{font-size:clamp(28px,8.4vw,38px)}
-  html body.f-acerca .qh p{grid-column:2;justify-self:start;margin-top:10px;max-width:none}
+  html body.f-acerca .qh .vid{grid-template-columns:40px minmax(0,1fr);padding:16px 0;align-items:start}
+  html body.f-acerca .qh .vid::before{grid-row:1;padding-top:.45em}
+  html body.f-acerca .qh h3{font-size:clamp(24px,7vw,30px)}
+  html body.f-acerca .qh p{grid-column:2;justify-self:start;margin-top:6px;max-width:none}
   html body.f-acerca .apps-col{grid-template-columns:1fr}
   html body.f-acerca .foto-band{aspect-ratio:4/5;margin-inline:calc(clamp(20px,4vw,40px) * -1);border-radius:0}
   html body.f-acerca .foto-band .vid{left:clamp(20px,4vw,40px);right:clamp(20px,4vw,40px);max-width:none}
-  html body.f-acerca .foto-band p{font-size:clamp(24px,7.4vw,32px)}
+  html body.f-acerca .foto-band p{font-size:clamp(20px,6vw,26px)}
 }
 @media(prefers-reduced-motion:reduce){html body.f-acerca .qh h3,html body.f-acerca .qh .vid{transition:none}}
 
@@ -89,11 +92,11 @@ html body.f-acerca .foto-band p{font-family:var(--fh);font-weight:900;font-style
 
 /* 2) frase "Para mí, diseñar es..." con subrayado que se dibuja (misma banda que la home) */
 html body.f-acerca .banda{position:relative;isolation:isolate;text-align:center;color:#fff;
-  padding:clamp(60px,7.5vw,112px) clamp(20px,6vw,80px);margin:clamp(8px,2vw,28px) 0 0}
+  padding:clamp(40px,5vw,72px) clamp(20px,6vw,80px);margin:clamp(8px,2vw,28px) 0 0}
 html body.f-acerca .banda::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:radial-gradient(ellipse 62% 58% at 50% 50%,rgba(11,117,244,.6),rgba(10,92,192,.32) 55%,transparent 80%),radial-gradient(38vw 24vw at 90% 6%,rgba(120,190,255,.26),transparent 70%);
   -webkit-mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 30%,transparent 100%)}
-html body.f-acerca .banda p{max-width:19ch;margin:0 auto;font:900 italic clamp(26px,5vw,70px)/1.05 var(--fh);letter-spacing:-.02em}
+html body.f-acerca .banda p{max-width:28ch;margin:0 auto;font:900 italic clamp(20px,2.7vw,38px)/1.12 var(--fh);letter-spacing:-.015em}
 html body.f-acerca .banda mark{color:inherit;padding:0 .04em;background:linear-gradient(var(--crema),var(--crema)) 0 94%/100% .085em no-repeat;
   -webkit-box-decoration-break:clone;box-decoration-break:clone}
 .js body.f-acerca .banda mark{background-size:0% .085em;transition:background-size .9s cubic-bezier(.2,.8,.2,1)}
@@ -138,4 +141,66 @@ html body.f-acerca .ah-foto{translate:0 calc(var(--py,0px)*.8)}
 @media(prefers-reduced-motion:reduce){
   .js body.f-acerca .foto-band.rv{clip-path:none}.js body.f-acerca .foto-band.rv>img{scale:1}
   html body.f-acerca .ah-a,html body.f-acerca .ah-chips li{animation:none}
+}
+
+
+/* ====== Presentación para clientes ====== */
+/* frase: tamaño medio, sin logo chico */
+html body.f-acerca .banda{padding:clamp(40px,5vw,72px) clamp(20px,6vw,80px)}
+html body.f-acerca .banda p{max-width:28ch;font-size:clamp(20px,2.7vw,38px);line-height:1.12}
+
+/* títulos de sección */
+html body.f-acerca .sec>h2{font-size:clamp(28px,4vw,54px)}
+
+/* Qué hago: título a la izquierda, una línea a la derecha. Al pasar el mouse salen las portadas
+   siguiendo al cursor y el fondo toma el color del proyecto (igual que en la página principal) */
+html body.f-acerca .svc-l{list-style:none;margin:0;padding:0}
+html body.f-acerca .svc-l li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;column-gap:clamp(16px,3vw,48px);
+  padding:clamp(16px,1.8vw,24px) 0;border-top:1px solid rgba(255,255,255,.3);transition:opacity .35s}
+html body.f-acerca .svc-l li:last-child{border-bottom:1px solid rgba(255,255,255,.3)}
+html body.f-acerca .svc-x{display:contents}
+html body.f-acerca .svc-x h3{font:900 italic clamp(24px,2.9vw,42px)/1 var(--fh);margin:0;letter-spacing:-.01em;transition:translate .35s cubic-bezier(.2,.8,.2,1)}
+html body.f-acerca .svc-x p{margin:0;max-width:44ch;justify-self:end;font-size:clamp(14px,1.2vw,17px);line-height:1.4;color:rgba(255,255,255,.9)}
+@media(hover:hover){
+  html body.f-acerca .svc-l:hover li:not(:hover){opacity:.5}
+  html body.f-acerca .svc-l li:hover h3{translate:10px 0}
+}
+@media(max-width:760px){
+  html body.f-acerca .svc-l li{grid-template-columns:1fr;row-gap:8px;padding:18px 0}
+  html body.f-acerca .svc-x h3{font-size:clamp(24px,7vw,30px)}
+  html body.f-acerca .svc-x p{justify-self:start;max-width:none}
+}
+
+
+/* Sobre mí */
+html body.f-acerca .quien-g{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(24px,5vw,80px);align-items:start}
+html body.f-acerca .quien-t p{margin:0 0 1em;max-width:52ch;font-size:clamp(17px,1.5vw,21px);line-height:1.5}
+html body.f-acerca .quien-t p:first-child{font-weight:700;font-size:clamp(19px,1.9vw,26px);line-height:1.35}
+html body.f-acerca .quien-d{margin:0}
+html body.f-acerca .quien-d div{padding:clamp(12px,1.3vw,18px) 0;border-top:1px solid rgba(255,255,255,.3)}
+html body.f-acerca .quien-d div:last-child{border-bottom:1px solid rgba(255,255,255,.3)}
+html body.f-acerca .quien-d dt{margin:0 0 6px;font:700 italic 12px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;opacity:.75}
+html body.f-acerca .quien-d dd{margin:0;font-size:clamp(15px,1.3vw,18px);line-height:1.35}
+html body.f-acerca .quien-d a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+
+/* Trabajos destacados */
+html body.f-acerca .dest-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,4vw,56px) clamp(18px,3vw,40px)}
+html body.f-acerca .dc{display:flex;flex-direction:column;color:#fff;text-decoration:none}
+html body.f-acerca .dc-i{display:block;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.35);aspect-ratio:3/2;background:rgba(255,255,255,.08)}
+html body.f-acerca .dc-i img{display:block;width:100%;height:100%;object-fit:cover;transition:scale .7s cubic-bezier(.2,.8,.2,1)}
+html body.f-acerca .dc:hover .dc-i img,html body.f-acerca .dc:focus-visible .dc-i img{scale:1.05}
+html body.f-acerca .dc:focus-visible{outline:2px solid var(--crema);outline-offset:6px;border-radius:20px}
+html body.f-acerca .dc-c{margin-top:clamp(14px,1.4vw,20px);font:700 italic 12px/1.2 var(--f);letter-spacing:.14em;text-transform:uppercase;opacity:.8}
+html body.f-acerca .dc h3{margin:8px 0 0;font:900 italic clamp(26px,3vw,44px)/1 var(--fh);letter-spacing:-.01em}
+html body.f-acerca .dc p{margin:10px 0 0;max-width:44ch;font-size:clamp(15px,1.25vw,17px);line-height:1.4;color:rgba(255,255,255,.9)}
+html body.f-acerca .dc-v{margin-top:14px;font:900 italic 15px/1 var(--fh)}
+html body.f-acerca .dc-v i{display:inline-block;font-style:normal;transition:translate .3s cubic-bezier(.2,.8,.2,1)}
+html body.f-acerca .dc:hover .dc-v i{translate:6px 0}
+html body.f-acerca .dest-f{margin-top:clamp(28px,4vw,48px)}
+
+@media(max-width:900px){
+  html body.f-acerca .quien-g{grid-template-columns:1fr;gap:24px}
+}
+@media(max-width:640px){
+  html body.f-acerca .dest-g{grid-template-columns:1fr}
 }
