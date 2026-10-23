@@ -45,22 +45,6 @@ html:has(nav.abierto) .mp{opacity:0;pointer-events:none}
 .mp-bar{position:relative;margin-top:5px;height:12px;cursor:pointer;touch-action:none}
 .mp-bar::before{content:"";position:absolute;left:0;right:0;top:5px;height:3px;border-radius:3px;background:rgba(255,255,255,.2)}
 .mp-bar i{position:absolute;left:0;top:5px;height:3px;border-radius:3px;background:#f9fbf2;width:0}
-/* celu: más grande para los dedos; abierto va en dos filas (título y línea arriba, controles y volumen abajo) */
-@media(max-width:760px){
- .mp{bottom:calc(env(safe-area-inset-bottom,0px) + 34px);height:52px}
- .mp-fab{width:50px;height:50px}.mp-nota{width:24px;height:24px}
- .mp.abierto{height:auto;min-height:52px;border-radius:30px;padding:7px 14px 7px 0}
- .mp.abierto .mp-fab{width:52px;height:52px;align-self:flex-start}
- .mp-panel{width:calc(100vw - 104px);flex-wrap:wrap;gap:6px 4px;align-items:center}
- .mp.abierto .mp-panel{max-width:calc(100vw - 104px)}
- .mp-txt{flex:1 1 100%;width:auto;padding:2px 4px 0 6px}
- .mp-t{font-size:15px}.mp-a{font-size:12.5px}
- .mp-bar{height:22px;margin-top:2px}.mp-bar::before,.mp-bar i{top:9px}
- .mp-c{width:46px;height:46px}.mp-c svg{width:20px;height:20px}.mp-pp svg{width:22px;height:22px}.mp-m svg{width:22px;height:22px}
- .mp-n{margin-right:0}
- .mp-v{flex:1 1 0;min-width:0;margin:0;padding-left:6px}
- .mp-r{flex:1 1 0;width:auto;min-width:36px;height:40px}
- .mp-r::-webkit-slider-thumb{width:20px;height:20px;margin-top:-8.5px}.mp-r::-moz-range-thumb{width:20px;height:20px}
- .mp-r::-webkit-slider-runnable-track{height:4px}
-}
+/* en el celu no hay reproductor: solo en compu */
+@media(max-width:760px){.mp{display:none!important}}
 @media(prefers-reduced-motion:reduce){.mp,.mp-panel{transition:none}.mp.on .mp-nota{animation:none}}

@@ -2,6 +2,8 @@
    Recuerda en qué canción y en qué segundo ibas, y si estaba sonando, para seguir al pasar de una página a otra
    (el navegador no deja arrancar música solo: la primera vez empieza cuando tocás el botón). */
 (()=>{
+  // solo en compu: en el celu no se carga ni suena nada
+  if(matchMedia('(max-width:760px)').matches)return;
   const ART='Milo J';
   const LISTA=[
     ['Vitalicio','01-vitalicio.mp3'],
@@ -134,5 +136,7 @@
     if(st.p){iniciado=true;tocar(true)}
     requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('ok')));
   };
+  // si en compu se achica la ventana hasta tamaño celu, se pausa (el reproductor se oculta)
+  matchMedia('(max-width:760px)').addEventListener('change',e=>{if(e.matches)pausar()});
   if(document.body)montar();else addEventListener('DOMContentLoaded',montar);
 })();
