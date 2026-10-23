@@ -1,0 +1,16 @@
+/* Contacto: misma portada que Portfolio, Herramientas y Jueguitos (título sticker + bajada centrada). Es lo único que cambia. */
+.f-contacto .ph{padding-bottom:0;margin-bottom:clamp(30px,4vw,52px)}
+.f-contacto .ph .lead{font-size:clamp(17px,1.7vw,22px);line-height:1.4;max-width:34em;margin:clamp(14px,1.8vw,22px) auto 0;text-wrap:balance}
+
+/* el formulario va primero (a la izquierda en escritorio; arriba en celular, por el orden del HTML) */
+@media(min-width:861px){.f-contacto .cn{grid-template-columns:1.05fr 1fr}}
+
+/* TODO INTEGRADO: sin cajas de vidrio. El formulario, el brief y las redes se apoyan directo sobre el fondo (el formulario conserva su tarjeta) y se separan con la misma línea fina del resto de la web (portfolio y títulos de sección). */
+html body.f-contacto .cn-brief{padding:clamp(20px,2.4vw,30px) 0 0;margin-top:clamp(24px,3vw,38px);border:0;border-top:1px solid rgba(255,255,255,.4);border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.f-contacto .cn-redes{padding-top:clamp(20px,2.4vw,30px);border-top:1px solid rgba(255,255,255,.4);margin-top:clamp(24px,3vw,38px)}
+.f-contacto .cn{align-items:start}
+.f-contacto .mail{margin-top:0}
+@media(min-width:861px){.f-contacto .cn{column-gap:clamp(40px,6vw,96px)}}
+
+/* el formulario va adentro de una pastilla con el mismo look que la barra de navegación (vidrio oscuro, borde fino y esquinas redondeadas) */
+html body.f-contacto form.vid{padding:clamp(24px,3vw,40px);border:1px solid rgba(255,255,255,.2);border-radius:32px;background:rgba(0,0,0,.22);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);box-shadow:0 10px 30px rgba(0,0,0,.22)}
