@@ -1,0 +1,29 @@
+/* qfadesign -- Acerca de, VERSIÓN C (página de prueba: acerca-c.html).
+   Mezcla de A y B, sin detalles chicos: frase mediana con subrayado, lista de servicios
+   con título + una línea y, a la derecha, los trabajos relacionados. Se carga después de acerca.css. */
+
+/* frase: tamaño medio, sin logo chico */
+html body.f-acerca .banda{padding:clamp(40px,5vw,72px) clamp(20px,6vw,80px)}
+html body.f-acerca .banda p{max-width:28ch;font-size:clamp(20px,2.7vw,38px);line-height:1.12}
+
+/* títulos de sección */
+html body.f-acerca .sec>h2{font-size:clamp(28px,4vw,54px)}
+
+/* Qué hago: título a la izquierda, una línea a la derecha. Al pasar el mouse salen las portadas
+   siguiendo al cursor y el fondo toma el color del proyecto (igual que en la página principal) */
+html body.f-acerca .svc-l{list-style:none;margin:0;padding:0}
+html body.f-acerca .svc-l li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;column-gap:clamp(16px,3vw,48px);
+  padding:clamp(16px,1.8vw,24px) 0;border-top:1px solid rgba(255,255,255,.3);transition:opacity .35s}
+html body.f-acerca .svc-l li:last-child{border-bottom:1px solid rgba(255,255,255,.3)}
+html body.f-acerca .svc-x{display:contents}
+html body.f-acerca .svc-x h3{font:900 italic clamp(24px,2.9vw,42px)/1 var(--fh);margin:0;letter-spacing:-.01em;transition:translate .35s cubic-bezier(.2,.8,.2,1)}
+html body.f-acerca .svc-x p{margin:0;max-width:44ch;justify-self:end;font-size:clamp(14px,1.2vw,17px);line-height:1.4;color:rgba(255,255,255,.9)}
+@media(hover:hover){
+  html body.f-acerca .svc-l:hover li:not(:hover){opacity:.5}
+  html body.f-acerca .svc-l li:hover h3{translate:10px 0}
+}
+@media(max-width:760px){
+  html body.f-acerca .svc-l li{grid-template-columns:1fr;row-gap:8px;padding:18px 0}
+  html body.f-acerca .svc-x h3{font-size:clamp(24px,7vw,30px)}
+  html body.f-acerca .svc-x p{justify-self:start;max-width:none}
+}
