@@ -1,0 +1,28 @@
+/* proyecto-miga: sitio web de Miga dentro de un mockup de celular */
+html body .pr-web{margin-top:clamp(40px,6vw,96px);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:clamp(28px,6vw,96px)}
+html body .pr-web>h2,html body .pr-web-t h2{font-size:clamp(28px,4vw,54px)}
+html body .pr-web-t p{max-width:42ch;margin:clamp(12px,1.4vw,20px) 0 0;font-size:clamp(16px,1.4vw,19px);line-height:1.45;text-wrap:balance}
+html body .pr-web .fila{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(22px,3vw,36px)}
+html body .pr-web-c{display:flex;justify-content:center}
+
+/* teléfono */
+html body .pr-phone{position:relative;width:clamp(250px,24vw,330px);padding:clamp(8px,.9vw,12px);border-radius:clamp(36px,3.6vw,50px);
+  background:linear-gradient(145deg,#2b2724,#0f0d0c);box-shadow:0 0 0 2px #3a3532,0 30px 70px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.08)}
+html body .pr-phone::before,html body .pr-phone::after{content:"";position:absolute;width:3px;background:#2b2724;border-radius:2px}
+html body .pr-phone::before{left:-3px;top:18%;height:7%;box-shadow:0 clamp(40px,4.4vw,60px) 0 #2b2724}
+html body .pr-phone::after{right:-3px;top:24%;height:11%}
+html body .pr-phone-s{position:relative;width:100%;overflow:hidden;border-radius:clamp(28px,2.8vw,40px);background:#376fb5;aspect-ratio:390/844}
+html body .pr-phone-s::after{content:"";position:absolute;left:50%;top:clamp(7px,.8vw,10px);z-index:3;translate:-50% 0;width:28%;height:clamp(16px,1.7vw,22px);border-radius:99px;background:#0b0a09;pointer-events:none}
+html body .pr-phone-s iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:#376fb5;width:390px;height:844px}
+html body .pr-phone-ov{display:none;position:absolute;inset:0;z-index:2}
+html body .pr-phone-ov:focus-visible{outline:3px solid #fff;outline-offset:-6px}
+
+/* en pantallas táctiles el teléfono no atrapa el scroll: un toque abre el sitio */
+@media(pointer:coarse){
+  html body .pr-phone-s iframe{pointer-events:none}
+  html body .pr-phone-ov{display:block}
+}
+@media(max-width:820px){
+  html body .pr-web{grid-template-columns:1fr;gap:32px}
+  html body .pr-phone{width:min(300px,78vw)}
+}
