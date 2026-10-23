@@ -140,3 +140,7 @@ section h2{font:700 clamp(36px,5.6vw,80px)/1 var(--fh);letter-spacing:-.01em;tex
   .js .rv{opacity:1;translate:0 0;transition:none}
   .btn,.btn:hover{transition:none;transform:none}
 }
+
+/* Cuando el sitio se ve dentro del mockup de celular (iframe) no se muestra la barra de scroll, como en un teléfono real */
+html.embebido{scrollbar-width:none;-ms-overflow-style:none}
+html.embebido::-webkit-scrollbar,html.embebido body::-webkit-scrollbar{display:none;width:0;height:0}
