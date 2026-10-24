@@ -18,7 +18,7 @@
   var TEXTO = {
     frenteNombre: 'Facundo Cruz',
     frenteRol: 'Diseñador en Comunicación Visual',
-    dorsoTitulo: 'Diseñar es tomar decisiones.',
+    dorsoTitulo: 'Imposible de ignorar.',
     dorsoParrafo: 'Primero entiendo qué necesita una marca y a quién le habla. De ahí salen el concepto, el color, la tipografía y el sistema: que cada pieza tenga una razón de ser.',
     dorsoDatos: [
       ['Especialidad', 'Branding e identidad visual'],
