@@ -11,7 +11,7 @@ index.html                  Inicio
 acerca.html · portfolio.html · herramientas.html · jueguitos.html · contacto.html
 proyecto-*.html             Una página por proyecto (Árbol, Bleko, Dulcemente, Miga, ROS.exe, Trazo, F1)
 juegos/                     Los siete jueguitos (color, tipografía, ahorcado, desafío diario, kerning, alinear, pluma)
-herramienta/                  Una página por herramienta: calculadora de precios, paletas, contraste, editor de imágenes (convertir, comprimir y quitar fondo), unidades y brief
+herramienta/                  Una página por herramienta: calculadora de precios, paletas, contraste, convertidor de imágenes, unidades y brief
 404.html                    Página de error
 css/ · js/                 Estilos y scripts (js/vendor: jsPDF, para el PDF de la calculadora)
 img/                        Portadas, imágenes de proyectos (img/proyectos) e imágenes para compartir (img/og)
