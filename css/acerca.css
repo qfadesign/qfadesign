@@ -225,3 +225,6 @@ html body.f-acerca .quien-t .quien-d{margin-top:clamp(20px,2.4vw,32px);max-width
 html body.f-acerca .quien-r{display:flex;align-items:flex-start;justify-content:flex-end}
 html body.f-acerca .quien-foto{margin:0;max-width:none;width:min(100%,380px)}
 @media(max-width:760px){html body.f-acerca .quien-r{justify-content:center}html body.f-acerca .quien-foto{width:min(100%,300px)}}
+
+/* en celular la foto de "Sobre mí" no se muestra: ocupa mucho lugar */
+@media(max-width:760px){html body.f-acerca .quien-r{display:none}}
