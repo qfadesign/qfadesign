@@ -71,3 +71,20 @@
 .f-herramientas .un-n{color:#fff}
 .f-herramientas .br{margin-inline:0}
 .f-herramientas :is(.un,.cv){margin-left:0;margin-right:0}
+
+/* Editor de imágenes: las opciones forman un panel */
+html body.f-h-convertidor .cv-ctl{display:grid;gap:0;margin-top:18px;padding:4px clamp(16px,2.4vw,30px) clamp(14px,1.8vw,22px);border-radius:24px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.32)}
+html body.f-h-convertidor .cv-ctl[hidden],html body.f-h-convertidor .cv-g[hidden]{display:none}
+html body.f-h-convertidor .cv-ctl .cv-g{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);align-items:center;gap:8px 24px;padding:16px 0;border-top:1px solid rgba(255,255,255,.2)}
+html body.f-h-convertidor .cv-ctl .cv-g:first-child{border-top:0}
+html body.f-h-convertidor .cv-ctl .cv-l{margin:0;font-family:var(--f);font-style:normal;font-weight:700;font-size:15px;color:rgba(255,255,255,.92)}
+html body.f-h-convertidor .cv-ctl .cv-l span{opacity:.75}
+html body.f-h-convertidor .cv-modos{grid-template-columns:1fr!important;padding-top:18px!important}
+html body.f-h-convertidor .cv-modos .cv-fmts{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:18px;background:rgba(0,0,0,.2)}
+html body.f-h-convertidor .cv-modos .chip{border-radius:14px;padding:13px 12px 14px;text-align:center;font-size:clamp(14px,1.3vw,17px);background:transparent;color:#fff;white-space:normal}
+html body.f-h-convertidor .cv-modos .chip[aria-pressed=true]{background:#fff;color:var(--azul-f)}
+html body.f-h-convertidor .cv-modos .chip:not([aria-pressed=true]):hover{background:rgba(255,255,255,.16);color:#fff}
+html body.f-h-convertidor .cv-go{grid-template-columns:1fr!important;justify-items:end}
+html body.f-h-convertidor .cv-go .btn{min-width:min(260px,100%)}
+html body.f-h-convertidor .cv-nt{margin:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.2);font-size:13.5px;line-height:1.45;color:rgba(255,255,255,.82);max-width:none}
+@media(max-width:640px){html body.f-h-convertidor .cv-ctl .cv-g{grid-template-columns:1fr;padding:14px 0}html body.f-h-convertidor .cv-go{justify-items:stretch}}

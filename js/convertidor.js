@@ -1,5 +1,5 @@
-/* qfadesign — Convertidor y compresor de imágenes (Herramientas).
-   Convierte entre JPG, PNG y WebP, o comprime manteniendo el formato. Todo ocurre en el navegador:
+/* qfadesign — Convertidor, compresor y quitafondos de imágenes (Herramientas).
+   Convierte entre JPG, PNG y WebP, comprime manteniendo el formato, o quita el fondo y devuelve un PNG transparente (js/quitar-fondo.js). Todo ocurre en el navegador:
    las imágenes no se suben a ningún servidor.
    Cada imagen se dibuja en un canvas y se vuelve a exportar. Eso también borra los metadatos (ubicación, cámara).
    En «Mantener formato», si el resultado no pesa menos que el original, se conserva el original (ya estaba optimizado).
@@ -19,6 +19,9 @@
   var NOM = { jpeg: "JPG", png: "PNG", webp: "WebP" };
   var NIVELES = { alta: 0.9, media: 0.8, baja: 0.6 };      /* calidad de JPG y WebP; PNG no pierde nunca */
   var items = [], formato = "igual", nivel = "alta", corrida = 0, tReco = null;
+  var modo = "convertir", recorte = "no", procesando = false;
+  var chipsM = $("cvModo").querySelectorAll(".chip"), chipsR = $("cvRec").querySelectorAll(".chip");
+  var convBox = $("cvConv"), fondoBox = $("cvFondo"), btnProc = $("cvProc");
 
   function avisar(t) { estado.textContent = ""; setTimeout(function () { estado.textContent = t; }, 30); }
   function error(t) { msg.hidden = !t; msg.textContent = t || ""; }
@@ -76,6 +79,7 @@
   }
 
   function reconvertir() {
+    if (modo !== "convertir") return;
     var mia = ++corrida;
     items.reduce(function (p, it) {
       return p.then(function () {
@@ -96,7 +100,34 @@
   }
 
   /* ---- Pantalla ---- */
+  function pintarFondo() {
+    lista.innerHTML = items.map(function (it, i) {
+      var f = it.f, quitar = '<button class="cv-x" type="button" data-q="' + i + '" aria-label="Quitar ' + esc(it.nombre) + '"' + (procesando ? " disabled" : "") + '>✕</button>';
+      if (!f) return '<li class="cv-it"><img class="cv-th" src="' + it.vista + '" alt=""><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">' + it.w + "×" + it.h + ' · Listo para quitar el fondo</p><span class="cv-b">' + quitar + "</span></li>";
+      if (f.error) return '<li class="cv-it err"><span class="cv-th" aria-hidden="true"></span><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">' + esc(f.error) + '</p><span class="cv-b">' + quitar + "</span></li>";
+      if (f.trabajando) {
+        var pc = Math.round((f.avance || 0) * 100), tx = f.fase === "modelo" ? "Descargando el modelo (solo la primera vez)… " + pc + "%" : "Quitando el fondo…";
+        return '<li class="cv-it"><img class="cv-th" src="' + it.vista + '" alt=""><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">' + tx + '<span class="cv-bar"><i style="width:' + (f.fase === "modelo" ? pc : 100) + '%"></i></span></p></li>';
+      }
+      var nuevo = base(it.nombre) + "-sin-fondo.png";
+      return '<li class="cv-it sinf"><img class="cv-th" src="' + f.url + '" alt="">' +
+        '<p class="cv-n">' + esc(nuevo) + "</p>" +
+        '<p class="cv-m">' + pesoTxt(f.blob.size) + " · " + f.w + "×" + f.h + ' · PNG transparente</p>' +
+        '<span class="cv-b"><a class="cv-d" href="' + f.url + '" download="' + esc(nuevo) + '" aria-label="Descargar ' + esc(nuevo) + '">Descargar</a>' + quitar + "</span></li>";
+    }).join("");
+    var hay = items.length > 0, listas = items.filter(function (i) { return i.f && i.f.blob; }).length;
+    drop.classList.toggle("tiene", hay);
+    ctl.hidden = !hay; acc.hidden = !hay || listas < 1; nota.hidden = true;
+    $("cvZip").hidden = listas < 2;
+    resumen.hidden = true;
+    var pend = items.filter(function (i) { return !i.f || i.f.error; }).length;
+    btnProc.disabled = procesando || !pend;
+    btnProc.textContent = procesando ? "Procesando…" : (items.length > 1 ? "Quitar fondo a las imágenes" : "Quitar fondo");
+  }
+
   function pintar() {
+    if (modo === "fondo") { convBox.hidden = true; fondoBox.hidden = false; return pintarFondo(); }
+    convBox.hidden = false; fondoBox.hidden = true;
     lista.innerHTML = items.map(function (it, i) {
       var r = it.r;
       if (!r) return '<li class="cv-it"><span class="cv-th" aria-hidden="true"></span><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">Procesando…</p></li>';
@@ -144,15 +175,21 @@
     Promise.all(validos.map(function (f) {
       return cargar(f).then(function (d) { return { file: f, src: d.src, w: d.w, h: d.h, nombre: f.name, bytes: f.size }; }, function () { malos.push("No pude leer " + f.name + "."); return null; });
     })).then(function (nuevos) {
-      nuevos.forEach(function (n) { if (n) items.push(n); });
+      nuevos.forEach(function (n) { if (n) { n.vista = URL.createObjectURL(n.file); items.push(n); } });
       if (malos.length) error(malos.join(" "));
       pintar();
       reconvertir();
     });
   }
+  function liberar(i) {
+    if (i.url) URL.revokeObjectURL(i.url);
+    if (i.vista) URL.revokeObjectURL(i.vista);
+    if (i.f && i.f.url) URL.revokeObjectURL(i.f.url);
+    if (i.src && i.src.close) i.src.close();
+  }
   function limpiar() {
     corrida++;
-    items.forEach(function (i) { if (i.url) URL.revokeObjectURL(i.url); if (i.src && i.src.close) i.src.close(); });
+    items.forEach(function (i) { liberar(i); });
     items = []; error(""); pintar(); avisar("Se quitaron las imágenes.");
   }
 
@@ -166,12 +203,58 @@
     if (!b) return;
     var i = +b.getAttribute("data-q"), it = items[i];
     if (!it) return;
-    if (it.url) URL.revokeObjectURL(it.url);
-    if (it.src && it.src.close) it.src.close();
+    if (procesando) return;
+    liberar(it);
     items.splice(i, 1); pintar();
     if (!items.length) file.focus();
   });
   $("cvLimpiar").addEventListener("click", function () { limpiar(); file.focus(); });
+
+  /* ---- Quitar fondo ---- */
+  function quitarFondos() {
+    if (procesando || typeof window.qfQuitarFondo !== "function") return;
+    var pend = items.filter(function (i) { return !i.f || i.f.error; });
+    if (!pend.length) return;
+    error(""); procesando = true;
+    pend.forEach(function (it) { it.f = { trabajando: true, fase: "modelo", avance: 0 }; });
+    pintar();
+    var hechas = 0;
+    pend.reduce(function (p, it) {
+      return p.then(function () {
+        return window.qfQuitarFondo(it.file, {
+          recortar: recorte === "si",
+          alProgreso: function (fase, av) { it.f.fase = fase; it.f.avance = av; if (modo === "fondo") pintarFondo(); }
+        }).then(function (r) {
+          it.f = { blob: r.blob, url: URL.createObjectURL(r.blob), w: r.w, h: r.h }; hechas++;
+        }, function (e) {
+          it.f = { error: "No pude quitar el fondo de esta imagen. " + (e && e.message ? "(" + e.message + ")" : "Revisá tu conexión y probá de nuevo.") };
+        }).then(function () { if (modo === "fondo") pintarFondo(); });
+      });
+    }, Promise.resolve()).then(function () {
+      procesando = false;
+      if (modo === "fondo") pintarFondo();
+      avisar(hechas + (hechas === 1 ? " imagen sin fondo lista para descargar." : " imágenes sin fondo listas para descargar."));
+    });
+  }
+  btnProc.addEventListener("click", quitarFondos);
+  Array.prototype.forEach.call(chipsM, function (b) {
+    b.addEventListener("click", function () {
+      if (procesando) return;
+      modo = elegir(chipsM, b, "data-m");
+      error(""); pintar();
+      if (modo === "convertir" && items.length) reconvertir();
+    });
+  });
+  Array.prototype.forEach.call(chipsR, function (b) {
+    b.addEventListener("click", function () {
+      var nuevo = elegir(chipsR, b, "data-r");
+      if (nuevo === recorte) return;
+      recorte = nuevo;
+      /* cambia el recorte: hay que volver a procesar lo ya hecho */
+      items.forEach(function (it) { if (it.f && it.f.url) URL.revokeObjectURL(it.f.url); it.f = null; });
+      pintar();
+    });
+  });
 
   /* ---- Opciones ---- */
   function nuevoReco() { clearTimeout(tReco); tReco = setTimeout(function () { if (items.length) reconvertir(); }, 250); }
@@ -220,11 +303,12 @@
     return new Blob(partes.concat(central, [e.buffer]), { type: "application/zip" });
   }
   $("cvZip").addEventListener("click", function () {
-    var bien = items.filter(function (i) { return i.r && i.r.blob; }), usados = {};
+    var esF = modo === "fondo", usados = {};
+    var bien = items.filter(function (i) { return esF ? i.f && i.f.blob : i.r && i.r.blob; });
     if (!bien.length) return;
     Promise.all(bien.map(function (it) {
-      return it.r.blob.arrayBuffer().then(function (buf) {
-        var nom = nombreSalida(it), n = nom.replace(/\.[^.]+$/, ""), e = nom.slice(n.length), k = 1;
+      return (esF ? it.f.blob : it.r.blob).arrayBuffer().then(function (buf) {
+        var nom = esF ? base(it.nombre) + "-sin-fondo.png" : nombreSalida(it), n = nom.replace(/\.[^.]+$/, ""), e = nom.slice(n.length), k = 1;
         while (usados[nom]) nom = n + "-" + (++k) + e;
         usados[nom] = 1;
         return { nombre: nom, datos: new Uint8Array(buf) };
