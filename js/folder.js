@@ -39,7 +39,7 @@
     const front = document.createElement('button'); front.type = 'button'; front.className = 'fd-front'; front.setAttribute('aria-expanded', 'false');
     front.innerHTML = '<span class="fd-label"></span><span class="fd-sub"></span>';
     front.querySelector('.fd-label').textContent = label; front.querySelector('.fd-sub').textContent = sub;
-    front.setAttribute('aria-label', label + ', ' + sub + '. Abrir o cerrar la carpeta');
+    front.setAttribute('aria-label', d.href ? label + ', ' + sub + '. Ir a la página de ' + label : label + ', ' + sub + '. Abrir o cerrar la carpeta');
     const dim = document.createElement('div'); dim.className = 'fd-dim'; dim.setAttribute('aria-hidden', 'true');
 
     items.forEach((a, i) => {
@@ -57,7 +57,8 @@
     el.append(dim, back, papers, front);
     el.classList.add('fd-ok');
     const hint = el.parentElement.querySelector('.fd-hint');
-    if (hint) hint.textContent = o.openOn === 'hover' && canHover ? 'Pasá el mouse por la carpeta y elegí un proyecto' : (canHover ? 'Hacé clic en la carpeta y elegí un proyecto' : 'Tocá la carpeta y elegí un proyecto');
+    if (hint && d.href) hint.textContent = canHover ? 'Hacé clic en un proyecto, o en la carpeta para ver todo el portfolio' : 'Tocá un proyecto, o la carpeta para ver todo el portfolio';
+    else if (hint) hint.textContent = o.openOn === 'hover' && canHover ? 'Pasá el mouse por la carpeta y elegí un proyecto' : (canHover ? 'Hacé clic en la carpeta y elegí un proyecto' : 'Tocá la carpeta y elegí un proyecto');
 
     // ---- layout: abanico (spread) ----
     const pos = []; let repintar = () => {};
@@ -96,7 +97,10 @@
       el.addEventListener('mouseenter', abrir);
       el.addEventListener('mouseleave', () => { clearTimeout(t); t = setTimeout(cerrar, 180); });
     }
+    const destino = d.href; // carpeta del inicio: al tocarla va a la página del portfolio (las hojas siguen yendo a su proyecto)
+    const irA = h => { const l = document.createElement('a'); l.href = h; l.hidden = true; document.body.appendChild(l); l.click(); l.remove(); };
     front.addEventListener("click", e => {
+      if (destino) { e.preventDefault(); irA(destino); return; }
       if (o.openOn === "hover" && canHover && el.classList.contains("open") && e.detail !== 0) return;
       if (!latched && scrub) { latch(); return; }
       el.classList.contains('open') ? cerrar() : abrir();

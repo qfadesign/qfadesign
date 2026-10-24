@@ -11,6 +11,8 @@
 .fd[data-tab-position="left"] .fd-back::before{right:auto;left:0}
 .fd-papers{position:absolute;inset:0;z-index:1;pointer-events:none}
 .fd.open .fd-papers{pointer-events:auto}
+/* carpeta cerrada (o guardándose): las hojas no se ven por debajo del borde de abajo de la carpeta (el rebote al cerrar y la caída con scroll las sacaban de ahí) */
+.fd:not(.open) .fd-papers{clip-path:inset(-100vh -100vw 3px -100vw)}
 .fd-paper{--cx:0px;--cy:0px;--cr:0deg;--x:0px;--y:0px;--rot:0deg;
  position:absolute;left:calc(50% - var(--pw)*var(--s)/2);bottom:calc(10px*var(--s));width:calc(var(--pw)*var(--s));height:calc(var(--ph)*var(--s));box-sizing:border-box;display:block;padding:calc(8px*var(--s));border-radius:calc(10px*var(--s));background:var(--paper);color:var(--ink);text-decoration:none;box-shadow:0 8px 22px rgba(0,0,0,.35);transform-origin:50% 100%;z-index:var(--i);touch-action:pan-y;user-select:none;-webkit-user-drag:none;
  transform:translate(calc(var(--cx) + var(--dx,0px)),calc(var(--cy) + var(--dy,0px))) rotate(var(--cr)) scale(.94);
