@@ -4,7 +4,7 @@
 :root{--lany-ext:clamp(120px,14vw,220px)}
 
 /* el lienzo ocupa todo el hero y sube hasta arriba de la página, así la cinta "cuelga" desde el borde de la pantalla */
-html body.f-acerca .ah-lany{position:absolute;left:0;right:0;top:calc(-1 * var(--lany-ext));bottom:0;z-index:1;
+html body.f-acerca .ah-lany{position:absolute;left:0;right:0;top:calc(-1 * var(--lany-ext));height:calc(min(100%,100vh) + var(--lany-ext));height:calc(min(100%,100svh) + var(--lany-ext));z-index:1;
   pointer-events:none;opacity:0;transition:opacity .6s ease}
 html body.f-acerca .ah-lany.lany-on{opacity:1}
 /* cuando la tarjeta está lista, se oculta la foto fija (queda de reserva si no hay WebGL) */

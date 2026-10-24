@@ -240,6 +240,19 @@ export function Lanyard(host, userOpts = {}) {
       P[0].x = anchorX; P[0].y = anchorY;
     }
 
+    // límites: la tarjeta no sale de la parte visible de la pantalla (ni de los costados ni por abajo)
+    {
+      const r = host.getBoundingClientRect(), hw = cw * 0.5;
+      const wl = worldFromClient(Math.max(r.left, 0), 0).x + hw, wr = worldFromClient(Math.min(r.right, innerWidth), 0).x - hw;
+      const sn = Math.abs(P[iB].x - P[iA].x) / rodLen; // inclinación: con la tarjeta torcida, la esquina de abajo baja más que el centro
+      const wb = Math.min(worldFromClient(0, Math.min(r.bottom, innerHeight)).y + 0.25 + hw * sn, anchorY - ropeLen - rodLen); // nunca más arriba que la pose de reposo
+      for (const i of [iA, iB]) {
+        const p = P[i], q = Q[i];
+        if (wr > wl) { if (p.x < wl) { p.x = wl; q.x = p.x; } else if (p.x > wr) { p.x = wr; q.x = p.x; } }
+      }
+      const pb = P[iB]; if (pb.y < wb) { pb.y = wb; Q[iB].y = pb.y; }
+    }
+
     // giro sobre el eje vertical: resorte hacia el frente (o el dorso) + roce
     if (!flipping) goal = Math.round((psi + omega * 0.28) / Math.PI) * Math.PI;
     const ks = flipping ? 15 : 5 + o.elasticity * 9, cs = flipping ? 3.4 : 1.5 + o.damping * 2.2;

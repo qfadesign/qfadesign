@@ -42,8 +42,9 @@ document.documentElement.classList.add('js');
   };
 
   // 1) página que llega: arranca invisible (la barra no) y, cuando está lista, el degradé y el contenido aparecen suave
-  let vino=false,st=null;try{vino=!!sessionStorage.getItem('qfa-t');st=JSON.parse(sessionStorage.getItem('qfa-st')||'null');sessionStorage.removeItem('qfa-st')}catch(e){}
-  flag('qfa-t',null);
+  const navT=((performance.getEntriesByType&&performance.getEntriesByType('navigation')[0])||{}).type,histo=navT==='back_forward'||navT==='reload'; // con "atrás", "adelante" o recargar no hay transición
+  let vino=false,st=null;try{const t=+sessionStorage.getItem('qfa-t')||0;vino=!histo&&Date.now()-t<8000;st=JSON.parse(sessionStorage.getItem('qfa-st')||'null');sessionStorage.removeItem('qfa-st')}catch(e){} // la bandera vale 8 s: una vieja que quedó guardada no cuenta
+  flag('qfa-t',null);if(!vino){st=null;flag('qfa-pj',null)}
   if(!(st&&st.u&&st.s===seg(location.pathname)))st=null;
   if(vino&&!root.classList.contains('con-intro')){
     root.classList.add('vino','t-in','t-wait');
@@ -62,6 +63,8 @@ document.documentElement.classList.add('js');
     setTimeout(abrir,2500); // por las dudas
   }
 
+  let irA=0;
+  const limpiar=()=>{root.classList.remove('sale','t-in','t-wait','qst-in');root.style.background='';document.querySelectorAll('.qst,.qpj').forEach(n=>n.remove());flag('qfa-st',null);flag('qfa-pj',null);flag('qfa-t',null);if(document.body)document.body.style.removeProperty('--fondo')};
   // 2) página que se va: al tocar un link interno se desvanece y recién ahí cambia de página
   document.addEventListener('click',e=>{
     if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
@@ -77,7 +80,7 @@ document.documentElement.classList.add('js');
     e.preventDefault();
     root.classList.add('sale');
     if(document.body)document.body.style.setProperty('--fondo',oscura?'#000':(PJB[s]||'#0847a3'));
-    flag('qfa-t','1');
+    flag('qfa-t',String(Date.now()));
     let espera=320;
     const pjc=a.closest('.pj,.pg-s,.fd-paper'),pim=pjc&&pjc.querySelector('img'),hoja=pjc&&pjc.classList.contains('fd-paper'),pr=pim&&(hoja?pim:pjc).getBoundingClientRect(),rad=hoja?'6px':'28px';
     if(hoja){espera=300} // hoja de la carpeta: ya hizo su propio zoom, sin imagen gigante
@@ -101,10 +104,13 @@ document.documentElement.classList.add('js');
       const bg=document.querySelector('.burger[aria-expanded=true]');if(bg)bg.click(); // en celu, cierra el menú para que se vea el sticker
       espera=660;
     }
-    setTimeout(()=>{location.href=a.href},espera);
+    clearTimeout(irA);irA=setTimeout(()=>{location.href=a.href},espera);
+    setTimeout(()=>{if(root.classList.contains('sale')&&!document.hidden)limpiar()},espera+3500); // si la página nueva no llegó a abrirse, esta vuelve a la normalidad y los links no quedan trabados
   });
+  // volver con "atrás" mientras la salida estaba en marcha: se cancela el viaje y la página queda normal
+  addEventListener('popstate',()=>{clearTimeout(irA);limpiar()});
   // volver con el botón "atrás" (página guardada en memoria): devolver la página a su estado normal
-  addEventListener('pageshow',e=>{if(e.persisted){root.classList.remove('sale','t-in','t-wait','qst-in');root.style.background='';document.querySelectorAll('.qst,.qpj').forEach(n=>n.remove());flag('qfa-st',null);if(document.body)document.body.style.removeProperty('--fondo');flag('qfa-t',null)}});
+  addEventListener('pageshow',e=>{if(e.persisted)limpiar()});
 })();
 addEventListener('DOMContentLoaded',()=>{const n=document.querySelector('nav');if(!n)return;const set=()=>document.documentElement.style.setProperty('--navh',(n.offsetHeight+(parseFloat(getComputedStyle(n).marginTop)||0))+'px');set();new ResizeObserver(set).observe(n)});
 addEventListener('DOMContentLoaded',()=>{
