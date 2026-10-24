@@ -25,6 +25,21 @@ scripts/                    Herramientas para mantener la web (ver abajo)
 
 **Direcciones sin `.html`:** GitHub Pages abre `acerca.html` también como `/acerca`. Todos los enlaces, los canonical y el sitemap usan esa forma, y `scripts/check.py` avisa si algún enlace vuelve a terminar en `.html`. Los archivos siguen llamándose igual.
 
+## Acerca de: tarjeta colgante 3D
+
+La foto principal de `acerca.html` vive en una tarjeta que cuelga de una cinta, con física: se agarra y se arrastra, y al tocarla se da vuelta (el dorso tiene un texto sobre vos). Si el navegador no tiene WebGL, se ve la foto de siempre.
+
+```
+css/lanyard.css             Posición del lienzo (compu y celular) y cartelito de ayuda
+js/lanyard-acerca.js        Arma frente, dorso y cinta (textos y colores en CONFIG y TEXTO, arriba de todo) y llama a Lanyard
+js/vendor/lanyard.js        La tarjeta con física (three.js incluido, ya compilado)
+scripts/lanyard/            Código fuente de esa tarjeta y cómo recompilarla (solo si querés tocar la física)
+```
+
+- **Cambiar textos o colores:** `js/lanyard-acerca.js` → `CONFIG` (colores, foto, texto de la cinta) y `TEXTO` (frente y dorso).
+- **Cambiar cómo se mueve o se ve:** el `Lanyard(...)` del final de ese archivo tiene los mismos parámetros del componente original (`size`, `strapLength`, `strapWidth`, `metal`, `finish`, `gravity`, `damping`, `elasticity`, `breeze`, `anchor`, `intro`...).
+- **Sacarla:** quitá las dos líneas `<script>` y el `<link rel="stylesheet" href="css/lanyard.css">` de `acerca.html`.
+
 ## Calculadora de precios: PDF y referencias
 
 La calculadora (Herramientas) genera un **PDF del presupuesto en una sola hoja** con el detalle de lo elegido y la justificación de cada valor (sin listado de fuentes; las fuentes se ven en la web). Si se eligen muchísimos servicios (más de 6 o 7), pasa a una segunda hoja para no achicar demasiado la letra. La calculadora también tiene un botón "Borrar selección". Se arma en el navegador, sin servidor.

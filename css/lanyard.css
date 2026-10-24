@@ -1,0 +1,35 @@
+/* qfadesign: tarjeta colgante 3D de "Acerca de" (js/vendor/lanyard.js + js/lanyard-acerca.js).
+   Si algo no te gusta, sacá los dos <script> y este <link> de acerca.html: vuelve la foto de siempre. */
+
+:root{--lany-ext:clamp(120px,14vw,220px)}
+
+/* el lienzo ocupa todo el hero y sube hasta arriba de la página, así la cinta "cuelga" desde el borde de la pantalla */
+html body.f-acerca .ah-lany{position:absolute;left:0;right:0;top:calc(-1 * var(--lany-ext));bottom:0;z-index:1;
+  pointer-events:none;opacity:0;transition:opacity .6s ease}
+html body.f-acerca .ah-lany.lany-on{opacity:1}
+/* cuando la tarjeta está lista, se oculta la foto fija (queda de reserva si no hay WebGL) */
+html body.f-acerca .ah-lany.lany-on ~ .ah-foto{display:none}
+
+.lany-hit:focus-visible{outline:2px solid var(--crema,#f9fbf2);border-radius:18px}
+
+/* cartelito de ayuda: desaparece apenas tocás la tarjeta */
+.lany-hint{position:absolute;left:50%;bottom:clamp(6px,1.6%,18px);translate:-50% 0;z-index:2;pointer-events:none;white-space:nowrap;
+  padding:8px 16px;border-radius:99px;font:300 italic clamp(12px,1vw,14px)/1 var(--f);letter-spacing:.04em;color:#fff;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.4);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  opacity:0;transition:opacity .5s ease .8s}
+.lany-on .lany-hint{opacity:1}
+.lany-on .lany-hint.off{opacity:0;transition-delay:0s}
+.lany-hint b{font-weight:inherit}
+.lany-hint .h-cel{display:none}
+@media(hover:none){.lany-hint .h-pc{display:none}.lany-hint .h-cel{display:inline}}
+
+/* tablet y celular: la tarjeta va en el flujo, debajo del título, y la cinta nace desde el sticker */
+@media(max-width:1100px){
+  html body.f-acerca .ah-lany{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:100%;
+    margin-top:calc(-1 * var(--lany-ext));height:calc(clamp(500px,128vw,720px) + var(--lany-ext))}
+  /* en celular el título "Acerca de" queda por delante de la cinta (la cinta cuelga desde atrás del sticker) */
+  html body.f-acerca .ah:has(.ah-lany.lany-on) .ah-bg{position:relative;z-index:2}
+  html body.f-acerca .ah-lany.lany-on ~ .ah-a.vid{margin-top:18px}
+  html body.f-acerca .ah-lany.lany-on ~ .ah-chips{margin-top:clamp(14px,3vw,22px)}
+}
+@media(prefers-reduced-motion:reduce){html body.f-acerca .ah-lany,.lany-hint{transition:none}}
