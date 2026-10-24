@@ -209,3 +209,12 @@ html body.f-acerca .dest-f{margin-top:clamp(28px,4vw,48px)}
 html body.f-acerca :is(.banda p,.svc-x p,.dc p,.dc h3,.quien-d dd,.foto-band p,.cta h2,.sec>h2,.apps p,.ah-a p,.ah-t p){text-wrap:balance}
 html body.f-acerca :is(.quien-t p,.dc-c){text-wrap:pretty}
 html body.f-acerca .cta h2{max-width:22ch;font-size:clamp(28px,4vw,56px)}
+
+/* la coma nunca queda sola en el renglón de abajo: se pega a la palabra anterior */
+html body.f-acerca .banda p{text-wrap:balance;hanging-punctuation:last}
+html body.f-acerca .banda mark{white-space:normal}
+
+/* foto de perfil en "Sobre mí": tarjeta redondeada, como el resto de las piezas de la web */
+html body.f-acerca .quien-foto{display:block;width:100%;max-width:340px;height:auto;margin:0 0 clamp(16px,2vw,28px);border-radius:clamp(18px,2vw,28px);
+  box-shadow:0 14px 34px rgba(0,30,100,.35)}
+@media(max-width:760px){html body.f-acerca .quien-foto{max-width:300px;margin-inline:auto}}
