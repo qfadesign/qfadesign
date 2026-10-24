@@ -5,7 +5,7 @@
    Expone window.qfQuitarFondo(archivo, { recortar, alProgreso }) -> Promise<{ blob, w, h }> (PNG con transparencia). */
 (function () {
   "use strict";
-  var LIB = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2/dist/transformers.web.min.js";
+  var LIB = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2/dist/transformers.js";
   /* de mejor a más simple; el último (MODNet) solo sirve bien para retratos */
   var MODELOS = ["onnx-community/BiRefNet_lite-ONNX", "onnx-community/BiRefNet_lite", "Xenova/modnet"];
   var motor = null;
@@ -38,7 +38,7 @@
       }
       return probar();
     }, function (e) {
-      throw new Error("No se pudo cargar la librería de IA (¿sin conexión?).");
+      throw new Error("No se pudo cargar la librería de IA (" + ((e && e.message) || e) + "). Revisá la conexión y abrí la página desde https:// o localhost, no desde un archivo.");
     });
     motor.catch(function () { motor = null; });   /* si falla, se puede reintentar */
     return motor;
