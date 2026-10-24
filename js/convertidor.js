@@ -100,18 +100,21 @@
   }
 
   /* ---- Pantalla ---- */
+  /* fila "cargando": miniatura con selección animada + barra, sin texto */
+  function cargando(it, pc, conVista) {
+    var th = conVista ? '<span class="cv-sc"><img class="cv-th" src="' + it.vista + '" alt=""></span>' : '<span class="cv-th" aria-hidden="true"></span>';
+    return '<li class="cv-it cv-wait" aria-busy="true">' + th + '<p class="cv-n" title="' + esc(it.nombre) + '">' + esc(it.nombre) + '</p>' +
+      '<span class="cv-load' + (pc < 0 ? " ind" : "") + '" role="progressbar" aria-label="Procesando ' + esc(it.nombre) + '"><i' + (pc >= 0 ? ' style="width:' + Math.max(4, pc) + '%"' : "") + '></i></span><span class="cv-b"></span></li>';
+  }
   function pintarFondo() {
     lista.innerHTML = items.map(function (it, i) {
       var f = it.f, quitar = '<button class="cv-x" type="button" data-q="' + i + '" aria-label="Quitar ' + esc(it.nombre) + '"' + (procesando ? " disabled" : "") + '>✕</button>';
       if (!f) return '<li class="cv-it"><img class="cv-th" src="' + it.vista + '" alt=""><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">' + it.w + "×" + it.h + ' · Listo para quitar el fondo</p><span class="cv-b">' + quitar + "</span></li>";
       if (f.error) return '<li class="cv-it err"><span class="cv-th" aria-hidden="true"></span><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">' + esc(f.error) + '</p><span class="cv-b">' + quitar + "</span></li>";
-      if (f.trabajando) {
-        var pc = Math.round((f.avance || 0) * 100), tx = f.fase === "modelo" ? "Descargando el modelo (solo la primera vez)… " + pc + "%" : "Quitando el fondo…";
-        return '<li class="cv-it"><img class="cv-th" src="' + it.vista + '" alt=""><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">' + tx + '<span class="cv-bar"><i style="width:' + (f.fase === "modelo" ? pc : 100) + '%"></i></span></p></li>';
-      }
+      if (f.trabajando) return cargando(it, f.fase === "modelo" ? Math.round((f.avance || 0) * 100) : -1, true);
       var nuevo = base(it.nombre) + "-sin-fondo.png";
       return '<li class="cv-it sinf"><img class="cv-th" src="' + f.url + '" alt="">' +
-        '<p class="cv-n">' + esc(nuevo) + "</p>" +
+        '<p class="cv-n" title="' + esc(nuevo) + '">' + esc(nuevo) + "</p>" +
         '<p class="cv-m">' + pesoTxt(f.blob.size) + " · " + f.w + "×" + f.h + ' · PNG transparente</p>' +
         '<span class="cv-b"><a class="cv-d" href="' + f.url + '" download="' + esc(nuevo) + '" aria-label="Descargar ' + esc(nuevo) + '">Descargar</a>' + quitar + "</span></li>";
     }).join("");
@@ -130,7 +133,7 @@
     convBox.hidden = false; fondoBox.hidden = true;
     lista.innerHTML = items.map(function (it, i) {
       var r = it.r;
-      if (!r) return '<li class="cv-it"><span class="cv-th" aria-hidden="true"></span><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">Procesando…</p></li>';
+      if (!r) return cargando(it, -1, false);
       if (r.error) return '<li class="cv-it err"><span class="cv-th" aria-hidden="true"></span><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">' + esc(r.error) + '</p><span class="cv-b"><button class="cv-x" type="button" data-q="' + i + '" aria-label="Quitar ' + esc(it.nombre) + '">✕</button></span></li>';
       var nuevo = nombreSalida(it), meta;
       if (r.igual) {
@@ -141,7 +144,7 @@
         if (formato === "igual" && tipoDe(it.file) === "webp" && it.file.type !== "image/webp") meta += " · pasó a WebP";
       }
       return '<li class="cv-it"><img class="cv-th" src="' + it.url + '" alt="">' +
-        '<p class="cv-n">' + esc(nuevo) + "</p>" +
+        '<p class="cv-n" title="' + esc(nuevo) + '">' + esc(nuevo) + "</p>" +
         '<p class="cv-m">' + meta + "</p>" +
         '<span class="cv-b"><a class="cv-d" href="' + it.url + '" download="' + esc(nuevo) + '" aria-label="Descargar ' + esc(nuevo) + '">Descargar</a>' +
         '<button class="cv-x" type="button" data-q="' + i + '" aria-label="Quitar ' + esc(it.nombre) + '">✕</button></span></li>';
@@ -227,7 +230,8 @@
         }).then(function (r) {
           it.f = { blob: r.blob, url: URL.createObjectURL(r.blob), w: r.w, h: r.h }; hechas++;
         }, function (e) {
-          it.f = { error: "No pude quitar el fondo de esta imagen. " + (e && e.message ? "(" + e.message + ")" : "Revisá tu conexión y probá de nuevo.") };
+          var det = e && e.message ? e.message : (typeof e === "string" ? e : "");
+          it.f = { error: "No pude quitar el fondo de esta imagen." + (det ? " (" + det + ")" : " Probá de nuevo o con otra imagen.") };
         }).then(function () { if (modo === "fondo") pintarFondo(); });
       });
     }, Promise.resolve()).then(function () {
