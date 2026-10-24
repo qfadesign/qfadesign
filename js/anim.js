@@ -144,6 +144,13 @@ addEventListener('DOMContentLoaded',()=>{
       while(el.firstChild)lector.appendChild(el.firstChild);          // el texto real queda para lectores de pantalla
       const vis=document.createElement('span');vis.className='tw-vis';vis.setAttribute('aria-hidden','true');
       vis.innerHTML=lector.innerHTML;partir(vis,letras);
+      // la puntuación pegada a una palabra (ej. la coma después de un subrayado) viaja con ella: nunca queda sola al inicio del renglón
+      vis.querySelectorAll('.tw-w').forEach(w=>{
+        if(!/^[,.;:!?…)»”]+$/.test(w.textContent))return;
+        const a=w.previousSibling;if(!a||a.nodeType!==1)return;
+        const prev=a.classList.contains('tw-w')?a:[...a.querySelectorAll('.tw-w')].pop();
+        if(!prev)return;while(w.firstChild)prev.appendChild(w.firstChild);w.remove();
+      });
       el.append(lector,vis);el.classList.add('tw');
       datos.set(el,{letras,k:0});
     });

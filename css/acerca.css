@@ -218,3 +218,10 @@ html body.f-acerca .banda mark{white-space:normal}
 html body.f-acerca .quien-foto{display:block;width:100%;max-width:340px;height:auto;margin:0 0 clamp(16px,2vw,28px);border-radius:clamp(18px,2vw,28px);
   box-shadow:0 14px 34px rgba(0,30,100,.35)}
 @media(max-width:760px){html body.f-acerca .quien-foto{max-width:300px;margin-inline:auto}}
+
+/* Sobre mí: texto + datos a la izquierda, foto a la derecha (sin huecos en blanco) */
+html body.f-acerca .quien-g{align-items:stretch}
+html body.f-acerca .quien-t .quien-d{margin-top:clamp(20px,2.4vw,32px);max-width:52ch}
+html body.f-acerca .quien-r{display:flex;align-items:flex-start;justify-content:flex-end}
+html body.f-acerca .quien-foto{margin:0;max-width:none;width:min(100%,380px)}
+@media(max-width:760px){html body.f-acerca .quien-r{justify-content:center}html body.f-acerca .quien-foto{width:min(100%,300px)}}
