@@ -141,7 +141,7 @@
 /* ===== PORTFOLIO de la home: la misma carpeta que en la página de Portfolio ===== */
 .trabajos.pg .pg-wrap{gap:clamp(10px,1.6vw,20px)}
 .pg-lead{margin:0;max-width:34ch;text-align:center;font-size:clamp(17px,1.7vw,22px);line-height:1.3;color:rgba(255,255,255,.78)}
-.trabajos.pg .ff-sec{width:100%;padding:0}
+.trabajos.pg .fd-sec{width:100%;padding:0}
 
 /* ===== FRASE "Diseñar es...": parte del flujo de la página, no un bloque pegado ===== */
 .banda{padding:clamp(60px,7.5vw,112px) clamp(20px,6vw,80px);margin:clamp(8px,2vw,28px) 0 clamp(20px,3vw,44px)}

@@ -79,8 +79,9 @@ document.documentElement.classList.add('js');
     if(document.body)document.body.style.setProperty('--fondo',oscura?'#000':(PJB[s]||'#0847a3'));
     flag('qfa-t','1');
     let espera=320;
-    const pjc=a.closest('.pj,.pg-s,.ff-paper'),pim=pjc&&pjc.querySelector('img'),hoja=pjc&&pjc.classList.contains('ff-paper'),pr=pim&&(hoja?pim:pjc).getBoundingClientRect(),rad=hoja?'6px':'28px';
-    if(pr&&pr.width>60&&root.animate){ // tarjeta del portfolio: la imagen se agranda hasta ocupar la pantalla
+    const pjc=a.closest('.pj,.pg-s,.fd-paper'),pim=pjc&&pjc.querySelector('img'),hoja=pjc&&pjc.classList.contains('fd-paper'),pr=pim&&(hoja?pim:pjc).getBoundingClientRect(),rad=hoja?'6px':'28px';
+    if(hoja){espera=300} // hoja de la carpeta: ya hizo su propio zoom, sin imagen gigante
+    else if(pr&&pr.width>60&&root.animate){ // tarjeta del portfolio: la imagen se agranda hasta ocupar la pantalla
       const u=pim.currentSrc||pim.src,p=getComputedStyle(pim).objectPosition,o=document.createElement('div');
       o.className='qpj';o.style.cssText='left:'+pr.left+'px;top:'+pr.top+'px;width:'+pr.width+'px;height:'+pr.height+'px;border-radius:'+rad+';background-image:url('+u+');background-position:'+p;
       root.appendChild(o);
