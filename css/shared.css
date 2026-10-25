@@ -218,7 +218,7 @@ html.qst-in.t-in body>*:not(nav){translate:0 0!important;filter:none!important}
    ============================================================ */
 @media(hover:none){
  html.sale body>*:not(nav),html.t-in body>*:not(nav){filter:none!important}
- nav{-webkit-backdrop-filter:blur(10px)!important;backdrop-filter:blur(10px)!important}
+ nav:not(.abierto){-webkit-backdrop-filter:blur(10px)!important;backdrop-filter:blur(10px)!important} /* abierto NO: el vidrio del menú es el de su panel (nav ul::before); un blur en la barra lo anulaba y el fondo dejaba de difuminarse */
  a.hr-home,.btn{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
  a.hr-home{background-color:rgba(8,14,34,.55)}
  .js .tw-c{transition:none}
