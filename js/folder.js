@@ -121,6 +121,14 @@
       zoomed.classList.remove('fd-zoom'); el.classList.remove('fd-zoomed'); zoomed = null;
     }
     dim.addEventListener('click', deszoom);
+    // al irse a un proyecto la hoja queda en zoom y el fondo oscuro encendido; si el navegador guarda la página y la restaura al volver ("atrás"),
+    // esa pantalla oscura quedaba tapando todo hasta que la tocabas. Se limpia al salir y al volver.
+    const reiniciarZoom = () => {
+      items.forEach(a => { a.classList.remove('fd-zoom', 'fd-dive', 'fd-measure'); delete a.dataset.fdGo; });
+      el.classList.remove('fd-zoomed'); zoomed = null;
+    };
+    addEventListener('pagehide', reiniciarZoom);
+    addEventListener('pageshow', e => { if (e.persisted) reiniciarZoom(); });
     function ir(a, i) {
       if (o.onItemClick && o.onItemClick({ href: a.getAttribute('href'), title: (a.querySelector('b') || {}).textContent || '', el: a }, i) === false) return false;
       return true;
