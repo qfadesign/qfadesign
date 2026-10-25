@@ -204,10 +204,22 @@ html.qst-in.t-in body>*:not(nav){translate:0 0!important;filter:none!important}
    así no hay un instante en blanco entre una y otra. Se suma a lo de arriba (sticker, imagen del proyecto, fundido del contenido).
    Chrome y Safari recientes; en los demás navegadores queda solo lo de arriba. Con "reducir movimiento" no corre.
    ============================================================ */
-@media(prefers-reduced-motion:no-preference){
+@media(prefers-reduced-motion:no-preference) and (hover:hover){
  @view-transition{navigation:auto}
  ::view-transition-old(root){animation:vt-sale .32s cubic-bezier(.4,0,.2,1) both}
  ::view-transition-new(root){animation:vt-entra .5s cubic-bezier(.16,.9,.2,1) both}
 }
 @keyframes vt-sale{to{opacity:0}}
 @keyframes vt-entra{from{opacity:0}}
+
+/* ============================================================
+   CELULAR / TÁCTIL: menos efectos pesados para que no se trabe en iPhone
+   (blur de toda la página al cambiar de sección, vidrios grandes, transición por letra)
+   ============================================================ */
+@media(hover:none){
+ html.sale body>*:not(nav),html.t-in body>*:not(nav){filter:none!important}
+ nav{-webkit-backdrop-filter:blur(10px)!important;backdrop-filter:blur(10px)!important}
+ a.hr-home,.btn{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+ a.hr-home{background-color:rgba(8,14,34,.55)}
+ .js .tw-c{transition:none}
+}

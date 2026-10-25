@@ -176,7 +176,7 @@ export function Lanyard(host, userOpts = {}) {
     const dist = (V / 2) / Math.tan((FOV * Math.PI / 180) / 2);
     camera.aspect = asp; camera.position.set(0, 0, dist); camera.near = 1; camera.far = dist + 40;
     camera.updateProjectionMatrix();
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, matchMedia('(hover:none)').matches ? 1.5 : 2)); // en el celular 1.5 alcanza y pesa mucho menos
     renderer.setSize(w, h, false);
     const vw = V * asp, off = o.anchor === 'left' ? -vw * 0.26 : o.anchor === 'right' ? vw * 0.26 : 0;
     anchorX = off; anchorY = V / 2 + topPad;
