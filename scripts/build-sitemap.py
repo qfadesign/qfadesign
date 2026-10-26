@@ -21,7 +21,7 @@ def fecha(ruta):
         pass
     return datetime.date.fromtimestamp(ruta.stat().st_mtime).isoformat()
 
-orden = ["index.html", "portfolio.html", "acerca.html", "contacto.html", "herramientas.html", "jueguitos.html", "recursos.html", "privacidad.html"]
+orden = ["index.html", "portfolio.html", "acerca.html", "contacto.html", "herramientas.html", "jueguitos.html", "recursos.html", "licencia.html", "reembolsos.html", "ayuda.html", "privacidad.html"]
 paginas = [p for p in orden if (raiz / p).exists()]
 paginas += sorted(p.name for p in raiz.glob("proyecto-*.html"))
 paginas += sorted(f"juegos/{p.name}" for p in (raiz / "juegos").glob("*.html"))
