@@ -2,144 +2,163 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://qfadesign.com/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/portfolio</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/acerca</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/contacto</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/herramientas</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/jueguitos</loc>
-    <lastmod>2026-10-13</lastmod>
+    <lastmod>2026-10-26</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://qfadesign.com/recursos</loc>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/privacidad</loc>
-    <lastmod>2026-10-16</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/proyecto-arbol</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.8</priority>
-    <image:image><image:loc>https://qfadesign.com/img/proyectos/arbol-01.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://qfadesign.com/proyecto-bleko</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.8</priority>
-    <image:image><image:loc>https://qfadesign.com/img/proyectos/bleko-01.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://qfadesign.com/proyecto-dulcemente</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.8</priority>
-    <image:image><image:loc>https://qfadesign.com/img/proyectos/dulcemente-01.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://qfadesign.com/proyecto-f1</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.8</priority>
-    <image:image><image:loc>https://qfadesign.com/img/proyectos/f1-01.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://qfadesign.com/proyecto-miga</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.8</priority>
-    <image:image><image:loc>https://qfadesign.com/img/proyectos/miga-01.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://qfadesign.com/proyecto-ros</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.8</priority>
     <image:image><image:loc>https://qfadesign.com/img/ros-poster.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://qfadesign.com/proyecto-trazo</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.8</priority>
-    <image:image><image:loc>https://qfadesign.com/img/proyectos/trazo-01.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://qfadesign.com/juegos/adivina-el-color</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/juegos/adivina-la-tipografia</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/juegos/ahorcado</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/juegos/alinear</loc>
-    <lastmod>2026-10-13</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/juegos/desafio-diario</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/juegos/kerning</loc>
-    <lastmod>2026-10-13</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/juegos/pluma</loc>
-    <lastmod>2026-10-13</lastmod>
+    <lastmod>2026-10-26</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://qfadesign.com/recurso/pack-de-3</loc>
+    <lastmod>2026-10-26</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://qfadesign.com/recurso/qfamotion</loc>
+    <lastmod>2026-10-26</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://qfadesign.com/recurso/qfasubtitulos</loc>
+    <lastmod>2026-10-26</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://qfadesign.com/recurso/qfatype</loc>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/herramienta/brief</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/herramienta/calculadora-de-precios</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/herramienta/contraste-de-color</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/herramienta/conversor-de-unidades</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/herramienta/convertidor-de-imagenes</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://qfadesign.com/herramienta/generador-de-paletas</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <priority>0.6</priority>
   </url>
 </urlset>

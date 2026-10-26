@@ -23,6 +23,7 @@ nav ul a[href*="acerca"]{--tn:url(../img/stickers/titulo-acerca.svg);--tb:url(..
 nav ul a[href*="portfolio"]{--tn:url(../img/stickers/titulo-portfolio.svg);--tb:url(../img/stickers/portfolio.svg);--sw:5.25;--sh:1.47}
 nav ul a[href*="herramientas"]{--tn:url(../img/stickers/titulo-herramientas.svg);--tb:url(../img/stickers/herramientas.svg);--sw:7.93;--sh:1.27}
 nav ul a[href*="jueguitos"]{--tn:url(../img/stickers/titulo-jueguitos.svg);--tb:url(../img/stickers/jueguitos.svg);--sw:5.77;--sh:1.5}
+nav ul a[href*="recursos"]{--tn:url(../img/stickers/titulo-recursos.svg);--tb:url(../img/stickers/recursos.svg);--sw:6.51;--sh:1.2}
 nav ul a[href*="contacto"]{--tn:url(../img/stickers/titulo-contacto.svg);--tb:url(../img/stickers/contacto.svg);--sw:5.35;--sh:1.16}
 /* fondo azul → sticker con borde negro (--tn); fondo negro (portfolio, jueguitos y los juegos) → sticker con borde blanco (--tb) */
 :is(.f-portfolio,.f-jueguitos,.f-juegos) nav ul a{--tt:var(--tb)}
@@ -157,6 +158,7 @@ footer{position:relative;z-index:1;background:none;color:#fff;overflow:hidden}
 .f-portfolio{--fondo:#000;--g:radial-gradient(55vw 38vw at 100% 18%,rgba(11,117,244,.22),transparent 66%),radial-gradient(44vw 24vw at 0% 62%,rgba(8,71,163,.32),transparent 70%),radial-gradient(40vw 22vw at 90% 96%,rgba(11,117,244,.14),transparent 66%),linear-gradient(#000,#000)}
 .f-herramientas{--g:radial-gradient(65vw 50vw at 100% 35%,rgba(105,120,255,.62),transparent 64%),radial-gradient(60vw 45vw at 0% 100%,rgba(70,185,255,.45),transparent 62%),radial-gradient(45vw 35vw at 20% 0%,rgba(2,30,100,.72),transparent 60%),linear-gradient(#0a5cc0,#0847a3)}
 .f-jueguitos{--fondo:#000;--g:radial-gradient(55vw 38vw at 100% 18%,rgba(11,117,244,.22),transparent 66%),radial-gradient(44vw 24vw at 0% 62%,rgba(8,71,163,.32),transparent 70%),radial-gradient(40vw 22vw at 90% 96%,rgba(11,117,244,.14),transparent 66%),linear-gradient(#000,#000)}
+.f-recursos{--fondo:#000;--g:radial-gradient(55vw 38vw at 100% 18%,rgba(11,117,244,.22),transparent 66%),radial-gradient(44vw 24vw at 0% 62%,rgba(8,71,163,.32),transparent 70%),radial-gradient(40vw 22vw at 90% 96%,rgba(11,117,244,.14),transparent 66%),linear-gradient(#000,#000)}
 .f-contacto{--g:radial-gradient(70vw 50vw at 50% 108%,rgba(130,200,255,.5),transparent 62%),radial-gradient(50vw 40vw at 0% 10%,rgba(2,30,100,.75),transparent 60%),radial-gradient(40vw 30vw at 100% 25%,rgba(70,160,255,.35),transparent 60%),linear-gradient(#0a5cc0,#0847a3)}
 .f-arbol{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(232,120,60,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(150,170,172,.4),transparent 62%),linear-gradient(#0a5cc0,#0847a3)}
 .f-bleko{--g:radial-gradient(85vw 62vw at 4% 4%,rgba(245,100,70,.66),transparent 64%),radial-gradient(55vw 45vw at 105% 55%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 35% 100%,rgba(250,240,228,.3),transparent 62%),linear-gradient(#b4472a,#82301b)}

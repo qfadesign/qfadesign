@@ -1,0 +1,42 @@
+/* RECURSOS: tienda de recursos para After Effects (se compran en Payhip) */
+.f-recursos main{max-width:1180px;margin-inline:auto;padding-inline:clamp(18px,4vw,40px)}
+.f-recursos .ph .lead{font-weight:300;max-width:36em}
+.rc-lista{display:grid;gap:clamp(18px,2.4vw,30px);padding-bottom:clamp(40px,6vw,90px)}
+.rc-grid{display:grid;gap:clamp(18px,2.4vw,30px);grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
+.rc{display:flex;flex-direction:column;overflow:hidden;border-radius:26px;background:var(--v-fondo);border:1px solid var(--v-borde);box-shadow:var(--v-luz);backdrop-filter:var(--v-blur);-webkit-backdrop-filter:var(--v-blur)}
+.rc-img{display:block;width:100%;height:auto;aspect-ratio:2/1;object-fit:cover}
+.rc-in{display:flex;flex-direction:column;flex:1;gap:12px;padding:clamp(20px,2.4vw,30px)}
+.rc-tag{align-self:flex-start;font-size:13px;font-weight:700;letter-spacing:.02em;padding:5px 12px;border-radius:99px;background:rgba(11,117,244,.28);border:1px solid rgba(255,255,255,.22)}
+.rc h2{font-family:var(--fh);font-size:clamp(28px,3vw,40px);line-height:1;letter-spacing:-.02em;margin:0}
+.rc-sub{font-size:clamp(17px,1.5vw,20px);line-height:1.3;font-weight:300;margin:0;text-wrap:balance;opacity:.95}
+.rc ul{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:8px;font-size:16px;line-height:1.35}
+.rc li{display:grid;grid-template-columns:1.2em 1fr;gap:.35em}
+.rc li::before{content:"✔";color:#5fb0ff;font-weight:700}
+.rc-req{font-size:14px;line-height:1.4;opacity:.75;margin:2px 0 0}
+.rc .btn{margin-top:auto;align-self:flex-start}
+.rc-in .btn{margin-top:14px}
+.rc-pack ul{margin-top:4px}
+.rc-pack{background:linear-gradient(180deg,rgba(11,117,244,.34),rgba(11,117,244,.1));border-color:rgba(255,255,255,.34)}
+.rc-pie{text-align:center;font-size:15px;opacity:.7;margin:6px 0 0}
+.f-recursos .ph{padding-bottom:0;margin-bottom:clamp(30px,4vw,52px)}
+.f-recursos .ph .lead{font-size:clamp(17px,1.7vw,22px);line-height:1.4;margin-top:clamp(14px,1.8vw,22px);text-wrap:balance}
+.rc .btn{white-space:nowrap}
+.rc-top{text-align:center;padding-top:clamp(40px,6vw,88px);margin-bottom:clamp(24px,3vw,40px)}
+.rc-volver{display:inline-block;font-size:16px;opacity:.8;margin-bottom:clamp(18px,2.4vw,30px)}
+.rc-volver:hover{opacity:1}
+.rc-h1{font-family:var(--fh);font-size:clamp(40px,7vw,84px);line-height:1;letter-spacing:-.03em;margin:0}
+.rc-top .lead{font-weight:300;font-size:clamp(17px,1.7vw,22px);line-height:1.4;max-width:34em;margin:clamp(14px,1.8vw,22px) auto 0;text-wrap:balance}
+.rc-embed{background:var(--crema);color:#111;border-radius:26px;padding:clamp(16px,3vw,36px);margin-bottom:clamp(40px,6vw,90px);min-height:320px}
+/* versión más compacta */
+.f-recursos main{max-width:1000px}
+.f-recursos .ph .st-h1 img{width:min(calc(var(--vw)*.62px),80%)}
+.rc{border-radius:22px}
+.rc-in{gap:9px;padding:clamp(16px,2vw,22px)}
+.rc h2{font-size:clamp(24px,2.4vw,32px)}
+.rc-sub{font-size:clamp(15px,1.3vw,17px)}
+.rc ul{font-size:14.5px;gap:6px}
+.rc-req{font-size:13px}
+.rc-in .btn{margin-top:10px;padding:10px 20px;font-size:15px}
+.rc-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:16px}
+.rc-lista{gap:16px}
+@media(min-width:760px){.rc-pack{flex-direction:row;align-items:stretch}.rc-pack .rc-img{width:44%;aspect-ratio:auto;object-fit:cover;flex:none}.rc-pack .rc-in{justify-content:center}}
