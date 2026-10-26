@@ -22,8 +22,6 @@
 .f-recursos .ph .lead{font-size:clamp(17px,1.7vw,22px);line-height:1.4;margin-top:clamp(14px,1.8vw,22px);text-wrap:balance}
 .rc .btn{white-space:nowrap}
 .rc-top{text-align:center;padding-top:clamp(40px,6vw,88px);margin-bottom:clamp(24px,3vw,40px)}
-.rc-volver{display:inline-block;font-size:16px;opacity:.8;margin-bottom:clamp(18px,2.4vw,30px)}
-.rc-volver:hover{opacity:1}
 .rc-h1{font-family:var(--fh);font-size:clamp(40px,7vw,84px);line-height:1;letter-spacing:-.03em;margin:0}
 .rc-top .lead{font-weight:300;font-size:clamp(17px,1.7vw,22px);line-height:1.4;max-width:34em;margin:clamp(14px,1.8vw,22px) auto 0;text-wrap:balance}
 .rc-embed{background:var(--crema);color:#111;border-radius:26px;padding:clamp(16px,3vw,36px);margin-bottom:clamp(40px,6vw,90px);min-height:320px}
@@ -40,3 +38,14 @@
 .rc-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:16px}
 .rc-lista{gap:16px}
 @media(min-width:760px){.rc-pack{flex-direction:row;align-items:stretch}.rc-pack .rc-img{width:44%;aspect-ratio:auto;object-fit:cover;flex:none}.rc-pack .rc-in{justify-content:center}}
+/* volver: "Volver a" + sticker Recursos (borde blanco, fondo negro), igual que en Jueguitos */
+.rc-volver{display:inline-flex;align-items:center;gap:8px;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(14px,1.2vw,16px);line-height:1;color:#fff;margin-bottom:clamp(18px,2.4vw,30px)}
+.rc-volver img{display:block;width:clamp(76px,7.5vw,92px);height:auto;filter:var(--st-sombra);transition:rotate .25s ease,scale .25s ease}
+.rc-volver:hover img,.rc-volver:focus-visible img{rotate:-4deg;scale:1.1}
+.rc-volver:active img{scale:.95}
+.rc-volver:focus-visible{outline:2px solid #fff;outline-offset:6px;border-radius:10px}
+@media(prefers-reduced-motion:reduce){.rc-volver img{transition:none}}
+/* embed de Payhip centrado */
+.rc-embed{display:flex;flex-direction:column;align-items:center;text-align:center}
+.rc-embed .payhip-embed-page{width:100%;max-width:100%;margin-inline:auto;display:flex;flex-direction:column;align-items:center}
+.rc-embed .payhip-embed-page>*,.rc-embed iframe{margin-inline:auto!important;max-width:100%}
