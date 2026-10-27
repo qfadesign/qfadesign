@@ -176,6 +176,7 @@ footer{position:relative;z-index:1;background:none;color:#fff;overflow:hidden}
 .f-h-convertidor{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(40,205,255,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(40,205,255,.34),transparent 62%),linear-gradient(#0a5cc0,#0847a3)}
 .f-h-unidades{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(255,122,61,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(255,122,61,.34),transparent 62%),linear-gradient(#b4531f,#7d3512)}
 .f-h-brief{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(138,91,255,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(138,91,255,.34),transparent 62%),linear-gradient(#4a23b8,#2a1180)}
+.f-h-pdf{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(255,79,94,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(255,79,94,.34),transparent 62%),linear-gradient(#b3202f,#7a1420)}
 
 /* TRANSICIÓN ENTRE PÁGINAS (js/anim.js): la barra queda quieta; el contenido de la página que se va se desvanece sobre su propio fondo
    (el degradé se apaga y el color base pasa al de la página nueva) y la página nueva aparece de a poco */

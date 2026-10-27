@@ -9,7 +9,8 @@
 .f-h-convertidor{--tc:#28cdff}
 .f-h-unidades{--tc:#ff7a3d}
 .f-h-brief{--tc:#8a5bff}
-:is(.f-h-calculadora,.f-h-paletas,.f-h-contraste,.f-h-convertidor,.f-h-unidades,.f-h-brief){
+.f-h-pdf{--tc:#ff4f5e}
+:is(.f-h-calculadora,.f-h-paletas,.f-h-contraste,.f-h-convertidor,.f-h-unidades,.f-h-brief,.f-h-pdf){
  --fondo:#000;
  --g:radial-gradient(75vw 55vw at 92% 0%,color-mix(in srgb,var(--tc) 78%,transparent),transparent 66%),radial-gradient(60vw 45vw at 2% 100%,color-mix(in srgb,var(--tc) 40%,transparent),transparent 66%),linear-gradient(#050505,#000)}
 
@@ -71,3 +72,40 @@
 .f-herramientas .un-n{color:#fff}
 .f-herramientas .br{margin-inline:0}
 .f-herramientas :is(.un,.cv){margin-left:0;margin-right:0}
+
+/* Compresor de PDF: la herramienta principal ocupa todo el ancho, arriba de las demás */
+.hgs-sq .tl.tl-main{grid-column:1/-1;aspect-ratio:auto;flex-direction:row;align-items:center;justify-content:flex-start;gap:clamp(16px,2.4vw,32px);padding:clamp(20px,2.6vw,34px)}
+.tl-main .tl-top{flex:none;flex-direction:column;align-items:flex-start;gap:12px}
+.tl-main .tl-ic{width:clamp(64px,7vw,92px)}
+.tl-main .tl-tx{display:block;min-width:0}
+.tl-main .tl-t{font-size:clamp(28px,3.6vw,48px)}
+.tl-main .tl-d{display:block;-webkit-line-clamp:unset;line-clamp:unset;max-width:52ch;font-size:clamp(14px,1.3vw,18px);margin-top:10px}
+@media(max-width:640px){.hgs-sq .tl.tl-main{flex-direction:column;align-items:flex-start;justify-content:space-between;gap:14px}.tl-main .tl-top{flex-direction:row;width:100%;justify-content:space-between;align-items:flex-start}.tl-main .tl-t{font-size:clamp(26px,8vw,34px)}}
+
+/* Herramientas de PDF: pasos numerados, opciones claras y un botón de aceptar */
+.pd-paso{margin-top:clamp(22px,3vw,34px)}
+.pd-paso:first-of-type{margin-top:0}
+.pd-h{display:flex;align-items:center;gap:12px;margin:0 0 14px;font-family:var(--fh);font-weight:900;font-style:normal;font-size:clamp(22px,2.4vw,30px);line-height:1.1}
+.pd-n{flex:none;display:grid;place-items:center;width:clamp(32px,3vw,38px);aspect-ratio:1;border-radius:50%;background:#fff;color:var(--azul-f);font-size:clamp(16px,1.5vw,19px)}
+.pd-hint{margin:8px 0 0;max-width:62ch;font-size:clamp(14px,1.15vw,16px);line-height:1.45;opacity:.92}
+.pd-resumen{margin:0 0 14px;max-width:62ch;font-weight:700;font-size:clamp(16px,1.4vw,19px);line-height:1.4}
+.pd-ops{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.pd-op{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:4px;padding:14px 16px 15px;border-radius:16px;border:1.5px solid rgba(255,255,255,.55);color:#fff;transition:background .2s,color .2s,transform .2s}
+.pd-op b{font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(17px,1.5vw,20px);line-height:1.1}
+.pd-op span{font-size:clamp(14px,1.15vw,15.5px);line-height:1.35}
+.pd-op small{font-size:13px;font-weight:700;color:#ffd9d9}
+.pd-op:hover{background:rgba(255,255,255,.16);transform:translateY(-2px)}
+.pd-op[aria-pressed="true"]{background:#fff;color:var(--azul-f);border-color:#fff}
+.pd-op[aria-pressed="true"] small{color:#7a1b1b}
+.pd-op[aria-disabled="true"]{opacity:.5;cursor:not-allowed}.pd-op[aria-disabled="true"]:hover{background:none;transform:none}
+.pd-op:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.pd-aj .cv-g+.cv-g{margin-top:16px}
+.cv-px.pd-ancho input{width:min(420px,78vw)}
+.pd-go .btn{padding:15px 34px 16px;font-size:clamp(17px,1.5vw,20px)}
+.pd-go .btn:disabled{opacity:.5;cursor:not-allowed}
+.pd-go .cv-acc{align-items:center}
+.pd-ext{display:grid;place-items:center;background:#fff!important;color:var(--azul-f);font-family:var(--fh);font-weight:900;font-size:14px;background-image:none!important}
+#pdLista,#pdSalida{grid-template-columns:minmax(0,1fr)}
+#pdLista .cv-it,#pdSalida .cv-it{grid-template-columns:56px minmax(0,1fr) auto}
+@media(max-width:420px){#pdLista .cv-it,#pdSalida .cv-it{grid-template-columns:48px minmax(0,1fr)}.pd-ops{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.pd-op{transition:none}.pd-op:hover{transform:none}}
