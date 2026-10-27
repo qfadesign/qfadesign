@@ -199,6 +199,8 @@
     const clamp = v => Math.max(0, Math.min(1, v));
     const lerp = (a, b, k) => a + (b - a) * k;
     const easeOut = k => 1 - Math.pow(1 - k, 3);
+    const suave = k => k * k * (3 - 2 * k); // arranca y frena de a poco
+    let cur = null; // progreso "amortiguado": sigue al scroll con un poco de inercia
     function latch() { // la secuencia terminó: pasa a modo normal (clic abre/cierra)
       latched = true; auto = null;
       el.classList.remove('fd-scrub');
@@ -207,7 +209,7 @@
     }
     function progreso() {
       const r = el.getBoundingClientRect();
-      let p = clamp((innerHeight * 0.97 - r.top) / (innerHeight * 0.4));
+      let p = clamp((innerHeight * 0.97 - r.top) / (innerHeight * 0.6));
       if (p > 0.3 && innerHeight + scrollY >= document.documentElement.scrollHeight - 4) p = 1; // fin de la página: que termine igual
       return p;
     }
@@ -220,22 +222,30 @@
       el.classList.add('fd-scrub');
       items.forEach((a, i) => {
         const q = pos[i]; if (!q) return;
-        const k = easeOut(clamp((p - q.norm * 0.12) / 0.7)); // salen desde adentro de la carpeta, las del centro primero
+        const k = suave(clamp((p - q.norm * 0.2) / 0.6)); // salen desde adentro de la carpeta, las del centro primero, y las de los costados las siguen de a una
         const x = lerp(0, q.x, k), y = lerp(q.ph * 0.45, q.y, k), r = lerp(0, q.rot, k);
         a.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + r.toFixed(2) + 'deg) scale(' + (0.94 + 0.06 * k).toFixed(3) + ')';
       });
-      front.style.transform = 'perspective(' + (1700 * (parseFloat(el.style.getPropertyValue('--s')) || o.size)).toFixed(0) + 'px) rotateX(' + (-(16 + 18 * easeOut(clamp(p / 0.6)))).toFixed(2) + 'deg)';
+      front.style.transform = 'perspective(' + (1700 * (parseFloat(el.style.getPropertyValue('--s')) || o.size)).toFixed(0) + 'px) rotateX(' + (-(16 + 18 * suave(clamp(p / 0.75)))).toFixed(2) + 'deg)';
     }
     if (scrub) {
       repintar = () => { if (!latched) pintar(auto === null ? undefined : auto); };
-      const pedir = () => { if (!rafId && !auto) rafId = requestAnimationFrame(() => pintar()); };
+      const seguir = () => {
+        rafId = 0;
+        const t = progreso();
+        if (cur === null || latched) cur = t;
+        else { cur += (t - cur) * 0.13; if (Math.abs(t - cur) < 0.003) cur = t; }
+        pintar(cur);
+        if (!latched && !auto && cur !== t) rafId = requestAnimationFrame(seguir);
+      };
+      const pedir = () => { if (!rafId && !auto) rafId = requestAnimationFrame(seguir); };
       addEventListener('scroll', pedir, { passive: true }); addEventListener('resize', pedir);
       const p0 = progreso();
-      if (p0 >= 0.3) { // ya está a la vista al cargar: la secuencia corre sola (1,6 s)
+      if (p0 >= 0.3) { // ya está a la vista al cargar: la secuencia corre sola (2,4 s)
         const t0 = performance.now(); auto = 0; pintar(0);
-        const paso = now => { if (latched) return; auto = clamp((now - t0) / (1600 / o.speed)); if (auto >= 1) { auto = null; latch(); } else { pintar(auto); requestAnimationFrame(paso); } };
+        const paso = now => { if (latched) return; auto = clamp((now - t0) / (2400 / o.speed)); if (auto >= 1) { auto = null; latch(); } else { pintar(auto); requestAnimationFrame(paso); } };
         setTimeout(() => requestAnimationFrame(paso), 350);
-      } else pintar();
+      } else { cur = p0; pintar(p0); }
     }
   }
 
