@@ -49,3 +49,17 @@
 .rc-embed{display:flex;flex-direction:column;align-items:center;text-align:center}
 .rc-embed .payhip-embed-page{width:100%;max-width:100%;margin-inline:auto;display:flex;flex-direction:column;align-items:center}
 .rc-embed .payhip-embed-page>*,.rc-embed iframe{margin-inline:auto!important;max-width:100%}
+
+.rc-sec{font-family:var(--fh);font-size:clamp(22px,2.4vw,30px);line-height:1;letter-spacing:-.02em;margin:clamp(14px,2vw,26px) 0 0}
+.rc-sec:first-child{margin-top:0}
+
+/* filtro por programa */
+.rc-filtro{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 clamp(6px,1vw,14px)}
+.rc-filtro[hidden],.rc-grupo[hidden],.rc-sec[hidden]{display:none}
+.rc-grupo{display:grid;gap:16px}
+.rc-chip{font:inherit;font-size:15px;font-weight:700;letter-spacing:.01em;color:#fff;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.28);border-radius:99px;padding:9px 20px;cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .2s}
+.rc-chip:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.5)}
+.rc-chip:focus-visible{outline:2px solid #5fb0ff;outline-offset:3px}
+.rc-chip[aria-pressed="true"]{background:#0b75f4;border-color:#0b75f4;color:#fff}
+@media(max-width:560px){.rc-chip{flex:1 1 auto;text-align:center;padding:9px 14px;font-size:14px}}
+@media(prefers-reduced-motion:reduce){.rc-chip{transition:none}}
