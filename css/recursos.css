@@ -63,3 +63,12 @@
 .rc-chip[aria-pressed="true"]{background:#0b75f4;border-color:#0b75f4;color:#fff}
 @media(max-width:560px){.rc-chip{flex:1 1 auto;text-align:center;padding:9px 14px;font-size:14px}}
 @media(prefers-reduced-motion:reduce){.rc-chip{transition:none}}
+
+/* video de instalación (recursos y cada recurso) */
+.rc-video{display:grid;gap:clamp(14px,2vw,24px);align-items:center;padding:clamp(14px,2vw,22px);border-radius:22px;background:var(--v-fondo);border:1px solid var(--v-borde)}
+.rc-video-txt{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.rc-video-txt h2,.rc-video-txt h3{font-family:var(--fh);font-size:clamp(22px,2.2vw,30px);line-height:1.05;letter-spacing:-.02em;margin:0;text-wrap:balance}
+.rc-video-txt p{font-size:clamp(15px,1.3vw,17px);line-height:1.4;font-weight:300;margin:0}
+.rc-video video{display:block;width:100%;height:auto;aspect-ratio:16/9;border-radius:14px;background:#000}
+@media(min-width:760px){.rc-video{grid-template-columns:minmax(0,.7fr) minmax(0,1.5fr)}}
+.rc-embed + .rc-video{margin-bottom:clamp(40px,6vw,90px)}
