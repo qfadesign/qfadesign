@@ -8,12 +8,14 @@
   const PAUSA=32;       // ms mínimos entre stickers
   const DURA=5200;      // ms que dura cada sticker en pantalla
   const MAX=70;         // máximo de stickers a la vez
-  // todos los stickers: los 5 de mouse (img/mouse-stickers/*.png) y los de la web (img/stickers/*.svg). [archivo, ancho en px]
+  // todos los stickers: los de mouse (img/mouse-stickers/*.png) y el logo de la web (img/stickers/logo-hover.svg). [archivo, ancho en px]
   const LISTA={
     qfadesign:['mouse-stickers/qfadesign.png',104],branding:['mouse-stickers/branding.png',100],designer:['mouse-stickers/designer.png',100],
     imposible_de_ignorar:['mouse-stickers/imposible_de_ignorar.png',112],motion_graphics:['mouse-stickers/motion_graphics.png',108],
-    acerca:['stickers/acerca.svg',120],portfolio:['stickers/portfolio.svg',116],herramientas:['stickers/herramientas.svg',140],
-contacto:['stickers/contacto.svg',114],logo:['stickers/logo-hover.svg',128]
+    mente_creativa:['mouse-stickers/mente_creativa.png',108],club_de_disenadores:['mouse-stickers/club_de_disenadores.png',150],
+    qfadesign_degrade:['mouse-stickers/qfadesign_degrade.png',150],graphic_designer:['mouse-stickers/graphic_designer.png',140],
+    qfadesign_nube:['mouse-stickers/qfadesign_nube.png',108],
+    logo:['stickers/logo-hover.svg',128]
   };
   const ARCHIVOS=Object.keys(LISTA);
 
