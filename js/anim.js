@@ -5,7 +5,7 @@ document.documentElement.classList.add('js');
   const root=document.documentElement;
   if(self!==top||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
   const OSCURAS=['','index','portfolio','jueguitos','recursos','pack-de-3','qfatype','qfamotion','qfasubtitulos','qfabrandboard','qfaexport','ahorcado','adivina-el-color','adivina-la-tipografia']; // fondo base negro
-  const AZULES=['acerca','herramientas','contacto','404','proyecto-arbol','proyecto-bleko','proyecto-dulcemente','proyecto-miga','proyecto-ros','proyecto-trazo','proyecto-f1','calculadora-de-precios','generador-de-paletas','contraste-de-color','convertidor-de-imagenes','conversor-de-unidades','brief','comprimir-pdf']; // fondo base azul
+  const AZULES=['acerca','herramientas','contacto','404','proyecto-arbol','proyecto-bleko','proyecto-dulcemente','proyecto-miga','proyecto-ros','proyecto-trazo','proyecto-f1','calculadora-de-precios','generador-de-paletas','contraste-de-color','convertidor-de-imagenes','conversor-de-unidades','brief','comprimir-pdf','preparador-para-imprenta','generador-de-qr']; // fondo base azul
   const PJB={'proyecto-bleko':'#82301b','proyecto-dulcemente':'#7a1c40','proyecto-ros':'#14073d','proyecto-f1':'#5a0710','calculadora-de-precios':'#07493a','generador-de-paletas':'#7a1c4c','contraste-de-color':'#6b4a05','conversor-de-unidades':'#7d3512','brief':'#2a1180'}; // fondo de cada proyecto mientras cambia la página
   const seg=p=>p.replace(/\/+$/,'').split('/').pop().replace(/\.html$/,'');
   const flag=(k,v)=>{try{v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){}};
