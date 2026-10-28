@@ -72,3 +72,14 @@
 .rc-video video{display:block;width:100%;height:auto;aspect-ratio:16/9;border-radius:14px;background:#000}
 @media(min-width:760px){.rc-video{grid-template-columns:minmax(0,.7fr) minmax(0,1.5fr)}}
 .rc-embed + .rc-video{margin-bottom:clamp(40px,6vw,90px)}
+
+/* en Recursos el video va plegado detrás de un botón */
+.rc-lista .rc-video{display:block;padding:0;border:0;background:none}
+.rc-lista .rc-video>summary{display:inline-flex;align-items:center;list-style:none;cursor:pointer;width:fit-content;max-width:100%;white-space:normal;text-align:left;font-size:clamp(14px,1.2vw,16px);padding:12px 22px 13px}
+.rc-lista .rc-video>summary::-webkit-details-marker{display:none}
+.rc-lista .rc-video>summary::marker{content:""}
+.rc-lista .rc-video>summary::before{content:"▶";font-size:.8em;transition:rotate .25s ease}
+.rc-lista .rc-video[open]>summary::before{rotate:90deg}
+.rc-dur{font-weight:400;opacity:.8}
+.rc-video-panel{margin-top:14px;max-width:760px}
+@media(prefers-reduced-motion:reduce){.rc-lista .rc-video>summary::before{transition:none}}

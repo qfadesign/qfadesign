@@ -23,3 +23,11 @@
   var inicial=hashes[location.hash.slice(1)]||'todo';
   aplicar(inicial,false);
 })();
+
+/* al plegar el video de instalación, se pausa */
+[].slice.call(document.querySelectorAll('details.rc-video')).forEach(function(d){
+  d.addEventListener('toggle',function(){
+    var v=d.querySelector('video');
+    if(!d.open&&v&&!v.paused) v.pause();
+  });
+});
