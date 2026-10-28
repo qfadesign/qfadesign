@@ -83,3 +83,10 @@
 .rc-dur{font-weight:400;opacity:.8}
 .rc-video-panel{margin-top:14px;max-width:760px}
 @media(prefers-reduced-motion:reduce){.rc-lista .rc-video>summary::before{transition:none}}
+
+/* texto de los botones de Recursos: palabras más separadas */
+.f-recursos .btn{word-spacing:.14em;letter-spacing:.01em}
+.rc-lbl{display:grid;gap:3px;text-align:left}
+.rc-lbl b{font-weight:inherit;font-style:inherit}
+.rc-lbl small{font-family:var(--f);font-style:normal;font-weight:400;font-size:.82em;letter-spacing:0;word-spacing:normal;opacity:.9}
+.rc-lista .rc-video>summary{gap:.9em;padding:12px 24px 13px}
