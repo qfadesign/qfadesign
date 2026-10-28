@@ -167,10 +167,10 @@
       } catch (e) { URL.revokeObjectURL(url); return mensaje("No pude analizar esa imagen."); }
       if (urlActual) URL.revokeObjectURL(urlActual);
       urlActual = url; img.src = url;
-      prev.hidden = false; ctl.hidden = false; cab.classList.add("tiene");
+      prev.hidden = false; ctl.hidden = true; sw.hidden = true; nota.hidden = true; paleta = []; $("plIr").hidden = false; cab.classList.add("tiene");
       mensaje("");
-      if (!histograma.total) { paleta = []; dibujar(); return mensaje("La imagen es transparente: no hay colores para extraer."); }
-      calcular();
+      if (!histograma.total) { paleta = []; dibujar(); $("plIr").hidden = true; return mensaje("La imagen es transparente: no hay colores para extraer."); }
+      avisar("Imagen lista. Tocá «Sacar la paleta» para empezar.");
     };
     im.onerror = function () { URL.revokeObjectURL(url); mensaje("No pude leer esa imagen. Probá con JPG, PNG o WebP."); };
     im.src = url;
@@ -188,6 +188,8 @@
     drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("over"); });
   });
   drop.addEventListener("drop", function (e) { cargar(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]); });
-  rango.addEventListener("input", function () { valN.textContent = rango.value; calcular(); });
+  rango.addEventListener("input", function () { valN.textContent = rango.value; $("plVn").textContent = rango.value; calcular(); });
   otra.addEventListener("click", function () { file.click(); });
+  $("plOtra2").addEventListener("click", function () { file.click(); });
+  $("plGo").addEventListener("click", function () { $("plIr").hidden = true; ctl.hidden = false; calcular(); });
 })();

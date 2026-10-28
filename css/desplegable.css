@@ -44,3 +44,38 @@ ol.dsp-l li::before{content:counter(dsp);position:absolute;left:0;top:-.05em;wid
 ul.dsp-l li::before{content:"";position:absolute;left:10px;top:.62em;width:8px;height:8px;border-radius:50%;background:#fff}
 .dsp-l li>b:first-child{font-family:var(--fh,"articulat-cf",sans-serif);font-weight:900;font-style:italic;color:#fff}
 @media(max-width:560px){.dsp-l li{padding-left:36px}}
+
+/* Generador de QR: las opciones de personalización van en desplegables para no mostrar todo junto */
+.qr-dsp{margin-top:12px}
+.qr-dsp:first-of-type{margin-top:0}
+.qr-dsp>.qr-sep:first-of-type,.qr-dsp>.cv-g:first-of-type,.qr-dsp>.qr-cols{margin-top:0}
+.qr-dsp .cv-l,.qr-dsp .pd-hint,.qr-dsp .qr-chk-l{color:#fff}
+
+/* Preparador para imprenta: cada sección de la lista es un desplegable */
+.ip-g{margin-top:12px}
+.ip-g>.ip-l{margin-top:2px}
+.ip-g .dsp-t{flex:1}
+.ip-cnt{margin-left:auto;padding:3px 11px 4px;border-radius:99px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);font-size:13px;font-weight:800;font-style:normal;white-space:nowrap}
+.ip-cnt-ok{background:rgba(37,209,142,.28);border-color:rgba(37,209,142,.7)}
+.ip-g>summary{gap:12px}
+
+/* Paletas, convertidor, contraste e imprenta: opciones en desplegables y botón para empezar */
+.dsp-v{margin-left:auto;padding:3px 11px 4px;border-radius:99px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);font-family:var(--f);font-size:13px;font-weight:800;font-style:normal;white-space:nowrap;max-width:46%;overflow:hidden;text-overflow:ellipsis}
+.dsp-v:empty{display:none}
+.dsp>summary:has(.dsp-v){gap:12px}
+.pl-go,.cv-go,.ip-solo{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:18px 0 0}
+.pl-go[hidden],.cv-go[hidden],.ip-solo[hidden]{display:none}
+.pl-ctl .dsp,.cv-ctl .dsp{margin-top:0}
+.pl-ctl .pl-dsp{flex:1 1 260px;max-width:420px}
+.pl-dsp .pl-rng{margin:0}
+.cv-ctl-d{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));align-items:start;gap:12px}
+.cv-ctl-d .cv-dsp[hidden]{display:none}
+.cv-dsp .cv-g+.cv-g{margin-top:14px}
+.ip-cfg-d{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:start;gap:12px}
+.ip-cfg-d .dsp{margin-top:0}
+.ip-dsp .cv-g+.cv-g{margin-top:16px}
+.ct-dsp{margin-top:12px}
+.ct-dsp .ct-chk{margin:0}
+.ct-dsp .ct-chk li:first-child{border-top:0}
+.ct-dsp .ct-sug{margin:0;padding:0;border:0}
+.ct-dsp .ct-ayuda{margin:0;max-width:none}

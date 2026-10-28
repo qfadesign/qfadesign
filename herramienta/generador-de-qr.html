@@ -63,24 +63,29 @@
 <div class="qr-f" data-f="texto" hidden><label class="cv-l" for="qrTexto">Texto</label><textarea class="qr-in" id="qrTexto" rows="3" placeholder="Lo que quieras que muestre"></textarea></div>
 </section>
 
-<section class="pd-paso" aria-labelledby="qrT2"><h2 class="pd-h" id="qrT2"><span class="pd-n" aria-hidden="true">2</span>Colores y estilo</h2>
+<section class="pd-paso" aria-labelledby="qrT2"><h2 class="pd-h" id="qrT2"><span class="pd-n" aria-hidden="true">2</span>Personalizá tu QR</h2>
+<details class="dsp qr-dsp" open><summary><span class="dsp-t">Colores</span></summary>
 <div class="qr-cols"><div class="cv-g"><label class="cv-l" for="qrFg">Color del código</label><input type="color" id="qrFg" value="#000000"></div><div class="cv-g"><label class="cv-l" for="qrBg">Color de fondo</label><input type="color" id="qrBg" value="#ffffff"><label class="qr-chk-l"><input type="checkbox" id="qrTransp"> Fondo transparente</label></div></div>
 <div class="cv-g qr-sep"><span class="cv-l">Combinaciones seguras</span><div class="cv-fmts"><button class="chip" type="button" data-par="#000000/#ffffff">Negro sobre blanco</button><button class="chip" type="button" data-par="#06214d/#ffffff">Azul oscuro</button><button class="chip" type="button" data-par="#0a5cc0/#ffffff">Azul qfadesign</button></div></div>
+</details>
+<details class="dsp qr-dsp"><summary><span class="dsp-t">Forma del código</span></summary>
 <div class="cv-g qr-sep"><span class="cv-l" id="qrModL">Forma de los módulos</span><div class="cv-fmts" id="qrMod" role="group" aria-labelledby="qrModL"><button class="chip" type="button" data-m="cuadrado" aria-pressed="true">Cuadrados</button><button class="chip" type="button" data-m="redondo" aria-pressed="false">Redondeados</button><button class="chip" type="button" data-m="punto" aria-pressed="false">Puntos</button></div></div>
 <div class="cv-g qr-sep"><span class="cv-l" id="qrOjoL">Forma de las 3 esquinas</span><div class="cv-fmts" id="qrOjo" role="group" aria-labelledby="qrOjoL"><button class="chip" type="button" data-o="cuadrado" aria-pressed="true">Cuadradas</button><button class="chip" type="button" data-o="redondo" aria-pressed="false">Redondeadas</button><button class="chip" type="button" data-o="circulo" aria-pressed="false">Círculos</button></div></div>
-</section>
-
-<section class="pd-paso" aria-labelledby="qrT3"><h2 class="pd-h" id="qrT3"><span class="pd-n" aria-hidden="true">3</span>Logo, tamaño y margen</h2>
+</details>
+<details class="dsp qr-dsp"><summary><span class="dsp-t">Logo en el centro</span></summary>
 <div class="cv-g"><span class="cv-l">Logo en el centro <span>(opcional)</span></span><div class="cv-fmts"><label class="chip qr-file" for="qrLogo">Elegir imagen</label><input class="sr-only" type="file" id="qrLogo" accept="image/*"><button class="chip" type="button" id="qrLogoQuitar">Quitar logo</button></div><p class="pd-hint" id="qrLogoMsg" role="status"></p></div>
 <div id="qrLogoOpc" hidden><div class="cv-g qr-sep"><label class="cv-l" for="qrLogoPct">Tamaño del logo: <span id="qrLogoV">20%</span></label><input type="range" id="qrLogoPct" min="10" max="30" step="1" value="20"><p class="pd-hint">Cuanto más grande, más difícil de leer. Hasta 20% suele andar bien.</p></div>
 <div class="cv-g qr-sep"><span class="cv-l" id="qrFondoLogoL">Fondo detrás del logo</span><div class="cv-fmts" id="qrFondoLogo" role="group" aria-labelledby="qrFondoLogoL"><button class="chip" type="button" data-b="no" aria-pressed="false">Sin fondo</button><button class="chip" type="button" data-b="cuadrado" aria-pressed="true">Cuadrado</button><button class="chip" type="button" data-b="redondo" aria-pressed="false">Redondo</button></div></div></div>
+</details>
+<details class="dsp qr-dsp"><summary><span class="dsp-t">Tamaño, margen y corrección de errores</span></summary>
 <div class="cv-g qr-sep"><label class="cv-l" for="qrMargen">Margen alrededor: <span id="qrMargenV">4</span> módulos</label><input type="range" id="qrMargen" min="0" max="8" step="1" value="4"></div>
 <div class="cv-g qr-sep"><span class="cv-l" id="qrPxGL">Tamaño del PNG</span><div class="cv-fmts" id="qrPxG" role="group" aria-labelledby="qrPxGL"><button class="chip" type="button" data-p="512" aria-pressed="false">512 px</button><button class="chip" type="button" data-p="1024" aria-pressed="true">1024 px</button><button class="chip" type="button" data-p="2048" aria-pressed="false">2048 px</button><button class="chip" type="button" data-p="4096" aria-pressed="false">4096 px</button></div><p class="pd-hint">El SVG no tiene tamaño fijo: se puede agrandar sin perder calidad.</p></div>
 <div class="cv-g qr-sep"><span class="cv-l" id="qrEclL">Corrección de errores</span><div class="cv-fmts" id="qrEcl" role="group" aria-labelledby="qrEclL"><button class="chip" type="button" data-e="auto" aria-pressed="true">Automática</button><button class="chip" type="button" data-e="L" aria-pressed="false">L · 7%</button><button class="chip" type="button" data-e="M" aria-pressed="false">M · 15%</button><button class="chip" type="button" data-e="Q" aria-pressed="false">Q · 25%</button><button class="chip" type="button" data-e="H" aria-pressed="false">H · 30%</button></div><p class="pd-hint">Permite leer el código aunque una parte esté tapada. Con logo se sube sola.</p></div>
+</details>
 </section>
 </div>
 
-<aside class="qr-prev" aria-labelledby="qrT4"><h2 class="pd-h" id="qrT4"><span class="pd-n" aria-hidden="true">4</span>Tu QR</h2>
+<aside class="qr-prev" aria-labelledby="qrT4"><h2 class="pd-h" id="qrT4"><span class="pd-n" aria-hidden="true">3</span>Tu QR</h2>
 <div class="qr-lienzo" id="qrLienzo"></div>
 <p class="pd-hint qr-cont" id="qrContenido"></p>
 <p class="qr-badge" id="qrBadge" role="status" aria-live="polite"></p>

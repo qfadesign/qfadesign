@@ -18,7 +18,7 @@
   var EXT = { jpeg: "jpg", png: "png", webp: "webp" }, MIME = { jpeg: "image/jpeg", png: "image/png", webp: "image/webp" };
   var NOM = { jpeg: "JPG", png: "PNG", webp: "WebP" };
   var NIVELES = { alta: 0.9, media: 0.8, baja: 0.6 };      /* calidad de JPG y WebP; PNG no pierde nunca */
-  var items = [], formato = "igual", nivel = "alta", corrida = 0, tReco = null;
+  var items = [], formato = "igual", nivel = "alta", corrida = 0, tReco = null, empezado = false;
 
   function avisar(t) { estado.textContent = ""; setTimeout(function () { estado.textContent = t; }, 30); }
   function error(t) { msg.hidden = !t; msg.textContent = t || ""; }
@@ -99,7 +99,7 @@
   function pintar() {
     lista.innerHTML = items.map(function (it, i) {
       var r = it.r;
-      if (!r) return '<li class="cv-it"><span class="cv-th" aria-hidden="true"></span><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">Procesando…</p></li>';
+      if (!r) return '<li class="cv-it"><span class="cv-th" aria-hidden="true"></span><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">' + (empezado ? 'Procesando…' : 'Lista para convertir') + '</p></li>';
       if (r.error) return '<li class="cv-it err"><span class="cv-th" aria-hidden="true"></span><p class="cv-n">' + esc(it.nombre) + '</p><p class="cv-m">' + esc(r.error) + '</p><span class="cv-b"><button class="cv-x" type="button" data-q="' + i + '" aria-label="Quitar ' + esc(it.nombre) + '">✕</button></span></li>';
       var nuevo = nombreSalida(it), meta;
       if (r.igual) {
@@ -116,9 +116,12 @@
         '<button class="cv-x" type="button" data-q="' + i + '" aria-label="Quitar ' + esc(it.nombre) + '">✕</button></span></li>';
     }).join("");
     var hay = items.length > 0;
+    if (!hay) empezado = false;
     drop.classList.toggle("tiene", hay);
     ctl.hidden = !hay; acc.hidden = !hay; nota.hidden = !hay;
-    $("cvZip").hidden = items.length < 2;
+    $("cvIr").hidden = !hay || empezado;
+    $("cvZip").hidden = !empezado || items.length < 2;
+    resumenOpc();
     calG.hidden = formato === "png";
     bgG.hidden = formato !== "jpeg";
     /* ahorro total */
@@ -147,7 +150,7 @@
       nuevos.forEach(function (n) { if (n) items.push(n); });
       if (malos.length) error(malos.join(" "));
       pintar();
-      reconvertir();
+      if (empezado) reconvertir();
     });
   }
   function limpiar() {
@@ -174,18 +177,24 @@
   $("cvLimpiar").addEventListener("click", function () { limpiar(); file.focus(); });
 
   /* ---- Opciones ---- */
-  function nuevoReco() { clearTimeout(tReco); tReco = setTimeout(function () { if (items.length) reconvertir(); }, 250); }
+  function resumenOpc() {
+    function t(chips) { var x = Array.prototype.filter.call(chips, function (c) { return c.getAttribute("aria-pressed") === "true"; })[0]; return x ? x.textContent : ""; }
+    $("cvVF").textContent = t(chipsF); $("cvVN").textContent = t(chipsN);
+    $("cvVA").textContent = ancho.value ? ancho.value + " px" : "Original";
+  }
+  $("cvGo").addEventListener("click", function () { empezado = true; pintar(); reconvertir(); });
+  function nuevoReco() { clearTimeout(tReco); tReco = setTimeout(function () { if (items.length && empezado) reconvertir(); }, 250); }
   function elegir(chips, b, attr) {
     Array.prototype.forEach.call(chips, function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
     return b.getAttribute(attr);
   }
   Array.prototype.forEach.call(chipsF, function (b) {
-    b.addEventListener("click", function () { formato = elegir(chipsF, b, "data-f"); pintar(); if (items.length) reconvertir(); });
+    b.addEventListener("click", function () { formato = elegir(chipsF, b, "data-f"); pintar(); if (items.length && empezado) reconvertir(); });
   });
   Array.prototype.forEach.call(chipsN, function (b) {
-    b.addEventListener("click", function () { nivel = elegir(chipsN, b, "data-n"); if (items.length) reconvertir(); });
+    b.addEventListener("click", function () { nivel = elegir(chipsN, b, "data-n"); resumenOpc(); if (items.length && empezado) reconvertir(); });
   });
-  ancho.addEventListener("input", function () { ancho.value = ancho.value.replace(/\D/g, ""); nuevoReco(); });
+  ancho.addEventListener("input", function () { ancho.value = ancho.value.replace(/\D/g, ""); resumenOpc(); nuevoReco(); });
   bg.addEventListener("input", nuevoReco);
 
   /* ---- .zip sin compresión ---- */

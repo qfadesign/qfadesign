@@ -16,7 +16,7 @@
     a5: ["A5 (148 × 210 mm)", 148, 210], a6: ["A6 (105 × 148 mm)", 105, 148], carta: ["Carta (215,9 × 279,4 mm)", 215.9, 279.4], oficio: ["Oficio (215,9 × 355,6 mm)", 215.9, 355.6],
     postal: ["Postal (100 × 150 mm)", 100, 150], t90: ["Tarjeta (90 × 50 mm)", 90, 50], t85: ["Tarjeta (85 × 55 mm)", 85, 55], cuadrado: ["Cuadrado (210 × 210 mm)", 210, 210]
   };
-  var archivo = null, an = null, hechos = {}, libs = null, token = 0;
+  var archivo = null, an = null, hechos = {}, abiertos = {}, libs = null, token = 0;
 
   function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function num(x) { return String(Math.round(x * 10) / 10).replace(".", ","); }
@@ -303,13 +303,15 @@
   function pintar() {
     var G = armar(), tot = 0, hechoN = 0, nOk = 0, nMalo = 0, nMan = 0;
     var html = G.map(function (g) {
-      return '<section class="ip-g" aria-label="' + esc(g.t) + '"><h3 class="ip-gt">' + esc(g.t) + '</h3><ul class="ip-l">' + g.items.map(function (i) {
+      var pend = g.items.filter(function (i) { return i.e !== "info" && i.e !== "ok" && !hechos[i.id]; }).length, urg = g.items.some(function (i) { return (i.e === "bad" || i.e === "warn") && !hechos[i.id]; });
+      var abre = abiertos[g.t] === undefined ? urg : abiertos[g.t];
+      return '<details class="dsp ip-g" data-g="' + esc(g.t) + '"' + (abre ? " open" : "") + '><summary><span class="dsp-t">' + esc(g.t) + '</span><span class="ip-cnt' + (pend ? "" : " ip-cnt-ok") + '">' + (pend ? plural(pend, "pendiente", "pendientes") : "Todo listo") + '</span></summary><ul class="ip-l">' + g.items.map(function (i) {
         var cuenta = i.e !== "info", marcado = !!hechos[i.id] || i.e === "ok";
         if (cuenta) { tot++; if (marcado) hechoN++; }
         if (i.e === "ok") nOk++; else if (i.e === "bad" || i.e === "warn") nMalo++; else if (i.e === "man") nMan++;
         var chk = (cuenta && i.e !== "ok") ? '<label class="ip-chk"><input type="checkbox" data-id="' + i.id + '"' + (hechos[i.id] ? " checked" : "") + '> ' + (i.e === "man" ? "Lo revisé" : "Ya lo resolví") + "</label>" : "";
         return '<li class="ip-it ip-' + i.e + (marcado && i.e !== "ok" ? " ip-hecho" : "") + '"><span class="ip-ic" aria-hidden="true">' + ETQ[i.e][0] + '</span><div class="ip-tx"><p class="ip-t">' + esc(i.t) + ' <span class="ip-st">' + ETQ[i.e][1] + '</span></p><p class="ip-d">' + esc(i.e === "man" ? i.d.charAt(0).toUpperCase() + i.d.slice(1) : i.d) + "</p>" + chk + "</div></li>";
-      }).join("") + "</ul></section>";
+      }).join("") + "</ul></details>";
     }).join("");
     $("ipLista").innerHTML = html;
     $("ipProg").style.width = tot ? Math.round(hechoN / tot * 100) + "%" : "0%";
@@ -332,7 +334,9 @@
     $("ipArchivo").hidden = !h; $("ipDrop").hidden = h;
     if (h) $("ipNom").textContent = archivo.name + " · " + pesoTxt(archivo.size) + (an ? " · analizado" : "");
     $("ipAnalizar").hidden = !h || !!an;
+    $("ipSolo").hidden = h || !$("ipPaso3").hidden;
   }
+  function mostrarLista() { $("ipPaso3").hidden = false; pintarArchivo(); }
   function cargarArchivo(f) {
     error(""); an = null;
     if (f.type !== "application/pdf" && !/\.pdf$/i.test(f.name)) { error(f.name + " no es un PDF."); return; }
@@ -349,13 +353,13 @@
       return analizarPpi(archivo.buf, prog).then(function (ppi) { if (mia !== token) return; an = { paginas: est.paginas, est: est, ppi: ppi }; }, function () { an = { paginas: est.paginas, est: est, ppi: null }; });
     }).then(function () {
       if (mia !== token) return;
-      $("ipProgreso").hidden = true; $("ipAnalizar").disabled = false; pintarArchivo(); pintar(); avisar("Análisis listo. Revisá la lista.");
+      $("ipProgreso").hidden = true; $("ipAnalizar").disabled = false; mostrarLista(); pintar(); avisar("Análisis listo. Revisá la lista.");
       $("ipResumen").scrollIntoView && $("ipResumen").scrollIntoView({ behavior: "smooth", block: "nearest" });
     }, function (e) {
       if (mia !== token) return;
       $("ipProgreso").hidden = true; $("ipAnalizar").disabled = false; an = null;
       error(/encrypt/i.test(String(e && e.message)) ? "Este PDF tiene contraseña o permisos restringidos. Sacale la protección y volvé a subirlo." : "No pude analizar este PDF. Revisá que no esté dañado; igual podés usar la lista a mano.");
-      pintarArchivo(); pintar();
+      mostrarLista(); pintar();
     });
   }
 
@@ -365,7 +369,9 @@
   ["dragleave", "drop"].forEach(function (e) { drop.addEventListener(e, function (ev) { ev.preventDefault(); drop.classList.remove("over"); }); });
   drop.addEventListener("drop", function (ev) { var f = ev.dataTransfer && ev.dataTransfer.files[0]; if (f) cargarArchivo(f); });
   $("ipAnalizar").addEventListener("click", analizar);
+  $("ipSoloLista").addEventListener("click", function () { mostrarLista(); pintar(); $("ipPaso3").scrollIntoView && $("ipPaso3").scrollIntoView({ behavior: "smooth", block: "start" }); });
   $("ipQuitar").addEventListener("click", function () { token++; archivo = null; an = null; $("ipProgreso").hidden = true; $("ipAnalizar").disabled = false; error(""); pintarArchivo(); pintar(); file.focus(); });
+  $("ipLista").addEventListener("toggle", function (e) { var d = e.target; if (d && d.getAttribute && d.getAttribute("data-g")) abiertos[d.getAttribute("data-g")] = d.open; }, true);
   $("ipLista").addEventListener("change", function (e) { var c = e.target.closest("input[data-id]"); if (!c) return; hechos[c.getAttribute("data-id")] = c.checked; pintar(); var n = $("ipLista").querySelector('input[data-id="' + c.getAttribute("data-id") + '"]'); if (n) n.focus(); });
   function chips(id) { var g = $(id); g.addEventListener("click", function (e) { var b = e.target.closest(".chip"); if (!b) return; Array.prototype.forEach.call(g.querySelectorAll(".chip"), function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); }); pintar(); }); }
   chips("ipPpp"); chips("ipColor");
@@ -380,6 +386,103 @@
     var u = URL.createObjectURL(new Blob([textoInforme()], { type: "text/plain;charset=utf-8" })), a = document.createElement("a"); a.href = u; a.download = "checklist-imprenta.txt";
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
   });
+
+  /* ---- PDF con las mejoras y los cambios necesarios ---- */
+  function recomendar(id, c) {
+    var R = {
+      tam: "Re-exportá el archivo con el formato final " + c.nombre + " y " + num(c.sang) + " mm de sangrado por lado. En InDesign/Illustrator: Configurar documento > tamaño final y sangrado. En Canva: Descargar > PDF para imprimir > marcas de corte y sangrado.",
+      mismo: "Dejá todas las páginas del mismo tamaño, salvo que alguna sea distinta a propósito (por ejemplo, una tapa con lomo).",
+      cuad: "Si es un cuadernillo, sumá o quitá páginas hasta llegar a un múltiplo de 4 (4, 8, 12, 16…). Pueden ser páginas de notas o de cortesía.",
+      sang: "Extendé fondos, colores e imágenes " + num(c.sang) + " mm más allá del corte y exportá activando «Usar márgenes de sangrado del documento» (InDesign) o el sangrado de la mesa de trabajo (Illustrator).",
+      borde: "Estirá el fondo y las imágenes que llegan al corte hasta el borde del sangrado. Abrí el PDF y revisá que no quede ningún filo blanco.",
+      margen: "Mové textos, logos y datos importantes al menos 3 a 5 mm hacia adentro del corte para que no se pierdan al guillotinar.",
+      marcas: "Preguntale a tu imprenta si quiere marcas de corte. Si no las pide, exportá solo con sangrado; si las pide, activalas al exportar.",
+      ppp: "Reemplazá las imágenes de baja resolución por versiones de al menos " + c.ppp + " ppp al tamaño real de impresión. Agrandar una imagen en el programa no suma calidad: hay que conseguir una más grande.",
+      lineas: "Engrosá las líneas por debajo de 0,25 pt y evitá tipografías muy finas en negativo (texto claro sobre fondo oscuro).",
+      modo: c.color === "cmyk" ? "Convertí imágenes y colores a CMYK con el perfil que indique tu imprenta (por ejemplo, Coated FOGRA39). Photoshop: Edición > Convertir en perfil. InDesign: Exportar PDF > Salida > Convertir a destino. Los colores intensos pueden verse más apagados: conviene mirarlos antes." : "Confirmá con tu imprenta que acepta RGB y qué perfil prefiere.",
+      spot: "Si la imprenta no va a imprimir tinta directa (Pantone), convertí esos colores a CMYK.",
+      negro: "Usá negro 100% K (sin mezcla de las otras tintas) para el texto chico, así no se corre el registro.",
+      tinta: "Revisá la cobertura total de tinta con la vista previa de separaciones y bajala hasta el máximo que indique la imprenta (suele ser 300%).",
+      fuentes: "Exportá el PDF con las tipografías incrustadas (incrustar todas) o convertí el texto a curvas, y volvé a exportar. Si convertís a curvas, guardá una copia editable.",
+      pt: "Subí el texto que sea menor a 6 pt (8 pt si es en negativo) o simplificá el contenido.",
+      transp: "Si la imprenta pide PDF/X-1a, aplaná las transparencias al exportar.",
+      capas: "Ocultá o eliminá las capas que no deben imprimirse y volvé a exportar.",
+      pdfx: "Preguntá qué norma prefiere tu imprenta y, si pide PDF/X-1a o X-4, exportá con ese ajuste.",
+      calidad: "Exportá con el ajuste de «Calidad de impresión» o «Imprenta» (no «Tamaño de archivo mínimo»).",
+      final: "Abrí el PDF final, mirá página por página (textos, imágenes, bordes) y recién ahí enviáselo a la imprenta."
+    };
+    return R[id] || "";
+  }
+  function cargarImg(url) {
+    return new Promise(function (ok) {
+      var im = new Image(); im.onload = function () {
+        try { var cv = document.createElement("canvas"); cv.width = im.naturalWidth; cv.height = im.naturalHeight; cv.getContext("2d").drawImage(im, 0, 0); ok({ data: cv.toDataURL("image/png"), r: im.naturalHeight / im.naturalWidth }); } catch (e) { ok(null); }
+      }; im.onerror = function () { ok(null); }; im.src = url;
+    });
+  }
+  function descargarPdf() {
+    var btn = $("ipPdf"); btn.disabled = true; error("");
+    var c = cfg(), G = S_G, raiz = new URL("../../", BASE).href;
+    Promise.all([script(BASE + "jspdf.umd.min.js").catch(function () { return null; }), cargarImg(raiz + "img/pdf-sticker-qfadesign.png")]).then(function (r) {
+      if (!(window.jspdf && window.jspdf.jsPDF)) { error("No pude armar el PDF. Probá de nuevo o usá «Descargar .txt»."); btn.disabled = false; return; }
+      var sticker = r[1], doc = new window.jspdf.jsPDF({ unit: "mm", format: "a4" });
+      var W = 210, H = 297, M = 16, y = 0, ancho = W - 2 * M;
+      var AZ = [10, 92, 192], NV = [6, 33, 77], GR = [74, 90, 117];
+      function nueva() { doc.addPage(); y = M; }
+      function hay(h) { if (y + h > H - 18) nueva(); }
+      function texto(t, tam, est, col, ind, interlin) {
+        doc.setFont("helvetica", est || "normal"); doc.setFontSize(tam); doc.setTextColor(col[0], col[1], col[2]);
+        var ls = doc.splitTextToSize(String(t), ancho - (ind || 0)), lh = tam * 0.3528 * (interlin || 1.35);
+        ls.forEach(function (l) { hay(lh); doc.text(l, M + (ind || 0), y + lh * 0.8); y += lh; });
+      }
+      /* portada */
+      doc.setFillColor(AZ[0], AZ[1], AZ[2]); doc.rect(0, 0, W, 38, "F");
+      if (sticker) { var sw = 46; doc.addImage(sticker.data, "PNG", W - M - sw, 8, sw, sw * sticker.r); }
+      doc.setFont("helvetica", "bold"); doc.setFontSize(22); doc.setTextColor(255, 255, 255); doc.text("Informe para imprenta", M, 21);
+      doc.setFont("helvetica", "normal"); doc.setFontSize(10.5); doc.text("Mejoras y cambios para tu archivo · qfadesign.com", M, 29);
+      y = 48;
+      var fecha = new Date().toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" });
+      texto("Lo que querés imprimir", 12, "bold", NV);
+      texto("Formato final: " + c.nombre + "   ·   Sangrado: " + num(c.sang) + " mm por lado   ·   Resolución mínima: " + c.ppp + " ppp   ·   Color: " + (c.color === "cmyk" ? "CMYK" : "RGB aceptable"), 10.5, "normal", GR);
+      texto((archivo ? "Archivo analizado: " + archivo.name + " (" + pesoTxt(archivo.size) + ")" : "Sin PDF analizado: todos los puntos son para revisar a mano") + "   ·   " + fecha, 10.5, "normal", GR);
+      y += 4;
+      var grupos = { bad: [], warn: [], man: [], ok: [], info: [] };
+      G.forEach(function (g) { g.items.forEach(function (i) { var k = (i.e !== "ok" && i.e !== "info" && hechos[i.id]) ? "ok" : i.e; grupos[k].push({ g: g.t, i: i, hecho: k === "ok" && i.e !== "ok" }); }); });
+      doc.setFillColor(240, 246, 255); doc.roundedRect(M, y, ancho, 18, 3, 3, "F");
+      doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(NV[0], NV[1], NV[2]);
+      doc.text("Resumen", M + 5, y + 7);
+      doc.setFont("helvetica", "normal"); doc.setFontSize(10.5); doc.setTextColor(GR[0], GR[1], GR[2]);
+      doc.text(grupos.bad.length + " para corregir   ·   " + grupos.warn.length + " para revisar   ·   " + grupos.man.length + " a mano   ·   " + grupos.ok.length + " en orden", M + 5, y + 13.5);
+      y += 26;
+      var secs = [
+        ["bad", "Para corregir ahora", [220, 60, 60], true],
+        ["warn", "Para revisar", [205, 150, 0], true],
+        ["man", "Para revisar a mano (no se pueden medir desde el PDF)", [110, 80, 190], true],
+        ["info", "Datos del archivo", AZ, false],
+        ["ok", "Ya está en orden", [30, 160, 110], false]
+      ];
+      secs.forEach(function (sc) {
+        var lista = grupos[sc[0]]; if (!lista.length) return;
+        hay(24); doc.setFillColor(sc[2][0], sc[2][1], sc[2][2]); doc.rect(M, y + 1, 2.2, 7, "F");
+        texto(sc[1], 13, "bold", NV, 5); y += 2;
+        lista.forEach(function (x) {
+          hay(18);
+          texto(x.i.t, 10.5, "bold", NV, 3, 1.3);
+          texto("Sección: " + x.g + (x.hecho ? " · marcado como resuelto" : ""), 9, "normal", GR, 3, 1.3);
+          if (x.i.d) texto((sc[0] === "ok" || sc[0] === "info" ? "" : "Qué encontré: ") + x.i.d, 10, "normal", GR, 3);
+          if (sc[3]) { var rec = recomendar(x.i.id, c); if (rec) { y += 0.5; texto("Qué hacer: " + rec, 10, "normal", AZ, 3); } }
+          y += 3.5; doc.setDrawColor(208, 220, 238); doc.line(M, y - 1.6, W - M, y - 1.6);
+        });
+        y += 3;
+      });
+      hay(14);
+      texto("Este informe mide lo que se puede medir desde el PDF y marca claramente lo que no. No reemplaza la revisión de tu imprenta.", 9, "italic", GR);
+      var n = doc.getNumberOfPages();
+      for (var p = 1; p <= n; p++) { doc.setPage(p); doc.setFont("helvetica", "normal"); doc.setFontSize(8.5); doc.setTextColor(GR[0], GR[1], GR[2]); doc.text("qfadesign.com/herramienta/preparador-para-imprenta", M, H - 9); doc.text(p + " / " + n, W - M, H - 9, { align: "right" }); }
+      doc.save("informe-imprenta.pdf"); avisar("PDF descargado."); btn.disabled = false;
+    }).catch(function () { error("No pude armar el PDF. Probá de nuevo o usá «Descargar .txt»."); btn.disabled = false; });
+  }
+  $("ipPdf").addEventListener("click", descargarPdf);
   $("ipReiniciar").addEventListener("click", function () { hechos = {}; pintar(); avisar("Se desmarcaron todos los puntos."); });
   pintarArchivo(); pintar();
 })();

@@ -59,7 +59,7 @@
 <button class="chip ct-swap" type="button" id="ctSwap" aria-label="Intercambiar color de texto y de fondo"><span aria-hidden="true">⇄</span> Intercambiar</button>
 <div class="ct-f"><label for="ctFon">Color del fondo</label><div class="ct-in"><input type="color" id="ctFonP" value="#0b75f4" aria-label="Elegir el color del fondo con el selector"><input type="text" id="ctFon" value="#0B75F4" maxlength="22" autocomplete="off" spellcheck="false" aria-describedby="ctAyuda"></div></div>
 </div>
-<p class="ct-ayuda" id="ctAyuda">Podés escribir el color en HEX (#0B75F4 o 0B75F4) o como rgb(11, 117, 244), o elegirlo con el selector.</p>
+<details class="dsp ct-dsp"><summary><span class="dsp-t">Formatos de color que acepta</span></summary><p class="ct-ayuda" id="ctAyuda">Podés escribir el color en HEX (#0B75F4 o 0B75F4) o como rgb(11, 117, 244), o elegirlo con el selector.</p></details>
 <p class="ct-err" id="ctErr" role="alert" hidden></p>
 <div class="ct-prev" id="ctPrev"><p class="ct-g">Texto grande</p><p class="ct-n">Así se lee un párrafo de texto normal con estos colores. Si te cuesta leerlo, probablemente a tu público también.</p><span class="ct-ui">Botón o ícono</span></div>
 <button class="chip ct-reset" type="button" id="ctReset">Restablecer colores</button>
@@ -67,8 +67,8 @@
 <aside class="ct-res" aria-label="Resultado del contraste">
 <div class="ct-top"><div><small>Relación de contraste</small><div class="ct-ratio" id="ctRatio" aria-hidden="true">—</div></div><div class="ct-ver" id="ctVer"></div></div>
 <p class="sr-only" id="ctEstado" role="status" aria-live="polite"></p>
-<ul class="ct-chk" id="ctChk"></ul>
-<div class="ct-sug" id="ctSug"></div>
+<details class="dsp ct-dsp"><summary><span class="dsp-t">Detalle AA y AAA</span></summary><ul class="ct-chk" id="ctChk"></ul></details>
+<details class="dsp ct-dsp" open><summary><span class="dsp-t">Ideas para arreglarlo</span></summary><div class="ct-sug" id="ctSug"></div></details>
 <details class="dsp dsp-s"><summary><span class="dsp-t">¿Cómo se calcula?</span></summary><p class="dsp-p">Se calcula con las pautas <strong>WCAG 2.1</strong>. <strong>Texto grande</strong>: desde <strong>24 px</strong>, o desde <strong>18,66 px en negrita</strong>.</p></details>
 </aside>
 </div>
