@@ -20,7 +20,7 @@
 .f-herramientas .dsp>p{margin:0}
 .f-herramientas .dsp .cp-fuentes-in{padding:0}
 .f-herramientas .dsp .cp-aviso{max-width:none}
-.f-herramientas .cp-top>div:first-child{flex:1 1 min(100%,420px);max-width:60ch}
+.f-herramientas .cp-top>div:first-child{flex:1 1 min(100%,420px);max-width:none}
 
 /* juegos: dentro de la columna de reglas (centrada), el panel va alineado a la izquierda */
 .inicio-reglas .dsp{margin:0 0 22px;text-align:left}
@@ -79,3 +79,21 @@ ul.dsp-l li::before{content:"";position:absolute;left:10px;top:.62em;width:8px;h
 .ct-dsp .ct-chk li:first-child{border-top:0}
 .ct-dsp .ct-sug{margin:0;padding:0;border:0}
 .ct-dsp .ct-ayuda{margin:0;max-width:none}
+
+/* ===== Medidas únicas para todos los desplegables de las herramientas =====
+   Mismo ancho (el de su contenedor), misma altura de cabecera y la misma separación entre uno y otro. */
+:root{--dsp-sep:clamp(12px,1.6vw,18px)}
+.f-herramientas .dsp{box-sizing:border-box;width:100%;max-width:none;margin-top:var(--dsp-sep)}
+.f-herramientas .dsp>summary{min-height:32px}
+.f-herramientas .dsp-v,.f-herramientas .ip-cnt{box-sizing:border-box;line-height:1.2;padding:3px 11px;font-size:13px}
+.qr-dsp,.ip-g,.ct-dsp{margin-top:var(--dsp-sep)}
+.qr-dsp:first-of-type{margin-top:0}
+/* varios desplegables seguidos: siempre en una sola columna, todos del mismo ancho */
+.cv-ctl-d,.ip-cfg-d{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--dsp-sep);align-items:start}
+.cv-ctl-d .dsp,.ip-cfg-d .dsp,.pl-ctl .dsp{margin-top:0}
+.pl-ctl .pl-dsp{flex:1 1 100%;max-width:none}
+
+/* ===== Generador de QR: ritmo de espacios =====
+   14 px dentro de un grupo, 18 px entre desplegables, 34 px entre pasos */
+.qr-f{margin-top:16px}
+.qr-chk{margin:14px 0 0}

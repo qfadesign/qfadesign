@@ -335,6 +335,7 @@
     if (h) $("ipNom").textContent = archivo.name + " · " + pesoTxt(archivo.size) + (an ? " · analizado" : "");
     $("ipAnalizar").hidden = !h || !!an;
     $("ipSolo").hidden = h || !$("ipPaso3").hidden;
+    $("ipPdf").disabled = !h;
   }
   function mostrarLista() { $("ipPaso3").hidden = false; pintarArchivo(); }
   function cargarArchivo(f) {
@@ -387,102 +388,100 @@
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
   });
 
-  /* ---- PDF con las mejoras y los cambios necesarios ---- */
-  function recomendar(id, c) {
-    var R = {
-      tam: "Re-exportá el archivo con el formato final " + c.nombre + " y " + num(c.sang) + " mm de sangrado por lado. En InDesign/Illustrator: Configurar documento > tamaño final y sangrado. En Canva: Descargar > PDF para imprimir > marcas de corte y sangrado.",
-      mismo: "Dejá todas las páginas del mismo tamaño, salvo que alguna sea distinta a propósito (por ejemplo, una tapa con lomo).",
-      cuad: "Si es un cuadernillo, sumá o quitá páginas hasta llegar a un múltiplo de 4 (4, 8, 12, 16…). Pueden ser páginas de notas o de cortesía.",
-      sang: "Extendé fondos, colores e imágenes " + num(c.sang) + " mm más allá del corte y exportá activando «Usar márgenes de sangrado del documento» (InDesign) o el sangrado de la mesa de trabajo (Illustrator).",
-      borde: "Estirá el fondo y las imágenes que llegan al corte hasta el borde del sangrado. Abrí el PDF y revisá que no quede ningún filo blanco.",
-      margen: "Mové textos, logos y datos importantes al menos 3 a 5 mm hacia adentro del corte para que no se pierdan al guillotinar.",
-      marcas: "Preguntale a tu imprenta si quiere marcas de corte. Si no las pide, exportá solo con sangrado; si las pide, activalas al exportar.",
-      ppp: "Reemplazá las imágenes de baja resolución por versiones de al menos " + c.ppp + " ppp al tamaño real de impresión. Agrandar una imagen en el programa no suma calidad: hay que conseguir una más grande.",
-      lineas: "Engrosá las líneas por debajo de 0,25 pt y evitá tipografías muy finas en negativo (texto claro sobre fondo oscuro).",
-      modo: c.color === "cmyk" ? "Convertí imágenes y colores a CMYK con el perfil que indique tu imprenta (por ejemplo, Coated FOGRA39). Photoshop: Edición > Convertir en perfil. InDesign: Exportar PDF > Salida > Convertir a destino. Los colores intensos pueden verse más apagados: conviene mirarlos antes." : "Confirmá con tu imprenta que acepta RGB y qué perfil prefiere.",
-      spot: "Si la imprenta no va a imprimir tinta directa (Pantone), convertí esos colores a CMYK.",
-      negro: "Usá negro 100% K (sin mezcla de las otras tintas) para el texto chico, así no se corre el registro.",
-      tinta: "Revisá la cobertura total de tinta con la vista previa de separaciones y bajala hasta el máximo que indique la imprenta (suele ser 300%).",
-      fuentes: "Exportá el PDF con las tipografías incrustadas (incrustar todas) o convertí el texto a curvas, y volvé a exportar. Si convertís a curvas, guardá una copia editable.",
-      pt: "Subí el texto que sea menor a 6 pt (8 pt si es en negativo) o simplificá el contenido.",
-      transp: "Si la imprenta pide PDF/X-1a, aplaná las transparencias al exportar.",
-      capas: "Ocultá o eliminá las capas que no deben imprimirse y volvé a exportar.",
-      pdfx: "Preguntá qué norma prefiere tu imprenta y, si pide PDF/X-1a o X-4, exportá con ese ajuste.",
-      calidad: "Exportá con el ajuste de «Calidad de impresión» o «Imprenta» (no «Tamaño de archivo mínimo»).",
-      final: "Abrí el PDF final, mirá página por página (textos, imágenes, bordes) y recién ahí enviáselo a la imprenta."
-    };
-    return R[id] || "";
+  /* ---- PDF corregido para la imprenta ----
+     Toma el PDF que subió la persona y arma una copia lista para entregar:
+     · si falta sangrado, agranda la página y lo genera espejando los bordes del diseño;
+     · si el tamaño es el del formato pero en otra escala (misma proporción), lo ajusta al formato elegido;
+     · si ya tiene el sangrado, lo deja como está y solo marca las cajas de corte (TrimBox) y de sangrado (BleedBox).
+     No puede cambiar el modo de color, incrustar tipografías ni subir la resolución de las imágenes: eso lo dice en pantalla. */
+  function infoPagina(pg) {
+    var N = window.PDFLib.PDFName, m = pg.getMediaBox();
+    function cj(nom, get) { if (!pg.node.has(N.of(nom))) return null; try { var x = pg[get](); return { x: x.x, y: x.y, w: x.width, h: x.height }; } catch (e) { return null; } }
+    return { media: { x: m.x, y: m.y, w: m.width, h: m.height }, trim: cj("TrimBox", "getTrimBox"), bleed: cj("BleedBox", "getBleedBox"), rot: ((pg.getRotation().angle % 360) + 360) % 360 };
   }
-  function cargarImg(url) {
-    return new Promise(function (ok) {
-      var im = new Image(); im.onload = function () {
-        try { var cv = document.createElement("canvas"); cv.width = im.naturalWidth; cv.height = im.naturalHeight; cv.getContext("2d").drawImage(im, 0, 0); ok({ data: cv.toDataURL("image/png"), r: im.naturalHeight / im.naturalWidth }); } catch (e) { ok(null); }
-      }; im.onerror = function () { ok(null); }; im.src = url;
+  function armarCorregido(buf, c) {
+    var PL = window.PDFLib, PT = 72 / 25.4, b = c.sang * PT;
+    var rep = { agregado: 0, escalado: 0, cajas: 0, igual: 0, rotadas: 0, proporcion: 0 };
+    return PL.PDFDocument.load(buf, { updateMetadata: false }).then(function (src) {
+      return PL.PDFDocument.create().then(function (out) {
+        var pgs = src.getPages(), seq = Promise.resolve();
+        function copiar(i) { return out.copyPages(src, [i]).then(function (r) { return out.addPage(r[0]); }); }
+        pgs.forEach(function (pg, i) {
+          seq = seq.then(function () {
+            var info = infoPagina(pg), r = medirPagina(info, c);
+            if (info.rot) { rep.rotadas++; return copiar(i); }
+            var yaTiene = r.tam === "ok" && (c.sang === 0 || (r.sang !== null && r.sang >= c.sang - 0.4));
+            if (yaTiene) {
+              return copiar(i).then(function (np) {
+                var m = info.media, inset = (r.sang || 0) * PT, marcado = false;
+                if (!info.trim && inset > 0.1) { np.setTrimBox(m.x + inset, m.y + inset, m.w - 2 * inset, m.h - 2 * inset); marcado = true; }
+                if (!info.bleed && inset > 0.1) { np.setBleedBox(m.x, m.y, m.w, m.h); marcado = true; }
+                if (marcado) rep.cajas++; else rep.igual++;
+              });
+            }
+            /* región que es el formato final dentro de la página de origen */
+            var m = info.media, reg;
+            if (info.trim) reg = info.trim;
+            else if (r.origen === "inferido" && r.sang > 0) { var ins = r.sang * PT; reg = { x: m.x + ins, y: m.y + ins, w: m.w - 2 * ins, h: m.h - 2 * ins }; }
+            else reg = m;
+            var esc = 1, tW = c.w, tH = c.h;
+            if (r.tam === "bad") {
+              if ((reg.w > reg.h) !== (tW > tH)) { var t = tW; tW = tH; tH = t; }
+              var asp = reg.w / reg.h, aspT = tW / tH;
+              if (Math.abs(asp - aspT) / aspT < 0.02) { esc = (tW * PT) / reg.w; rep.escalado++; } else rep.proporcion++;
+            }
+            var tw = reg.w * esc, th = reg.h * esc, W = tw + 2 * b, H = th + 2 * b;
+            return out.embedPage(pg, { left: reg.x, bottom: reg.y, right: reg.x + reg.w, top: reg.y + reg.h }).then(function (emb) {
+              var np = out.addPage([W, H]);
+              np.pushOperators(PL.pushGraphicsState(), PL.rectangle(0, 0, W, H), PL.clip(), PL.endPath());
+              [-1, 0, 1].forEach(function (mx) {
+                [-1, 0, 1].forEach(function (my) {
+                  if ((mx || my) && b <= 0) return;
+                  np.drawPage(emb, { x: mx === 0 ? b : (mx < 0 ? b : b + 2 * tw), y: my === 0 ? b : (my < 0 ? b : b + 2 * th), xScale: mx === 0 ? esc : -esc, yScale: my === 0 ? esc : -esc });
+                });
+              });
+              np.pushOperators(PL.popGraphicsState());
+              np.setTrimBox(b, b, tw, th); np.setBleedBox(0, 0, W, H);
+              if (b > 0 && r.tam !== "bad") rep.agregado++; else if (b > 0) rep.agregado++;
+            });
+          });
+        });
+        return seq.then(function () { out.setProducer("qfadesign · preparador para imprenta"); return out.save(); }).then(function (bytes) { return { bytes: bytes, rep: rep }; });
+      });
     });
   }
-  function descargarPdf() {
-    var btn = $("ipPdf"); btn.disabled = true; error("");
-    var c = cfg(), G = S_G, raiz = new URL("../../", BASE).href;
-    Promise.all([script(BASE + "jspdf.umd.min.js").catch(function () { return null; }), cargarImg(raiz + "img/pdf-sticker-qfadesign.png")]).then(function (r) {
-      if (!(window.jspdf && window.jspdf.jsPDF)) { error("No pude armar el PDF. Probá de nuevo o usá «Descargar .txt»."); btn.disabled = false; return; }
-      var sticker = r[1], doc = new window.jspdf.jsPDF({ unit: "mm", format: "a4" });
-      var W = 210, H = 297, M = 16, y = 0, ancho = W - 2 * M;
-      var AZ = [10, 92, 192], NV = [6, 33, 77], GR = [74, 90, 117];
-      function nueva() { doc.addPage(); y = M; }
-      function hay(h) { if (y + h > H - 18) nueva(); }
-      function texto(t, tam, est, col, ind, interlin) {
-        doc.setFont("helvetica", est || "normal"); doc.setFontSize(tam); doc.setTextColor(col[0], col[1], col[2]);
-        var ls = doc.splitTextToSize(String(t), ancho - (ind || 0)), lh = tam * 0.3528 * (interlin || 1.35);
-        ls.forEach(function (l) { hay(lh); doc.text(l, M + (ind || 0), y + lh * 0.8); y += lh; });
-      }
-      /* portada */
-      doc.setFillColor(AZ[0], AZ[1], AZ[2]); doc.rect(0, 0, W, 38, "F");
-      if (sticker) { var sw = 46; doc.addImage(sticker.data, "PNG", W - M - sw, 8, sw, sw * sticker.r); }
-      doc.setFont("helvetica", "bold"); doc.setFontSize(22); doc.setTextColor(255, 255, 255); doc.text("Informe para imprenta", M, 21);
-      doc.setFont("helvetica", "normal"); doc.setFontSize(10.5); doc.text("Mejoras y cambios para tu archivo · qfadesign.com", M, 29);
-      y = 48;
-      var fecha = new Date().toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" });
-      texto("Lo que querés imprimir", 12, "bold", NV);
-      texto("Formato final: " + c.nombre + "   ·   Sangrado: " + num(c.sang) + " mm por lado   ·   Resolución mínima: " + c.ppp + " ppp   ·   Color: " + (c.color === "cmyk" ? "CMYK" : "RGB aceptable"), 10.5, "normal", GR);
-      texto((archivo ? "Archivo analizado: " + archivo.name + " (" + pesoTxt(archivo.size) + ")" : "Sin PDF analizado: todos los puntos son para revisar a mano") + "   ·   " + fecha, 10.5, "normal", GR);
-      y += 4;
-      var grupos = { bad: [], warn: [], man: [], ok: [], info: [] };
-      G.forEach(function (g) { g.items.forEach(function (i) { var k = (i.e !== "ok" && i.e !== "info" && hechos[i.id]) ? "ok" : i.e; grupos[k].push({ g: g.t, i: i, hecho: k === "ok" && i.e !== "ok" }); }); });
-      doc.setFillColor(240, 246, 255); doc.roundedRect(M, y, ancho, 18, 3, 3, "F");
-      doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(NV[0], NV[1], NV[2]);
-      doc.text("Resumen", M + 5, y + 7);
-      doc.setFont("helvetica", "normal"); doc.setFontSize(10.5); doc.setTextColor(GR[0], GR[1], GR[2]);
-      doc.text(grupos.bad.length + " para corregir   ·   " + grupos.warn.length + " para revisar   ·   " + grupos.man.length + " a mano   ·   " + grupos.ok.length + " en orden", M + 5, y + 13.5);
-      y += 26;
-      var secs = [
-        ["bad", "Para corregir ahora", [220, 60, 60], true],
-        ["warn", "Para revisar", [205, 150, 0], true],
-        ["man", "Para revisar a mano (no se pueden medir desde el PDF)", [110, 80, 190], true],
-        ["info", "Datos del archivo", AZ, false],
-        ["ok", "Ya está en orden", [30, 160, 110], false]
-      ];
-      secs.forEach(function (sc) {
-        var lista = grupos[sc[0]]; if (!lista.length) return;
-        hay(24); doc.setFillColor(sc[2][0], sc[2][1], sc[2][2]); doc.rect(M, y + 1, 2.2, 7, "F");
-        texto(sc[1], 13, "bold", NV, 5); y += 2;
-        lista.forEach(function (x) {
-          hay(18);
-          texto(x.i.t, 10.5, "bold", NV, 3, 1.3);
-          texto("Sección: " + x.g + (x.hecho ? " · marcado como resuelto" : ""), 9, "normal", GR, 3, 1.3);
-          if (x.i.d) texto((sc[0] === "ok" || sc[0] === "info" ? "" : "Qué encontré: ") + x.i.d, 10, "normal", GR, 3);
-          if (sc[3]) { var rec = recomendar(x.i.id, c); if (rec) { y += 0.5; texto("Qué hacer: " + rec, 10, "normal", AZ, 3); } }
-          y += 3.5; doc.setDrawColor(208, 220, 238); doc.line(M, y - 1.6, W - M, y - 1.6);
-        });
-        y += 3;
-      });
-      hay(14);
-      texto("Este informe mide lo que se puede medir desde el PDF y marca claramente lo que no. No reemplaza la revisión de tu imprenta.", 9, "italic", GR);
-      var n = doc.getNumberOfPages();
-      for (var p = 1; p <= n; p++) { doc.setPage(p); doc.setFont("helvetica", "normal"); doc.setFontSize(8.5); doc.setTextColor(GR[0], GR[1], GR[2]); doc.text("qfadesign.com/herramienta/preparador-para-imprenta", M, H - 9); doc.text(p + " / " + n, W - M, H - 9, { align: "right" }); }
-      doc.save("informe-imprenta.pdf"); avisar("PDF descargado."); btn.disabled = false;
-    }).catch(function () { error("No pude armar el PDF. Probá de nuevo o usá «Descargar .txt»."); btn.disabled = false; });
+  function resumenCorreccion(rep, c) {
+    var ok = [], pend = [], nota = "";
+    if (rep.agregado) ok.push("agregué " + num(c.sang) + " mm de sangrado a " + plural(rep.agregado, "página", "páginas") + " (espejando los bordes del diseño)");
+    if (rep.escalado) ok.push("ajusté al formato " + c.nombre + " " + plural(rep.escalado, "página", "páginas"));
+    if (rep.cajas) ok.push("marqué el corte y el sangrado en " + plural(rep.cajas, "página", "páginas"));
+    if (rep.igual) ok.push(plural(rep.igual, "página ya estaba bien", "páginas ya estaban bien"));
+    var t = "Listo: " + (ok.length ? ok.join("; ") + "." : "no hizo falta cambiar nada.");
+    if (rep.proporcion) pend.push(plural(rep.proporcion, "página tiene", "páginas tienen") + " una proporción distinta al formato elegido: no las deformé, revisalas");
+    if (rep.rotadas) pend.push(plural(rep.rotadas, "página está rotada", "páginas están rotadas") + " y la dejé como estaba");
+    if (an) {
+      var im = an.est.imagenes, hayRgb = c.color === "cmyk" && (an.est.vec.rgb > 0 || Object.keys(im).some(function (k) { return im[k].k === "rgb"; }));
+      var sinEmb = Object.keys(an.est.fuentes).some(function (k) { return !an.est.fuentes[k].emb; });
+      var bajas = an.ppi && an.ppi.imgs.some(function (x) { return x.ppi < c.ppp - 1; });
+      if (hayRgb) pend.push("hay elementos en RGB (pasalos a CMYK en tu programa)");
+      if (sinEmb) pend.push("hay tipografías sin incrustar (incrustalas o convertilas a curvas)");
+      if (bajas) pend.push("hay imágenes por debajo de " + c.ppp + " ppp (reemplazalas por otras más grandes)");
+    } else nota = " El color, las tipografías y la resolución no se corrigen desde acá: tocá «Analizar mi PDF» para ver si hay algo para arreglar.";
+    return t + (pend.length ? " Lo que no puedo corregir desde acá: " + pend.join("; ") + "." : "") + nota;
   }
-  $("ipPdf").addEventListener("click", descargarPdf);
+  function corregirPdf() {
+    if (!archivo) { error("Subí tu PDF para poder corregirlo."); return; }
+    var btn = $("ipPdf"), c = cfg(); btn.disabled = true; error(""); $("ipPdfRes").textContent = "Preparando tu PDF…";
+    cargarLibs().then(function () { return armarCorregido(archivo.buf, c); }).then(function (r) {
+      var u = URL.createObjectURL(new Blob([r.bytes], { type: "application/pdf" })), a = document.createElement("a");
+      a.href = u; a.download = archivo.name.replace(/\.pdf$/i, "") + "-imprenta.pdf"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
+      $("ipPdfRes").textContent = resumenCorreccion(r.rep, c); avisar("PDF corregido descargado.");
+    }).catch(function (e) {
+      $("ipPdfRes").textContent = "";
+      error(/encrypt/i.test(String(e && e.message)) ? "Este PDF tiene contraseña o permisos restringidos. Sacale la protección y volvé a subirlo." : "No pude corregir este PDF. Probá de nuevo o corregilo en tu programa de diseño.");
+    }).then(function () { btn.disabled = !archivo; });
+  }
+  $("ipPdf").addEventListener("click", corregirPdf);
   $("ipReiniciar").addEventListener("click", function () { hechos = {}; pintar(); avisar("Se desmarcaron todos los puntos."); });
   pintarArchivo(); pintar();
 })();
