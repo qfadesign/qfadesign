@@ -90,7 +90,9 @@
       if (!mejor) return { error: "Esta imagen ya es transparente por los bordes." };
       br = mejor.r / mejor.n; bgc = mejor.g / mejor.n; bb = mejor.b / mejor.n;
     }
-    var T = sens * 1.6;                       /* umbral de distancia de color (0–~440): con 20 solo se borra lo muy parecido al fondo */
+    var lumBg = 0.299 * br + 0.587 * bgc + 0.114 * bb;
+    var T = sens * 1.6 * Math.max(0.3, Math.min(1, 0.3 + 0.7 * lumBg / 110));   /* en fondos oscuros los colores se parecen más: umbral más fino */
+                          /* umbral de distancia de color (0–~440): con 20 solo se borra lo muy parecido al fondo */
     function dist(px) {
       var o = px * 4;
       if (d[o + 3] < 8) return 0;
@@ -174,11 +176,51 @@
     reloj = setInterval(function () { estadoProc = "Quitando el fondo… " + Math.round((Date.now() - t0) / 1000) + " s"; pintarProc(); }, 1000);
   }
   function pararReloj() { clearInterval(reloj); reloj = null; estadoProc = ""; }
+  /* Las imágenes oscuras confunden al modelo: se le pasa una copia aclarada (gamma) y después se usa su máscara sobre la original. */
+  function lumMedia(it) {
+    var c = document.createElement("canvas"); c.width = c.height = 64;
+    var x = c.getContext("2d", { willReadFrequently: true });
+    x.drawImage(it.src, 0, 0, 64, 64);
+    var d = x.getImageData(0, 0, 64, 64).data, t = 0, n = 0, i;
+    for (i = 0; i < d.length; i += 4) if (d[i + 3] > 20) { t += 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2]; n++; }
+    return n ? t / n : 128;
+  }
+  function entradaModelo(it) {
+    var med = lumMedia(it);
+    if (med >= 100) return Promise.resolve({ url: URL.createObjectURL(it.file), aclarada: false });
+    var k = Math.min(1, 1600 / Math.max(it.w, it.h)), w = Math.max(1, Math.round(it.w * k)), h = Math.max(1, Math.round(it.h * k));
+    var c = document.createElement("canvas"); c.width = w; c.height = h;
+    var x = c.getContext("2d", { willReadFrequently: true });
+    x.fillStyle = "#000"; x.fillRect(0, 0, w, h); x.drawImage(it.src, 0, 0, w, h);
+    var im = x.getImageData(0, 0, w, h), d = im.data, g = Math.max(0.3, Math.min(1, Math.log(0.45) / Math.log(Math.max(med, 8) / 255))), lut = new Uint8ClampedArray(256), i;
+    for (i = 0; i < 256; i++) lut[i] = 255 * Math.pow(i / 255, g);
+    for (i = 0; i < d.length; i += 4) { d[i] = lut[d[i]]; d[i + 1] = lut[d[i + 1]]; d[i + 2] = lut[d[i + 2]]; d[i + 3] = 255; }
+    x.putImageData(im, 0, 0);
+    return new Promise(function (ok, no) {
+      c.toBlob(function (b) { b ? ok({ url: URL.createObjectURL(b), aclarada: true }) : no(new Error("aclarar")); }, "image/png");
+    });
+  }
   function inferir(it) {
     return cargarMotor().then(function (m) {
       estadoProc = "Quitando el fondo…"; iniciarReloj(); pintarProc();
-      var url = URL.createObjectURL(it.file);
-      return m(url).then(function (out) { URL.revokeObjectURL(url); return { canvas: out.toCanvas() }; }, function (e) { URL.revokeObjectURL(url); throw e; });
+      return entradaModelo(it).then(function (ent) {
+        return m(ent.url).then(function (out) {
+          URL.revokeObjectURL(ent.url);
+          var cm = out.toCanvas();
+          if (!ent.aclarada) return { canvas: cm };
+          /* alfa del modelo + colores originales */
+          var fin = document.createElement("canvas"); fin.width = it.w; fin.height = it.h;
+          var fx = fin.getContext("2d", { willReadFrequently: true });
+          fx.drawImage(it.src, 0, 0, it.w, it.h);
+          var mk = document.createElement("canvas"); mk.width = it.w; mk.height = it.h;
+          var mx = mk.getContext("2d", { willReadFrequently: true });
+          mx.drawImage(cm, 0, 0, it.w, it.h);
+          var D = fx.getImageData(0, 0, it.w, it.h), M = mx.getImageData(0, 0, it.w, it.h).data, q;
+          for (q = 3; q < D.data.length; q += 4) D.data[q] = M[q];
+          fx.putImageData(D, 0, 0);
+          return { canvas: fin };
+        }, function (e) { URL.revokeObjectURL(ent.url); throw e; });
+      });
     });
   }
   function quitarAuto(it) {

@@ -12,7 +12,11 @@
 .cv-vis-in.cv-pipeta img{cursor:crosshair}
 .cv-punta{position:absolute;z-index:3;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px rgba(0,0,0,.55),inset 0 0 0 1px rgba(0,0,0,.35);pointer-events:none;transform:translate(-50%,-50%)}
 .cv-punta[hidden]{display:none}
-.cv-ws-side .cv-lista{margin:0;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.cv-ws-side .cv-lista{margin:0;grid-template-columns:minmax(0,1fr)}
+.cv-ws-side .cv-it{grid-template-columns:56px minmax(0,1fr);min-width:0}
+.cv-ws-side .cv-b{grid-column:1/-1;grid-row:auto;justify-content:flex-start}
+.cv-ws-side .cv-n{overflow-wrap:anywhere;word-break:normal;min-width:0}
+.cv-ws-side .cv-m{min-width:0;overflow-wrap:break-word}
 .cv-ws-side .cv-go,.cv-ws-side .cv-acc{margin:0}
 .cv-ws-side .cv-nota{margin:0}
 /* retoque a mano */
