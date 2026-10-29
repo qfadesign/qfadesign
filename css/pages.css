@@ -810,3 +810,11 @@ html:has(.f-herramientas){scrollbar-gutter:stable}
 /* preguntas de Ayuda: algo de aire entre una y otra */
 .pv h3{margin:1.3em 0 .35em}
 .pv h3:first-of-type{margin-top:.6em}
+
+/* convertidor: quitar el fondo */
+.cv-hint{margin:10px 0 0;font-size:14px;line-height:1.4;opacity:.8}
+.cv-g input[type=range]{width:100%;max-width:360px;accent-color:var(--azul);cursor:pointer}
+.cv-fmts .chip:disabled{opacity:.4;cursor:not-allowed}
+.cv-th{background:conic-gradient(rgba(255,255,255,.22) 25%,rgba(255,255,255,.08) 0 50%,rgba(255,255,255,.22) 0 75%,rgba(255,255,255,.08) 0) 0 0/14px 14px}
+.cv-chk{display:flex;align-items:flex-start;gap:10px;margin-top:14px;font-size:14px;line-height:1.35;cursor:pointer}
+.cv-chk input{margin-top:2px;accent-color:var(--azul);flex:none}
