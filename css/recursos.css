@@ -90,3 +90,16 @@
 .rc-lbl b{font-weight:inherit;font-style:inherit}
 .rc-lbl small{font-family:var(--f);font-style:normal;font-weight:400;font-size:.82em;letter-spacing:0;word-spacing:normal;opacity:.9}
 .rc-lista .rc-video>summary{gap:.9em;padding:12px 24px 13px}
+
+/* compra: el embed de Payhip se apoya directo sobre el fondo de la web, sin caja ni panel */
+.rc-compra{display:grid;gap:clamp(14px,2vw,22px);margin-bottom:clamp(24px,3.4vw,40px)}
+.rc-compra .rc-embed{background:none;color:inherit;border-radius:0;box-shadow:none;margin:0;padding:0;min-height:320px}
+.rc-compra .payhip-embed-page iframe{background:transparent;color-scheme:normal}
+/* ficha: texto corrido con tildes, igual que las listas de las tarjetas (nada que parezca botón) */
+.rc-ficha{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:6px clamp(16px,2.4vw,28px)}
+.rc-ficha li{display:flex;align-items:baseline;gap:.4em;font-size:clamp(14px,1.2vw,16px);font-weight:400;line-height:1.3;letter-spacing:0;padding:0;border:0;background:none;border-radius:0}
+.rc-ficha li::before{content:"\2714";color:#5fb0ff;font-weight:700;font-size:.9em}
+.rc-nota{margin:0;padding:0;font-size:13.5px;line-height:1.45;text-align:center;opacity:.78;text-wrap:balance}
+.rc-nota a{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.rc-nota a:hover,.rc-nota a:focus-visible{text-decoration-thickness:2px}
+.rc-compra + .rc-video{margin-bottom:clamp(40px,6vw,90px)}
