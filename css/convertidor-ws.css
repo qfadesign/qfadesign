@@ -1,0 +1,33 @@
+/* Editor de imágenes: espacio de trabajo en dos columnas (imagen a la izquierda, opciones a la derecha).
+   En celu la imagen queda arriba, acotada, y las opciones debajo. */
+.cv-ws[hidden]{display:none}
+.cv-ws{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
+.cv-ws-side{display:grid;gap:12px;min-width:0}
+.cv-ws-side>[hidden]{display:none}
+.cv-ws .cv-vis{margin:0}
+.cv-ws .cv-vis-in{height:clamp(220px,40vh,380px);min-height:0}
+.cv-ws .cv-vis-in img,.cv-lienzo{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.cv-lienzo[hidden]{display:none}
+.cv-lienzo{touch-action:none;cursor:none}
+.cv-vis-in.cv-pipeta img{cursor:crosshair}
+.cv-punta{position:absolute;z-index:3;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px rgba(0,0,0,.55),inset 0 0 0 1px rgba(0,0,0,.35);pointer-events:none;transform:translate(-50%,-50%)}
+.cv-punta[hidden]{display:none}
+.cv-ws-side .cv-lista{margin:0;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.cv-ws-side .cv-go,.cv-ws-side .cv-acc{margin:0}
+.cv-ws-side .cv-nota{margin:0}
+/* retoque a mano */
+.cv-ret{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:12px}
+.cv-ret[hidden],.cv-ret-p[hidden]{display:none}
+.cv-ret .btn{padding:10px 20px 11px;font-size:15px}
+.cv-ret-p{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.cv-ret-s{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
+.cv-ret-s input{width:110px;accent-color:var(--crema,#f9fbf2)}
+/* grupos nuevos de «Quitar el fondo» */
+.cv-pip{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.cv-l2{margin-top:14px}
+.cv-g input[type=range]{max-width:300px}
+@media(min-width:960px){
+  .cv-ws{grid-template-columns:minmax(0,1.4fr) minmax(320px,1fr);gap:28px}
+  .cv-ws-vis{position:sticky;top:92px}
+  .cv-ws .cv-vis-in{height:clamp(380px,64vh,640px)}
+}

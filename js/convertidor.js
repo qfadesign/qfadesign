@@ -22,6 +22,7 @@
   var quitar = "no", sens = 20, aden = false, motor = null, motorEstado = "", motorPct = -1, estadoProc = "";
   var fondoModo = "transp", sel = 0, ver = "res", reloj = null, usaGpu = !!navigator.gpu, prog = {};
   var MODELO = "onnx-community/BiRefNet_lite-ONNX";   /* BiRefNet lite: licencia MIT */
+  var retoque = false, tool = "borrar", pincel = 36, pipeta = false, pick = null, precisa = false, suav = 1, aj = 0, trazando = false, ultimo = null, rafL = 0;
   var chipsQ = $("cvQfm").querySelectorAll(".chip"), sensG = $("cvSensG"), sensI = $("cvSens");
 
   function avisar(t) { estado.textContent = ""; setTimeout(function () { estado.textContent = t; }, 30); }
@@ -83,8 +84,12 @@
     }
     for (x = 0; x < w; x++) { mira(x); mira((h - 1) * w + x); }
     for (y = 0; y < h; y++) { mira(y * w); mira(y * w + w - 1); }
-    if (!mejor) return { error: "Esta imagen ya es transparente por los bordes." };
-    var br = mejor.r / mejor.n, bgc = mejor.g / mejor.n, bb = mejor.b / mejor.n;
+    var br, bgc, bb;
+    if (pick) { br = pick.r; bgc = pick.g; bb = pick.b; }
+    else {
+      if (!mejor) return { error: "Esta imagen ya es transparente por los bordes." };
+      br = mejor.r / mejor.n; bgc = mejor.g / mejor.n; bb = mejor.b / mejor.n;
+    }
     var T = sens * 1.6;                       /* umbral de distancia de color (0–~440): con 20 solo se borra lo muy parecido al fondo */
     function dist(px) {
       var o = px * 4;
@@ -97,6 +102,7 @@
     function empuja(px) { if (!marca[px] && dist(px) <= T) { marca[px] = 1; pila[sp++] = px; } }
     for (x = 0; x < w; x++) { empuja(x); empuja((h - 1) * w + x); }
     for (y = 0; y < h; y++) { empuja(y * w); empuja(y * w + w - 1); }
+    if (pick) empuja(Math.min(h - 1, Math.max(0, Math.round(pick.fy * h))) * w + Math.min(w - 1, Math.max(0, Math.round(pick.fx * w))));
     while (sp) {
       var p = pila[--sp], px = p % w;
       if (px > 0) empuja(p - 1);
@@ -112,7 +118,14 @@
       var x0 = i % w, vec = (x0 > 0 && marca[i - 1]) || (x0 < w - 1 && marca[i + 1]) || (i >= w && marca[i - w]) || (i < n - w && marca[i + w]);
       if (vec) {
         var dd = dist(i), a = Math.max(0, Math.min(1, (dd - T * 0.5) / (T * 1.0)));
-        if (a < 1) d[o + 3] = Math.round(d[o + 3] * a);
+        if (a < 1) {
+          d[o + 3] = Math.round(d[o + 3] * a);
+          if (a > 0.02) {   /* saca el tinte del fondo que quedó mezclado en el borde */
+            d[o] = Math.max(0, Math.min(255, (d[o] - (1 - a) * br) / a));
+            d[o + 1] = Math.max(0, Math.min(255, (d[o + 1] - (1 - a) * bgc) / a));
+            d[o + 2] = Math.max(0, Math.min(255, (d[o + 2] - (1 - a) * bb) / a));
+          }
+        }
       }
     }
     cx.putImageData(im, 0, 0);
@@ -137,7 +150,7 @@
     motor = import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.2/dist/transformers.web.min.js").then(function (tf) {
       function crear(gpu) {
         return tf.pipeline("background-removal", MODELO, gpu
-          ? { device: "webgpu", dtype: "fp16", progress_callback: cb }
+          ? { device: "webgpu", dtype: precisa ? "fp32" : "fp16", progress_callback: cb }
           : { device: "wasm", dtype: "fp32", progress_callback: cb });
       }
       return crear(usaGpu).catch(function (e) { if (!usaGpu) throw e; usaGpu = false; prog = {}; return crear(false); });
@@ -191,29 +204,130 @@
     for (i = 3; i < d.length; i += 4) if (d[i] > 25) n++;
     return n / (w * h);
   }
-  /* devuelve algo que se pueda dibujar; se guarda para no repetir el trabajo al cambiar formato o compresión */
+  /* Afinado del recorte: suaviza el borde y lo agranda o achica. Trabaja solo sobre el alfa. */
+  function cajaAlfa(a, w, h, r) {
+    var t = new Float32Array(a.length), o = new Float32Array(a.length), x, y, k, s, n = 2 * r + 1;
+    for (y = 0; y < h; y++) {
+      s = 0; for (k = -r; k <= r; k++) s += a[y * w + Math.min(w - 1, Math.max(0, k))];
+      for (x = 0; x < w; x++) {
+        t[y * w + x] = s / n;
+        s += a[y * w + Math.min(w - 1, x + r + 1)] - a[y * w + Math.max(0, x - r)];
+      }
+    }
+    for (x = 0; x < w; x++) {
+      s = 0; for (k = -r; k <= r; k++) s += t[Math.min(h - 1, Math.max(0, k)) * w + x];
+      for (y = 0; y < h; y++) {
+        o[y * w + x] = s / n;
+        s += t[Math.min(h - 1, y + r + 1) * w + x] - t[Math.max(0, y - r) * w + x];
+      }
+    }
+    return o;
+  }
+  function refinar(cv, sv, ajuste) {
+    if (!sv && !ajuste) return cv;
+    var w = cv.width, h = cv.height, n = w * h, i;
+    var out = document.createElement("canvas"); out.width = w; out.height = h;
+    var cx = out.getContext("2d", { willReadFrequently: true });
+    cx.drawImage(cv, 0, 0);
+    var im = cx.getImageData(0, 0, w, h), d = im.data, a = new Float32Array(n);
+    for (i = 0; i < n; i++) a[i] = d[i * 4 + 3];
+    var rad = Math.round(Math.max(sv, ajuste ? 1 : 0) * Math.max(1, Math.max(w, h) / 1000));
+    var b = rad ? cajaAlfa(cajaAlfa(a, w, h, rad), w, h, rad) : a;
+    var t = 128 + ajuste * 18, g = rad ? 2.4 : 1;
+    for (i = 0; i < n; i++) {
+      var v = (b[i] - t) * g + 128;
+      d[i * 4 + 3] = v < 0 ? 0 : v > 255 ? 255 : v;
+    }
+    cx.putImageData(im, 0, 0);
+    return out;
+  }
+  /* devuelve algo que se pueda dibujar. El resultado crudo (lo caro) se guarda aparte del afinado,
+     así mover los deslizadores no vuelve a correr el modelo. */
   function fuenteDe(it) {
     if (quitar === "no") return Promise.resolve({ src: it.src, w: it.w, h: it.h });
-    var clave = quitar === "liso" ? "liso" + sens + (aden ? "a" : "") : "auto";
-    if (it.sf && it.sf.clave === clave) return Promise.resolve(it.sf.res);
-    var trabajo = quitar === "liso" ? Promise.resolve(quitarLiso(it)) : quitarAuto(it);
-    return trabajo.then(function (r) {
+    var cr = quitar === "liso"
+      ? "liso" + sens + (aden ? "a" : "") + (pick ? "p" + pick.r + "." + pick.g + "." + pick.b + "." + Math.round(pick.fx * 1000) + "." + Math.round(pick.fy * 1000) : "")
+      : "auto" + (precisa ? "p" : "");
+    var cb = cr + "|" + suav + "|" + aj;
+    if (it.sf && it.sf.clave === cb) return Promise.resolve(it.sf.res);
+    var cruda = it.raw && it.raw.clave === cr ? Promise.resolve(it.raw.r) : (quitar === "liso" ? Promise.resolve(quitarLiso(it)) : quitarAuto(it));
+    return cruda.then(function (r) {
       if (!r.error && visible(r.canvas) < 0.005) {
         r = { error: quitar === "liso"
           ? "Se borró casi toda la imagen. Bajá la sensibilidad o probá con «Automático»."
-          : "El modo Automático no encontró qué conservar en esta imagen (funciona mejor con personas). Probá con «Fondo liso»." };
+          : "El modo Automático no encontró qué conservar en esta imagen. Probá con «Fondo liso» o con «Máxima precisión»." };
       }
-      var res = r.error ? r : { src: r.canvas, w: r.canvas.width, h: r.canvas.height };
-      if (!r.error) it.sf = { clave: clave, res: res };
+      if (r.error) return r;
+      if (!it.raw || it.raw.clave !== cr) { it.raw = { clave: cr, r: r }; it.ed = null; }
+      var cv = refinar(r.canvas, suav, aj), res = { src: cv, w: cv.width, h: cv.height };
+      it.sf = { clave: cb, res: res };
       return res;
     });
+  }
+
+  /* ---- Retoque a mano: se dibuja en dos capas chicas (borrado / restaurado) y al exportar se aplican a tamaño real ---- */
+  var PW = 1200;
+  function edDe(it) {
+    var fu = it.sf && it.sf.res; if (!fu) return null;
+    var s0 = Math.min(1, PW / Math.max(fu.w, fu.h)), w = Math.max(1, Math.round(fu.w * s0)), h = Math.max(1, Math.round(fu.h * s0));
+    var e = it.ed;
+    if (!e || e.w !== w || e.h !== h) {
+      var nv = function () { var c = document.createElement("canvas"); c.width = w; c.height = h; return c; };
+      e = it.ed = { w: w, h: h, er: nv(), re: nv(), pv: nv(), og: nv(), tmp: nv(), hist: [], usado: false };
+      e.og.getContext("2d").drawImage(it.src, 0, 0, w, h);
+    }
+    var x = e.pv.getContext("2d"); x.clearRect(0, 0, w, h); x.drawImage(fu.src, 0, 0, w, h);
+    return e;
+  }
+  function pintarLienzo() {
+    var it = items[sel], e = it && it.ed, c = $("cvLienzo");
+    if (!e) return;
+    if (c.width !== e.w || c.height !== e.h) { c.width = e.w; c.height = e.h; }
+    var x = c.getContext("2d"), t = e.tmp.getContext("2d");
+    x.globalCompositeOperation = "source-over"; x.clearRect(0, 0, e.w, e.h); x.drawImage(e.pv, 0, 0);
+    x.globalCompositeOperation = "destination-out"; x.drawImage(e.er, 0, 0);
+    t.globalCompositeOperation = "source-over"; t.clearRect(0, 0, e.w, e.h); t.drawImage(e.og, 0, 0);
+    t.globalCompositeOperation = "destination-in"; t.drawImage(e.re, 0, 0);
+    x.globalCompositeOperation = "source-over"; x.drawImage(e.tmp, 0, 0);
+  }
+  function pedirLienzo() { if (!rafL) rafL = requestAnimationFrame(function () { rafL = 0; pintarLienzo(); }); }
+  function aplicarRetoque(it, fu) {
+    var e = it.ed;
+    if (quitar === "no" || !e || !e.usado) return fu;
+    var w = fu.w, h = fu.h, c = document.createElement("canvas"); c.width = w; c.height = h;
+    var x = c.getContext("2d"), t = document.createElement("canvas"); t.width = w; t.height = h;
+    var tx = t.getContext("2d");
+    x.drawImage(fu.src, 0, 0, w, h);
+    x.globalCompositeOperation = "destination-out"; x.imageSmoothingQuality = "high"; x.drawImage(e.er, 0, 0, w, h);
+    tx.imageSmoothingQuality = "high"; tx.drawImage(it.src, 0, 0, w, h);
+    tx.globalCompositeOperation = "destination-in"; tx.drawImage(e.re, 0, 0, w, h);
+    x.globalCompositeOperation = "source-over"; x.drawImage(t, 0, 0);
+    return { src: c, w: w, h: h };
+  }
+  function estampa(e, x, y, r) {
+    var main = tool === "borrar" ? e.er : e.re, otra = tool === "borrar" ? e.re : e.er;
+    [[main, "source-over"], [otra, "destination-out"]].forEach(function (p) {
+      var cx = p[0].getContext("2d"), g = cx.createRadialGradient(x, y, r * 0.5, x, y, r);
+      g.addColorStop(0, "rgba(0,0,0,1)"); g.addColorStop(1, "rgba(0,0,0,0)");
+      cx.globalCompositeOperation = p[1]; cx.fillStyle = g; cx.beginPath(); cx.arc(x, y, r, 0, 6.2832); cx.fill();
+    });
+  }
+  function guardarHist(e) {
+    e.hist.push({ er: e.er.getContext("2d").getImageData(0, 0, e.w, e.h), re: e.re.getContext("2d").getImageData(0, 0, e.w, e.h) });
+    if (e.hist.length > 6) e.hist.shift();
+  }
+  function salirRet() {
+    if (!retoque) return;
+    retoque = false;
+    var it = items[sel];
+    if (it && it.ed && it.ed.usado) reconvertir(); else actualizarVisor();
   }
 
   /* ---- Conversión / compresión ---- */
   function convertir(it) {
     return fuenteDe(it).then(function (fu) {
       if (fu.error) return { error: fu.error };
-      return convertirDe(it, fu);
+      return convertirDe(it, aplicarRetoque(it, fu));
     });
   }
   function convertirDe(it, fu) {
@@ -238,6 +352,7 @@
 
   function reconvertir() {
     var mia = ++corrida;
+    retoque = false;
     items.forEach(function (it) { it.proc = true; });
     pintar();
     items.reduce(function (p, it) {
@@ -287,6 +402,7 @@
     /* con imágenes cargadas desaparece la zona de subida; queda el botón «Subir otra imagen» */
     drop.hidden = hay; $("cvOtraW").hidden = !hay;
     lista.hidden = items.length < 2;
+    $("cvWs").hidden = !hay;
     ctl.hidden = !hay; acc.hidden = !hay; nota.hidden = !hay;
     $("cvIr").hidden = !hay || empezado;
     $("cvGo").textContent = quitar !== "no" ? "Quitar el fondo" : "Empezar a convertir";
@@ -316,9 +432,14 @@
     vis.hidden = !it;
     if (!it) return;
     var r = it.r, ok = !!(r && r.blob && !it.proc), img = $("cvVisImg"), orig = ver === "orig" || !ok;
+    if (retoque && !(it.ed && it.sf && ok)) retoque = false;
+    var enRet = retoque;
     var src = orig ? it.ourl : it.url;
     if (img.getAttribute("src") !== src) img.setAttribute("src", src);
-    img.hidden = false;
+    img.hidden = enRet; $("cvLienzo").hidden = !enRet;
+    $("cvRet").hidden = !(ok && quitar !== "no" && it.sf && !pipeta);
+    $("cvRetOn").hidden = enRet; $("cvRetP").hidden = !enRet;
+    $("cvVisIn").classList.toggle("cv-pipeta", pipeta);
     img.alt = (orig ? "Original: " : "Resultado: ") + it.nombre;
     $("cvVer").hidden = !ok;
     Array.prototype.forEach.call($("cvVer").querySelectorAll(".chip"), function (c) { c.setAttribute("aria-pressed", String(c.getAttribute("data-v") === (orig ? "orig" : "res"))); });
@@ -327,12 +448,14 @@
     var m = $("cvVisMeta");
     if (it.proc) m.textContent = "";
     else if (r && r.error) m.textContent = r.error;
+    else if (pipeta) m.textContent = "Tocá la imagen en el color del fondo que querés sacar.";
+    else if (enRet) m.textContent = "Pintá sobre la imagen: «Borrar» saca lo que sobra y «Restaurar» recupera lo que se fue.";
     else if (ok) m.innerHTML = '<b>' + esc(it.nuevo) + '</b> · ' + it.meta;
     else m.textContent = it.nombre + " · " + it.w + "×" + it.h + (empezado ? "" : " · Elegí las opciones y tocá el botón");
     var d = $("cvVisD");
-    d.hidden = !ok;
+    d.hidden = !ok || enRet;
     if (ok) { d.setAttribute("href", it.url); d.setAttribute("download", it.nuevo); d.setAttribute("aria-label", "Descargar " + it.nuevo); }
-    $("cvVisIn").classList.toggle("cv-sf", ok && !orig && quitar !== "no" && fondoModo === "transp");
+    $("cvVisIn").classList.toggle("cv-sf", (ok && !orig && quitar !== "no" && fondoModo === "transp") || enRet);
   }
 
   /* ---- Alta y baja de archivos ---- */
@@ -381,7 +504,7 @@
     if (!b) {
       /* tocar una fila la muestra grande arriba */
       var li = e.target.closest(".cv-it");
-      if (li && !e.target.closest("a,button")) { sel = +li.getAttribute("data-i"); ver = "res"; pintar(); }
+      if (li && !e.target.closest("a,button")) { retoque = false; sel = +li.getAttribute("data-i"); ver = "res"; pintar(); }
       return;
     }
     var i = +b.getAttribute("data-q"), it = items[i];
@@ -401,6 +524,7 @@
     $("cvVA").textContent = ancho.value ? ancho.value + " px" : "Original";
     $("cvVQ").textContent = quitar === "auto" ? "Automático" : quitar === "liso" ? "Fondo liso" : "No";
     sensG.hidden = quitar !== "liso";
+    $("cvPrecG").hidden = quitar !== "auto"; $("cvBordG").hidden = quitar === "no"; $("cvPipOff").hidden = !pick;
     $("cvFdG").hidden = quitar === "no"; $("cvColW").hidden = quitar === "no" || fondoModo !== "color";
     $("cvQfN").textContent = quitar === "auto" ? "Recorta personas, productos, animales y objetos. La primera vez descarga el modelo (entre 100 y 220 MB) y después queda guardado." : quitar === "liso" ? "Ideal para logos e ilustraciones sobre un color liso. Es instantáneo." : "Elegí «Automático» o «Fondo liso» para sacarle el fondo a tus imágenes.";
   }
@@ -417,7 +541,7 @@
     b.addEventListener("click", function () { nivel = elegir(chipsN, b, "data-n"); resumenOpc(); if (items.length && empezado) reconvertir(); });
   });
   Array.prototype.forEach.call(chipsQ, function (b) {
-    b.addEventListener("click", function () { quitar = elegir(chipsQ, b, "data-k"); pintar(); if (items.length && empezado) reconvertir(); });
+    b.addEventListener("click", function () { quitar = elegir(chipsQ, b, "data-k"); if (quitar !== "no") empezado = true; pintar(); if (items.length && empezado) reconvertir(); });
   });
   $("cvAden").addEventListener("change", function () { aden = this.checked; nuevoReco(); });
   var chipsB = $("cvFdm").querySelectorAll(".chip");
@@ -431,6 +555,73 @@
   sensI.addEventListener("input", function () { sens = +sensI.value; nuevoReco(); });
   ancho.addEventListener("input", function () { ancho.value = ancho.value.replace(/\D/g, ""); resumenOpc(); nuevoReco(); });
   bg.addEventListener("input", nuevoReco);
+
+  /* ---- Afinado, precisión, pipeta y pincel ---- */
+  $("cvSuav").addEventListener("input", function () { suav = +this.value; nuevoReco(); });
+  $("cvAj").addEventListener("input", function () { aj = +this.value; nuevoReco(); });
+  $("cvPrec").addEventListener("change", function () { precisa = this.checked; motor = null; nuevoReco(); });
+  $("cvPip").addEventListener("click", function () { pipeta = true; retoque = false; ver = "orig"; actualizarVisor(); $("cvVisIn").scrollIntoView({ block: "nearest", behavior: "smooth" }); });
+  $("cvPipOff").addEventListener("click", function () { pick = null; pipeta = false; ver = "res"; pintar(); if (items.length && empezado) reconvertir(); });
+  $("cvVisImg").addEventListener("click", function (ev) {
+    var it = items[sel]; if (!pipeta || !it) return;
+    var r = this.getBoundingClientRect(), fx = (ev.clientX - r.left) / r.width, fy = (ev.clientY - r.top) / r.height;
+    var c = document.createElement("canvas"); c.width = c.height = 1;
+    var x = c.getContext("2d", { willReadFrequently: true });
+    x.drawImage(it.src, Math.min(it.w - 1, Math.floor(fx * it.w)), Math.min(it.h - 1, Math.floor(fy * it.h)), 1, 1, 0, 0, 1, 1);
+    var p = x.getImageData(0, 0, 1, 1).data;
+    pick = { r: p[0], g: p[1], b: p[2], fx: fx, fy: fy };
+    pipeta = false; ver = "res";
+    quitar = elegir(chipsQ, Array.prototype.filter.call(chipsQ, function (q) { return q.getAttribute("data-k") === "liso"; })[0], "data-k");
+    empezado = true; pintar(); reconvertir();
+  });
+  $("cvRetOn").addEventListener("click", function () {
+    var it = items[sel]; if (!it || !it.sf || !edDe(it)) return;
+    retoque = true; ver = "res"; pintarLienzo(); actualizarVisor();
+  });
+  $("cvRetOk").addEventListener("click", salirRet);
+  var chipsT = $("cvRetT").querySelectorAll(".chip");
+  Array.prototype.forEach.call(chipsT, function (b) { b.addEventListener("click", function () { tool = elegir(chipsT, b, "data-t"); }); });
+  $("cvPin").addEventListener("input", function () { pincel = +this.value; });
+  $("cvUndo").addEventListener("click", function () {
+    var it = items[sel], e = it && it.ed, h = e && e.hist.pop();
+    if (!h) return;
+    e.er.getContext("2d").putImageData(h.er, 0, 0); e.re.getContext("2d").putImageData(h.re, 0, 0);
+    e.usado = true; pintarLienzo();
+  });
+  $("cvRst").addEventListener("click", function () {
+    var it = items[sel], e = it && it.ed; if (!e) return;
+    e.er.getContext("2d").clearRect(0, 0, e.w, e.h); e.re.getContext("2d").clearRect(0, 0, e.w, e.h);
+    e.hist = []; e.usado = false; pintarLienzo();
+  });
+  (function () {
+    var lz = $("cvLienzo"), punta = $("cvPunta"), box = $("cvVisIn");
+    function pos(ev) {
+      var r = lz.getBoundingClientRect(), e = items[sel].ed;
+      return { x: (ev.clientX - r.left) * e.w / r.width, y: (ev.clientY - r.top) * e.h / r.height, k: e.w / r.width };
+    }
+    function punto(ev) {
+      var b = box.getBoundingClientRect();
+      punta.hidden = !retoque; punta.style.width = punta.style.height = pincel + "px";
+      punta.style.left = (ev.clientX - b.left) + "px"; punta.style.top = (ev.clientY - b.top) + "px";
+    }
+    function trazo(ev) {
+      var e = items[sel].ed, p = pos(ev), rad = Math.max(1, pincel * p.k / 2);
+      if (ultimo) {
+        var dx = p.x - ultimo.x, dy = p.y - ultimo.y, n = Math.max(1, Math.ceil(Math.sqrt(dx * dx + dy * dy) / Math.max(1, rad / 4))), i;
+        for (i = 1; i <= n; i++) estampa(e, ultimo.x + dx * i / n, ultimo.y + dy * i / n, rad);
+      } else estampa(e, p.x, p.y, rad);
+      ultimo = p; pedirLienzo();
+    }
+    lz.addEventListener("pointerdown", function (ev) {
+      var it = items[sel]; if (!retoque || !it || !it.ed) return;
+      ev.preventDefault(); lz.setPointerCapture(ev.pointerId);
+      guardarHist(it.ed); it.ed.usado = true; trazando = true; ultimo = null; punto(ev); trazo(ev);
+    });
+    lz.addEventListener("pointermove", function (ev) { if (!retoque) return; punto(ev); if (trazando) trazo(ev); });
+    function fin() { trazando = false; ultimo = null; }
+    lz.addEventListener("pointerup", fin); lz.addEventListener("pointercancel", fin);
+    lz.addEventListener("pointerleave", function () { if (!trazando) punta.hidden = true; });
+  })();
 
   /* ---- .zip sin compresión ---- */
   var TABLA = (function () {
