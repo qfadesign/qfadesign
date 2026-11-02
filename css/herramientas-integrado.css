@@ -12,7 +12,8 @@
 .f-h-pdf{--tc:#ff4f5e}
 .f-h-imprenta{--tc:#c6f135}
 .f-h-qr{--tc:#00e0c6}
-:is(.f-h-calculadora,.f-h-paletas,.f-h-contraste,.f-h-convertidor,.f-h-unidades,.f-h-brief,.f-h-pdf,.f-h-imprenta,.f-h-qr){
+.f-h-simulador{--tc:#e24bff}
+:is(.f-h-calculadora,.f-h-paletas,.f-h-contraste,.f-h-convertidor,.f-h-unidades,.f-h-brief,.f-h-pdf,.f-h-imprenta,.f-h-qr,.f-h-simulador){
  --fondo:#000;
  --g:radial-gradient(75vw 55vw at 92% 0%,color-mix(in srgb,var(--tc) 78%,transparent),transparent 66%),radial-gradient(60vw 45vw at 2% 100%,color-mix(in srgb,var(--tc) 40%,transparent),transparent 66%),linear-gradient(#050505,#000)}
 
