@@ -1,10 +1,10 @@
-/* Recursos: filtro Ver todo / After Effects / Illustrator (sin JS se ve todo) */
+/* Recursos: filtro Ver todo / After Effects / Illustrator / Photoshop (sin JS se ve todo) */
 (function(){
   var barra=document.querySelector('.rc-filtro');
   if(!barra) return;
   var chips=[].slice.call(barra.querySelectorAll('.rc-chip'));
   var grupos=[].slice.call(document.querySelectorAll('.rc-grupo'));
-  var hashes={'after-effects':'ae','illustrator':'ai'};
+  var hashes={'after-effects':'ae','illustrator':'ai','photoshop':'ps'};
   barra.hidden=false;
   function aplicar(f,actualizarHash){
     chips.forEach(function(c){c.setAttribute('aria-pressed',String(c.dataset.f===f));});
@@ -15,7 +15,7 @@
       if(t) t.hidden=(f!=='todo'); // con un solo filtro no hace falta el subtítulo
     });
     if(actualizarHash && history.replaceState){
-      var h=f==='ae'?'#after-effects':f==='ai'?'#illustrator':location.pathname+location.search;
+      var h=f==='ae'?'#after-effects':f==='ai'?'#illustrator':f==='ps'?'#photoshop':location.pathname+location.search;
       history.replaceState(null,'',f==='todo'?location.pathname+location.search:h);
     }
   }
