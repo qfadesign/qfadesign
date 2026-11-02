@@ -1,0 +1,28 @@
+name: Mantener activo el ranking
+
+# Supabase pausa los proyectos gratuitos después de una semana sin actividad.
+# Este aviso diario le hace una consulta de lectura (el top 1 de un juego)
+# para que cuente como actividad y el ranking no se caiga.
+# Si la consulta falla, GitHub te manda un mail y vas a saber que algo pasó.
+on:
+  schedule:
+    - cron: "17 12 * * *"   # todos los días, 12:17 UTC
+  workflow_dispatch:          # también se puede correr a mano desde la pestaña Actions
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Consultar el ranking
+        run: |
+          URL=$(sed -n "s/.*url: *'\([^']*\)'.*/\1/p" js/ranking-config.js)
+          KEY=$(sed -n "s/.*key: *'\([^']*\)'.*/\1/p" js/ranking-config.js)
+          echo "Proyecto: $URL"
+          curl --fail-with-body --silent --show-error --max-time 30 \
+            -X POST "$URL/rest/v1/rpc/top_ranking" \
+            -H "apikey: $KEY" -H "Content-Type: application/json" \
+            -d '{"p_juego":"pluma","p_modo":"Estándar","p_limite":1}'
