@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});</script>
+<link rel="stylesheet" href="../css/cookies.css"><script src="../js/cookies.js" defer></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- SEO:start -->
+<title>Concepto del día — el Wordle de diseño | qfadesign</title>
+<meta name="description" content="El Wordle de diseño: un concepto por día, igual para todos. Adivinalo en 6 intentos y sumá puntos para el ranking de la semana. Un jueguito de qfadesign.">
+<link rel="canonical" href="https://qfadesign.com/juegos/concepto-del-dia">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="author" content="Facundo">
+<meta name="theme-color" content="#0a5cc0">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="icon" href="../favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../favicon-16x16.png" type="image/png" sizes="16x16">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="qfadesign">
+<meta property="og:locale" content="es_LA">
+<meta property="og:url" content="https://qfadesign.com/juegos/concepto-del-dia">
+<meta property="og:title" content="Concepto del día — el Wordle de diseño | qfadesign">
+<meta property="og:description" content="El Wordle de diseño: un concepto por día, igual para todos. Adivinalo en 6 intentos y sumá puntos para el ranking de la semana. Un jueguito de qfadesign.">
+<meta property="og:image" content="https://qfadesign.com/img/og/og-jueguitos-v2.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Concepto del día, el Wordle de diseño de Jueguitos de qfadesign">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Concepto del día — el Wordle de diseño | qfadesign">
+<meta name="twitter:description" content="El Wordle de diseño: un concepto por día, igual para todos. Adivinalo en 6 intentos y sumá puntos para el ranking de la semana. Un jueguito de qfadesign.">
+<meta name="twitter:image" content="https://qfadesign.com/img/og/og-jueguitos-v2.jpg">
+<meta name="twitter:image:alt" content="Concepto del día, el Wordle de diseño de Jueguitos de qfadesign">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Concepto del día","description":"El Wordle de diseño: un concepto por día, igual para todos. Adivinalo en 6 intentos y sumá puntos para el ranking de la semana. Un jueguito de qfadesign.","url":"https://qfadesign.com/juegos/concepto-del-dia","applicationCategory":"GameApplication","operatingSystem":"Web","inLanguage":"es","image":"https://qfadesign.com/img/og/og-jueguitos-v2.jpg","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@id":"https://qfadesign.com/#facundo"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://qfadesign.com/"},{"@type":"ListItem","position":2,"name":"Jueguitos","item":"https://qfadesign.com/jueguitos"},{"@type":"ListItem","position":3,"name":"Concepto del día","item":"https://qfadesign.com/juegos/concepto-del-dia"}]},{"@type":"Person","@id":"https://qfadesign.com/#facundo","name":"Facundo","alternateName":"qfadesign","jobTitle":"Diseñador en Comunicación Visual","url":"https://qfadesign.com/","image":"https://qfadesign.com/img/perfil.jpg","email":"mailto:qfadesignn@gmail.com","knowsAbout":["Branding","Identidad visual","Motion graphics","Diseño editorial","Social media","Diseño de logos"],"sameAs":["https://www.instagram.com/qfadesign/","https://www.tiktok.com/@qfadesign","https://www.behance.net/facundocruz5","https://www.linkedin.com/in/facundo-cruz-19a581303/"]}]}</script>
+<!-- SEO:end -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+.app{display:flex;flex-direction:column;align-items:center}
+.game-card{display:flex;flex-direction:column;align-items:center}
+.final-screen{display:none;text-align:center;width:100%}.final-screen.show{display:block}
+.final-label{margin-inline:auto}.final-title{margin:6px 0}.final-copy{margin:0 0 16px}
+</style>
+<script>if(self!==top){document.write('<style>html,body{background:transparent!important}#volver{display:none!important}</style>')}</script>
+<link rel="preconnect" href="https://use.typekit.net" crossorigin><link rel="preconnect" href="https://p.typekit.net" crossorigin><link rel="stylesheet" href="https://use.typekit.net/ftd7ahn.css">
+<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/ranking-config.js" defer></script><script src="../js/ranking.js" defer></script><script src="../js/concepto.js"></script>
+<link rel="stylesheet" href="../css/botones.css"><script src="../js/cursor.js" defer></script><link rel="stylesheet" href="../css/musica.css"><script src="../js/musica.js" defer></script><link rel="stylesheet" href="../css/desplegable.css"><script type="speculationrules">{"prefetch":[{"source":"document","where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
+
+<style id="concepto">
+/* ===== Concepto del día (Wordle de diseño) — misma estética que el Ahorcado: fondo oscuro, líneas blancas, azul y crema ===== */
+:root{--cd-azul:#0b75f4;--cd-azulf:#0a5cc0;--cd-crema:#f9fbf2}
+
+/* pantalla de juego: grilla de intentos a la izquierda; pista y teclado a la derecha (como la figura y el teclado del Ahorcado) */
+#gameContent{width:100%;max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;align-items:center}
+#gameContent:not([style*="none"]){display:grid;grid-template-columns:minmax(0,1fr);row-gap:16px;justify-items:center}
+#gameContent>*{width:100%}
+
+.top-info{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:620px;margin:0 auto 4px}
+#roundText{display:flex;gap:8px;flex:none}
+.dot{width:11px;height:11px;border-radius:50%;border:1.5px solid rgba(255,255,255,.55)}
+.dot.on{background:#fff;border-color:#fff}
+.dot.ok{background:var(--cd-azul);border-color:var(--cd-azul)}
+.consigna{flex:1;min-width:0;margin:0;text-align:center;font:400 13px/1.3 var(--f);color:var(--muted)}
+#scoreText{flex:none;text-align:right;font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(20px,2.2vw,26px);line-height:1;color:#fff}
+#scoreText small{display:block;margin-top:5px;font:400 10px/1 var(--fp);font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* grilla de intentos (chica) */
+.cd-grid{--g:6px;container-type:inline-size;display:grid;gap:var(--g);justify-content:center;align-content:center;max-width:400px;margin-inline:auto}
+.cd-row{--t:min(40px,calc((100cqw - (var(--n,5) - 1)*var(--g))/var(--n,5)));display:grid;grid-template-columns:repeat(var(--n,5),var(--t));gap:var(--g);justify-content:center}
+.cd-t{width:var(--t);height:var(--t);display:grid;place-items:center;border:1px solid rgba(255,255,255,.28);border-radius:clamp(8px,calc(var(--t)*.26),11px);background:var(--key);color:#fff;font-family:var(--fh);font-weight:900;font-style:italic;font-size:calc(var(--t)*.5);line-height:1;text-transform:uppercase;user-select:none;-webkit-user-select:none}
+.cd-t.fill{border-color:#fff;background:rgba(255,255,255,.18);animation:cdPop .12s ease-out}
+.cd-t.ok{background:var(--cd-azul);border-color:var(--cd-azul);color:#fff}
+.cd-t.pres{background:var(--cd-crema);border-color:var(--cd-crema);color:var(--cd-azulf)}
+.cd-t.no{background:var(--wrong);border-color:rgba(255,255,255,.12);color:rgba(255,255,255,.35)}
+.cd-t.flip{animation:cdFlip .5s ease both;animation-delay:calc(var(--i)*.22s)}
+.cd-row.shake{animation:cdShake .42s}
+.cd-row.salto .cd-t{animation:cdSalto .6s ease both;animation-delay:calc(var(--i)*.08s)}
+@keyframes cdPop{0%{transform:scale(.88)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes cdFlip{0%{transform:rotateX(0)}50%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+@keyframes cdShake{0%,100%{translate:0}15%{translate:-9px}35%{translate:8px}55%{translate:-6px}75%{translate:4px}}
+@keyframes cdSalto{0%,100%{translate:0}40%{translate:0 -10px}}
+
+/* mensajes (igual que el Ahorcado: texto simple, sin globo) */
+.message{min-height:20px;margin:0;text-align:center;font:600 13px/1.4 var(--f);color:var(--muted)!important}
+
+/* pista: botón de contorno o etiqueta + definición */
+.cd-pista{width:100%;max-width:550px;min-height:92px;margin-inline:auto;display:flex;justify-content:center;align-items:center}
+.cd-pista-btn{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 22px;border-radius:99px;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;font:900 italic 15px/1 var(--fh);transition:background .2s,color .2s,transform .2s}
+.cd-pista-btn:hover,.cd-pista-btn.seguro{background:#fff;color:var(--cd-azulf)}
+.cd-pista-btn small{font:400 11px/1 var(--fp);font-style:normal;letter-spacing:.05em;text-transform:uppercase;opacity:.75}
+.cd-pista-box{display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;animation:cdPop .35s ease-out}
+.cd-pista-box .hint-tag{font:400 11px/1 var(--fp);letter-spacing:.05em;text-transform:uppercase;padding:5px 12px;border:1px solid rgba(255,255,255,.4);border-radius:99px;color:rgba(255,255,255,.74)}
+.cd-pista-box p{margin:0;max-width:470px;font:500 15px/1.4 var(--f);color:#fff!important;text-wrap:balance}
+
+/* teclado (mismas teclas pastilla del Ahorcado) */
+.keyboard{width:100%;max-width:550px;margin-inline:auto;display:flex;flex-direction:column;gap:6px}
+.key-row{display:flex;gap:5px;justify-content:center}
+.keyboard .key{flex:0 0 calc((100% - 45px)/10);min-width:0;height:clamp(44px,6svh,52px);padding:0;font-size:12px;transition:.12s ease;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.keyboard .key.ancha{flex-basis:calc((100% - 45px)/10*1.5 + 2.5px);font-size:11px}
+.keyboard .key.pres{background:var(--cd-crema)!important;border-color:var(--cd-crema)!important;color:var(--cd-azulf)!important}
+.keyboard .key.correct:hover:not(:disabled){background:var(--cd-azul)!important;color:#fff!important}
+.keyboard .key.pres:hover:not(:disabled){background:var(--cd-crema)!important;color:var(--cd-azulf)!important}
+.keyboard .key.wrong:hover:not(:disabled){background:var(--wrong)!important;color:rgba(255,255,255,.35)!important}
+.keyboard .key:focus-visible,.cd-pista-btn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+
+@media(min-width:1000px){
+  #gameContent:not([style*="none"]){grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);column-gap:clamp(40px,6vw,80px);row-gap:14px;align-items:center;justify-items:stretch}
+  #gameContent>.top-info{grid-column:1/-1;max-width:none;justify-self:stretch}
+  #gameContent>.cd-grid{grid-column:1;grid-row:2/5}
+  #gameContent>.cd-pista{grid-column:2;grid-row:2}
+  #gameContent>.message{grid-column:2;grid-row:3}
+  #gameContent>.keyboard{grid-column:2;grid-row:4}
+}
+@media(max-width:999px){
+  /* en pantallas chicas la pista va debajo del teclado: así, al abrirla, nada se mueve bajo el dedo */
+  .cd-pista{order:1;min-height:64px}
+}
+@media(max-width:760px){
+  .cd-grid{--g:5px}
+  .keyboard .key-row{gap:4px}
+  .keyboard .key{flex-basis:calc((100% - 36px)/10)}
+  .keyboard .key.ancha{flex-basis:calc((100% - 36px)/10*1.5 + 2px)}
+}
+
+/* ya jugando no queda ningún signo "?" a la vista, solo el título chico */
+body:has(#startScreen[hidden]) img[src*="signo"]{display:none!important}
+
+/* inicio: racha y nota */
+.cd-racha{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:18px auto 4px}
+.cd-chip{display:flex;flex-direction:column;align-items:center;min-width:104px;padding:10px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.07)}
+.cd-chip b{font-family:var(--fh);font-weight:900;font-style:italic;font-size:30px;line-height:1;color:#fff}
+.cd-chip small{font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.8;margin-top:4px;color:#fff}
+.cd-chip.viva b{color:#8fc2ff}
+.inicio-reglas .cd-nota{font-size:13.5px!important;color:var(--muted)}
+
+/* pantalla final (compacta: dos columnas en pantalla grande) */
+.final-screen{max-width:760px;margin-inline:auto}
+.cd-fin{display:grid;grid-template-columns:minmax(0,1fr);gap:6px 40px;align-items:center}
+@media(min-width:760px){.cd-fin{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.final-screen .final-title{margin:0 0 6px;font-size:clamp(22px,2.4vw,28px)!important}
+.cd-sol{margin:8px auto 2px;display:flex;justify-content:center}
+.cd-sol span{display:block;font:900 italic clamp(22px,3.6vw,32px)/1 var(--fh);letter-spacing:.02em;text-transform:uppercase;background:var(--cd-azul);color:#fff;padding:8px 18px 10px;border-radius:14px;rotate:-2deg;box-shadow:0 10px 26px rgba(0,0,0,.45)}
+.cd-sol-cat{margin:10px 0 0;font:400 11px/1 var(--fp);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.final-screen .cd-sol-def{margin:6px auto 0!important;max-width:40ch;font-size:13px;font-weight:600;line-height:1.35;color:#e6ecf5!important}
+.final-screen #finalScore{margin:10px 0 2px!important;font-size:clamp(32px,4vw,44px)!important}
+.final-screen .final-copy{margin:0 0 4px;font-size:12px}
+.cd-mini{display:grid;gap:3px;justify-content:center;margin:0 auto 4px}
+.cd-mini div{display:flex;gap:3px;justify-content:center}
+.cd-mini i{display:block;width:14px;height:14px;border-radius:4px;background:#2b2f36}
+.cd-mini i.ok{background:var(--cd-azul)}.cd-mini i.pres{background:var(--cd-crema)}
+.cd-copiar{display:block;margin:4px auto 0;background:none;border:0;color:#fff;font:700 12px/1 var(--f);text-decoration:underline;text-underline-offset:4px;opacity:.85;padding:6px}
+.cd-copiar:hover{opacity:1}
+.final-screen .cd-racha{gap:8px;margin:8px auto 2px}
+.final-screen .cd-chip{min-width:78px;padding:7px 10px;border-radius:14px}
+.final-screen .cd-chip b{font-size:20px}
+.final-screen .cd-chip small{font-size:9px;margin-top:3px}
+.cd-semana,.cd-prox{margin:5px 0 0;font-size:12px;color:var(--muted)}.cd-semana b,.cd-prox b{color:#fff}
+.final-screen .share-box{margin-top:10px}
+
+@media(prefers-reduced-motion:reduce){.cd-t.flip,.cd-row.shake,.cd-row.salto .cd-t,.cd-pista-box,.cd-t.fill{animation:none}}
+</style>
+</head>
+
+<body class="f-juegos"><a class="saltar" href="#contenido">Saltar al contenido</a><nav aria-label="Principal"><a href="../" aria-label="qfadesign, inicio"><img src="../img/Marca_qfadesign_blanco.svg" alt="qfadesign" width="231.23" height="51.58" data-ar></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="../acerca" data-t="Acerca de">Acerca de</a></li><li><a href="../portfolio" data-t="Portfolio">Portfolio</a></li><li><a href="../herramientas" data-t="Herramientas">Herramientas</a></li><li><a href="../jueguitos" data-t="Jueguitos" aria-current=page>Jueguitos</a></li><li><a href="../recursos" data-t="Recursos">Recursos</a></li><li><a href="../contacto" data-t="Contacto">Contacto</a></li></ul></nav>
+<div class="vol-wrap"><a class="volver" href="../jueguitos" aria-label="Volver a Jueguitos"><span>Volver a</span><img src="../img/stickers/jueguitos.svg" alt="" width="488.7" height="126.74"></a></div>
+  <main id="contenido" tabindex="-1" class="app">
+<header class="header"><h1 class="h1-st"><img src="../img/stickers/concepto-del-dia-titulo.svg" alt="Concepto del día" width="1202" height="609" decoding="async"></h1><p class="subtitle" id="ddFecha">Adiviná el concepto de diseño de hoy.</p></header>
+<section class="game-card">
+<div class="start-screen" id="startScreen"><div class="inicio"><div class="inicio-reglas">
+<div class="start-title">Un concepto de diseño por día</div><details class="dsp"><summary><span class="dsp-t">¿Cómo se juega?</span></summary><p class="dsp-lead">Hoy hay <strong>un solo concepto</strong> de diseño para adivinar, <strong>igual para todos</strong>.</p><ol class="dsp-l"><li><b>Escribí</b> una palabra con tantas letras como casillas hay. Tenés <strong>6 intentos</strong>.</li><li><b>Azul</b>: la letra está en su lugar. <b>Crema</b>: está, pero en otro lugar. <b>Gris</b>: no está.</li><li><b>Cuanto antes lo saques, más puntos</b>: hasta <strong>1000</strong>.</li><li><b>Una pista</b> (la categoría y una definición corta) resta <strong>100 puntos</strong>.</li><li><b>Los puntos de cada día se suman</b> en el <strong>ranking de la semana</strong>, de lunes a domingo.</li></ol></details>
+<div class="cd-racha" id="ddRacha"></div>
+<p class="cd-nota" id="ddNota"></p>
+<div class="actions-inicio"><button class="primary" type="button" id="startBtn">Jugar el concepto de hoy</button></div></div>
+<aside class="rank-top" data-rank-top data-juego="concepto" data-semanal aria-label="Los 3 mejores de la semana"></aside></div></div>
+<div id="gameContent" style="display:none">
+<div class="top-info"><span id="roundText"></span><p class="consigna" id="consigna"></p><span class="score" id="scoreText">0 pts</span></div>
+<div class="cd-grid" id="cdGrid" role="grid" aria-label="Tus intentos"></div>
+<div class="cd-pista" id="cdPista"></div>
+<div class="message" id="message" role="status" aria-live="polite"></div>
+<div class="keyboard cd-kb" id="cdKb" aria-label="Teclado"></div></div>
+<div class="final-screen" id="finalScreen">
+ <div class="cd-fin">
+  <div class="cd-fin-a">
+   <div class="final-title" id="cdFinalTit"></div>
+   <div class="cd-sol"><span id="cdSol"></span></div>
+   <p class="cd-sol-cat" id="cdSolCat"></p>
+   <p class="cd-sol-def" id="cdSolDef"></p>
+   <div class="final-score" id="finalScore">0 pts</div>
+   <p class="final-copy" id="cdDetalle"></p>
+  </div>
+  <div class="cd-fin-b">
+   <div class="cd-mini" id="cdMini" aria-hidden="true"></div>
+   <button class="cd-copiar" id="cdCopiar" type="button">Copiar mi resultado</button>
+   <div class="cd-racha" id="ddRachaFin"></div>
+   <p class="cd-semana" id="cdSemana"></p>
+   <p class="cd-prox">Nuevo concepto en <b id="ddCuenta">…</b></p>
+  </div>
+ </div>
+ <div id="shareBox" class="share-box"></div>
+</div>
+</section></main>
+<script>
+(() => {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const Q = window.QFAConcepto;
+  const fecha = Q.hoy();
+  const MAX = 6;                                  /* intentos */
+  const BASE = [1000, 850, 700, 550, 400, 250];   /* puntos según el intento en que se acierta */
+  const COSTO = 100;                              /* lo que resta la pista */
+  const reducido = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Conceptos posibles: una sola palabra de entre 5 y 7 letras. Hay de diseño y también de temas cercanos (arte, fotografía, cine, música, etc.).
+     w = palabra sin tildes (la Ñ sí se conserva) · c = categoría · h = pista.
+     Para sumar o sacar conceptos, editá esta lista: el orden de los días se vuelve a mezclar. */
+  const POOL = [
+      {w:"grilla",c:"Concepto",h:"Cuadrícula de líneas guía que ayuda a ubicar los elementos."},
+      {w:"paleta",c:"Color",h:"Conjunto de colores elegidos para un diseño."},
+      {w:"textura",c:"Concepto",h:"Cualidad visual o táctil de una superficie."},
+      {w:"vector",c:"Digital",h:"Gráfico hecho con trazados matemáticos que no pierde calidad al escalar."},
+      {w:"espacio",c:"Concepto",h:"Vacío entre elementos que da aire y orden a una pieza."},
+      {w:"ritmo",c:"Concepto",h:"Repetición y variación que genera movimiento visual."},
+      {w:"escala",c:"Concepto",h:"Relación de tamaño entre elementos o respecto de un formato."},
+      {w:"forma",c:"Concepto",h:"Elemento visual definido por contorno, superficie o volumen."},
+      {w:"linea",c:"Concepto",h:"Elemento básico que construye formas, límites y direcciones."},
+      {w:"modulo",c:"Concepto",h:"Unidad que se repite para construir una composición."},
+      {w:"patron",c:"Concepto",h:"Repetición organizada de elementos visuales."},
+      {w:"croma",c:"Color",h:"Pureza o intensidad de un color."},
+      {w:"icono",c:"Concepto",h:"Signo visual que representa una idea, objeto o acción."},
+      {w:"signo",c:"Concepto",h:"Elemento que representa o comunica un significado."},
+      {w:"marca",c:"Marca",h:"Nombre o signo que distingue a un producto o a una empresa."},
+      {w:"afiche",c:"Impresión",h:"Pieza gráfica pensada para comunicar un mensaje en la vía pública."},
+      {w:"bauhaus",c:"Escuela",h:"Escuela alemana fundada en 1919 que unió arte, diseño y arquitectura."},
+      {w:"memphis",c:"Movimiento",h:"Grupo italiano de diseño nacido en 1981, famoso por sus formas y colores estridentes."},
+      {w:"grunge",c:"Movimiento",h:"Estética de los 90 con texturas sucias y tipografías desordenadas."},
+      {w:"unidad",c:"Concepto",h:"Cualidad por la que todos los elementos parecen pertenecer al mismo conjunto."},
+      {w:"gestalt",c:"Concepto",h:"Escuela de psicología alemana que explica cómo percibimos las formas como un todo."},
+      {w:"enfasis",c:"Concepto",h:"Recurso para atraer primero la mirada hacia un punto."},
+      {w:"margen",c:"Concepto",h:"Espacio libre entre el contenido y el borde de una pieza."},
+      {w:"kerning",c:"Tipografía",h:"Ajuste del espacio entre dos letras específicas."},
+      {w:"serifa",c:"Tipografía",h:"Pequeño remate en los extremos de los trazos de una letra."},
+      {w:"glifo",c:"Tipografía",h:"Cada una de las formas gráficas concretas de una tipografía."},
+      {w:"cursiva",c:"Tipografía",h:"Variante inclinada de una tipografía, inspirada en la escritura a mano."},
+      {w:"futura",c:"Tipografía",h:"Tipografía geométrica diseñada por Paul Renner y lanzada en 1927."},
+      {w:"bodoni",c:"Tipografía",h:"Tipografía serif de alto contraste creada por un impresor italiano a fines del siglo XVIII."},
+      {w:"matiz",c:"Color",h:"Característica que distingue un color de otro, como el rojo del azul."},
+      {w:"brillo",c:"Color",h:"Cuánta luz tiene un color, de oscuro a claro."},
+      {w:"degrade",c:"Color",h:"Transición gradual entre dos o más colores."},
+      {w:"pantone",c:"Color",h:"Sistema de referencia de colores muy usado en imprenta y diseño."},
+      {w:"isotipo",c:"Marca",h:"Parte de una marca formada solo por un símbolo, sin texto."},
+      {w:"isologo",c:"Marca",h:"Marca donde símbolo y texto están fusionados en un solo bloque."},
+      {w:"eslogan",c:"Marca",h:"Frase breve que resume la promesa de una marca."},
+      {w:"naming",c:"Marca",h:"Proceso de crear el nombre de una marca."},
+      {w:"troquel",c:"Impresión",h:"Molde de corte que da forma a una pieza impresa."},
+      {w:"offset",c:"Impresión",h:"Método de impresión industrial por planchas, ideal para grandes tiradas."},
+      {w:"gramaje",c:"Impresión",h:"Peso del papel en gramos por metro cuadrado."},
+      {w:"pliego",c:"Impresión",h:"Hoja grande de papel que se imprime y luego se dobla."},
+      {w:"portada",c:"Impresión",h:"Cara frontal de un libro o revista que presenta su contenido."},
+      {w:"collage",c:"Concepto",h:"Técnica que combina recortes de distintos materiales en una sola imagen."},
+      {w:"pixel",c:"Digital",h:"Unidad mínima de color de una imagen digital."},
+      {w:"mockup",c:"Digital",h:"Simulación realista de cómo se vería un diseño en un soporte."},
+      {w:"favicon",c:"Digital",h:"Pequeño ícono que aparece en la pestaña del navegador."},
+      {w:"easing",c:"Movimiento",h:"Curva que suaviza la aceleración de un movimiento animado."},
+      {w:"brief",c:"Proceso",h:"Documento con los objetivos y requisitos de un proyecto de diseño."},
+      {w:"boceto",c:"Proceso",h:"Dibujo rápido para explorar ideas antes de definir una pieza."},
+      {w:"figma",c:"Herramienta",h:"Herramienta colaborativa para diseñar interfaces en el navegador."},
+      {w:"pluma",c:"Herramienta",h:"Herramienta vectorial que dibuja curvas con puntos de anclaje."},
+      {w:"mascara",c:"Herramienta",h:"Recurso que oculta o muestra partes de una capa."},
+      {w:"diseño",c:"Concepto",h:"Disciplina que planifica y da forma visual a ideas, mensajes y objetos."},
+      {w:"tamaño",c:"Concepto",h:"Medida de una pieza o de un elemento dentro de ella."},
+      {w:"trazo",c:"Concepto",h:"Línea dibujada de una sola pasada con un pincel, un lápiz u otra herramienta."},
+      {w:"tinta",c:"Impresión",h:"Líquido o pasta de color que se usa para imprimir o escribir."},
+      {w:"pincel",c:"Herramienta",h:"Herramienta con cerdas para pintar o dibujar con color."},
+      {w:"lienzo",c:"Arte",h:"Tela preparada sobre la que se pinta un cuadro."},
+      {w:"grafito",c:"Herramienta",h:"Material gris de los lápices, que deja un trazo suave."},
+      {w:"carbon",c:"Arte",h:"Material negro y blando que se usa para dibujar y difuminar."},
+      {w:"fresco",c:"Arte",h:"Técnica de pintura mural sobre una pared de yeso todavía húmedo."},
+      {w:"mural",c:"Arte",h:"Pintura de gran tamaño hecha directamente sobre una pared."},
+      {w:"retrato",c:"Arte",h:"Imagen que representa a una persona, sobre todo su rostro."},
+      {w:"paisaje",c:"Arte",h:"Género que representa un entorno natural o urbano."},
+      {w:"estampa",c:"Impresión",h:"Imagen o dibujo impreso sobre papel o tela."},
+      {w:"grabado",c:"Impresión",h:"Técnica que talla una imagen en una plancha para luego estamparla."},
+      {w:"fuente",c:"Tipografía",h:"Conjunto completo de letras, números y signos con un mismo diseño."},
+      {w:"cuerpo",c:"Tipografía",h:"Tamaño de una letra, que suele medirse en puntos."},
+      {w:"versal",c:"Tipografía",h:"Letra mayúscula."},
+      {w:"negrita",c:"Tipografía",h:"Variante de una letra con trazos más gruesos."},
+      {w:"titulo",c:"Tipografía",h:"Texto destacado que encabeza una pieza o un capítulo."},
+      {w:"texto",c:"Tipografía",h:"Conjunto de palabras que forma el contenido escrito de una pieza."},
+      {w:"letra",c:"Tipografía",h:"Cada uno de los signos con que se representan los sonidos al escribir."},
+      {w:"romana",c:"Tipografía",h:"Tipografía con serifas de origen clásico, inspirada en la antigua Roma."},
+      {w:"script",c:"Tipografía",h:"Tipografía que imita la escritura manual cursiva."},
+      {w:"didone",c:"Tipografía",h:"Estilo de letra serif de fuerte contraste, como Bodoni y Didot."},
+      {w:"arial",c:"Tipografía",h:"Tipografía de palo seco creada en 1982, muy parecida a la Helvetica."},
+      {w:"roboto",c:"Tipografía",h:"Tipografía de palo seco creada por Google para Android."},
+      {w:"verdana",c:"Tipografía",h:"Tipografía de palo seco pensada para leerse bien en pantalla, obra de Matthew Carter."},
+      {w:"times",c:"Tipografía",h:"Tipografía serif creada en 1931 para un diario londinense."},
+      {w:"impact",c:"Tipografía",h:"Tipografía de palo seco muy gruesa y condensada, famosa por los memes."},
+      {w:"caslon",c:"Tipografía",h:"Familia serif inglesa del siglo XVIII, muy usada en libros."},
+      {w:"optima",c:"Tipografía",h:"Tipografía de palo seco con trazos de grosor variable, creada por Hermann Zapf."},
+      {w:"univers",c:"Tipografía",h:"Familia de palo seco creada por Adrian Frutiger en 1957."},
+      {w:"rotulo",c:"Concepto",h:"Texto pintado o dibujado a mano sobre un cartel o el frente de un local."},
+      {w:"cartel",c:"Impresión",h:"Pieza gráfica que anuncia algo en un lugar público."},
+      {w:"flyer",c:"Impresión",h:"Volante pequeño que se reparte para promocionar algo."},
+      {w:"folleto",c:"Impresión",h:"Impreso corto, doblado o suelto, que informa sobre algo."},
+      {w:"revista",c:"Editorial",h:"Publicación periódica con artículos e imágenes."},
+      {w:"libro",c:"Editorial",h:"Conjunto de hojas impresas y encuadernadas."},
+      {w:"diario",c:"Editorial",h:"Publicación que sale todos los días."},
+      {w:"folio",c:"Editorial",h:"Número de página de una publicación."},
+      {w:"pagina",c:"Editorial",h:"Cada una de las caras de una hoja de un libro o una revista."},
+      {w:"columna",c:"Editorial",h:"Bloque vertical de texto en una página."},
+      {w:"cuadro",c:"Arte",h:"Pintura enmarcada o sobre un soporte rígido."},
+      {w:"croquis",c:"Proceso",h:"Dibujo hecho a mano alzada y sin detalles, con las líneas esenciales."},
+      {w:"dibujo",c:"Arte",h:"Imagen hecha con líneas sobre una superficie."},
+      {w:"pintura",c:"Arte",h:"Arte de representar imágenes con pigmentos sobre una superficie."},
+      {w:"estatua",c:"Arte",h:"Figura tallada o moldeada que representa a una persona o a un animal."},
+      {w:"museo",c:"Arte",h:"Lugar donde se conservan y exhiben obras y objetos de valor cultural."},
+      {w:"galeria",c:"Arte",h:"Espacio donde se exhiben y se venden obras de arte."},
+      {w:"cubismo",c:"Movimiento",h:"Vanguardia de Picasso y Braque que descompone los objetos en formas geométricas."},
+      {w:"barroco",c:"Movimiento",h:"Estilo europeo del siglo XVII, recargado y lleno de dramatismo."},
+      {w:"gotico",c:"Movimiento",h:"Estilo medieval de catedrales con arcos apuntados y grandes vitrales."},
+      {w:"retro",c:"Concepto",h:"Estilo que imita la estética de épocas pasadas."},
+      {w:"vintage",c:"Concepto",h:"Estilo o pieza que remite al pasado y conserva su encanto."},
+      {w:"kitsch",c:"Concepto",h:"Estética exagerada y de gusto popular, a veces considerada de mal gusto."},
+      {w:"mosaico",c:"Arte",h:"Imagen formada por pequeñas piezas de piedra, vidrio o cerámica."},
+      {w:"vitral",c:"Arte",h:"Ventana de vidrios de colores unidos por tiras de plomo."},
+      {w:"origami",c:"Arte",h:"Arte japonés de plegar papel para formar figuras."},
+      {w:"tatuaje",c:"Arte",h:"Diseño dibujado en la piel con tinta."},
+      {w:"emoji",c:"Digital",h:"Pequeño dibujo que se usa en mensajes para expresar ideas o emociones."},
+      {w:"bitmap",c:"Digital",h:"Imagen formada por una grilla de píxeles, no por trazados."},
+      {w:"render",c:"Digital",h:"Imagen final generada por computadora a partir de un modelo 3D."},
+      {w:"layout",c:"Digital",h:"Disposición de los elementos de una pieza dentro del espacio disponible."},
+      {w:"banner",c:"Digital",h:"Pieza gráfica rectangular que se usa para publicidad en sitios web."},
+      {w:"cursor",c:"Digital",h:"Marca que indica la posición del puntero en la pantalla."},
+      {w:"scroll",c:"Digital",h:"Desplazamiento del contenido de una página hacia arriba o hacia abajo."},
+      {w:"hover",c:"Digital",h:"Efecto que se activa al pasar el puntero sobre un elemento."},
+      {w:"sprite",c:"Digital",h:"Imagen 2D que se usa como personaje u objeto en un videojuego."},
+      {w:"avatar",c:"Digital",h:"Imagen o personaje que representa a una persona en un entorno digital."},
+      {w:"boton",c:"Digital",h:"Elemento de interfaz que se toca o se clickea para ejecutar una acción."},
+      {w:"tooltip",c:"Digital",h:"Mensaje corto que aparece al apoyar el puntero sobre un elemento."},
+      {w:"sticker",c:"Concepto",h:"Pegatina decorativa con una imagen o un texto."},
+      {w:"emblema",c:"Marca",h:"Figura simbólica que representa a un grupo o a una institución."},
+      {w:"escudo",c:"Marca",h:"Insignia con forma de blasón que identifica a un club o una institución."},
+      {w:"sello",c:"Marca",h:"Marca que se estampa para certificar o identificar algo."},
+      {w:"color",c:"Color",h:"Sensación que produce en la vista la luz que reflejan los objetos."},
+      {w:"tinte",c:"Color",h:"Sustancia que se usa para dar color a telas, pelo o materiales."},
+      {w:"verde",c:"Color",h:"Color que resulta de mezclar azul y amarillo."},
+      {w:"magenta",c:"Color",h:"Color primario de la impresión, entre el rojo y el violeta."},
+      {w:"violeta",c:"Color",h:"Color que está entre el azul y el rojo en el arcoíris."},
+      {w:"naranja",c:"Color",h:"Color que resulta de mezclar rojo y amarillo."},
+      {w:"celeste",c:"Color",h:"Azul claro, como el del cielo despejado."},
+      {w:"dorado",c:"Color",h:"Color amarillo metálico que recuerda al oro."},
+      {w:"beige",c:"Color",h:"Color arena muy claro, entre el crema y el marrón."},
+      {w:"sepia",c:"Color",h:"Tono marrón rojizo típico de las fotos antiguas."},
+      {w:"neutro",c:"Color",h:"Color sin matiz marcado, como el gris, el blanco o el negro."},
+      {w:"calido",c:"Color",h:"Se dice del color que evoca el fuego o el sol, como el rojo o el naranja."},
+      {w:"pastel",c:"Color",h:"Tono suave y claro, poco saturado."},
+      {w:"sombra",c:"Concepto",h:"Zona oscura que proyecta un objeto al bloquear la luz."},
+      {w:"reflejo",c:"Concepto",h:"Imagen que devuelve una superficie lisa, como un espejo."},
+      {w:"lente",c:"Fotografía",h:"Pieza de vidrio que concentra o dispersa la luz en una cámara."},
+      {w:"camara",c:"Fotografía",h:"Aparato que captura imágenes."},
+      {w:"flash",c:"Fotografía",h:"Destello de luz breve y potente que ilumina la escena al sacar una foto."},
+      {w:"macro",c:"Fotografía",h:"Foto tomada muy de cerca de un objeto pequeño."},
+      {w:"revelar",c:"Fotografía",h:"Procesar una película o un archivo para que la imagen se haga visible."},
+      {w:"tripode",c:"Fotografía",h:"Soporte de tres patas que mantiene firme la cámara."},
+      {w:"selfie",c:"Fotografía",h:"Foto que una persona se saca a sí misma."},
+      {w:"filtro",c:"Fotografía",h:"Efecto o lámina que modifica el color o la luz de una imagen."},
+      {w:"retoque",c:"Fotografía",h:"Edición de una imagen para corregirla o mejorarla."},
+      {w:"grano",c:"Fotografía",h:"Textura de pequeños puntos visible en las fotos de película."},
+      {w:"nitidez",c:"Fotografía",h:"Claridad con la que se ven los detalles de una imagen."},
+      {w:"enfoque",c:"Fotografía",h:"Ajuste que hace que el sujeto de una foto se vea definido."},
+      {w:"guion",c:"Cine",h:"Texto que describe los diálogos y las acciones de una película."},
+      {w:"escena",c:"Cine",h:"Parte de una película que transcurre en un mismo lugar y tiempo."},
+      {w:"actor",c:"Cine",h:"Persona que interpreta un personaje."},
+      {w:"trailer",c:"Cine",h:"Adelanto corto que promociona una película."},
+      {w:"corto",c:"Cine",h:"Película de poca duración."},
+      {w:"montaje",c:"Cine",h:"Etapa en la que se ordenan y unen las tomas de una película."},
+      {w:"elenco",c:"Cine",h:"Conjunto de actores de una película o una obra."},
+      {w:"plano",c:"Cine",h:"Fragmento filmado sin cortes desde una misma posición de cámara."},
+      {w:"comic",c:"Arte",h:"Historia contada en viñetas con dibujos y texto."},
+      {w:"manga",c:"Arte",h:"Historieta de origen japonés."},
+      {w:"anime",c:"Cine",h:"Animación de origen japonés."},
+      {w:"viñeta",c:"Arte",h:"Cada uno de los recuadros de una historieta."},
+      {w:"globo",c:"Arte",h:"Burbuja que contiene el diálogo de un personaje en una historieta."},
+      {w:"maqueta",c:"Arquitectura",h:"Modelo a escala reducida de un edificio o de un objeto."},
+      {w:"fachada",c:"Arquitectura",h:"Cara exterior de un edificio, sobre todo la principal."},
+      {w:"cupula",c:"Arquitectura",h:"Techo con forma de media esfera."},
+      {w:"puente",c:"Arquitectura",h:"Construcción que permite cruzar un río o una calle."},
+      {w:"torre",c:"Arquitectura",h:"Edificio o estructura mucho más alta que ancha."},
+      {w:"cemento",c:"Arquitectura",h:"Material en polvo que, mezclado con agua, endurece y une materiales de construcción."},
+      {w:"templo",c:"Arquitectura",h:"Edificio destinado al culto religioso."},
+      {w:"codigo",c:"Digital",h:"Conjunto de instrucciones escritas en un lenguaje de programación."},
+      {w:"robot",c:"Tecnología",h:"Máquina programable que realiza tareas de forma automática."},
+      {w:"teclado",c:"Tecnología",h:"Conjunto de teclas para escribir en una computadora."},
+      {w:"mouse",c:"Tecnología",h:"Dispositivo que se mueve con la mano para controlar el puntero."},
+      {w:"tablet",c:"Tecnología",h:"Computadora plana y portátil que se maneja con los dedos."},
+      {w:"lapiz",c:"Herramienta",h:"Instrumento de escritura y dibujo con una mina de grafito."},
+      {w:"regla",c:"Herramienta",h:"Instrumento recto con medidas para trazar líneas."},
+      {w:"compas",c:"Herramienta",h:"Instrumento con dos brazos para dibujar circunferencias."},
+      {w:"papel",c:"Impresión",h:"Material fino y plano hecho con fibras vegetales, base de lo impreso."},
+      {w:"carton",c:"Impresión",h:"Papel grueso y rígido que se usa en cajas y envases."},
+      {w:"bordado",c:"Arte",h:"Técnica que dibuja figuras sobre tela con hilo y aguja."},
+      {w:"tejido",c:"Arte",h:"Material que se forma entrelazando hilos, o la técnica para hacerlo."},
+      {w:"arcilla",c:"Arte",h:"Material blando que se moldea y endurece al cocerlo."},
+      {w:"melodia",c:"Música",h:"Sucesión de sonidos ordenados que forma una frase musical reconocible."},
+      {w:"acorde",c:"Música",h:"Conjunto de tres o más notas que suenan a la vez."},
+      {w:"tempo",c:"Música",h:"Velocidad con que se interpreta una pieza musical."},
+      {w:"banda",c:"Música",h:"Grupo de músicos que toca junto."},
+      {w:"violin",c:"Música",h:"Instrumento de cuatro cuerdas que se toca con arco."},
+      {w:"piano",c:"Música",h:"Instrumento de teclas y cuerdas golpeadas por martillos."},
+      {w:"tambor",c:"Música",h:"Instrumento de percusión que se golpea con palos o con las manos."},
+      {w:"disco",c:"Música",h:"Soporte donde se graba y se publica música."},
+      {w:"vinilo",c:"Música",h:"Disco negro de plástico que se escucha con una púa."},
+      {w:"afinar",c:"Música",h:"Ajustar un instrumento para que suene en el tono correcto."},
+      {w:"sonido",c:"Música",h:"Vibración que el oído percibe."},
+      {w:"teatro",c:"Arte",h:"Arte de representar historias frente a un público."},
+      {w:"danza",c:"Arte",h:"Arte de expresarse con movimientos del cuerpo, casi siempre con música."},
+      {w:"poema",c:"Literatura",h:"Obra escrita en verso."},
+      {w:"novela",c:"Literatura",h:"Relato extenso de ficción escrito en prosa."},
+      {w:"cuento",c:"Literatura",h:"Relato breve de ficción."},
+      {w:"poesia",c:"Literatura",h:"Arte de expresar belleza o emociones con palabras y ritmo."},
+      {w:"autor",c:"Literatura",h:"Persona que crea una obra."},
+      {w:"prosa",c:"Literatura",h:"Forma de escribir sin versos ni rima."},
+      {w:"verso",c:"Literatura",h:"Cada una de las líneas de un poema."},
+      {w:"estilo",c:"Concepto",h:"Manera particular de hacer algo, que distingue a una persona o a una época."},
+      {w:"genio",c:"Creatividad",h:"Capacidad creativa extraordinaria."},
+      {w:"ingenio",c:"Creatividad",h:"Habilidad para inventar o resolver problemas con astucia."},
+      {w:"sueño",c:"Creatividad",h:"Imagen o historia que se vive mientras se duerme."},
+      {w:"humor",c:"Creatividad",h:"Forma de ver o mostrar las cosas de manera divertida."},
+      {w:"parodia",c:"Creatividad",h:"Imitación burlona de una obra o de una persona."},
+      {w:"ironia",c:"Creatividad",h:"Forma de decir lo contrario de lo que se piensa para dar a entender algo."},
+      {w:"armonia",c:"Concepto",h:"Combinación agradable y equilibrada de los elementos de una obra."},
+      {w:"balance",c:"Concepto",h:"Distribución del peso visual para que una pieza se vea estable."},
+      {w:"borde",c:"Concepto",h:"Línea o franja que limita una forma o una pieza."},
+      {w:"marco",c:"Concepto",h:"Estructura que rodea un cuadro o una imagen."},
+      {w:"fondo",c:"Concepto",h:"Plano más alejado de una imagen, detrás de lo principal."},
+      {w:"figura",c:"Concepto",h:"Forma que se destaca sobre el fondo."},
+      {w:"volumen",c:"Concepto",h:"Sensación de tres dimensiones en una imagen."},
+      {w:"relieve",c:"Concepto",h:"Parte que sobresale de una superficie."},
+      {w:"curva",c:"Concepto",h:"Línea que cambia de dirección de forma gradual, sin ángulos."},
+      {w:"punto",c:"Concepto",h:"Elemento mínimo que se marca sobre una superficie."},
+      {w:"circulo",c:"Concepto",h:"Forma redonda cuyos puntos están a igual distancia del centro."},
+      {w:"espiral",c:"Concepto",h:"Línea curva que gira alrededor de un punto alejándose de él."},
+      {w:"flecha",c:"Concepto",h:"Signo que indica una dirección."},
+      {w:"simple",c:"Concepto",h:"Que no tiene adornos ni elementos de más."},
+      {w:"firma",c:"Marca",h:"Nombre escrito a mano con un trazo propio, que identifica a una persona."},
+      {w:"rubrica",c:"Marca",h:"Trazo que acompaña a una firma."},
+      {w:"cliente",c:"Proceso",h:"Persona o empresa que encarga un trabajo de diseño."},
+      {w:"entrega",c:"Proceso",h:"Momento de presentar el trabajo terminado."},
+      {w:"ajuste",c:"Proceso",h:"Cambio chico que se hace para mejorar una pieza."},
+      {w:"equipo",c:"Proceso",h:"Grupo de personas que trabajan juntas en un proyecto."},
+      {w:"behance",c:"Herramienta",h:"Plataforma de Adobe donde las personas creativas muestran su trabajo."},
+      {w:"canva",c:"Herramienta",h:"Herramienta online para diseñar piezas sin ser profesional."},
+      {w:"blender",c:"Herramienta",h:"Programa gratuito y de código abierto para modelado 3D y animación."},
+      {w:"adobe",c:"Herramienta",h:"Empresa creadora de Photoshop, Illustrator y After Effects."},
+      {w:"capas",c:"Herramienta",h:"Niveles apilados de una imagen que permiten editar cada parte por separado."},
+      {w:"ancla",c:"Herramienta",h:"Punto que marca un cambio de dirección en un trazado vectorial."},
+      {w:"trazado",c:"Digital",h:"Línea vectorial formada por puntos y curvas editables."},
+      {w:"relleno",c:"Herramienta",h:"Color o textura que ocupa el interior de una forma."},
+      {w:"ruido",c:"Concepto",h:"Textura granulada que se agrega a una imagen."},
+      {w:"formato",c:"Impresión",h:"Medida y orientación de una pieza, como A4 o vertical."},
+      {w:"doblez",c:"Impresión",h:"Marca que queda al plegar el papel."},
+      {w:"plegado",c:"Impresión",h:"Acción de doblar el papel para dar forma a un folleto."},
+      {w:"tirada",c:"Impresión",h:"Cantidad de ejemplares que se imprimen de una vez."},
+      {w:"prueba",c:"Impresión",h:"Muestra impresa para revisar color y detalles antes de la tirada final."},
+      {w:"corte",c:"Impresión",h:"Acción de recortar el papel al tamaño final."},
+      {w:"tramado",c:"Impresión",h:"Patrón de puntos con que se simula el gris o el color en una impresión."}
+  ];
+
+  /* ---- Concepto del día: sale de la fecha (misma fecha => mismo concepto), sin servidor ---- */
+  function mulberry(a) { return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  const orden = (() => { const r = mulberry(20260101), a = POOL.map((_, i) => i); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; })();
+  const [fy, fm, fd] = fecha.split("-").map(Number);
+  const numDia = Math.floor((Date.UTC(fy, fm - 1, fd) - Date.UTC(2026, 0, 1)) / 864e5);
+  const pieza = POOL[orden[((numDia % POOL.length) + POOL.length) % POOL.length]];
+  const palabra = pieza.w.toUpperCase();
+  const N = palabra.length;
+
+  const larga = () => { const t = new Date(Date.UTC(fy, fm - 1, fd, 12)).toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" }); return t.charAt(0).toUpperCase() + t.slice(1); };
+  const dias = n => n === 1 ? "1 día" : n + " días";
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+
+  /* ---- Estado del día (se guarda en cada intento: si recargás, seguís donde estabas) ---- */
+  let est = Q.estado(fecha);
+  if (!est || !Array.isArray(est.g) || est.g.some(g => typeof g !== "string" || g.length !== N)) est = { g: [], pista: 0, fin: 0, ok: 0, n: 0, p: 0 };
+  let cur = "", bloqueo = false, seguro = false, tSeguro = null;
+
+  const inicio = $("startScreen"), juego = $("gameContent"), final = $("finalScreen");
+  const verJuego = () => { inicio.hidden = true; final.classList.remove("show"); juego.style.display = ""; };
+  const verFinal = () => { inicio.hidden = true; juego.style.display = "none"; final.classList.add("show"); };
+  const msg = t => { $("message").textContent = t || ""; };
+
+  /* ---- Cómo se pinta cada letra ---- */
+  function evaluar(g) {
+    const r = Array(N).fill("no"), resto = {};
+    for (let i = 0; i < N; i++) { if (g[i] === palabra[i]) r[i] = "ok"; else resto[palabra[i]] = (resto[palabra[i]] || 0) + 1; }
+    for (let i = 0; i < N; i++) { if (r[i] !== "ok" && resto[g[i]] > 0) { r[i] = "pres"; resto[g[i]]--; } }
+    return r;
+  }
+
+  /* ---- Grilla ---- */
+  const grid = $("cdGrid");
+  grid.style.setProperty("--n", N);
+  const filas = [];
+  for (let r = 0; r < MAX; r++) {
+    const row = el("div", "cd-row"); row.setAttribute("role", "row");
+    const ts = [];
+    for (let c = 0; c < N; c++) { const t = el("div", "cd-t"); t.setAttribute("role", "gridcell"); t.style.setProperty("--i", c); row.appendChild(t); ts.push(t); }
+    grid.appendChild(row); filas.push(ts);
+  }
+  const NOMBRE = { ok: "en su lugar", pres: "en otro lugar", no: "no está" };
+  function pintarFila(r, anim) {
+    const g = est.g[r], res = evaluar(g);
+    filas[r].forEach((t, i) => {
+      t.textContent = g[i];
+      t.setAttribute("aria-label", g[i] + ", " + NOMBRE[res[i]]);
+      const aplicar = () => { t.classList.remove("fill", "flip"); t.classList.add(res[i]); };
+      if (anim && !reducido) { t.classList.add("flip"); setTimeout(aplicar, i * 220 + 250); } else aplicar();
+    });
+  }
+  function pintarActual() {
+    const r = est.g.length; if (r >= MAX) return;
+    filas[r].forEach((t, i) => { const c = cur[i] || ""; t.textContent = c; t.classList.toggle("fill", !!c); });
+  }
+  function sacudir() { const r = filas[est.g.length]; if (!r) return; const row = r[0].parentNode; row.classList.remove("shake"); void row.offsetWidth; row.classList.add("shake"); }
+  function saltar(r) { if (reducido) return; const row = filas[r][0].parentNode; row.classList.add("salto"); }
+
+  /* ---- Teclado en pantalla ---- */
+  const kb = $("cdKb");
+  function tecla(txt, clave, cls, etiqueta) {
+    const b = el("button", "key" + (cls ? " " + cls : ""), txt); b.type = "button";
+    if (etiqueta) b.setAttribute("aria-label", etiqueta);
+    if (clave.length === 1) b.dataset.k = clave;
+    b.addEventListener("click", () => entrada(clave));
+    return b;
+  }
+  ["QWERTYUIOP", "ASDFGHJKLÑ", "ZXCVBNM"].forEach((f, i) => {
+    const row = el("div", "key-row");
+    if (i === 2) row.appendChild(tecla("Enter", "ENTER", "ancha", "Enviar"));
+    [...f].forEach(ch => row.appendChild(tecla(ch, ch)));
+    if (i === 2) row.appendChild(tecla("⌫", "BORRAR", "ancha", "Borrar"));
+    kb.appendChild(row);
+  });
+  const rango = { no: 1, pres: 2, ok: 3 };
+  function pintarTeclas() {
+    const m = {};
+    est.g.forEach(g => { const r = evaluar(g); [...g].forEach((ch, i) => { if (!m[ch] || rango[r[i]] > rango[m[ch]]) m[ch] = r[i]; }); });
+    const KC = { ok: "correct", pres: "pres", no: "wrong" };
+    kb.querySelectorAll(".key[data-k]").forEach(b => { b.classList.remove("correct", "pres", "wrong"); const e = m[b.dataset.k]; if (e) b.classList.add(KC[e]); });
+  }
+
+  /* ---- Entrada (pantalla y teclado físico) ---- */
+  function entrada(k) {
+    if (bloqueo || est.fin) return;
+    if (k === "ENTER") return enviar();
+    if (k === "BORRAR") { cur = cur.slice(0, -1); msg(""); return pintarActual(); }
+    if (cur.length >= N) return;
+    cur += k; msg(""); pintarActual();
+  }
+  const limpiar = c => (c === "ñ" || c === "Ñ") ? "Ñ" : c.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+  document.addEventListener("keydown", e => {
+    if (juego.style.display === "none" || inicio.hidden === false || e.ctrlKey || e.metaKey || e.altKey) return;
+    const t = e.target; if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+    if (e.key === "Enter") { e.preventDefault(); return entrada("ENTER"); }
+    if (e.key === "Backspace") { e.preventDefault(); return entrada("BORRAR"); }
+    if (e.key.length === 1) { const L = limpiar(e.key); if (/^[A-ZÑ]$/.test(L)) { e.preventDefault(); entrada(L); } }
+  });
+
+  /* ---- Puntos que vale el próximo intento ---- */
+  function pintarVale() {
+    const usados = est.g.length, r = $("roundText");
+    r.textContent = ""; r.setAttribute("aria-label", "Intento " + Math.min(usados + 1, MAX) + " de " + MAX);
+    for (let i = 0; i < MAX; i++) r.appendChild(el("i", "dot" + (i < usados ? " ok" : i === usados && !est.fin ? " on" : "")));
+    const v = $("scoreText"); v.textContent = "";
+    const pts = est.fin ? est.p : Math.max(0, BASE[Math.min(usados, MAX - 1)] - (est.pista ? COSTO : 0));
+    v.appendChild(document.createTextNode(pts + " pts"));
+    v.appendChild(el("small", null, est.fin ? "tu puntaje" : "vale ahora"));
+  }
+
+  /* ---- Pista: la categoría y la definición corta del Ahorcado ---- */
+  function pintarPista() {
+    const c = $("cdPista"); c.textContent = "";
+    if (est.pista) {
+      const b = el("div", "cd-pista-box");
+      b.appendChild(el("span", "hint-tag", "Pista · " + pieza.c));
+      b.appendChild(el("p", null, pieza.h));
+      c.appendChild(b); return;
+    }
+    if (est.fin) return;
+    const btn = el("button", "cd-pista-btn" + (seguro ? " seguro" : "")); btn.type = "button";
+    btn.appendChild(document.createTextNode(seguro ? "¿Seguro? Tocá de nuevo" : "Pedir una pista"));
+    btn.appendChild(el("small", null, "−" + COSTO + " pts"));
+    btn.addEventListener("click", () => {
+      if (!seguro) { seguro = true; pintarPista(); clearTimeout(tSeguro); tSeguro = setTimeout(() => { seguro = false; pintarPista(); }, 4000); return; }
+      clearTimeout(tSeguro); seguro = false; est.pista = 1; Q.guardar(fecha, est); pintarPista(); pintarVale();
+    });
+    c.appendChild(btn);
+  }
+
+  /* ---- Enviar un intento ---- */
+  const FRASES = ["¡A la primera! Tenés un ojo increíble.", "Casi sin mirar. Ojo de diseñador.", "Muy bien, lo sacaste rápido.", "Bien jugado.", "Justo a tiempo.", "Por los pelos, pero salió."];
+  function enviar() {
+    if (cur.length < N) { sacudir(); msg("Faltan letras: el concepto de hoy tiene " + N + "."); return; }
+    const g = cur; cur = "";
+    est.g.push(g);
+    const r = est.g.length - 1, ok = g === palabra, fin = ok || est.g.length >= MAX;
+    if (fin) { est.fin = 1; est.ok = ok ? 1 : 0; est.n = est.g.length; est.p = ok ? Math.max(0, BASE[est.n - 1] - (est.pista ? COSTO : 0)) : 0; }
+    Q.guardar(fecha, est);
+    bloqueo = true; msg("");
+    pintarFila(r, true);
+    setTimeout(() => {
+      pintarTeclas(); pintarVale();
+      if (ok) { saltar(r); msg(FRASES[r]); }
+      if (fin) { clearTimeout(tSeguro); pintarPista(); setTimeout(mostrarFinal, ok ? 1500 : 1000); }
+      else bloqueo = false;
+    }, reducido ? 0 : N * 220 + 350);
+  }
+
+  /* ---- Racha, puntos de la semana y cuenta regresiva ---- */
+  function chips(cont, r, sem) {
+    cont.textContent = "";
+    const mk = (n, t, viva) => { const d = el("div", "cd-chip" + (viva ? " viva" : "")); d.appendChild(el("b", null, n)); d.appendChild(el("small", null, t)); return d; };
+    cont.appendChild(mk(r.actual, r.actual === 1 ? "día de racha" : "días de racha", r.actual > 0));
+    cont.appendChild(mk(r.mejor, "mejor racha", false));
+    if (sem) cont.appendChild(mk(sem.puntos, "pts de la semana", sem.puntos > 0));
+  }
+  function iniciarCuenta() {
+    const e = $("ddCuenta");
+    const tick = () => {
+      const ahora = Date.now() - 3 * 3600 * 1000, prox = (Math.floor(ahora / 864e5) + 1) * 864e5, ms = prox - ahora;
+      if (ms <= 1000) { location.reload(); return; }
+      const h = Math.floor(ms / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+      e.textContent = h > 0 ? h + " h " + m + " min" : m + " min";
+    };
+    tick(); setInterval(tick, 30000);
+  }
+
+  /* ---- Resultado para pegar en redes ---- */
+  const CUAD = { ok: "🟦", pres: "⬜", no: "⬛" };
+  function textoResultado() {
+    const [, m, d] = fecha.split("-");
+    const cab = "Concepto del día " + d + "/" + m + " · " + (est.ok ? est.n : "X") + "/" + MAX + (est.pista ? " (con pista)" : "");
+    return cab + "\n" + est.g.map(g => evaluar(g).map(x => CUAD[x]).join("")).join("\n") + "\nJugá en qfadesign.com/juegos/concepto-del-dia";
+  }
+  function copiar(t) {
+    const viejo = () => { const a = document.createElement("textarea"); a.value = t; a.setAttribute("readonly", ""); a.style.cssText = "position:fixed;top:0;opacity:0"; document.body.appendChild(a); a.select(); let ok = false; try { ok = document.execCommand("copy"); } catch (e) {} a.remove(); return ok; };
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(t).then(() => true, () => viejo());
+    return Promise.resolve(viejo());
+  }
+
+  /* ---- Pantalla final ---- */
+  function mostrarFinal() {
+    verFinal();
+    bloqueo = true;
+    const ok = !!est.ok;
+    $("cdFinalTit").textContent = ok ? (est.n === 1 ? "¡A la primera!" : "¡Lo sacaste en " + est.n + "!") : "Hoy no salió";
+    $("cdSol").textContent = palabra;
+    $("cdSolCat").textContent = pieza.c;
+    $("cdSolDef").textContent = pieza.h;
+    $("finalScore").textContent = est.p + " pts";
+    $("cdDetalle").textContent = (ok ? est.n + " de " + MAX + " intentos" : "no lo sacaste") + (est.pista ? " · con pista" : "");
+    const mini = $("cdMini"); mini.textContent = "";
+    est.g.forEach(g => { const f = el("div"); evaluar(g).forEach(x => f.appendChild(el("i", x))); mini.appendChild(f); });
+    const r = Q.racha(), sem = Q.semana();
+    chips($("ddRachaFin"), r, sem);
+    $("cdSemana").textContent = "";
+    $("cdSemana").appendChild(document.createTextNode("Esta semana jugaste "));
+    $("cdSemana").appendChild(el("b", null, dias(sem.dias)));
+    $("cdSemana").appendChild(document.createTextNode(" y sumaste "));
+    $("cdSemana").appendChild(el("b", null, sem.puntos + " pts"));
+    $("cdSemana").appendChild(document.createTextNode(" en este dispositivo."));
+    iniciarCuenta();
+    const btn = $("cdCopiar");
+    btn.onclick = () => copiar(textoResultado()).then(bien => { btn.textContent = bien ? "¡Copiado! Pegalo donde quieras" : "No se pudo copiar"; setTimeout(() => { btn.textContent = "Copiar mi resultado"; }, 2600); });
+    const caja = $("shareBox"); caja.innerHTML = "";
+    if (window.QFARanking) QFARanking.montar(caja, { juego: "concepto", modo: fecha, titulo: "Concepto del día", puntos: est.p, semanal: true });
+    if (window.QFAResultado) {
+      const [, m, d] = fecha.split("-");
+      QFAResultado.montar(caja, () => ({ juego: "Concepto del día", puntos: est.p, detalle: [["FECHA", d + "/" + m], ["INTENTOS", (est.ok ? est.n : "X") + "/" + MAX], ["PISTA", est.pista ? "Sí" : "No"], ["RACHA", dias(Q.racha().actual)]] }));
+    }
+  }
+
+  /* ---- Empezar ---- */
+  function empezar() {
+    verJuego();
+    $("consigna").textContent = "Adiviná el concepto de diseño de " + N + " letras.";
+    est.g.forEach((_, i) => pintarFila(i, false));
+    pintarTeclas(); pintarPista(); pintarVale(); pintarActual();
+    msg("");
+  }
+
+  function arrancar() {
+    $("ddFecha").textContent = larga() + " · un concepto nuevo por día";
+    const r = Q.racha();
+    chips($("ddRacha"), r, Q.semana());
+    $("ddNota").textContent = r.actual > 0 ? "Tu racha de " + dias(r.actual) + " sigue viva: jugá hoy para sumar un día." : "Jugá hoy y empezá tu racha.";
+    if (est.fin) return mostrarFinal();
+    if (est.g.length) $("startBtn").textContent = "Seguir jugando";
+    $("startBtn").addEventListener("click", empezar);
+  }
+  /* los scripts del ranking se cargan con defer: esperamos a que estén antes de mostrar un resultado ya jugado */
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", arrancar); else arrancar();
+})();
+
+</script>
+<footer>
+ <div class="gran" aria-hidden="true"><img src="../img/Marca_qfadesign_blanco.svg" alt="" width="231.23" height="51.58" data-ar></div>
+ <div class="pie"><div class="redes"><a href="https://www.instagram.com/qfadesign/" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@qfadesign" target="_blank" rel="noopener">Tiktok</a><a href="https://www.behance.net/facundocruz5" target="_blank" rel="noopener">Behance</a><a href="https://www.linkedin.com/in/facundo-cruz-19a581303/" target="_blank" rel="noopener">LinkedIn</a></div></div>
+ <p class="firma">web diseñada por qfadesign · <a href="../licencia">Licencia</a> · <a href="../reembolsos">Reembolsos</a> · <a href="../ayuda">Ayuda</a> · <a href="../privacidad">Privacidad</a> · <a href="#cookies" data-cookies>Cookies</a></p>
+</footer>
+</body>
+</html>

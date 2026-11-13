@@ -13,6 +13,12 @@ Mientras el archivo de config tenga el texto de ejemplo, el ranking queda apagad
 ## Kerning, La pluma y Alinear
 Si ya tenías el ranking andando, correr una vez `ranking/juegos-nuevos.sql` en Supabase (SQL Editor → New query → pegar → Run). Sin eso, esos tres juegos muestran el ranking pero no pueden guardar puntajes. Si armás todo de cero, alcanza con `supabase.sql` (ya los incluye).
 
+## Concepto del día (ranking semanal)
+Si ya tenías el ranking andando, correr una vez `ranking/concepto.sql` en Supabase (SQL Editor → New query → pegar → Run). Sin eso, el juego funciona pero no puede guardar puntajes ni mostrar el ranking de la semana. Si armás todo de cero, alcanza con `supabase.sql` (ya lo incluye). Se puede volver a correr sin problema.
+
+- Cada día se guarda como un puntaje del juego `concepto` con la fecha como modo (igual que el Color del día). Solo se aceptan la fecha de hoy y la de ayer (hora de Argentina).
+- `top_semanal` suma los puntajes de lunes a domingo (hora de Argentina). El ranking se reinicia solo cada lunes; la semana pasada se puede ver con el botón del ranking.
+
 ## Cómo funciona
 - **Antes de jugar se pregunta quién juega** (pantalla de inicio de cada juego): si el navegador ya tiene un usuario guardado, pregunta "Soy Facu#7 / Soy otra persona"; si no, ofrece crear un usuario, entrar con uno que ya existe o jugar sin usuario. El botón "Empezar" queda bloqueado hasta responder. Al terminar, el puntaje se guarda solo con ese jugador. Un usuario nuevo se crea recién al terminar la partida (con su puntaje real), así no quedan usuarios con 0 puntos. Cambiar de jugador después de jugar solo afecta a la próxima partida: nunca reenvía el puntaje.
 - El jugador elige un apodo y, si quiere, un código de 4 números (opcional); el sistema le asigna un número correlativo (`Facu#7`: el primer jugador es #1, el segundo #2…; hay que correr `ranking/numeros.sql` una vez).

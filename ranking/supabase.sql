@@ -41,10 +41,10 @@ declare
   v_dia  date;
 begin
   -- puntaje máximo posible por juego (evita puntajes inventados)
-  v_max := case p_juego when 'color' then 5000 when 'tipografia' then 1500 when 'ahorcado' then 1250 when 'diario' then 1000 when 'kerning' then 1000 when 'pluma' then 1000 when 'alinear' then 1000 else null end;
+  v_max := case p_juego when 'color' then 5000 when 'tipografia' then 1500 when 'ahorcado' then 1250 when 'diario' then 1000 when 'concepto' then 1000 when 'kerning' then 1000 when 'pluma' then 1000 when 'alinear' then 1000 else null end;
   if v_max is null then raise exception 'juego'; end if;
-  if p_juego = 'diario' then
-    -- desafío diario: el modo es la fecha (AAAA-MM-DD, hora de Argentina) y solo se acepta la de hoy o la de ayer
+  if p_juego in ('diario','concepto') then
+    -- desafíos del día (color y concepto): el modo es la fecha (AAAA-MM-DD, hora de Argentina) y solo se acepta la de hoy o la de ayer
     if p_modo !~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' then raise exception 'modo'; end if;
     begin v_dia := p_modo::date; exception when others then raise exception 'modo'; end;
     if v_dia < (now() at time zone 'America/Argentina/Buenos_Aires')::date - 1
@@ -107,3 +107,27 @@ create or replace function public.nuevo_numero() returns text
 language sql security definer set search_path = public as $$ select nextval('public.players_tag_seq')::text; $$;
 revoke all on function public.nuevo_numero() from public;
 grant execute on function public.nuevo_numero() to anon;
+
+-- Ranking SEMANAL (suma los puntos de cada día de la semana, de lunes a domingo, hora de Argentina).
+-- p_atras = 0 es esta semana, 1 la pasada, etc. (hasta 12). Hoy lo usa 'concepto' (Concepto del día).
+create or replace function public.top_semanal(p_juego text, p_atras int default 0, p_limite int default 10)
+returns table (apodo text, tag text, puntaje int, dias int)
+language sql security definer set search_path = public stable as $$
+  with sem as (
+    select (date_trunc('week', (now() at time zone 'America/Argentina/Buenos_Aires'))::date
+            - 7 * greatest(least(coalesce(p_atras, 0), 12), 0)) as lunes
+  )
+  select p.apodo, p.tag, sum(s.puntaje)::int, count(*)::int
+    from scores s
+    join players p on p.id = s.player_id
+    cross join sem
+   where s.juego = p_juego
+     and case when s.modo ~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' then s.modo::date end
+         between sem.lunes and sem.lunes + 6
+   group by p.id, p.apodo, p.tag
+   order by sum(s.puntaje) desc, max(s.updated_at) asc
+   limit least(greatest(p_limite, 1), 50);
+$$;
+
+revoke all on function public.top_semanal(text,int,int) from public;
+grant execute on function public.top_semanal(text,int,int) to anon;

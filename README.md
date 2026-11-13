@@ -10,7 +10,7 @@ Es un sitio estático (HTML, CSS y JavaScript, sin frameworks ni paso de compila
 index.html                  Inicio
 acerca.html · portfolio.html · herramientas.html · jueguitos.html · contacto.html
 proyecto-*.html             Una página por proyecto (Árbol, Bleko, Dulcemente, Miga, ROS.exe, Trazo, F1)
-juegos/                     Los siete jueguitos (color, tipografía, ahorcado, desafío diario, kerning, alinear, pluma)
+juegos/                     Los ocho jueguitos (color, tipografía, ahorcado, desafío diario, concepto del día, kerning, alinear, pluma)
 herramienta/                  Una página por herramienta: calculadora de precios, paletas, contraste, convertidor de imágenes, unidades y brief
 404.html                    Página de error
 css/ · js/                 Estilos y scripts (js/vendor: jsPDF, para el PDF de la calculadora)
@@ -39,6 +39,23 @@ scripts/lanyard/            Código fuente de esa tarjeta y cómo recompilarla (
 - **Cambiar textos o colores:** `js/lanyard-acerca.js` → `CONFIG` (colores, foto, texto de la cinta) y `TEXTO` (frente y dorso).
 - **Cambiar cómo se mueve o se ve:** el `Lanyard(...)` del final de ese archivo tiene los mismos parámetros del componente original (`size`, `strapLength`, `strapWidth`, `metal`, `finish`, `gravity`, `damping`, `elasticity`, `breeze`, `anchor`, `intro`...).
 - **Sacarla:** quitá las dos líneas `<script>` y el `<link rel="stylesheet" href="css/lanyard.css">` de `acerca.html`.
+
+## Concepto del día: el Wordle de diseño
+
+Un concepto de diseño por día, igual para todos (el mismo para quien juegue desde donde sea: el día es el de Argentina, UTC-3). Se adivina en 6 intentos; hay una pista opcional (la categoría y la definición corta del Ahorcado) que resta 100 puntos. Los puntos de cada día se suman en un **ranking semanal** (de lunes a domingo).
+
+```
+juegos/concepto-del-dia.html   La página del juego (reglas, grilla, teclado, pista, resultado) y la lista de conceptos (POOL)
+js/concepto.js                 Progreso, racha y puntos de la semana (se guardan en el navegador); lo usan el juego y el banner de Jueguitos
+img/stickers/concepto-del-dia-signo.svg · concepto-del-dia-titulo.svg   La marca del juego
+ranking/concepto.sql           Para quien ya tenía el ranking andando: acepta 'concepto' y crea top_semanal
+```
+
+- **Puntos:** acertar en el intento 1 vale 1000; 2 → 850; 3 → 700; 4 → 550; 5 → 400; 6 → 250; no acertar vale 0. La pista resta 100 (sin bajar de 0). Se cambian en `BASE` y `COSTO`, arriba del script de `concepto-del-dia.html` (si cambiás el máximo de 1000, cambialo también en `enviar_puntaje` de los SQL).
+- **Cambiar o sumar conceptos:** editá `POOL` (`w` palabra sin tildes, `c` categoría, `h` pista). Son palabras sueltas de 5 a 7 letras (de diseño y también de temas cercanos: arte, fotografía, cine, música, etc.). Al cambiar la lista, el orden de los días se vuelve a mezclar.
+- **Palabras válidas:** se acepta cualquier combinación de letras de la longitud correcta (no hay diccionario).
+- **Un intento por día:** el progreso se guarda en cada jugada, así que si recargás seguís donde estabas. El ranking guarda el mejor puntaje de cada día por jugador.
+- **Ranking semanal:** `ranking.js` lo muestra cuando la caja lleva `data-semanal` (inicio del juego) o `semanal:true` (al terminar). Tiene un botón para ver la semana pasada.
 
 ## Calculadora de precios: PDF y referencias
 
