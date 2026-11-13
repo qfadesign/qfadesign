@@ -5,6 +5,10 @@
    · «Texto y vectores»: recomprime las imágenes que lleva adentro (JPG y Flate RGB/gris) y reescribe el archivo. El texto y los enlaces quedan intactos.
    · «Máxima compresión»: dibuja cada página como imagen JPG y arma un PDF nuevo. Baja mucho más, pero el texto deja de ser seleccionable.
    Si al comprimir el resultado no pesa menos, se conserva el original.
+   Control de calidad (modo «Texto y vectores»): antes de entregar, el PDF nuevo se abre y se compara con el original (primera, del medio y última página).
+   Si quedó dañado se reintenta con un nivel más suave y, si tampoco sirve, se deja el original.
+   Qué hace además de recomprimir imágenes: ajusta cada imagen al tamaño con el que se dibuja en la página, no toca las máscaras de transparencia,
+   conserva las demás propiedades de la imagen, lee JPG envueltos en ASCII85/Flate e imágenes indexadas, quita miniaturas y objetos sin uso y comprime contenido sin comprimir.
    Librerías (se cargan recién cuando se sube un archivo): pdf.js para leer y dibujar, pdf-lib para reescribir. */
 (function () {
   "use strict";
@@ -16,12 +20,15 @@
   var BASE = ((document.currentScript && document.currentScript.src) || "").replace(/[^\/]*$/, "") + "vendor/";
   var MAX_ARCHIVOS = 12, MAX_BYTES = 100 * 1024 * 1024;
   var msg = $("pdMsg"), estado = $("pdEstado"), lista = $("pdLista"), salida = $("pdSalida");
+  /* q/lado/min/dpiImg: modo «Texto y vectores» (dpiImg = resolución a la que se deja cada imagen según el tamaño con el que se dibuja).
+     dpi/q2: modo «Máxima compresión» (páginas como imagen). */
   var NIVELES = {
-    alta: { q: 0.86, lado: 4000, min: 12000, dpi: 200, q2: 0.86 },
-    media: { q: 0.74, lado: 2400, min: 6000, dpi: 150, q2: 0.74 },
-    baja: { q: 0.55, lado: 1400, min: 4000, dpi: 100, q2: 0.58 },
-    extrema: { q: 0.4, lado: 1000, min: 3000, dpi: 72, q2: 0.42 }
+    alta: { q: 0.85, lado: 4500, min: 12000, dpiImg: 220, dpi: 200, q2: 0.86 },
+    media: { q: 0.72, lado: 3000, min: 6000, dpiImg: 150, dpi: 150, q2: 0.74 },
+    baja: { q: 0.58, lado: 2000, min: 4000, dpiImg: 110, dpi: 100, q2: 0.58 },
+    extrema: { q: 0.42, lado: 1400, min: 2500, dpiImg: 72, dpi: 72, q2: 0.42 }
   };
+  var MAS_SUAVE = { extrema: "baja", baja: "media", media: "alta" };
   var NIV_TXT = {
     alta: "Cuida la calidad al máximo. Ahorra menos.",
     media: "Lo recomendado para mandar por mail. Buena calidad y mucho menos peso.",
@@ -121,11 +128,175 @@
     return new Response(new Blob([u8]).stream().pipeThrough(ds)).arrayBuffer().then(function (b) { return new Uint8Array(b); });
   }
 
-  /* devuelve { src, w, h } dibujable de una imagen del PDF, o null si no se puede */
-  function leerImagen(ctx, o, filtro, n, w, h) {
+  /* ---- Filtros, máscaras y recorrido de páginas ---- */
+  function filtrosDe(ctx, v) {
+    var PL = window.PDFLib; v = ctx.lookup(v);
+    if (!v) return [];
+    if (v instanceof PL.PDFArray) return v.asArray().map(function (x) { x = ctx.lookup(x); return x && x.asString ? x.asString() : "?"; });
+    return v.asString ? [v.asString()] : ["?"];
+  }
+  /* bytes del flujo sin su ÚLTIMO filtro (para JPG que vienen envueltos en ASCII85, Flate, etc.) */
+  function bytesSinUltimo(ctx, o, fl) {
+    var PL = window.PDFLib, N = PL.PDFName;
+    if (fl.length === 1) return o.contents;
+    if (o.dict.get(N.of("DecodeParms"))) return null;
+    var d = PL.PDFDict.withContext(ctx);
+    d.set(N.of("Filter"), ctx.obj(fl.slice(0, -1).map(function (x) { return N.of(x.slice(1)); })));
+    try { return PL.decodePDFRawStream(PL.PDFRawStream.of(d, o.contents)).decode(); } catch (e) { return null; }
+  }
+  function refsDeMascara(ctx, imgs) {
+    var PL = window.PDFLib, N = PL.PDFName, set = {};
+    imgs.forEach(function (e) {
+      ["SMask", "Mask"].forEach(function (k) { var v = e[1].dict.get(N.of(k)); if (v instanceof PL.PDFRef) set[v.tag] = 1; });
+    });
+    return set;
+  }
+
+  /* Tokenizador mínimo de contenido de página: avisa q, Q, cm y Do. Si algo raro rompe la lectura, se corta sin errores. */
+  function escanear(u8, alOp) {
+    var i = 0, n = u8.length, ops = [];
+    function esEsp(c) { return c === 32 || c === 10 || c === 13 || c === 9 || c === 12 || c === 0; }
+    function esDel(c) { return c === 40 || c === 41 || c === 60 || c === 62 || c === 91 || c === 93 || c === 123 || c === 125 || c === 47 || c === 37; }
+    while (i < n) {
+      var c = u8[i];
+      if (esEsp(c)) { i++; continue; }
+      if (c === 37) { while (i < n && u8[i] !== 10 && u8[i] !== 13) i++; continue; }
+      if (c === 40) { var prof = 1; i++; while (i < n && prof) { if (u8[i] === 92) i++; else if (u8[i] === 40) prof++; else if (u8[i] === 41) prof--; i++; } ops.push({ t: "s" }); continue; }
+      if (c === 60) {
+        if (u8[i + 1] === 60) { i += 2; ops.push({ t: "d" }); continue; }
+        while (i < n && u8[i] !== 62) i++; i++; ops.push({ t: "s" }); continue;
+      }
+      if (c === 62) { i += (u8[i + 1] === 62) ? 2 : 1; continue; }
+      if (c === 91 || c === 93 || c === 123 || c === 125) { i++; continue; }
+      if (c === 47) { var a = ++i; while (i < n && !esEsp(u8[i]) && !esDel(u8[i])) i++; ops.push({ t: "n", v: String.fromCharCode.apply(null, u8.subarray(a, i)) }); continue; }
+      var ini = i; while (i < n && !esEsp(u8[i]) && !esDel(u8[i])) i++;
+      var tk = String.fromCharCode.apply(null, u8.subarray(ini, i));
+      if (/^[+-]?(\d+\.?\d*|\.\d+)$/.test(tk)) { ops.push({ t: "#", v: parseFloat(tk) }); continue; }
+      if (tk === "BI") {
+        while (i < n - 1 && !(u8[i] === 73 && u8[i + 1] === 68 && esEsp(u8[i - 1]) && (i + 2 >= n || esEsp(u8[i + 2])))) i++;
+        i += 2;
+        while (i < n - 2 && !(u8[i] === 69 && u8[i + 1] === 73 && esEsp(u8[i - 1]) && (i + 2 >= n || esEsp(u8[i + 2])))) i++;
+        i += 2; ops.length = 0; continue;
+      }
+      if (alOp(tk, ops) === false) return;
+      ops.length = 0;
+    }
+  }
+  function mult(t, m) { /* devuelve m × t en la convención de PDF (m se aplica primero): así se antepone cada «cm» */
+    return [t[0] * m[0] + t[1] * m[2], t[0] * m[1] + t[1] * m[3], t[2] * m[0] + t[3] * m[2], t[2] * m[1] + t[3] * m[3], t[4] * m[0] + t[5] * m[2] + m[4], t[4] * m[1] + t[5] * m[3] + m[5]];
+  }
+  function numsDe(ctx, arr) {
+    var PL = window.PDFLib; arr = ctx.lookup(arr);
+    if (!(arr instanceof PL.PDFArray) || arr.size() !== 6) return null;
+    var r = []; for (var k = 0; k < 6; k++) { var v = numDe(ctx, arr.get(k)); if (v === null || isNaN(v)) return null; r.push(v); }
+    return r;
+  }
+  function contenidoBytes(ctx, v) {
+    var PL = window.PDFLib; v = ctx.lookup(v);
+    if (!v) return new Uint8Array(0);
+    var lista = v instanceof PL.PDFArray ? v.asArray().map(function (x) { return ctx.lookup(x); }) : [v], partes = [], total = 0;
+    lista.forEach(function (st) {
+      if (!(st instanceof PL.PDFRawStream)) return;
+      var d; try { d = PL.decodePDFRawStream(st).decode(); } catch (e) { return; }
+      partes.push(d, new Uint8Array([10])); total += d.length + 1;
+    });
+    var out = new Uint8Array(total), o = 0; partes.forEach(function (x) { out.set(x, o); o += x.length; });
+    return out;
+  }
+  /* para cada imagen: cuánto mide dibujada (en puntos de PDF) en la página; se queda con el uso más grande */
+  function tamanosUso(doc) {
+    var PL = window.PDFLib, N = PL.PDFName, ctx = doc.context, uso = {}, visto = {};
+    function recorrer(bytes, res, base, prof) {
+      var pila = [], m = base.slice();
+      escanear(bytes, function (op, a) {
+        if (op === "q") pila.push(m.slice());
+        else if (op === "Q") { if (pila.length) m = pila.pop(); }
+        else if (op === "cm") { if (a.length >= 6 && a.slice(-6).every(function (x) { return x.t === "#"; })) m = mult(m, a.slice(-6).map(function (x) { return x.v; })); }
+        else if (op === "Do" && a.length && a[a.length - 1].t === "n") {
+          var xo = res && ctx.lookup(res.get(N.of("XObject")));
+          if (!xo || !xo.get) return;
+          var ref = xo.get(N.of(a[a.length - 1].v)), ob = ctx.lookup(ref);
+          if (!ob || !ob.dict) return;
+          var st = ctx.lookup(ob.dict.get(N.of("Subtype")));
+          if (st === N.of("Image") && ref instanceof PL.PDFRef) {
+            var wp = Math.hypot(m[0], m[1]), hp = Math.hypot(m[2], m[3]), u = uso[ref.tag] || (uso[ref.tag] = { w: 0, h: 0 });
+            if (wp > u.w) u.w = wp; if (hp > u.h) u.h = hp;
+          } else if (st === N.of("Form") && prof < 5 && ref instanceof PL.PDFRef && !visto[ref.tag + "@" + prof]) {
+            visto[ref.tag + "@" + prof] = 1;
+            var mf = numsDe(ctx, ob.dict.get(N.of("Matrix"))) || [1, 0, 0, 1, 0, 0], rf = ctx.lookup(ob.dict.get(N.of("Resources"))) || res;
+            var dec; try { dec = PL.decodePDFRawStream(ob).decode(); } catch (e) { return; }
+            recorrer(dec, rf, mult(m, mf), prof + 1);
+          }
+        }
+      });
+    }
+    doc.getPages().forEach(function (pg) {
+      try {
+        var res = ctx.lookup(pg.node.get(N.of("Resources"))) || (pg.node.Parent && pg.node.Parent() && ctx.lookup(pg.node.Parent().get(N.of("Resources"))));
+        recorrer(contenidoBytes(ctx, pg.node.get(N.of("Contents"))), res, [1, 0, 0, 1, 0, 0], 0);
+      } catch (e) { /* esa página queda sin medir: sus imágenes usan el tope fijo del nivel */ }
+    });
+    return uso;
+  }
+
+  /* ---- Limpieza: miniaturas, objetos sin uso, contenido sin comprimir ---- */
+  function quitarHuerfanos(doc) {
+    var PL = window.PDFLib, ctx = doc.context, alcanzados = {}, pila = [];
+    function empujar(o) {
+      if (o instanceof PL.PDFRef) { if (!alcanzados[o.tag]) { alcanzados[o.tag] = 1; pila.push(ctx.lookup(o)); } return; }
+      pila.push(o);
+    }
+    var tr = ctx.trailerInfo; ["Root", "Info", "Encrypt", "ID"].forEach(function (k) { if (tr[k]) empujar(tr[k]); });
+    while (pila.length) {
+      var o = pila.pop();
+      if (!o) continue;
+      if (o instanceof PL.PDFRef) { empujar(o); continue; }
+      if (o instanceof PL.PDFDict) o.values().forEach(empujar);
+      else if (o instanceof PL.PDFArray) o.asArray().forEach(empujar);
+      else if (o.dict && o.dict.values) o.dict.values().forEach(empujar);
+    }
+    var quitar = [];
+    ctx.enumerateIndirectObjects().forEach(function (e) { if (!alcanzados[e[0].tag]) quitar.push(e[0]); });
+    quitar.forEach(function (r) { ctx.delete(r); });
+    return quitar.length;
+  }
+  function deflar(u8) {
+    var cs = new CompressionStream("deflate");
+    return new Response(new Blob([u8]).stream().pipeThrough(cs)).arrayBuffer().then(function (b) { return new Uint8Array(b); });
+  }
+  function comprimirSueltos(doc, mia, prog) {
+    var PL = window.PDFLib, N = PL.PDFName, ctx = doc.context, lista = [];
+    if (!window.CompressionStream) return Promise.resolve(0);
+    ctx.enumerateIndirectObjects().forEach(function (e) {
+      var o = e[1];
+      if (!(o instanceof PL.PDFRawStream) || o.contents.length < 1500 || o.dict.get(N.of("Filter"))) return;
+      var tp = ctx.lookup(o.dict.get(N.of("Type")));
+      if (tp === N.of("XRef") || tp === N.of("ObjStm")) return;
+      lista.push(o);
+    });
+    var ahorrados = 0, seq = Promise.resolve();
+    lista.forEach(function (o, k) {
+      seq = seq.then(function () {
+        if (mia !== corrida) throw cancelado();
+        if (k % 20 === 0) prog("Comprimiendo contenido sin comprimir");
+        return deflar(o.contents).then(function (z) {
+          if (z.length < o.contents.length * 0.9) {
+            ahorrados += o.contents.length - z.length;
+            o.dict.set(N.of("Filter"), N.of("FlateDecode")); o.dict.set(N.of("Length"), PL.PDFNumber.of(z.length));
+            o.contents = z;
+          }
+        });
+      });
+    });
+    return seq.then(function () { return ahorrados; });
+  }
+
+  /* devuelve { src, w, h } dibujable de una imagen del PDF, o null si no se puede.
+     pal: paleta RGB (imágenes indexadas de 8 bits) */
+  function leerImagen(ctx, o, filtro, n, w, h, pal, jpgBytes) {
     var PL = window.PDFLib, N = PL.PDFName;
     if (filtro === "/DCTDecode") {
-      return createImageBitmap(new Blob([o.contents], { type: "image/jpeg" })).then(function (b) { return { src: b, w: b.width, h: b.height }; }, function () { return null; });
+      return createImageBitmap(new Blob([jpgBytes || o.contents], { type: "image/jpeg" })).then(function (b) { return { src: b, w: b.width, h: b.height }; }, function () { return null; });
     }
     if (filtro !== "/FlateDecode" || !window.DecompressionStream || w * h > 60e6) return Promise.resolve(null);
     var dp = ctx.lookup(o.dict.get(N.of("DecodeParms"))), pred = 1, cols = w;
@@ -140,8 +311,9 @@
     return inflar(o.contents).then(function (d) {
       if (pred >= 10) { if (d.length !== h * (w * n + 1)) return null; d = sinPredictor(d, n, w); }
       if (d.length < w * h * n) return null;
-      var im = new ImageData(w, h), px = im.data, i, j;
-      if (n === 3) for (i = 0, j = 0; i < px.length; i += 4, j += 3) { px[i] = d[j]; px[i + 1] = d[j + 1]; px[i + 2] = d[j + 2]; px[i + 3] = 255; }
+      var im = new ImageData(w, h), px = im.data, i, j, k;
+      if (pal) { var nb = pal.nb; for (i = 0, j = 0; i < px.length; i += 4, j++) { k = d[j] * nb; if (k + nb > pal.d.length) k = 0; px[i] = pal.d[k]; px[i + 1] = pal.d[k + (nb === 3 ? 1 : 0)]; px[i + 2] = pal.d[k + (nb === 3 ? 2 : 0)]; px[i + 3] = 255; } }
+      else if (n === 3) for (i = 0, j = 0; i < px.length; i += 4, j += 3) { px[i] = d[j]; px[i + 1] = d[j + 1]; px[i + 2] = d[j + 2]; px[i + 3] = 255; }
       else for (i = 0, j = 0; i < px.length; i += 4, j++) { px[i] = px[i + 1] = px[i + 2] = d[j]; px[i + 3] = 255; }
       var cv = document.createElement("canvas"); cv.width = w; cv.height = h; cv.getContext("2d").putImageData(im, 0, 0);
       return { src: cv, w: w, h: h };
@@ -149,6 +321,8 @@
   }
 
   function aBlobJpg(cv, q) { return new Promise(function (ok) { cv.toBlob(ok, "image/jpeg", q); }); }
+
+  var SIN_COPIAR = { Filter: 1, DecodeParms: 1, Length: 1, ColorSpace: 1, BitsPerComponent: 1, Width: 1, Height: 1, Decode: 1, DL: 1, F: 1, FFilter: 1, FDecodeParms: 1 };
 
   function conservarTexto(it, cfg, mia, prog) {
     var PL = window.PDFLib, N = PL.PDFName;
@@ -158,30 +332,50 @@
         var o = e[1];
         if (o instanceof PL.PDFRawStream && o.dict.get(N.of("Subtype")) === N.of("Image")) imgs.push(e);
       });
+      var mascaras = refsDeMascara(ctx, imgs), uso = {};
+      try { uso = tamanosUso(doc); } catch (e) { uso = {}; }
       var seq = Promise.resolve();
       imgs.forEach(function (e, k) {
         seq = seq.then(function () {
           if (mia !== corrida) throw cancelado();
           var ref = e[0], o = e[1], d = o.dict;
           prog("Imagen " + (k + 1) + " de " + imgs.length);
-          var filtro = nombreDe(ctx, d.get(N.of("Filter"))), w = numDe(ctx, d.get(N.of("Width"))), h = numDe(ctx, d.get(N.of("Height")));
+          if (mascaras[ref.tag]) return; /* una máscara de transparencia debe seguir siendo gris sin pérdidas: no se toca */
+          var fl = filtrosDe(ctx, d.get(N.of("Filter"))), filtro = fl.length ? fl[fl.length - 1] : "", w = numDe(ctx, d.get(N.of("Width"))), h = numDe(ctx, d.get(N.of("Height")));
           var bpc = numDe(ctx, d.get(N.of("BitsPerComponent")));
           if (!w || !h || o.contents.length < cfg.min) return;
-          if (ctx.lookup(d.get(N.of("ImageMask"))) === PL.PDFBool.True || d.get(N.of("Mask")) || d.get(N.of("Decode"))) return;
+          if (fl.length > 1 && filtro !== "/DCTDecode") return;
+          if (ctx.lookup(d.get(N.of("ImageMask"))) === PL.PDFBool.True || d.get(N.of("Mask")) || d.get(N.of("Decode")) || d.get(N.of("SMaskInData"))) return;
           if ((bpc || (filtro === "/DCTDecode" ? 8 : 0)) !== 8) return;
-          /* espacio de color: RGB o gris (directo o con perfil ICC); lo demás (CMYK, indexado…) no se toca */
-          var cs = ctx.lookup(d.get(N.of("ColorSpace"))), n = 0, csSalida = N.of("DeviceRGB");
-          if (cs instanceof PL.PDFName) n = cs.asString() === "/DeviceRGB" ? 3 : cs.asString() === "/DeviceGray" ? 1 : 0;
-          else if (cs instanceof PL.PDFArray && cs.size() === 2 && ctx.lookup(cs.get(0)) === N.of("ICCBased")) {
-            var pr = ctx.lookup(cs.get(1));
-            n = pr && pr.dict ? numDe(ctx, pr.dict.get(N.of("N"))) : 0;
+          /* espacio de color: RGB o gris (directo o con perfil ICC) o indexado de 8 bits sobre RGB/gris; lo demás (CMYK, Lab…) no se toca */
+          var cs = ctx.lookup(d.get(N.of("ColorSpace"))), n = 0, csSalida = N.of("DeviceRGB"), pal = null;
+          function baseN(b) {
+            b = ctx.lookup(b);
+            if (b instanceof PL.PDFName) return b.asString() === "/DeviceRGB" ? 3 : b.asString() === "/DeviceGray" ? 1 : 0;
+            if (b instanceof PL.PDFArray && b.size() === 2 && ctx.lookup(b.get(0)) === N.of("ICCBased")) { var pr = ctx.lookup(b.get(1)); return pr && pr.dict ? numDe(ctx, pr.dict.get(N.of("N"))) : 0; }
+            return 0;
+          }
+          if (cs instanceof PL.PDFName) n = baseN(cs);
+          else if (cs instanceof PL.PDFArray && cs.size() === 2) n = baseN(cs);
+          else if (cs instanceof PL.PDFArray && cs.size() === 4 && ctx.lookup(cs.get(0)) === N.of("Indexed") && filtro === "/FlateDecode") {
+            var nb = baseN(cs.get(1)), lk = ctx.lookup(cs.get(3)), bytes = null;
+            if (nb === 1 || nb === 3) {
+              try { bytes = lk instanceof PL.PDFRawStream ? PL.decodePDFRawStream(lk).decode() : (lk && lk.asBytes ? lk.asBytes() : null); } catch (er) { bytes = null; }
+              if (bytes && bytes.length >= nb) { pal = { nb: nb, d: bytes }; n = 1; }
+            }
           }
           if (n !== 1 && n !== 3) return;
-          if (n === 3) csSalida = d.get(N.of("ColorSpace"));
+          if (n === 3 && !pal) csSalida = d.get(N.of("ColorSpace"));
           vistas++;
-          return leerImagen(ctx, o, filtro, n, w, h).then(function (im) {
+          var jpg = null;
+          if (filtro === "/DCTDecode") { jpg = bytesSinUltimo(ctx, o, fl); if (!jpg) return; }
+          /* tamaño final: lo que pide el nivel según cuánto mide la imagen dibujada, sin pasar del tope fijo */
+          var esc = Math.min(1, cfg.lado / Math.max(w, h)), u = uso[ref.tag];
+          if (u && u.w > 0 && u.h > 0) esc = Math.min(esc, Math.max(u.w * cfg.dpiImg / 72 / w, u.h * cfg.dpiImg / 72 / h));
+          if (esc > 0.92) esc = 1;
+          return leerImagen(ctx, o, filtro, n, w, h, pal, jpg).then(function (im) {
             if (!im) return;
-            var esc = Math.min(1, cfg.lado / Math.max(im.w, im.h)), tw = Math.max(1, Math.round(im.w * esc)), th = Math.max(1, Math.round(im.h * esc));
+            var tw = Math.max(1, Math.round(im.w * esc)), th = Math.max(1, Math.round(im.h * esc));
             var cv = document.createElement("canvas"); cv.width = tw; cv.height = th;
             var cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, tw, th);
             cx.imageSmoothingQuality = "high"; cx.drawImage(im.src, 0, 0, tw, th);
@@ -190,20 +384,62 @@
               cv.width = cv.height = 0;
               if (!blob || blob.size > o.contents.length * 0.95) return;
               return blob.arrayBuffer().then(function (ab) {
-                var nuevo = { Type: "XObject", Subtype: "Image", Width: tw, Height: th, ColorSpace: csSalida, BitsPerComponent: 8, Filter: "DCTDecode" };
-                var sm = d.get(N.of("SMask")); if (sm) nuevo.SMask = sm;
-                ctx.assign(ref, ctx.stream(new Uint8Array(ab), nuevo));
+                var nd = PL.PDFDict.withContext(ctx);
+                d.entries().forEach(function (kv) { if (!SIN_COPIAR[kv[0].asString().slice(1)]) nd.set(kv[0], kv[1]); });
+                nd.set(N.of("Type"), N.of("XObject")); nd.set(N.of("Subtype"), N.of("Image"));
+                nd.set(N.of("Width"), PL.PDFNumber.of(tw)); nd.set(N.of("Height"), PL.PDFNumber.of(th));
+                nd.set(N.of("ColorSpace"), csSalida); nd.set(N.of("BitsPerComponent"), PL.PDFNumber.of(8));
+                nd.set(N.of("Filter"), N.of("DCTDecode")); nd.set(N.of("Length"), PL.PDFNumber.of(ab.byteLength));
+                ctx.assign(ref, PL.PDFRawStream.of(nd, new Uint8Array(ab)));
                 cambiadas++;
               });
             });
           }).then(pausa);
         });
       });
+      var limpios = 0, sueltos = 0;
       return seq.then(function () {
+        prog("Quitando lo que no se usa");
+        doc.getPages().forEach(function (pg) { pg.node.delete(N.of("Thumb")); });
+        limpios = quitarHuerfanos(doc);
+        return comprimirSueltos(doc, mia, prog);
+      }).then(function (ah) {
+        sueltos = ah;
         prog("Guardando el PDF");
         return doc.save({ useObjectStreams: true, addDefaultPage: false });
-      }).then(function (bytes) { return { bytes: bytes, imagenes: imgs.length, cambiadas: cambiadas, vistas: vistas }; });
+      }).then(function (bytes) { return { bytes: bytes, imagenes: imgs.length, cambiadas: cambiadas, vistas: vistas, limpios: limpios, sueltos: sueltos }; });
     });
+  }
+
+  /* ---- Control de calidad: el resultado se abre y se compara con el original antes de entregarlo ---- */
+  function miniatura(pdf, num) {
+    return pdf.getPage(num).then(function (pg) {
+      var v1 = pg.getViewport({ scale: 1 }), s = 120 / Math.max(v1.width, v1.height), v = pg.getViewport({ scale: s });
+      var cv = document.createElement("canvas"); cv.width = Math.max(1, Math.ceil(v.width)); cv.height = Math.max(1, Math.ceil(v.height));
+      return pg.render({ canvasContext: cv.getContext("2d"), viewport: v, background: "#fff" }).promise.then(function () {
+        var px = cv.getContext("2d").getImageData(0, 0, cv.width, cv.height).data;
+        pg.cleanup(); return { w: cv.width, h: cv.height, px: px };
+      });
+    });
+  }
+  function verificar(origBuf, bytes, paginas) {
+    var lib = window.pdfjsLib, A, B;
+    return Promise.all([lib.getDocument({ data: new Uint8Array(origBuf.slice(0)) }).promise, lib.getDocument({ data: new Uint8Array(bytes.slice(0)) }).promise]).then(function (r) {
+      A = r[0]; B = r[1];
+      if (B.numPages !== A.numPages) return false;
+      var elegir = {}; elegir[1] = 1; elegir[Math.ceil(A.numPages / 2)] = 1; elegir[A.numPages] = 1;
+      var nums = Object.keys(elegir).map(Number), peor = 0, seq = Promise.resolve();
+      nums.forEach(function (num) {
+        seq = seq.then(function () { return Promise.all([miniatura(A, num), miniatura(B, num)]); }).then(function (m) {
+          var a = m[0], b = m[1];
+          if (a.w !== b.w || a.h !== b.h) { peor = 255; return; }
+          var suma = 0, i, cant = 0;
+          for (i = 0; i < a.px.length; i += 4) { suma += Math.abs(a.px[i] - b.px[i]) + Math.abs(a.px[i + 1] - b.px[i + 1]) + Math.abs(a.px[i + 2] - b.px[i + 2]); cant += 3; }
+          peor = Math.max(peor, suma / cant);
+        });
+      });
+      return seq.then(function () { return peor < 28; });
+    }).then(function (ok) { try { A.destroy(); B.destroy(); } catch (e) {} return ok; }, function () { try { A && A.destroy(); B && B.destroy(); } catch (e) {} return false; });
   }
 
   /* ---- Modo «Máxima compresión»: cada página pasa a ser una imagen ---- */
@@ -297,17 +533,34 @@
   function prog(t) { $("pdProgTxt").textContent = t; }
 
   function tComprimir(aj, res) {
-    var cfg = NIVELES[aj.nivel];
     return porCada(items, function (it, i) {
       var pre = items.length > 1 ? "PDF " + (i + 1) + " de " + items.length + " · " : "";
       var p = function (t) { prog(pre + t + "…"); };
-      var tarea = aj.modo === "texto" ? conservarTexto(it, cfg, miaActual, p) : aplanar(it, cfg, miaActual, p);
-      return tarea.then(function (r) {
+      /* «Texto y vectores»: el resultado se abre y se compara con el original; si quedó dañado se reintenta con un nivel más suave */
+      function intento(nivel) {
+        var cfg = NIVELES[nivel];
+        if (aj.modo !== "texto") return aplanar(it, cfg, miaActual, p).then(function (r) { r.nivel = nivel; return r; });
+        return conservarTexto(it, cfg, miaActual, p).then(function (r) {
+          p("Revisando que el PDF quede bien");
+          return verificar(it.buf, r.bytes, it.paginas).then(function (ok) {
+            if (miaActual !== corrida) throw cancelado();
+            if (ok) { r.nivel = nivel; return r; }
+            var suave = MAS_SUAVE[nivel];
+            return suave ? intento(suave) : { bytes: null };
+          });
+        });
+      }
+      return intento(aj.nivel).then(function (r) {
+        if (!r.bytes) {
+          res.push({ nombre: it.nombre, blob: it.file, tipo: "PDF", igual: true, antes: it.bytes, info: "No lo pude comprimir sin dañar el archivo, así que se deja el original. Probá «Máxima compresión»." });
+          return;
+        }
         var blob = new Blob([r.bytes], { type: "application/pdf" });
         if (blob.size >= it.bytes * 0.98) {
-          res.push({ nombre: it.nombre, blob: it.file, tipo: "PDF", igual: true, antes: it.bytes, info: aj.modo === "texto" ? "No encontré imágenes para bajar de peso. Probá «Máxima compresión» o un nivel más fuerte." : "Ya estaba optimizado: se deja el original." });
+          res.push({ nombre: it.nombre, blob: it.file, tipo: "PDF", igual: true, antes: it.bytes, info: aj.modo === "texto" ? "No encontré más para bajar de peso sin tocar el texto. Probá «Máxima compresión» o un nivel más fuerte." : "Ya estaba optimizado: se deja el original." });
         } else {
-          res.push({ nombre: base(it.nombre) + "-comprimido.pdf", blob: blob, tipo: "PDF", antes: it.bytes, info: plural(it.paginas, "página", "páginas") + (aj.modo === "texto" ? " · " + plural(r.cambiadas, "imagen optimizada", "imágenes optimizadas") : " · páginas como imagen") });
+          var nota = aj.modo === "texto" && r.nivel !== aj.nivel ? " · con compresión más suave para no dañar el archivo" : "";
+          res.push({ nombre: base(it.nombre) + "-comprimido.pdf", blob: blob, tipo: "PDF", antes: it.bytes, info: plural(it.paginas, "página", "páginas") + (aj.modo === "texto" ? " · " + plural(r.cambiadas, "imagen optimizada", "imágenes optimizadas") + nota : " · páginas como imagen") });
         }
       }, function (e) {
         if (e && e.cancelado) throw e;
