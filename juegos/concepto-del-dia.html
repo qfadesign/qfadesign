@@ -52,7 +52,7 @@
 </style>
 <script>if(self!==top){document.write('<style>html,body{background:transparent!important}#volver{display:none!important}</style>')}</script>
 <link rel="preconnect" href="https://use.typekit.net" crossorigin><link rel="preconnect" href="https://p.typekit.net" crossorigin><link rel="stylesheet" href="https://use.typekit.net/ftd7ahn.css">
-<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/ranking-config.js" defer></script><script src="../js/ranking.js" defer></script><script src="../js/concepto.js"></script>
+<link rel="stylesheet" href="../css/shared.css"><link rel="stylesheet" href="../css/juegos.css"><script src="../js/anim.js"></script><script src="../js/resultado.js" defer></script><script src="../js/fin-juego.js" defer></script><script src="../js/ranking-config.js" defer></script><script src="../js/ranking.js" defer></script><script src="../js/concepto.js"></script>
 <link rel="stylesheet" href="../css/botones.css"><script src="../js/cursor.js" defer></script><link rel="stylesheet" href="../css/musica.css"><script src="../js/musica.js" defer></script><link rel="stylesheet" href="../css/desplegable.css"><script type="speculationrules">{"prefetch":[{"source":"document","where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
 
 <style id="concepto">
@@ -619,7 +619,7 @@ body:has(#startScreen[hidden]) img[src*="signo"]{display:none!important}
     setTimeout(() => {
       pintarTeclas(); pintarVale();
       if (ok) { saltar(r); msg(FRASES[r]); }
-      if (fin) { clearTimeout(tSeguro); pintarPista(); setTimeout(mostrarFinal, ok ? 1500 : 1000); }
+      if (fin) { clearTimeout(tSeguro); pintarPista(); setTimeout(() => mostrarFinal(true), ok ? 1500 : 1000); }
       else bloqueo = false;
     }, reducido ? 0 : N * 220 + 350);
   }
@@ -657,7 +657,7 @@ body:has(#startScreen[hidden]) img[src*="signo"]{display:none!important}
   }
 
   /* ---- Pantalla final ---- */
-  function mostrarFinal() {
+  function mostrarFinal(animar) {
     verFinal();
     bloqueo = true;
     const ok = !!est.ok;
@@ -666,6 +666,7 @@ body:has(#startScreen[hidden]) img[src*="signo"]{display:none!important}
     $("cdSolCat").textContent = pieza.c;
     $("cdSolDef").textContent = pieza.h;
     $("finalScore").textContent = est.p + " pts";
+    if (animar && window.QFAFin) QFAFin.mostrar($("finalScore"), { bien: ok, ratio: ok ? 1 - (est.n - 1) / 10 : 0 });
     $("cdDetalle").textContent = (ok ? est.n + " de " + MAX + " intentos" : "no lo sacaste") + (est.pista ? " · con pista" : "");
     const mini = $("cdMini"); mini.textContent = "";
     est.g.forEach(g => { const f = el("div"); evaluar(g).forEach(x => f.appendChild(el("i", x))); mini.appendChild(f); });

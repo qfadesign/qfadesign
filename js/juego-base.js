@@ -24,7 +24,7 @@ init:function(o){
   function fin(){$('gameContent').style.display='none';$('finalScreen').classList.add('show');$('finalScore').textContent=score+' pts';
     var b=$('shareBox');b.innerHTML='';
     if(window.QFARanking&&o.juego)QFARanking.montar(b,{juego:o.juego,modo:'Estándar',titulo:o.nombre,puntos:score});
-    if(window.QFAResultado)QFAResultado.montar(b,function(){return{juego:o.nombre,puntos:score,detalle:o.detalle()}})}
+    if(window.QFAResultado)QFAResultado.montar(b,function(){return{juego:o.nombre,puntos:score,detalle:o.detalle()}});if(window.QFAFin)QFAFin.mostrar($('finalScore'),{bien:score>=o.total*120,ratio:score/(o.total*200)})}
   ok.onclick=function(){var r=o.medir();if(!r)return;score+=r.pts;sc.textContent=score+' pts';ms.textContent='+'+r.pts+' pts · '+r.txt;ok.hidden=true;nx.hidden=false;nx.textContent=n>=o.total?'Ver resultado':'Siguiente'};
   nx.onclick=function(){if(n>=o.total)return fin();n++;ronda()};
   $('startBtn').onclick=start;$('playAgain').onclick=function(){$('finalScreen').classList.remove('show');start()}}};
