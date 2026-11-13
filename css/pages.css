@@ -860,3 +860,23 @@ html:has(.f-herramientas){scrollbar-gutter:stable}
 .jg-div+.juegos{margin-top:0}
 .dd-banner+.jg-div{margin-top:clamp(4px,1vw,10px)}
 @media(prefers-reduced-motion:reduce){.jg-tags{animation:none}.jg-tags .tl-tag{transition:none}}
+
+/* Jueguitos en celular: banners más compactos y los 6 juegos en 2 columnas (menos scroll) */
+@media(max-width:640px){
+.f-jueguitos .dd-banner{padding:14px 16px 16px;border-radius:24px;gap:10px 14px;margin-bottom:14px}
+.f-jueguitos .dd-b-sw{width:62px}
+.f-jueguitos .dd-b-tag{font-size:10.5px}
+.f-jueguitos .dd-b-tx{gap:3px}
+.f-jueguitos .dd-b-tx strong{font-size:25px}
+.f-jueguitos .dd-b-sub{font-size:13.5px;line-height:1.35}
+.f-jueguitos .dd-b-btn{padding:11px 14px 12px;font-size:16px;border-radius:16px}
+.f-jueguitos .jg-div{margin-top:clamp(2px,1vw,6px);margin-bottom:14px}
+.f-jueguitos .jg-div h2{font-size:11px;letter-spacing:.14em}
+.juegos{grid-template-columns:repeat(2,1fr);max-width:none;gap:20px 12px}
+.jg h2{font-size:15px;line-height:1.1;margin-top:10px}
+.jg p{font-size:12.5px;line-height:1.3;margin-top:3px}
+.jg-img{filter:drop-shadow(0 8px 14px rgba(0,0,0,.3))}
+.jg:active .jg-img{transform:scale(.97)}
+.jg-tags{gap:10px}
+}
+@media(max-width:340px){.juegos{grid-template-columns:1fr}}
