@@ -264,6 +264,21 @@
     box.appendChild(cuerpo);
 
     function vivo(){ return box.isConnected; }
+
+    /* recuerda en este navegador que el puntaje de esta partida ya se guardó, para no volver a preguntar al entrar de nuevo */
+    var LSE = 'qfa-rank-enviado';
+    var claveEnv = d.juego + '|' + d.modo;
+    function leerEnv(){ try { return JSON.parse(localStorage.getItem(LSE)) || {}; } catch(e){ return {}; } }
+    function marcarEnviado(yo, mejor){
+      try {
+        var o = leerEnv();
+        o[claveEnv] = { a: yo.apodo, t: yo.tag, m: mejor, p: d.puntos, v: VERSION };
+        var ks = Object.keys(o);
+        if (ks.length > 40) ks.slice(0, ks.length - 40).forEach(function(k){ delete o[k]; });
+        localStorage.setItem(LSE, JSON.stringify(o));
+      } catch(e){}
+    }
+
     function estado(txt, esError){
       var p = el('p', 'rank-msg' + (esError ? ' rank-error' : ''), txt);
       p.setAttribute('role', esError ? 'alert' : 'status');
@@ -363,7 +378,7 @@
       cuerpo.textContent = '';
       cuerpo.appendChild(estado('Guardando tu puntaje…'));
       rpc('enviar_puntaje', { p_juego: d.juego, p_modo: d.modo, p_apodo: yo.apodo, p_tag: yo.tag, p_token: yo.token, p_puntaje: d.puntos })
-        .then(function(mejor){ if (vivo()) mostrarTop(yo, mejor); })
+        .then(function(mejor){ marcarEnviado(yo, mejor); if (vivo()) mostrarTop(yo, mejor); })
         .catch(function(err){
           if (!vivo()) return;
           if (/identidad/.test(err.message)) {
@@ -432,6 +447,7 @@
         err.hidden = true; ok.disabled = true; ok.textContent = 'Guardando…';
         registrar(apodo, pin.value, 0).then(function(r){
           guardar(r.yo);
+          marcarEnviado(r.yo, r.mejor);
           if (vivo()) mostrarTop(r.yo, r.mejor, r.yo.pin ? pin.value : null);
         }).catch(function(e){
           if (!vivo()) return;
@@ -542,6 +558,7 @@
       cuerpo.appendChild(estado('Creando tu usuario y guardando tu puntaje…'));
       registrar(s.apodo, s.pin, 0).then(function(r){
         guardar(r.yo);
+        marcarEnviado(r.yo, r.mejor);
         if (vivo()) mostrarTop(r.yo, r.mejor, r.yo.pin ? s.pin : null);
       }).catch(function(e){
         if (!vivo()) return;
@@ -589,7 +606,16 @@
     if (s0 && s0.modo === 'yo') enviarComoYo(s0.yo);
     else if (s0 && s0.modo === 'nuevo') crearYEnviar(s0);
     else if (s0 && s0.modo === 'invitado') comoInvitado();
-    else { var g0 = leer(); if (g0) preguntarAntesDeGuardar(g0); else formulario(); }
+    else {
+      var g0 = leer();
+      if (g0) {
+        var e0 = leerEnv()[claveEnv];
+        if (e0 && e0.a === g0.apodo && e0.t === g0.tag && e0.v === VERSION && e0.p === d.puntos) {
+          cuerpo.appendChild(estado('Cargando el ranking…'));
+          mostrarTop(g0, e0.m);
+        } else preguntarAntesDeGuardar(g0);
+      } else formulario();
+    }
   }
 
   /* Top 3 para las pantallas de inicio: <aside data-rank-top data-juego="color" data-modo="Estándar"> */
