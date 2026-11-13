@@ -19,6 +19,9 @@ Si ya tenías el ranking andando, correr una vez `ranking/concepto.sql` en Supab
 - Cada día se guarda como un puntaje del juego `concepto` con la fecha como modo (igual que el Color del día). Solo se aceptan la fecha de hoy y la de ayer (hora de Argentina).
 - `top_semanal` suma los puntajes de lunes a domingo (hora de Argentina). El ranking se reinicia solo cada lunes; la semana pasada se puede ver con el botón del ranking.
 
+## Color del día (ranking semanal)
+Desde ahora el Color del día también usa el ranking semanal (suma de lunes a domingo), igual que Concepto del día. No hace falta correr nada nuevo en Supabase: `top_semanal` ya sirve para el juego `diario`.
+
 ## Cómo funciona
 - **Antes de jugar se pregunta quién juega** (pantalla de inicio de cada juego): si el navegador ya tiene un usuario guardado, pregunta "Soy Facu#7 / Soy otra persona"; si no, ofrece crear un usuario, entrar con uno que ya existe o jugar sin usuario. El botón "Empezar" queda bloqueado hasta responder. Al terminar, el puntaje se guarda solo con ese jugador. Un usuario nuevo se crea recién al terminar la partida (con su puntaje real), así no quedan usuarios con 0 puntos. Cambiar de jugador después de jugar solo afecta a la próxima partida: nunca reenvía el puntaje.
 - El jugador elige un apodo y, si quiere, un código de 4 números (opcional); el sistema le asigna un número correlativo (`Facu#7`: el primer jugador es #1, el segundo #2…; hay que correr `ranking/numeros.sql` una vez).
@@ -56,3 +59,6 @@ Consejo opcional: agregar `?v=3` a los scripts de los tres juegos (`../js/rankin
 
 ## Si el Table Editor no deja cambiar el número (`tag`) a mano
 Primero correr `ranking/numeros.sql` (relaja la restricción de 4 cifras). Después se puede editar, o renumerar solo con SQL, y al final volver a correr `numeros.sql` para que el contador siga desde el último número.
+
+## Desafíos del día: no jugar dos veces (Color del día y Concepto del día)
+Correr una vez `ranking/jugo-hoy.sql` en Supabase (SQL Editor → New query → pegar → Run). Con eso, si un usuario ya jugó el desafío de hoy (aunque haya sido en otro dispositivo), al elegirlo como jugador el botón de empezar queda bloqueado y se le avisa cuántos puntos sumó. Si el SQL no se corrió, el juego anda igual pero no bloquea.

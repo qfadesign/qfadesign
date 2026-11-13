@@ -242,7 +242,31 @@
     var nota = el('p', 'rank-quien-nota', 'Primero elegí quién juega para poder empezar.');
     nota.id = 'rank-quien-nota';
     btn.parentNode.appendChild(nota);
-    quien(host, { alResolver: function(){ btn.disabled = false; nota.hidden = true; } });
+    /* desafíos del día (Color y Concepto): el servidor sabe si este usuario ya jugó hoy, aunque haya sido en otro dispositivo */
+    var aside = document.querySelector('[data-rank-top]');
+    var juego = aside ? aside.getAttribute('data-juego') : '';
+    var diario = juego === 'diario' || juego === 'concepto';
+    function fechaHoy(){
+      var m = aside && aside.getAttribute('data-modo');
+      if (m && /^\d{4}-\d{2}-\d{2}$/.test(m)) return m;
+      if (window.QFAConcepto && QFAConcepto.hoy) return QFAConcepto.hoy();
+      if (window.QFADesafio && QFADesafio.hoy) return QFADesafio.hoy();
+      return null;
+    }
+    var chequeo = 0;
+    function habilitar(){ btn.disabled = false; nota.hidden = true; }
+    quien(host, { alResolver: function(s){
+      var mio = ++chequeo, modo = diario ? fechaHoy() : null;
+      if (!(diario && modo && s && s.modo === 'yo')) return habilitar();
+      btn.disabled = true;
+      nota.hidden = false;
+      nota.textContent = 'Revisando si ya jugaste hoy…';
+      rpc('ya_jugo', { p_juego: juego, p_modo: modo, p_apodo: s.yo.apodo, p_tag: s.yo.tag, p_token: s.yo.token }).then(function(pts){
+        if (mio !== chequeo) return;
+        if (pts == null) return habilitar();
+        nota.textContent = 'Hoy ya jugaste como ' + s.yo.apodo + '#' + s.yo.tag + ' y sumaste ' + pts + ' pts. Volvé mañana por uno nuevo, o tocá «Cambiar de jugador» si va a jugar otra persona.';
+      }).catch(function(){ if (mio === chequeo) habilitar(); }); /* si no se puede revisar, no se frena el juego */
+    } });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarPuerta);
   else iniciarPuerta();
