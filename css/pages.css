@@ -846,3 +846,17 @@ html:has(.f-herramientas){scrollbar-gutter:stable}
 .cv-lista .cv-it{cursor:pointer}
 .cv-lista .cv-it.sel{outline:2px solid #fff;outline-offset:-2px;border-radius:12px}
 @media(prefers-reduced-motion:reduce){.cv-spin,.cv-bar.ind i{animation:none}}
+
+/* Jueguitos: bajada con el lenguaje del resto de la web (etiquetas sticker, separadores con línea, itálica pesada) */
+.jg-m{font-family:var(--fh);font-weight:900;font-style:italic;letter-spacing:-.005em}
+.jg-tags{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:12px 14px;margin:clamp(16px,2vw,24px) auto 0;padding:0;animation:rise .8s cubic-bezier(.2,.8,.2,1) .5s both}
+.jg-tags .tl-tag{font-size:clamp(11px,1vw,13px);padding:6px 14px 6px 11px;transition:rotate .45s cubic-bezier(.34,1.56,.64,1),transform .3s}
+.jg-tags .tl-tag::before{width:9px;height:9px}
+.jg-tags .tl-tag:nth-child(2){rotate:-2deg}
+.jg-tags .tl-tag:hover{rotate:0deg;transform:translateY(-2px)}
+.jg-tags .tl-tag.azul{background:var(--azul);color:#fff;box-shadow:var(--v-btn-azul)}
+.jg-tags .tl-tag.azul::before{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.3)}
+.jg-div{margin-top:clamp(6px,1vw,12px)}
+.jg-div+.juegos{margin-top:0}
+.dd-banner+.jg-div{margin-top:clamp(4px,1vw,10px)}
+@media(prefers-reduced-motion:reduce){.jg-tags{animation:none}.jg-tags .tl-tag{transition:none}}
