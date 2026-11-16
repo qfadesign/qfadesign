@@ -239,11 +239,14 @@
     }
     if (scrub) {
       repintar = () => { if (!latched) pintar(auto === null ? undefined : auto); };
-      const seguir = () => {
+      let tPrev = 0;
+      const seguir = ts => {
         rafId = 0;
         const t = progreso();
+        // el seguimiento depende del tiempo y no de los cuadros: igual de suave en 60 o 120 Hz y no se arrastra si un cuadro tarda
+        const dt = Math.min(64, Math.max(8, ts && tPrev ? ts - tPrev : 16.7)); tPrev = ts || 0;
         if (cur === null || latched) cur = t;
-        else { cur += (t - cur) * 0.13; if (Math.abs(t - cur) < 0.003) cur = t; }
+        else { cur += (t - cur) * (1 - Math.pow(1 - 0.13, dt / 16.7)); if (Math.abs(t - cur) < 0.003) cur = t; }
         pintar(cur);
         if (!latched && !auto && cur !== t) rafId = requestAnimationFrame(seguir);
       };
@@ -311,6 +314,15 @@
       medirDeck(); cur = prog(); pintarDeck(cur);
       addEventListener('pageshow', () => { cur = null; pedirDeck(); });
     }
+    // ---- la flotación de las hojas solo corre mientras el mouse está sobre la carpeta (y se ve, y no se scrollea) ----
+    // una animación infinita obliga a redibujar toda la pantalla en cada cuadro aunque nadie la mire: eso era lo que la dejaba trabada
+    let enVista = true, scrolleando = false, sobre = false, tq;
+    const calma = () => el.classList.toggle('fd-quiet', !(canHover && sobre && enVista && !scrolleando));
+    if ('IntersectionObserver' in window) new IntersectionObserver(es => { enVista = es[es.length - 1].isIntersecting; calma(); }).observe(el);
+    el.addEventListener('pointerenter', () => { sobre = true; calma(); });
+    el.addEventListener('pointerleave', () => { sobre = false; calma(); });
+    addEventListener('scroll', () => { if (!scrolleando) { scrolleando = true; calma(); } clearTimeout(tq); tq = setTimeout(() => { scrolleando = false; calma(); }, 160); }, { passive: true });
+    calma();
   }
 
   window.Folder = { init };

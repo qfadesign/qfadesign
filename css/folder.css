@@ -71,3 +71,6 @@
  padding:calc(var(--navh,58px) + 30px) clamp(14px,3vw,32px) 24px;gap:clamp(6px,1.2vh,14px)}
 .trabajos.pg.fd-pinned .fd-sec{width:100%;padding:0}
 @media(max-width:600px){.fd-deck .fd-paper small{display:none}}
+
+/* la flotación se pausa fuera de pantalla y mientras se scrollea */
+.fd.fd-quiet .fd-card,.fd.open.fd-quiet .fd-card{animation-play-state:paused}
