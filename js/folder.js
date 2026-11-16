@@ -5,6 +5,8 @@
    Props (como data-*): mode (flap) · variant (solid | glass) · layout (spread) · color · paper-color · tab-position (left | right)
    · open-on (click | hover) · size · frost (0–1) · tilt (0–1) · speed · bounce (0–1) · peek · intro · draggable · zoom-on-click · theme (dark | light)
    · deck (true): la carpeta queda abierta y fija en pantalla y los proyectos van pasando con el scroll (home)
+   · grow (true): la carpeta arranca chica y "infla" con rebote mientras salen las hojas, hasta el tamaño final · spread (px, 520): ancho del abanico a tamaño 1
+     · intro-ms (ms): duración de la secuencia de entrada cuando corre sola · intro-delay (ms, 350): espera antes de arrancar
    También: Folder.init(el, { onItemClick(item, index) { ... } }) — si devolvés false, no navega. */
 (() => {
   const num = (v, d) => (v === undefined || v === '' || isNaN(+v)) ? d : +v;
@@ -22,6 +24,7 @@
       openOn: d.openOn === 'hover' ? 'hover' : 'click', size: num(d.size, 1.3), frost: num(d.frost, .25), tilt: num(d.tilt, .5),
       speed: Math.max(.2, num(d.speed, 1)), bounce: num(d.bounce, .4), peek: bool(d.peek, true), intro: bool(d.intro, true),
       draggable: bool(d.draggable, true), zoomOnClick: bool(d.zoomOnClick, true), theme: d.theme === 'light' ? 'light' : 'dark',
+      grow: bool(d.grow, false), spread: num(d.spread, 520), introMs: num(d.introMs, 0), introDelay: num(d.introDelay, 350),
       onItemClick: null
     }, extra || {});
     const items = [...el.querySelectorAll(':scope > a')];
@@ -71,10 +74,13 @@
       const parentW = el.parentElement.clientWidth || innerWidth;
       const avail = Math.min(parentW, innerWidth) - 24;
       // en pantallas angostas la carpeta se achica para entrar
-      el.style.setProperty('--s', Math.min(o.size, Math.max(.7, avail / 300)).toFixed(3));
+      let tam = Math.min(o.size, Math.max(.7, avail / 300));
+      // con grow la carpeta crece hasta el tope que deja la pantalla: que entren la carpeta entera y todas las hojas sin scrollear
+      if (o.grow) { const arriba = scrollY + el.parentElement.getBoundingClientRect().top; tam = Math.min(tam, Math.max(.85, (innerHeight - arriba - 48) / 357)); }
+      el.style.setProperty('--s', tam.toFixed(3));
       const s = parseFloat(getComputedStyle(el).getPropertyValue('--s')) || o.size;
       const pw = items[0].offsetWidth, ph = items[0].offsetHeight, n = items.length;
-      const span = Math.max(0, Math.min(520 * s, avail - pw));
+      const span = Math.max(0, Math.min(o.spread * s, (avail - pw) * (o.grow ? .94 : 1)));
       const step = n > 1 ? span / (n - 1) : 0;
       const lift = 26 * s, tiltDeg = o.tilt * 16;
       items.forEach((a, i) => {
@@ -204,6 +210,8 @@
     // ---- intro con scroll: las hojas salen desde adentro de la carpeta y se abren en abanico ----
     // (con prefers-reduced-motion o intro="false" la carpeta queda cerrada y se abre con clic)
     const scrub = o.intro && !quieto && !deckOn;
+    const growOn = scrub && o.grow; let ancla = null;
+    if (growOn) { ancla = document.createElement('span'); ancla.setAttribute('aria-hidden', 'true'); ancla.style.cssText = 'display:block;height:0;pointer-events:none'; el.after(ancla); el.style.transformOrigin = '50% 100%'; el.style.willChange = 'scale, rotate'; }
     let latched = !scrub, auto = null, rafId = 0;
     const clamp = v => Math.max(0, Math.min(1, v));
     const lerp = (a, b, k) => a + (b - a) * k;
@@ -214,11 +222,13 @@
       latched = true; auto = null;
       el.classList.remove('fd-scrub');
       items.forEach(a => { a.style.transform = ''; a.style.opacity = ''; }); front.style.transform = '';
+      if (growOn) { el.style.scale = ''; el.style.rotate = ''; }
       abrir();
     }
     function progreso() {
-      const r = el.getBoundingClientRect();
-      let p = clamp((innerHeight * 0.97 - r.top) / (innerHeight * 0.6));
+      // con grow la carpeta cambia de tamaño: se mide desde un ancla que no se escala (su borde de abajo menos el alto sin escalar)
+      const top = ancla ? ancla.getBoundingClientRect().top - el.offsetHeight : el.getBoundingClientRect().top;
+      let p = clamp((innerHeight * 0.97 - top) / (innerHeight * 0.6));
       if (p > 0.3 && innerHeight + scrollY >= document.documentElement.scrollHeight - 4) p = 1; // fin de la página: que termine igual
       return p;
     }
@@ -236,6 +246,12 @@
         a.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + r.toFixed(2) + 'deg) scale(' + (0.94 + 0.06 * k).toFixed(3) + ')';
       });
       front.style.transform = 'perspective(' + (1700 * (parseFloat(el.style.getPropertyValue('--s')) || o.size)).toFixed(0) + 'px) rotateX(' + (-(16 + 18 * suave(clamp(p / 0.75)))).toFixed(2) + 'deg)';
+      if (growOn) { // la carpeta arranca chica y se infla con rebote (con un poco de goma y de bamboleo) hasta el tamaño final
+        const k = clamp(p / 0.85), b = 1 + 2.9 * Math.pow(k - 1, 3) + 1.9 * Math.pow(k - 1, 2); // easeOutBack: se pasa un poco y vuelve
+        const sc = lerp(0.58, 1, b), goma = Math.sin(k * Math.PI * 3) * (1 - k) * 0.07;
+        el.style.scale = (sc * (1 + goma)).toFixed(4) + ' ' + (sc * (1 - goma)).toFixed(4);
+        el.style.rotate = (Math.sin(k * Math.PI * 2.5) * (1 - k) * 2.6).toFixed(2) + 'deg';
+      }
     }
     if (scrub) {
       repintar = () => { if (!latched) pintar(auto === null ? undefined : auto); };
@@ -255,8 +271,9 @@
       const p0 = progreso();
       if (p0 >= 0.3) { // ya está a la vista al cargar: la secuencia corre sola (2,4 s)
         const t0 = performance.now(); auto = 0; pintar(0);
-        const paso = now => { if (latched) return; auto = clamp((now - t0) / (2400 / o.speed)); if (auto >= 1) { auto = null; latch(); } else { pintar(auto); requestAnimationFrame(paso); } };
-        setTimeout(() => requestAnimationFrame(paso), 350);
+        const dur = o.introMs || 2400 / o.speed;
+        const paso = now => { if (latched) return; auto = clamp((now - t0) / dur); if (auto >= 1) { auto = null; latch(); } else { pintar(auto); requestAnimationFrame(paso); } };
+        setTimeout(() => requestAnimationFrame(paso), o.introDelay);
       } else { cur = p0; pintar(p0); }
     }
 
