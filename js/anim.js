@@ -4,7 +4,7 @@ document.documentElement.classList.add('js');
 (()=>{
   const root=document.documentElement;
   if(self!==top||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-  const OSCURAS=['','index','portfolio','jueguitos','recursos','pack-de-3','pack-de-4','pack-de-5','pack-after','pack-illustrator','qfatype','qfamotion','qfasubtitulos','qfatransition','qfasound','qfabrandboard','qfaexport','qfaphoto','ahorcado','adivina-el-color','adivina-la-tipografia']; // fondo base negro
+  const OSCURAS=['','index','portfolio','jueguitos','recursos','pack-de-3','pack-de-4','pack-de-5','pack-after','pack-illustrator','qfatype','qfamotion','qfasubtitulos','qfatransition','qfasound','qfabrandboard','qfaexport','qfacolor','qfaphoto','ahorcado','adivina-el-color','adivina-la-tipografia']; // fondo base negro
   const AZULES=['acerca','herramientas','contacto','404','proyecto-arbol','proyecto-bleko','proyecto-dulcemente','proyecto-miga','proyecto-ros','proyecto-trazo','proyecto-f1','calculadora-de-precios','generador-de-paletas','contraste-de-color','convertidor-de-imagenes','conversor-de-unidades','brief','comprimir-pdf','preparador-para-imprenta','generador-de-qr','simulador-de-publicaciones']; // fondo base azul
   const PJB={'proyecto-bleko':'#82301b','proyecto-dulcemente':'#7a1c40','proyecto-ros':'#14073d','proyecto-f1':'#5a0710','calculadora-de-precios':'#07493a','generador-de-paletas':'#7a1c4c','contraste-de-color':'#6b4a05','conversor-de-unidades':'#7d3512','brief':'#2a1180'}; // fondo de cada proyecto mientras cambia la página
   const seg=p=>p.replace(/\/+$/,'').split('/').pop().replace(/\.html$/,'');
@@ -119,15 +119,15 @@ addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.pj,.jg,.hg,.ah-chips li').forEach((el,i)=>el.style.setProperty('--i',i));
   if(still)return;
   // aparición al hacer scroll
-  document.querySelectorAll('.sobre img,.mas,.ayuda,.gran,.foto-band,.qh .vid,.apps-col,.cta>*').forEach(el=>el.classList.add('rv'));
+  document.querySelectorAll('.sobre img:not(.f),.mas,.ayuda,.gran,.foto-band,.qh .vid,.apps-col,.cta>*').forEach(el=>el.classList.add('rv'));
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.2});
   document.querySelectorAll('.rv').forEach(el=>{
     // la foto recortada con clip-path no "intersecta": observamos su contenedor
-    if(el.matches('.sobre img,.foto-band')){const ob=new IntersectionObserver(es=>{if(es[0].isIntersecting){el.classList.add('in');ob.disconnect()}},{threshold:.25});ob.observe(el.parentElement)}
+    if(el.matches('.sobre img:not(.f),.foto-band')){const ob=new IntersectionObserver(es=>{if(es[0].isIntersecting){el.classList.add('in');ob.disconnect()}},{threshold:.25});ob.observe(el.parentElement)}
     else io.observe(el);
   });
   // textos de la home (menos el hero): se ven de entrada con poca opacidad y, al scrollear, se van poniendo blancos letra por letra
-  const tw=[...document.querySelectorAll('.sobre .txt>*,.lema,.banda p,.ayuda h3,.ayuda p,.hr-home p,.ah-a p,.qh p,.foto-band p')];
+  const tw=[...document.querySelectorAll('.sobre .txt>*,.banda p,.ayuda h3,.ayuda p,.hr-home p,.ah-a p,.qh p,.foto-band p')];
   if(tw.length){
     const partir=(nodo,out)=>{
       [...nodo.childNodes].forEach(n=>{

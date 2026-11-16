@@ -1,0 +1,89 @@
+/* ============================================================
+   HOME NUEVA
+   1) "Un poco de qfadesign": la sección se queda fija mientras scrolleás y las fotos
+      cambian de a una (js/sobre-fotos.js). El texto va alineado a la derecha, pegado a la foto.
+   2) Frase de abajo: sin líneas; las palabras suben desde una máscara y las clave se marcan
+      con un bloque (js/lema.js).
+   ============================================================ */
+
+/* ---------- 1) SOBRE ---------- */
+html body .sobre{display:block;position:relative;max-width:none;margin:0;padding:0;
+ height:calc(100svh + (var(--n,5) - 1)*60svh)}
+html body .sobre .so-in{position:sticky;top:0;height:100svh;box-sizing:border-box;max-width:1360px;margin:0 auto;
+ display:grid;grid-template-columns:minmax(0,560px) auto;justify-content:center;align-items:center;
+ column-gap:clamp(32px,6vw,96px);padding:calc(var(--navh,58px) + 20px) clamp(20px,4vw,48px) 28px}
+html body .sobre .txt{width:100%;max-width:560px;margin:0;justify-self:end;text-align:right}
+html body .sobre .txt p:last-child{margin-left:auto;max-width:46ch}
+html body .sobre h2{white-space:nowrap}
+
+html body .sobre .so-col{--ph:min(66svh,540px);width:calc(var(--ph)*.8);justify-self:start}
+html body .sobre .so-ph{position:relative;width:100%;max-width:none;height:var(--ph);aspect-ratio:auto;
+ border-radius:28px;overflow:hidden;background:#050b18;isolation:isolate}
+html body .sobre .so-ph img.f{position:absolute;inset:0;width:100%;height:100%;max-width:none;aspect-ratio:auto;
+ object-fit:cover;object-position:var(--op,50% 50%);border-radius:0;opacity:1;scale:none;translate:none;
+ transition:none;clip-path:inset(100% 0 0 0);z-index:0;will-change:clip-path,transform}
+html body .sobre .so-ph img.f.under,html body .sobre .so-ph img.f.on{clip-path:inset(0)}
+html body .sobre .so-ph img.f.under{z-index:1}
+html body .sobre .so-ph img.f.on{z-index:2}
+
+/* barras de progreso: una por foto, se puede tocar para ir a esa foto */
+.so-prog{display:flex;gap:8px;margin-top:10px}
+.so-b{flex:1;height:22px;padding:0;border:0;background:none;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
+.so-b::before{content:"";position:absolute;left:0;right:0;top:50%;height:3px;margin-top:-1.5px;border-radius:3px;
+ background:rgba(255,255,255,.26);transition:background .4s,height .4s,margin-top .4s}
+.so-b.past::before{background:rgba(255,255,255,.6)}
+.so-b.on::before{background:#fff;height:5px;margin-top:-2.5px}
+.so-b:hover::before{background:#fff}
+.so-b:focus-visible{outline:3px solid #fff;outline-offset:2px;border-radius:6px}
+
+@media(max-width:900px){
+ html body .sobre{height:calc(100svh + (var(--n,5) - 1)*52svh)}
+ html body .sobre .so-in{grid-template-columns:minmax(0,1fr);justify-items:center;align-content:center;row-gap:18px;
+  padding-top:calc(var(--navh,58px) + 14px);padding-bottom:18px}
+ html body .sobre .txt{max-width:520px;justify-self:center}
+ html body .sobre .txt p:last-child{max-width:none}
+ html body .sobre h2{white-space:normal}
+ html body .sobre .so-col{--ph:clamp(190px,calc(100svh - 440px),440px);justify-self:center}
+}
+@media(max-width:900px) and (max-height:640px){
+ html body .sobre .so-col{--ph:clamp(150px,calc(100svh - 400px),300px)}
+}
+
+/* ---------- 2) FRASE DE ABAJO ---------- */
+.lema-l{display:block}
+.lww{display:inline-block;white-space:nowrap}
+.lw{display:inline-block;position:relative;overflow:hidden;vertical-align:top;padding:.06em 0 .16em;margin:-.06em 0 -.16em}
+.lw-i{display:inline-block;position:relative;z-index:1}
+.lw.k-n,.lw.k-c{padding-left:.22em;padding-right:.22em;margin-left:-.02em;margin-right:-.02em;border-radius:.2em}
+.lw.k-n::before,.lw.k-c::before{content:"";position:absolute;inset:0;border-radius:inherit}
+.lw.k-n::before{background:var(--azul,#0b75f4)}
+.lw.k-c::before{background:var(--crema,#f9fbf2)}
+
+/* estado inicial (solo si el script armó las palabras): palabras escondidas abajo de su máscara, bloques sin pintar */
+.lema.pre .lw-i{transform:translateY(112%)}
+.lema.pre .lw::before{transform:scaleX(0);transform-origin:left center}
+.lema.pre .lw.k-c{color:#fff}
+/* entra: las palabras suben una tras otra y, cuando ya están, los bloques se pintan de izquierda a derecha */
+.lema.pre.in .lw-i{transform:none;transition:transform .95s cubic-bezier(.16,.9,.2,1);transition-delay:calc(var(--i)*36ms)}
+.lema.pre.in .lw::before{transform:scaleX(1);transition:transform .65s cubic-bezier(.7,0,.2,1);transition-delay:calc(.9s + var(--k)*.17s)}
+.lema.pre.in .lw.k-c{color:var(--azul-f,#0a5cc0);transition:color .3s ease calc(1.15s + var(--k)*.17s)}
+
+/* mientras la frase cruza la pantalla, el primer renglón se corre hacia un lado y el segundo hacia el otro */
+@keyframes lema-a{from{translate:-1.8vw 0}to{translate:1.8vw 0}}
+@keyframes lema-b{from{translate:1.8vw 0}to{translate:-1.8vw 0}}
+@supports (animation-timeline:view()){
+ @media(min-width:761px) and (prefers-reduced-motion:no-preference){
+  .lema-vis .lema-l{animation:lema-a linear both;animation-timeline:view();animation-range:entry 0% exit 100%}
+  .lema-vis .lema-l:nth-child(2){animation-name:lema-b}
+ }
+}
+@media(max-width:760px){
+ .lema-l{display:inline}
+ html body .lema .lema-vis{text-align:left;text-align-last:left}
+}
+@media(prefers-reduced-motion:reduce){
+ .lema.pre .lw-i{transform:none}
+ .lema.pre .lw::before{transform:scaleX(1)}
+ .lema.pre .lw.k-c{color:var(--azul-f,#0a5cc0)}
+ .lema.pre.in .lw-i,.lema.pre.in .lw::before,.lema.pre.in .lw.k-c{transition:none}
+}
