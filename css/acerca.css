@@ -1,6 +1,6 @@
 /* qfadesign -- Acerca de, versión integrada (compu y celular).
    Se carga DESPUÉS de botones.css en acerca.html. Sin tarjetas de vidrio: el texto vive sobre el fondo,
-   la foto se funde con la página, "Qué hago" es una lista y la foto del sillón lleva la frase encima.
+   la foto se funde con la página, "Mis servicios" es una lista y la foto del sillón lleva la frase encima.
    Si algo no te gusta, sacá el <link> de css/acerca.css en acerca.html y vuelve todo como antes. */
 
 /* hero un poco más bajo en compu para que el texto se vea sin scrollear */
@@ -111,7 +111,7 @@ html body.f-acerca .banda mark{color:inherit;padding:0 .04em;background:linear-g
 .js .banda-firma{opacity:0;translate:0 10px;transition:opacity .8s 1.7s,translate .8s 1.7s cubic-bezier(.2,.8,.2,1)}
 .js .banda.in .banda-firma{opacity:1;translate:0 0}
 
-/* 3) "Qué hago": al pasar por cada servicio el fondo toma el color del proyecto y salen sus portadas siguiendo al cursor (como "En qué puedo ayudarte" de la home) */
+/* 3) "Mis servicios": al pasar por cada servicio el fondo toma el color del proyecto y salen sus portadas siguiendo al cursor (como "En qué puedo ayudarte" de la home) */
 @property --tc{syntax:'<color>';inherits:true;initial-value:#0b75f4}
 .tinte{position:fixed;inset:0;z-index:5;mix-blend-mode:screen;pointer-events:none;opacity:0;
   background:radial-gradient(70vw 55vw at 80% 20%,color-mix(in srgb,var(--tc,#0b75f4) 58%,transparent),transparent 65%),radial-gradient(60vw 45vw at 10% 85%,color-mix(in srgb,var(--tc,#0b75f4) 36%,transparent),transparent 65%);
@@ -152,7 +152,7 @@ html body.f-acerca .banda p{max-width:28ch;font-size:clamp(20px,2.7vw,38px);line
 /* títulos de sección */
 html body.f-acerca .sec>h2{font-size:clamp(28px,4vw,54px)}
 
-/* Qué hago: título a la izquierda, una línea a la derecha. Al pasar el mouse salen las portadas
+/* Mis servicios: título a la izquierda, una línea a la derecha. Al pasar el mouse salen las portadas
    siguiendo al cursor y el fondo toma el color del proyecto (igual que en la página principal) */
 html body.f-acerca .svc-l{list-style:none;margin:0;padding:0}
 html body.f-acerca .svc-l li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;column-gap:clamp(16px,3vw,48px);
