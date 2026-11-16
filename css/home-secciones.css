@@ -61,7 +61,7 @@
 .ex-pr a{display:inline-flex;align-items:center;gap:8px;text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:4px}
 .ex-pr a::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pc)}
 /* animado: una a la vez */
-.ex-on{height:calc(var(--exh,100svh) + 190svh);padding:0}
+.ex-on{height:calc(var(--exh,100svh) + 250svh);padding:0}
 .ex-on .ex-sticky{position:sticky;top:var(--ext,0px);height:var(--exh,100svh);overflow-x:clip;pointer-events:none}
 .ex-on .ex-p.meas{position:relative;inset:auto;visibility:hidden;transition:none}
 .ex-on .ex-pn{position:relative;height:100%;padding-top:0}
@@ -71,6 +71,11 @@
 .ex-on .ex-p>*{transition:opacity .6s,translate .7s cubic-bezier(.2,.8,.2,1)}
 .ex-on .ex-p:not(.on)>.ex-l{translate:-18px 0}.ex-on .ex-p:not(.on)>.hx-ls,.ex-on .ex-p:not(.on)>.ex-r{translate:18px 0}
 .ex-on .ex-p.on>.hx-ls,.ex-on .ex-p.on>.ex-r{transition-delay:.12s}
+/* atado al scroll: opacidad y movimiento salen de la posición (los pone js/home-secciones.js), sin transiciones con tiempo */
+.ex-on.ex-sc .ex-p{opacity:var(--o,0);translate:0 var(--ty,46px);transition:none;will-change:opacity,translate}
+.ex-on.ex-sc .ex-p>*{transition:none}
+.ex-on.ex-sc .ex-p:not(.on)>.ex-l,.ex-on.ex-sc .ex-p.on>.ex-l{translate:calc(var(--tx,0px)*-1) 0}
+.ex-on.ex-sc .ex-p:not(.on)>.hx-ls,.ex-on.ex-sc .ex-p.on>.hx-ls,.ex-on.ex-sc .ex-p:not(.on)>.ex-r,.ex-on.ex-sc .ex-p.on>.ex-r{translate:var(--tx,0px) 0}
 @media(max-width:820px){.ex-p{grid-template-columns:1fr;gap:12px}.ex-on .ex-p{align-content:center}.ex-l .hx-p{display:none}}
 @media(max-height:720px){.hx-vis{display:none}}
 @media(prefers-reduced-motion:reduce){.ex-on{height:auto}.ex-on .ex-sticky{position:static;height:auto}.ex-on .ex-p{position:relative;inset:auto;opacity:1;translate:none;pointer-events:auto;margin-bottom:40px}.ex-on .ex-pn{height:auto}}

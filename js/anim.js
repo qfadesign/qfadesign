@@ -120,12 +120,16 @@ addEventListener('DOMContentLoaded',()=>{
   if(still)return;
   // aparición al hacer scroll
   document.querySelectorAll('.sobre img:not(.f),.mas,.ayuda,.gran,.foto-band,.qh .vid,.apps-col,.cta>*').forEach(el=>el.classList.add('rv'));
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.2});
-  document.querySelectorAll('.rv').forEach(el=>{
-    // la foto recortada con clip-path no "intersecta": observamos su contenedor
-    if(el.matches('.sobre img:not(.f),.foto-band')){const ob=new IntersectionObserver(es=>{if(es[0].isIntersecting){el.classList.add('in');ob.disconnect()}},{threshold:.25});ob.observe(el.parentElement)}
-    else io.observe(el);
-  });
+  // aparición por POSICIÓN (no por intersección): apenas el borde de arriba pasa la línea del 92% de la pantalla el elemento ya cuenta como visto,
+  // así que si scrolleás rápido y lo pasás de largo igual queda en su lugar (antes se quedaba invisible)
+  const base=el=>el.matches('.sobre img:not(.f),.foto-band')?(el.parentElement||el):el; // la foto recortada con clip-path no ocupa lugar propio: se mide su contenedor
+  let pend=[...document.querySelectorAll('.rv')],rvT=false;
+  const barrer=()=>{
+    rvT=false;const lim=innerHeight*.92;
+    pend=pend.filter(el=>{if(base(el).getBoundingClientRect().top<lim){el.classList.add('in');return false}return true});
+  };
+  addEventListener('scroll',()=>{if(!rvT&&pend.length){rvT=true;requestAnimationFrame(barrer)}},{passive:true});
+  addEventListener('resize',barrer);addEventListener('load',barrer);barrer();
   // textos de la home (menos el hero): se ven de entrada con poca opacidad y, al scrollear, se van poniendo blancos letra por letra
   const tw=[...document.querySelectorAll('.sobre .txt>*,.banda p,.ayuda h3,.ayuda p,.hr-home p,.ah-a p,.qh p,.foto-band p')];
   if(tw.length){

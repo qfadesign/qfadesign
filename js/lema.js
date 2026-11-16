@@ -62,7 +62,13 @@
 
   const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
   if(still||!('IntersectionObserver' in window)){el.classList.add('in');return}
-  // entra cuando se ve buena parte de la frase; se reinicia recién cuando salió por completo de la pantalla
-  new IntersectionObserver(es=>es.forEach(e=>{if(e.intersectionRatio>=.45)el.classList.add('in')}),{threshold:[.45]}).observe(el);
-  new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)el.classList.remove('in')}),{threshold:0}).observe(el);
+  // entra apenas la frase asoma (por posición, así no se pierde si scrolleás rápido); se reinicia solo cuando queda por debajo de la pantalla
+  let lt=false;
+  const rev=()=>{
+    lt=false;const r=el.getBoundingClientRect(),h=innerHeight;
+    if(r.top<h*.85)el.classList.add('in');
+    else if(r.top>=h)el.classList.remove('in');
+  };
+  addEventListener('scroll',()=>{if(!lt){lt=true;requestAnimationFrame(rev)}},{passive:true});
+  addEventListener('resize',rev);addEventListener('load',rev);rev();
 })();

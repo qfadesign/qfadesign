@@ -13,6 +13,19 @@
     t.classList.toggle('on', !!color);
   }
 
+  /* imágenes: las de la portada tenían carga diferida y, al scrollear rápido, llegaban en blanco. Apenas termina de cargar la página
+     se piden todas (de a pocas, sin trabar) y se decodifican, así cuando aparecen ya están listas */
+  (function () {
+    var imgs = [].slice.call(document.querySelectorAll('main img[loading="lazy"]')), k = 0;
+    var idle = window.requestIdleCallback || function (f) { return setTimeout(f, 60); };
+    var lote = function () {
+      imgs.slice(k, k + 3).forEach(function (im) { im.loading = 'eager'; if (im.decode) im.decode().catch(function () {}); });
+      k += 3; if (k < imgs.length) idle(lote);
+    };
+    var go = function () { if (imgs.length) idle(lote); };
+    if (document.readyState === 'complete') go(); else addEventListener('load', go);
+  })();
+
   var pf = document.getElementById('portfolio');
   if (pf) {
     var cards = [].slice.call(pf.querySelectorAll('.pf-c')), n = cards.length;
@@ -101,9 +114,9 @@
 
   var ex = document.getElementById('ex');
   if (ex && !reduce) {
-    var ps = [].slice.call(ex.querySelectorAll('.ex-p')), cur = -1, EH = 0, T0 = 0, ew = 0, eh = 0;
-    ex.classList.add('ex-on');
-    /* la caja que queda fija mide lo mismo que el contenido más más un poco de aire: así no hay vacío antes ni después */
+    var ps = [].slice.call(ex.querySelectorAll('.ex-p')), EH = 0, T0 = 0, ew = 0, eh = 0;
+    ex.classList.add('ex-on', 'ex-sc');
+    /* la caja que queda fija mide lo mismo que el contenido más un poco de aire: así no hay vacío antes ni después */
     var exLayout = function () {
       ew = innerWidth; eh = innerHeight;
       var vh = innerHeight, navp = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--navh')) || 58) + 14, pad = clamp(vh * .05, 24, 56), h = 0;
@@ -111,18 +124,33 @@
       EH = Math.min(h + 2 * pad, vh - navp); T0 = Math.max(navp, (vh - EH) / 2);
       ex.style.setProperty('--exh', EH.toFixed(0) + 'px'); ex.style.setProperty('--ext', T0.toFixed(0) + 'px');
     };
-    var set = function (i) {
-      if (i === cur) return; cur = i;
-      ps.forEach(function (p, k) { p.classList.toggle('on', k === i); p.classList.toggle('pv', k < i); });
-    };
+    /* cada bloque se mueve según la POSICIÓN del scroll (no con un cambio de clase + transición con tiempo):
+       aparece, se queda completo un buen rato y se va, y si scrolleás rápido nada llega tarde ni se queda a medias */
     var upd = function () {
-      var d = ex.offsetHeight - EH, p = d > 0 ? clamp((T0 - ex.getBoundingClientRect().top) / d, 0, 1) : 0;
-      set(Math.min(ps.length - 1, Math.floor(p * ps.length + .001)));
+      var N = ps.length, d = ex.offsetHeight - EH, p = d > 0 ? clamp((T0 - ex.getBoundingClientRect().top) / d, 0, 1) : 0;
+      ps.forEach(function (el, k) {
+        var x = p * N - (k + .5);
+        if (k === 0 && x < 0) x = 0;            // el primero ya está completo al llegar
+        if (k === N - 1 && x > 0) x = 0;        // el último se queda completo al irse
+        var a = ease(clamp((.56 - Math.abs(x)) / .2, 0, 1)), sg = x < 0 ? 1 : -1;
+        el.style.setProperty('--o', a.toFixed(3));
+        el.style.setProperty('--ty', (sg * (1 - a) * 46).toFixed(1) + 'px');
+        el.style.setProperty('--tx', ((1 - a) * 18).toFixed(1) + 'px');
+        el.classList.toggle('on', a > .5);
+      });
     };
     var raf2 = 0, ask2 = function () { if (!raf2) raf2 = requestAnimationFrame(function () { raf2 = 0; upd(); }); };
     exLayout(); upd();
     addEventListener('scroll', ask2, { passive: true });
     addEventListener('resize', function () { if (innerWidth !== ew || Math.abs(innerHeight - eh) > 150) exLayout(); ask2(); });
     addEventListener('load', function () { exLayout(); ask2(); });
+    // teclado: al enfocar un link de un bloque que no se ve, el scroll lleva hasta ese bloque
+    ps.forEach(function (el, k) {
+      el.addEventListener('focusin', function () {
+        if (el.classList.contains('on')) return;
+        var top = ex.getBoundingClientRect().top + scrollY, dist = ex.offsetHeight - EH;
+        scrollTo({ top: top - T0 + dist * (k + .5) / ps.length, behavior: 'auto' });
+      });
+    });
   }
 })();
