@@ -15,7 +15,7 @@
 .pf-c small::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c,#0b75f4)}
 .pf-c i{margin-top:auto;padding-top:10px;font:900 italic 14px var(--fh,inherit);color:var(--c,#0b75f4);font-style:normal}
 /* animado */
-.pf-on{height:calc(100svh + var(--pfd,420svh))}
+.pf-on{height:calc(100svh + var(--pfd,420svh));padding:0}
 .pf-on .pf-sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;padding-top:calc(var(--navh,58px) + 14px)}
 .pf-on .pf-stage{position:relative;flex:1;min-height:0}
 .pf-on .pf-cards{display:block;overflow:visible;padding:0;position:absolute;inset:0}
@@ -28,17 +28,18 @@
 .pf-on .pf-c:focus-visible{outline:3px solid #fff;outline-offset:4px}
 .pf-c:hover i{translate:4px 0}.pf-c i{transition:translate .3s}
 .pf-on .pf-fd{display:block;position:absolute;left:50%;top:50%;width:clamp(240px,30vw,340px);aspect-ratio:10/7;margin:calc(clamp(240px,30vw,340px)*-.35) 0 0 calc(clamp(240px,30vw,340px)*-.5)}
+.pf-fd,.pf-back,.pf-front{pointer-events:none}
 .pf-back,.pf-front{position:absolute;left:0;right:0;will-change:transform,opacity}
 .pf-back{top:0;bottom:0}
 .pf-back{z-index:1;border-radius:22px;background:#0a56b8;box-shadow:0 30px 60px rgba(0,0,0,.55)}
 .pf-back::before{content:"";position:absolute;right:0;top:-6%;width:42%;height:12%;border-radius:14px 14px 0 0;background:#0a56b8}
-.pf-front{z-index:3;border-radius:22px;background:linear-gradient(165deg,#4a9bff,#0b75f4 45%,#0a62d0);transform-origin:50% 100%;box-shadow:0 -4px 16px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.45);display:flex;flex-direction:column;justify-content:flex-end;padding:0 7% 7%;color:#fff;height:78%;bottom:0}
+.pf-front{z-index:100;border-radius:22px;background:linear-gradient(165deg,#4a9bff,#0b75f4 45%,#0a62d0);transform-origin:50% 100%;box-shadow:0 -4px 16px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.45);display:flex;flex-direction:column;justify-content:flex-end;padding:0 7% 7%;color:#fff;height:78%;bottom:0}
 .pf-front b{font:900 italic clamp(24px,3vw,34px)/1 var(--fh,inherit)}
 .pf-front small{font:500 italic 14px/1.2 var(--f);opacity:.85;margin-top:4px}
-.pf-on .pf-hud{display:flex;align-items:center;justify-content:center;gap:14px;padding:6px 0 18px;opacity:0;transition:opacity .4s;font:700 14px var(--f);letter-spacing:.08em}
+.pf-on .pf-hud{position:absolute;left:0;right:0;top:var(--hudtop,auto);display:flex;align-items:center;justify-content:center;gap:14px;padding:0;height:34px;opacity:0;transition:opacity .4s;font:700 14px var(--f);letter-spacing:.08em}
 .pf-bar{width:clamp(90px,18vw,200px);height:3px;border-radius:3px;background:rgba(255,255,255,.25);overflow:hidden}
 .pf-bar i{display:block;height:100%;background:#fff;transform-origin:0 50%;transform:scaleX(0)}
-.pf-on .pf-hint{display:block;position:absolute;left:0;right:0;bottom:22px;margin:0;text-align:center;font:500 14px var(--f);color:rgba(255,255,255,.65);transition:opacity .3s}
+.pf-on .pf-hint{display:block;position:absolute;left:0;right:0;top:var(--hudtop,auto);margin:0;text-align:center;font:500 14px var(--f);color:rgba(255,255,255,.65);transition:opacity .3s}
 @media(prefers-reduced-motion:reduce){.pf-on{height:auto}}
 
 /* herramientas · jueguitos · recursos */
@@ -60,8 +61,9 @@
 .ex-pr a{display:inline-flex;align-items:center;gap:8px;text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:4px}
 .ex-pr a::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pc)}
 /* animado: una a la vez */
-.ex-on{height:calc(100svh + 190svh)}
-.ex-on .ex-sticky{position:sticky;top:0;height:100svh;overflow:hidden;padding-top:calc(var(--navh,58px) + 14px)}
+.ex-on{height:calc(var(--exh,100svh) + 190svh);padding:0}
+.ex-on .ex-sticky{position:sticky;top:var(--ext,0px);height:var(--exh,100svh);overflow-x:clip;pointer-events:none}
+.ex-on .ex-p.meas{position:relative;inset:auto;visibility:hidden;transition:none}
 .ex-on .ex-pn{position:relative;height:100%;padding-top:0}
 .ex-on .ex-p{position:absolute;inset:0 clamp(16px,3vw,32px);margin:0;opacity:0;translate:0 46px;pointer-events:none;transition:opacity .55s,translate .7s cubic-bezier(.2,.8,.2,1)}
 .ex-on .ex-p.on{opacity:1;translate:0 0;pointer-events:auto}
@@ -99,3 +101,6 @@
 .hx-cta .btn{display:inline-block;margin:0;padding:13px 30px}
 @media(max-width:420px){.hx-ls{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){.pf-on .pf-c{--W:min(64vw,calc((100svh - 330px)*.8))}}
+
+/* home: el botón queda cerca de las fichas y de la sección que sigue */
+body .pf2+.mas{margin:8px 0 clamp(16px,3svh,32px)}

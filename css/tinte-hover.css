@@ -1,0 +1,14 @@
+/* JUEGUITOS y RECURSOS: al pasar el mouse por un juego o un recurso, el fondo se tiñe con su color
+   (igual que en el portfolio, en herramientas y en la home) y la tarjeta sube un poco */
+@property --tc{syntax:'<color>';inherits:true;initial-value:#0b75f4}
+.tinte{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s,--tc .5s ease;
+ background:radial-gradient(75vw 60vw at 88% 10%,color-mix(in srgb,var(--tc) 85%,transparent),transparent 68%),radial-gradient(60vw 45vw at 4% 96%,color-mix(in srgb,var(--tc) 45%,transparent),transparent 66%),linear-gradient(rgba(0,0,0,.88),rgba(0,0,0,.88))}
+.tinte.on{opacity:1}
+/* la barra NO se toca: es sticky con z-index 50 (shared.css) */
+.f-jueguitos main,.f-jueguitos footer,.f-recursos main,.f-recursos footer{position:relative;z-index:1}
+.f-recursos .rc{--c:#0b75f4;transition:translate .35s cubic-bezier(.2,.8,.2,1),box-shadow .4s,border-color .3s}
+@media(hover:hover) and (pointer:fine){
+ .f-recursos .rc:hover,.f-recursos .rc:focus-within{translate:0 -5px;border-color:color-mix(in srgb,var(--c) 70%,#fff 30%);box-shadow:0 26px 54px color-mix(in srgb,var(--c) 38%,transparent)}
+ .f-jueguitos .dd-banner[data-c]:hover{box-shadow:0 22px 48px color-mix(in srgb,var(--c) 38%,transparent)}
+}
+@media(prefers-reduced-motion:reduce){.f-recursos .rc{transition:none}.f-recursos .rc:hover,.f-recursos .rc:focus-within{translate:none}}
