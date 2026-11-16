@@ -67,10 +67,12 @@
 
     var draw = function () {
       raf = 0;
-      var y = clamp(-pf.getBoundingClientRect().top, 0, Math.max(1, pf.offsetHeight - stk.offsetHeight)), W = L.W, S = L.S, fit = L.fit;
-      var ka = ease(clamp(y / L.a1, 0, 1)), kb = ease(clamp((y - L.a1) / (L.a2 - L.a1), 0, 1)), pt = L.trav ? clamp((y - L.a2) / L.trav, 0, 1) : 0, fo = 1 - kb;
+      var rc = pf.getBoundingClientRect(), y = clamp(-rc.top, 0, Math.max(1, pf.offsetHeight - stk.offsetHeight)), W = L.W, S = L.S, fit = L.fit;
+      var ka = ease(clamp(y / L.a1, 0, 1)), kb = ease(clamp((y - L.a1) / (L.a2 - L.a1), 0, 1)), pt = L.trav ? clamp((y - L.a2) / L.trav, 0, 1) : 0,
+        fo = fit ? 1 - kb : clamp(1 - kb * 1.8, 0, 1);   // celu: la tapa se va antes de que las fichas terminen de acomodarse (antes quedaba un fantasma celeste sobre la ficha)
       var lid = 'translateY(' + (kb * 90).toFixed(1) + 'px) scale(' + (1 - kb * .1).toFixed(3) + ')';
       back.style.opacity = front.style.opacity = fo.toFixed(3); back.style.transform = lid;
+      back.style.visibility = front.style.visibility = fo < .01 ? 'hidden' : '';
       front.style.transform = lid + ' perspective(900px) rotateX(' + (-(14 + 38 * ka)).toFixed(1) + 'deg)';
       var best = 0, bestD = 1e9;
       cards.forEach(function (c, i) {
@@ -95,7 +97,7 @@
       if (ht && ht !== hintTxt) { hint.textContent = ht; } hintTxt = ht || hintTxt;
       hint.style.opacity = ht ? 1 : 0;
       // celu / táctil: sin hover, el fondo toma el color de la ficha que pasa por el centro
-      if (!fine) { var tc = (!fit && kb > .95) ? cards[best].dataset.c : null; if (tc !== lastTint) { lastTint = tc; tint(tc); } }
+      if (!fine) { /* solo mientras el portfolio está en pantalla: antes el color de la última ficha se quedaba pegado en las secciones de abajo */ var tc = (!fit && kb > .95 && rc.bottom > lh * .45 && rc.top < lh * .55) ? cards[best].dataset.c : null; if (tc !== lastTint) { lastTint = tc; tint(tc); } }
     };
 
     var ask = function () { if (!raf) raf = requestAnimationFrame(draw); };
@@ -127,12 +129,16 @@
     /* cada bloque se mueve según la POSICIÓN del scroll (no con un cambio de clase + transición con tiempo):
        aparece, se queda completo un buen rato y se va, y si scrolleás rápido nada llega tarde ni se queda a medias */
     var upd = function () {
-      var N = ps.length, d = ex.offsetHeight - EH, p = d > 0 ? clamp((T0 - ex.getBoundingClientRect().top) / d, 0, 1) : 0;
+      var N = ps.length, narrow = innerWidth <= 900, d = ex.offsetHeight - EH, p = d > 0 ? clamp((T0 - ex.getBoundingClientRect().top) / d, 0, 1) : 0;
       ps.forEach(function (el, k) {
         var x = p * N - (k + .5);
         if (k === 0 && x < 0) x = 0;            // el primero ya está completo al llegar
         if (k === N - 1 && x > 0) x = 0;        // el último se queda completo al irse
-        var a = ease(clamp((.56 - Math.abs(x)) / .2, 0, 1)), sg = x < 0 ? 1 : -1;
+        // celu / tablet: el bloque se queda completo casi todo su tramo y el cambio es más corto (así no pasan sin verse); compu: igual que antes
+        var a = ease(clamp(((narrow ? .53 : .56) - Math.abs(x)) / (narrow ? .12 : .2), 0, 1)), sg = x < 0 ? 1 : -1;
+        var key = a.toFixed(3) + (a > 0 && a < 1 ? sg : '');
+        if (el._k === key) return;            // no cambió: no se toca el estilo (menos trabajo en cada scroll)
+        el._k = key;
         el.style.setProperty('--o', a.toFixed(3));
         el.style.setProperty('--ty', (sg * (1 - a) * 46).toFixed(1) + 'px');
         el.style.setProperty('--tx', ((1 - a) * 18).toFixed(1) + 'px');

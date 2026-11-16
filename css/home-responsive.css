@@ -1,0 +1,57 @@
+/* ============================================================
+   HOME EN CELULAR / TABLET (solo la home; la versión de compu no cambia)
+   Va al final de todo (después de home-secciones.css) a propósito: pisa lo anterior.
+   Para volver atrás: sacá el <link> a este archivo en index.html.
+   ============================================================ */
+
+/* ---------- 1) HERO (hasta 760px) ----------
+   · Titular todo en MAYÚSCULAS, bien negro y alineado a la izquierda, como en la versión de compu. La bajada queda en texto normal.
+   · El hero ocupa casi toda la pantalla: del panel que sube asoma solo un borde finito (antes asomaban ~100px).
+   · Ese panel que sube tiene un borde y un azul profundo arriba, para que se note un poco más (antes era casi negro). */
+@media(max-width:760px){
+ html body .hero{min-height:calc(100svh - 46px)}
+ html body .hero .intro{align-items:flex-start;text-align:left;margin:auto 18px clamp(22px,4.4svh,40px)}
+ html body .hero .intro .titular{text-transform:uppercase;text-wrap:balance;text-align:left;white-space:normal;font-weight:900;
+  font-size:clamp(26px,8.2vw,42px);line-height:.96;letter-spacing:-.025em}
+ html body .hero .intro .titular .sub{display:block;white-space:normal}
+ html body .hero .intro .bajada{text-transform:none;text-align:left;max-width:30ch;font-size:clamp(15px,4.2vw,18px);line-height:1.3}
+ html body .hero .intro .acciones{margin-top:8px}
+
+ html body .cuerpo{border-top:1px solid rgba(140,185,255,.34);
+  background:
+   linear-gradient(180deg,rgba(24,92,214,.42) 0,rgba(14,64,160,.16) 110px,rgba(14,64,160,0) 260px),
+   radial-gradient(60vw 36vw at 92% 20%,rgba(11,117,244,.22),transparent 62%),
+   radial-gradient(60vw 45vw at -6% 34%,rgba(3,40,120,.28),transparent 60%),
+   radial-gradient(55vw 40vw at 104% 66%,rgba(11,117,244,.14),transparent 60%),
+   linear-gradient(#050b18 0,#030712 100%)}
+}
+
+/* ---------- 2) "UN POCO DE QFADESIGN" (hasta 900px) ----------
+   · El texto va centrado (con el título, la bajada y el párrafo parejos sobre la foto), no corrido a un costado.
+   · El bloque arranca arriba, pegado a la barra, en vez de quedar en el medio de la pantalla (quedaba muy lejos del hero).
+   · La foto aprovecha el espacio que se libera. */
+@media(max-width:900px){
+ html body .sobre .so-in{align-content:start;row-gap:16px;padding-top:calc(var(--navh,58px) + 12px);padding-bottom:16px}
+ html body .sobre .txt,html body .sobre .txt h2,html body .sobre .txt .sub,html body .sobre .txt p{text-align:center}
+ html body .sobre .txt p:last-child{margin-inline:auto;max-width:34ch}
+ html body .sobre .so-col{--ph:clamp(200px,calc(100svh - 410px),470px)}
+}
+@media(max-width:900px) and (max-height:640px){
+ html body .sobre .so-col{--ph:clamp(150px,calc(100svh - 380px),300px)}
+}
+
+/* ---------- 3) JUEGOS · RECURSOS · HERRAMIENTAS (hasta 900px) ----------
+   Cada bloque tiene más recorrido y se queda completo la mayor parte de ese recorrido (js/home-secciones.js usa los mismos
+   tiempos), así si scrolleás rápido todavía llegás a ver cada uno. */
+@media(max-width:900px){
+ .ex-on{height:calc(var(--exh,100svh) + 330svh)}
+}
+
+/* ---------- 4) PORTFOLIO (hasta 700px) ----------
+   · La carpeta se ve más grande.
+   · Las fichas son un poco más angostas, así la que está en el centro se ve entera y las vecinas asoman parejo a los costados. */
+@media(max-width:700px){
+ .pf-on .pf-fd{width:min(74vw,320px);margin:calc(min(74vw,320px)*-.35) 0 0 calc(min(74vw,320px)*-.5)}
+ .pf-on .pf-c{--W:min(60vw,calc((100svh - 330px)*.8))}
+ .pf-lead{font-size:16px}
+}
