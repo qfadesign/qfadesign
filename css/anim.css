@@ -7,7 +7,7 @@
 
 /* HOME: una secuencia de entrada orquestada */
 .hero{background:#05070d!important;--py:0px}
-.hero::before{content:"";position:absolute;inset:clamp(70px,13vw,210px) 0 0 0;background:url(../img/hero-mano.jpg) 40% 28%/cover;z-index:0;translate:0 var(--py);animation:zoom 2.2s cubic-bezier(.16,.8,.2,1) both;will-change:translate,scale;-webkit-mask-image:linear-gradient(transparent,#000 24%);mask-image:linear-gradient(transparent,#000 24%)}
+.hero::before{content:"";position:absolute;inset:clamp(70px,13vw,210px) 0 0 0;background:url(../img/hero-silla.jpg) 50% 30%/cover;z-index:0;translate:0 var(--py);animation:zoom 2.2s cubic-bezier(.16,.8,.2,1) both;will-change:translate,scale;-webkit-mask-image:linear-gradient(transparent,#000 24%);mask-image:linear-gradient(transparent,#000 24%)}
 /* secuencia del inicio: 1) solo la foto del hero (zoom)  2) barra de navegación + marca  3) cuadro de texto.
    --d0 = espera antes de la barra: en páginas internas y con la pantalla de entrada (js/intro.js) es 0s; en el inicio sin pantalla de entrada, .35s */
 :root{--d0:0s}

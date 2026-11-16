@@ -1,0 +1,78 @@
+/* ============================================================
+   HERO (inicio): foto qfa_silla, texto en MAYÚSCULAS apoyado abajo (2-3 renglones)
+   y botones del lado derecho (PC). En celu queda el layout de siempre, solo cambia la foto.
+   Va al final a propósito: pisa lo de anim.css, botones.css y home-fx.css.
+   Para volver atrás: sacá el <link> a este archivo en index.html y devolvé hero-mano.jpg en anim.css e index.html.
+   ============================================================ */
+html .hero::after{height:62%;background:linear-gradient(to top,rgba(2,8,22,.8),rgba(2,8,22,.38) 55%,rgba(2,8,22,0))}
+
+@media(min-width:901px){
+ html body .hero .intro{align-self:stretch;width:auto;margin:auto 0 0;padding:0 clamp(24px,3.6vw,64px) clamp(22px,4.6vh,54px) clamp(72px,5.4vw,100px);
+  display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto;column-gap:clamp(24px,3vw,56px);row-gap:clamp(10px,1.6vh,18px);align-items:end;justify-items:start;text-align:left}
+ html body .hero .intro .titular{grid-column:1;grid-row:1;max-width:none;text-transform:uppercase;text-wrap:nowrap;
+  font-family:var(--fh);font-style:normal;font-weight:900;font-size:clamp(34px,min(5.2cqw,10vh),104px);line-height:.94;letter-spacing:-.025em}
+ html body .hero .intro .titular .sub{display:block;white-space:nowrap}
+ html body .hero .intro .bajada{grid-column:1;grid-row:2;max-width:none;text-transform:uppercase;font-style:normal;font-weight:700;
+  font-size:clamp(11px,min(1.2cqw,2.2vh),18px);line-height:1.3;letter-spacing:.07em;color:rgba(255,255,255,.92)}
+ html body .hero .intro .acciones{grid-column:2;grid-row:1/3;align-self:end;justify-self:end;flex-direction:column;flex-wrap:nowrap;align-items:stretch;justify-content:flex-end;gap:12px;margin:0;width:clamp(230px,19vw,300px)}
+ html body .hero .intro .acciones .btn{flex:none;width:100%;justify-content:space-between;margin:0}
+}
+
+@media(min-width:901px) and (max-width:1150px){
+ html body .hero .intro .titular{font-size:clamp(30px,4.5cqw,60px)}
+ html body .hero .intro .acciones{width:210px}
+}
+
+/* pantallas medianas (tablet horizontal): mismo estilo, pero los botones pasan abajo del texto, a la derecha */
+@media(min-width:761px) and (max-width:900px){
+ html body .hero .intro{align-self:stretch;width:auto;margin:auto 0 0;padding:0 clamp(20px,3.6vw,40px) clamp(22px,4vh,40px);
+  display:grid;grid-template-columns:minmax(0,1fr);row-gap:12px;align-items:end;justify-items:start;text-align:left}
+ html body .hero .intro .titular{text-transform:uppercase;text-wrap:nowrap;font-family:var(--fh);font-style:normal;font-weight:900;font-size:clamp(30px,6.4cqw,60px);line-height:.96;letter-spacing:-.025em}
+ html body .hero .intro .titular .sub{display:block;white-space:nowrap}
+ html body .hero .intro .bajada{max-width:44ch;text-transform:uppercase;font-style:normal;font-weight:700;font-size:13px;line-height:1.3;letter-spacing:.06em}
+ html body .hero .intro .acciones{justify-self:end;flex-direction:row;flex-wrap:nowrap;margin:0}
+}
+
+/* celu: se mantiene el layout actual; la foto se encuadra en la persona */
+@media(max-width:760px){
+ html .hero::before{background-position:50% 24%}
+ /* el degradé que oscurece la foto sube más: tapa la silla y deja el texto bien legible */
+ html .hero::after{height:94%;background:linear-gradient(to top,rgba(2,8,22,.98) 0,rgba(2,8,22,.95) 40%,rgba(2,8,22,.78) 58%,rgba(2,8,22,.38) 76%,rgba(2,8,22,0) 100%)}
+}
+
+/* ============================================================
+   "UN POCO DE QFADESIGN" (la sección que sigue al hero): mismo lenguaje que el hero.
+   Título en mayúsculas, ancho y alineado a la izquierda; texto más corto.
+   ============================================================ */
+html body .sobre{max-width:1360px;grid-template-columns:minmax(0,500px) minmax(0,440px);justify-content:center;align-items:center;gap:clamp(32px,6vw,96px)}
+html body .sobre .txt{max-width:none;margin:0;text-align:left}
+html body .sobre h2{text-transform:none;font-style:normal;font-weight:900;font-family:var(--fh);font-size:clamp(30px,3.9vw,60px);line-height:1;letter-spacing:-.03em;white-space:nowrap}
+html body .sobre .sub{font-size:clamp(16px,1.5vw,21px);margin:clamp(14px,1.6vw,22px) 0 10px;font-weight:700}
+html body .sobre .txt p:last-child{max-width:52ch;font-size:clamp(15px,1.25vw,18px)!important}
+@media(max-width:900px){
+ html body .sobre{grid-template-columns:minmax(0,1fr);justify-items:center}
+ html body .sobre .txt{width:100%;max-width:520px}
+ html body .sobre h2{white-space:normal;font-size:clamp(28px,8.6vw,48px)}
+ html body .sobre .txt p:last-child{max-width:none}
+}
+
+/* foto de la sección: marco vertical con fotos que cambian al scrollear (js/sobre-fotos.js), sin sticker encima */
+html body .sobre .so-ph{position:relative;justify-self:start;width:100%;max-width:440px;aspect-ratio:4/5;border-radius:28px;overflow:hidden;background:#050b18}
+html body .sobre .so-ph img.f,html body .sobre .so-ph img.f.rv{position:absolute;inset:0;width:100%;height:100%;max-width:none;aspect-ratio:auto;object-fit:cover;object-position:var(--op,50% 50%);border-radius:0;
+ opacity:0;scale:1.04;clip-path:none;transition:opacity 1.6s ease-in-out,scale 3s cubic-bezier(.2,.7,.2,1)}
+html body .sobre .so-ph img.f.on,html body .sobre .so-ph img.f.rv.on{opacity:1;scale:1}
+@media(max-width:900px){html body .sobre .so-ph{justify-self:center;max-width:420px}}
+@media(prefers-reduced-motion:reduce){html body .sobre .so-ph img.f{transition:opacity .3s;scale:1}}
+
+/* ============================================================
+   FRASE DIVISORIA (entre "Un poco de qfadesign" y el resto de la web):
+   2 renglones, todo en mayúsculas, de borde a borde, con una línea fina arriba y abajo.
+   ============================================================ */
+html body .lema{max-width:none;margin:clamp(34px,5vw,70px) 0 clamp(40px,5.5vw,84px);padding:clamp(20px,2.4vw,34px) 3.6vw;
+ text-align:justify;text-align-last:justify;text-transform:uppercase;font-family:var(--fh);font-style:normal;font-weight:900;
+ font-size:clamp(15px,2.2vw,46px);line-height:1.1;letter-spacing:-.02em;
+ border-top:1px solid rgba(255,255,255,.22);border-bottom:1px solid rgba(255,255,255,.22)}
+@media(max-width:760px){
+ html body .lema{text-align:left;text-align-last:left;padding:20px 20px;font-size:clamp(18px,5.6vw,30px);line-height:1.1}
+ html body .lema .lema-br{display:none}
+}
