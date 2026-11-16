@@ -1,8 +1,12 @@
 /* JUEGUITOS y RECURSOS: al pasar el mouse por un juego o un recurso, el fondo se tiñe con su color
    (igual que en el portfolio, en herramientas y en la home) y la tarjeta sube un poco */
 @property --tc{syntax:'<color>';inherits:true;initial-value:#0b75f4}
-.tinte{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s,--tc .5s ease;
- background:radial-gradient(75vw 60vw at 88% 10%,color-mix(in srgb,var(--tc) 85%,transparent),transparent 68%),radial-gradient(60vw 45vw at 4% 96%,color-mix(in srgb,var(--tc) 45%,transparent),transparent 66%),linear-gradient(rgba(0,0,0,.88),rgba(0,0,0,.88))}
+@property --tc2{syntax:'<color>';inherits:true;initial-value:#0b75f4}
+@property --tc3{syntax:'<color>';inherits:true;initial-value:transparent}
+.tinte{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s,--tc .5s ease,--tc2 .5s ease,--tc3 .5s ease;
+ /* 3 tonos por juego (sacados de su portada): --tc arriba a la derecha, --tc2 abajo a la izquierda, --tc3 como mezcla en el centro-derecha.
+ Recursos solo usa un color: --tc2 = --tc y --tc3 transparente, así queda igual que antes */
+ background:radial-gradient(75vw 60vw at 88% 10%,color-mix(in srgb,var(--tc) 85%,transparent),transparent 68%),radial-gradient(60vw 45vw at 4% 96%,color-mix(in srgb,var(--tc2) 62%,transparent),transparent 66%),radial-gradient(52vw 38vw at 62% 82%,color-mix(in srgb,var(--tc3) 55%,transparent),transparent 70%),linear-gradient(rgba(0,0,0,.88),rgba(0,0,0,.88))}
 .tinte.on{opacity:1}
 /* la barra NO se toca: es sticky con z-index 50 (shared.css) */
 .f-jueguitos main,.f-jueguitos footer,.f-recursos main,.f-recursos footer{position:relative;z-index:1}

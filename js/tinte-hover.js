@@ -8,7 +8,7 @@
   });
   const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
   const tinte=document.createElement('div');tinte.className='tinte';tinte.setAttribute('aria-hidden','true');document.body.prepend(tinte);
-  const tint=c=>{if(c)tinte.style.setProperty('--tc',c.dataset.c);tinte.classList.toggle('on',!!c)};
+  const tint=c=>{if(c){const d=c.dataset;tinte.style.setProperty('--tc',d.c);tinte.style.setProperty('--tc2',d.c2||d.c);tinte.style.setProperty('--tc3',d.c3||'transparent')}tinte.classList.toggle('on',!!c)};
   items.forEach(c=>{
     c.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')tint(c)});c.addEventListener('pointerleave',()=>tint(null));
     c.addEventListener('focusin',()=>{const a=document.activeElement;if(a&&a.matches(':focus-visible'))tint(c)});c.addEventListener('focusout',()=>tint(null));
