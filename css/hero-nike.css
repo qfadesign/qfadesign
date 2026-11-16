@@ -1,5 +1,5 @@
 /* ============================================================
-   HERO (inicio): foto qfa_silla, texto en MAYÚSCULAS apoyado abajo (2-3 renglones)
+   HERO (inicio): foto qfa_silla, título en MAYÚSCULAS y bajada en texto normal apoyados abajo (2-3 renglones)
    y botones del lado derecho (PC). En celu queda el layout de siempre, solo cambia la foto.
    Va al final a propósito: pisa lo de anim.css, botones.css y home-fx.css.
    Para volver atrás: sacá el <link> a este archivo en index.html y devolvé hero-mano.jpg en anim.css e index.html.
@@ -12,8 +12,8 @@ html .hero::after{height:62%;background:linear-gradient(to top,rgba(2,8,22,.8),r
  html body .hero .intro .titular{grid-column:1;grid-row:1;max-width:none;text-transform:uppercase;text-wrap:nowrap;
   font-family:var(--fh);font-style:normal;font-weight:900;font-size:clamp(34px,min(5.2cqw,10vh),104px);line-height:.94;letter-spacing:-.025em}
  html body .hero .intro .titular .sub{display:block;white-space:nowrap}
- html body .hero .intro .bajada{grid-column:1;grid-row:2;max-width:none;text-transform:uppercase;font-style:normal;font-weight:700;
-  font-size:clamp(11px,min(1.2cqw,2.2vh),18px);line-height:1.3;letter-spacing:.07em;color:rgba(255,255,255,.92)}
+ html body .hero .intro .bajada{grid-column:1;grid-row:2;max-width:none;text-transform:none;font-style:normal;font-weight:500;
+  font-size:clamp(15px,min(1.7cqw,3vh),26px);line-height:1.3;letter-spacing:0;color:rgba(255,255,255,.95)}
  html body .hero .intro .acciones{grid-column:2;grid-row:1/3;align-self:end;justify-self:end;flex-direction:column;flex-wrap:nowrap;align-items:stretch;justify-content:flex-end;gap:12px;margin:0;width:clamp(230px,19vw,300px)}
  html body .hero .intro .acciones .btn{flex:none;width:100%;justify-content:space-between;margin:0}
 }
@@ -29,7 +29,7 @@ html .hero::after{height:62%;background:linear-gradient(to top,rgba(2,8,22,.8),r
   display:grid;grid-template-columns:minmax(0,1fr);row-gap:12px;align-items:end;justify-items:start;text-align:left}
  html body .hero .intro .titular{text-transform:uppercase;text-wrap:nowrap;font-family:var(--fh);font-style:normal;font-weight:900;font-size:clamp(30px,6.4cqw,60px);line-height:.96;letter-spacing:-.025em}
  html body .hero .intro .titular .sub{display:block;white-space:nowrap}
- html body .hero .intro .bajada{max-width:44ch;text-transform:uppercase;font-style:normal;font-weight:700;font-size:13px;line-height:1.3;letter-spacing:.06em}
+ html body .hero .intro .bajada{max-width:44ch;text-transform:none;font-style:normal;font-weight:500;font-size:17px;line-height:1.3;letter-spacing:0}
  html body .hero .intro .acciones{justify-self:end;flex-direction:row;flex-wrap:nowrap;margin:0}
 }
 
@@ -66,12 +66,35 @@ html body .sobre .so-ph img.f.on,html body .sobre .so-ph img.f.rv.on{opacity:1;s
 
 /* ============================================================
    FRASE DIVISORIA (entre "Un poco de qfadesign" y el resto de la web):
-   2 renglones, todo en mayúsculas, de borde a borde, sin líneas, con animación (css/home-nuevo.css y js/lema.js).
+   2 renglones, todo en mayúsculas, de borde a borde, sin líneas ni bloques de color. Las palabras clave se resaltan
+   con el eje de ancho de Podium Soft, que es variable (css/home-nuevo.css y js/lema.js).
    ============================================================ */
-html body .lema{max-width:none;margin:clamp(34px,5vw,70px) 0 clamp(40px,5.5vw,84px);padding:clamp(20px,2.4vw,34px) 3.6vw;
- text-align:justify;text-align-last:justify;text-transform:uppercase;font-family:var(--fh);font-style:normal;font-weight:900;
- font-size:clamp(15px,2.2vw,46px);line-height:1.1;letter-spacing:-.02em}
+html body .lema{max-width:none;margin:clamp(34px,5vw,70px) 0 clamp(6px,1vw,16px);padding:clamp(20px,2.4vw,34px) 3.6vw;
+ text-align:justify;text-align-last:justify;text-transform:uppercase;font-family:"Podium Var","podium-soft-variable",var(--fh);font-style:normal;font-weight:400;
+ font-size:clamp(15px,2.2vw,46px);line-height:1.04;letter-spacing:-.005em}
 @media(max-width:760px){
- html body .lema{text-align:left;text-align-last:left;padding:20px 20px;font-size:clamp(18px,5.6vw,30px);line-height:1.1}
+ html body .lema{text-align:left;text-align-last:left;padding:20px 20px 6px;font-size:clamp(20px,6vw,32px);line-height:1.08}
  html body .lema .lema-br{display:none}
 }
+
+/* ============================================================
+   BOTONES DEL HERO: sin flechitas y con el mismo vidrio transparente de la barra de navegación
+   (fondo oscuro translúcido, desenfoque, borde fino y pastilla). Compu y celu.
+   Para volver a los botones azul/crema, pedí el bloque anterior o borrá este.
+   ============================================================ */
+html body .hero .intro .acciones .btn.btn.btn,
+html body .hero .intro .acciones .btn.btn.btn:not(.claro),
+html body .hero .intro .acciones .btn.btn.btn.claro{
+ background:rgba(0,0,0,.22);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:99px;
+ box-shadow:0 10px 30px rgba(0,0,0,.22);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+ text-shadow:none;justify-content:center;gap:0;transition:translate .25s cubic-bezier(.2,.8,.2,1),border-color .3s,background .3s}
+html body .hero .intro .acciones .btn.btn.btn::after,
+html body .hero .intro .acciones .btn.btn.btn:not(.claro)::after,
+html body .hero .intro .acciones .btn.btn.btn.claro::after{background:rgba(255,255,255,.18);animation:none}
+html body .hero .intro .acciones .btn.btn.btn:hover,
+html body .hero .intro .acciones .btn.btn.btn:focus-visible,
+html body .hero .intro .acciones .btn.btn.btn:not(.claro):hover,
+html body .hero .intro .acciones .btn.btn.btn:not(.claro):focus-visible,
+html body .hero .intro .acciones .btn.btn.btn.claro:hover,
+html body .hero .intro .acciones .btn.btn.btn.claro:focus-visible{color:#fff;border-color:rgba(255,255,255,.5);box-shadow:0 14px 34px rgba(0,0,0,.3);translate:0 -3px}
+@media(prefers-reduced-motion:reduce){html body .hero .intro .acciones .btn.btn.btn{transition:border-color .3s}html body .hero .intro .acciones .btn.btn.btn:hover{translate:none}}

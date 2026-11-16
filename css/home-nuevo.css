@@ -1,14 +1,14 @@
 /* ============================================================
    HOME NUEVA
    1) "Un poco de qfadesign": la sección se queda fija mientras scrolleás y las fotos
-      cambian de a una (js/sobre-fotos.js). El texto va alineado a la derecha, pegado a la foto.
-   2) Frase de abajo: sin líneas; las palabras suben desde una máscara y las clave se marcan
-      con un bloque (js/lema.js).
+      cambian de a una (js/sobre-fotos.js). El texto va alineado a la derecha, pegado a la foto. Sin barras de progreso debajo de la foto.
+   2) Frase de abajo: sin líneas ni bloques de fondo; las palabras suben desde una máscara y las clave se
+      resaltan cambiando el ANCHO de la tipografía (eje variable wdth de Podium Soft). js/lema.js.
    ============================================================ */
 
 /* ---------- 1) SOBRE ---------- */
 html body .sobre{display:block;position:relative;max-width:none;margin:0;padding:0;
- height:calc(100svh + (var(--n,5) - 1)*60svh)}
+ height:calc(100svh + (var(--n,5) - 1)*42svh)}
 html body .sobre .so-in{position:sticky;top:0;height:100svh;box-sizing:border-box;max-width:1360px;margin:0 auto;
  display:grid;grid-template-columns:minmax(0,560px) auto;justify-content:center;align-items:center;
  column-gap:clamp(32px,6vw,96px);padding:calc(var(--navh,58px) + 20px) clamp(20px,4vw,48px) 28px}
@@ -26,18 +26,8 @@ html body .sobre .so-ph img.f.under,html body .sobre .so-ph img.f.on{clip-path:i
 html body .sobre .so-ph img.f.under{z-index:1}
 html body .sobre .so-ph img.f.on{z-index:2}
 
-/* barras de progreso: una por foto, se puede tocar para ir a esa foto */
-.so-prog{display:flex;gap:8px;margin-top:10px}
-.so-b{flex:1;height:22px;padding:0;border:0;background:none;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
-.so-b::before{content:"";position:absolute;left:0;right:0;top:50%;height:3px;margin-top:-1.5px;border-radius:3px;
- background:rgba(255,255,255,.26);transition:background .4s,height .4s,margin-top .4s}
-.so-b.past::before{background:rgba(255,255,255,.6)}
-.so-b.on::before{background:#fff;height:5px;margin-top:-2.5px}
-.so-b:hover::before{background:#fff}
-.so-b:focus-visible{outline:3px solid #fff;outline-offset:2px;border-radius:6px}
-
 @media(max-width:900px){
- html body .sobre{height:calc(100svh + (var(--n,5) - 1)*52svh)}
+ html body .sobre{height:calc(100svh + (var(--n,5) - 1)*36svh)}
  html body .sobre .so-in{grid-template-columns:minmax(0,1fr);justify-items:center;align-content:center;row-gap:18px;
   padding-top:calc(var(--navh,58px) + 14px);padding-bottom:18px}
  html body .sobre .txt{max-width:520px;justify-self:center}
@@ -50,23 +40,31 @@ html body .sobre .so-ph img.f.on{z-index:2}
 }
 
 /* ---------- 2) FRASE DE ABAJO ---------- */
-.lema-l{display:block}
+/* Podium Soft es una fuente variable con un eje de ANCHO (wdth: 50 = muy angosta, 200 = muy ancha).
+   Se carga desde fonts/PodiumSoft.ttf (ya está en la web), así no depende de Adobe Fonts.
+   Para cambiar el look: --w-base = ancho de las palabras comunes, --w-clave = ancho de las palabras destacadas. */
+@font-face{font-family:"Podium Var";src:url("../fonts/PodiumSoft.ttf") format("truetype");font-weight:100 900;font-stretch:50% 200%;font-display:swap}
+.lema{--w-base:76;--w-clave:180;--w-ini:50}
+.lema-l{display:block;font-size:var(--lfs,1em)}
 .lww{display:inline-block;white-space:nowrap}
-.lw{display:inline-block;position:relative;overflow:hidden;vertical-align:top;padding:.06em 0 .16em;margin:-.06em 0 -.16em}
-.lw-i{display:inline-block;position:relative;z-index:1}
-.lw.k-n,.lw.k-c{padding-left:.22em;padding-right:.22em;margin-left:-.02em;margin-right:-.02em;border-radius:.2em}
-.lw.k-n::before,.lw.k-c::before{content:"";position:absolute;inset:0;border-radius:inherit}
-.lw.k-n::before{background:var(--azul,#0b75f4)}
-.lw.k-c::before{background:var(--crema,#f9fbf2)}
+.lw{display:inline-block;position:relative;overflow:hidden;vertical-align:top;padding:.08em 0 .14em;margin:-.08em 0 -.14em}
+.lw-i{display:inline-block;position:relative;font-variation-settings:"wdth" var(--w,76)}
+.lw.k-n .lw-i,.lw.k-c .lw-i{--w:180;color:var(--azul,#0b75f4)} /* las palabras anchas van en azul */
 
-/* estado inicial (solo si el script armó las palabras): palabras escondidas abajo de su máscara, bloques sin pintar */
-.lema.pre .lw-i{transform:translateY(112%)}
-.lema.pre .lw::before{transform:scaleX(0);transform-origin:left center}
-.lema.pre .lw.k-c{color:#fff}
-/* entra: las palabras suben una tras otra y, cuando ya están, los bloques se pintan de izquierda a derecha */
-.lema.pre.in .lw-i{transform:none;transition:transform .95s cubic-bezier(.16,.9,.2,1);transition-delay:calc(var(--i)*36ms)}
-.lema.pre.in .lw::before{transform:scaleX(1);transition:transform .65s cubic-bezier(.7,0,.2,1);transition-delay:calc(.9s + var(--k)*.17s)}
-.lema.pre.in .lw.k-c{color:var(--azul-f,#0a5cc0);transition:color .3s ease calc(1.15s + var(--k)*.17s)}
+/* estado inicial (solo si el script armó las palabras): palabras escondidas abajo de su máscara y angostas */
+.lema.pre .lw-i{transform:translateY(112%);--w:50}
+/* entra: las palabras suben una tras otra y se ensanchan; las clave esperan un instante y se estiran mucho más */
+.lema.pre.in .lw-i{transform:none;--w:76;
+ transition:transform .95s cubic-bezier(.16,.9,.2,1),font-variation-settings 1.1s cubic-bezier(.2,.8,.2,1);
+ transition-delay:calc(var(--i)*36ms)}
+.lema.pre.in .lw.k-n .lw-i,.lema.pre.in .lw.k-c .lw-i{--w:180;
+ transition-duration:.95s,1.5s;
+ transition-delay:calc(var(--i)*36ms),calc(.75s + var(--k)*.2s)}
+
+/* medición (lo usa js/lema.js para que cada renglón ocupe todo el ancho): muestra el estado final sin animar */
+html body .lema.pre.medir .lema-l{display:inline-block;white-space:nowrap}
+html body .lema.pre.medir .lw-i{transform:none!important;transition:none!important;--w:76}
+html body .lema.pre.medir .lw.k-n .lw-i,html body .lema.pre.medir .lw.k-c .lw-i{--w:180}
 
 /* mientras la frase cruza la pantalla, el primer renglón se corre hacia un lado y el segundo hacia el otro */
 @keyframes lema-a{from{translate:-1.8vw 0}to{translate:1.8vw 0}}
@@ -82,8 +80,10 @@ html body .sobre .so-ph img.f.on{z-index:2}
  html body .lema .lema-vis{text-align:left;text-align-last:left}
 }
 @media(prefers-reduced-motion:reduce){
- .lema.pre .lw-i{transform:none}
- .lema.pre .lw::before{transform:scaleX(1)}
- .lema.pre .lw.k-c{color:var(--azul-f,#0a5cc0)}
- .lema.pre.in .lw-i,.lema.pre.in .lw::before,.lema.pre.in .lw.k-c{transition:none}
+ .lema.pre .lw-i{transform:none;--w:76}
+ .lema.pre .lw.k-n .lw-i,.lema.pre .lw.k-c .lw-i{--w:180}
+ .lema.pre.in .lw-i{transition:none}
 }
+
+/* en celu los dos renglones de la frase van seguidos: que no queden pegados ("jugar.Ojalá") */
+@media(max-width:760px){.lema-l+.lema-l::before{content:" "}}

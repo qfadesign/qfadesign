@@ -62,3 +62,12 @@
 @media(prefers-reduced-motion:reduce){.fd-front,.fd-paper{transition-duration:.01ms!important;transition-delay:0s!important}.fd.open .fd-card{animation:none}}
 /* más cerca del título (también en la página de Portfolio) */
 .f-portfolio .ph{margin-bottom:clamp(6px,1.2vw,14px)}
+
+/* modo deck (home): la sección se queda fija con la carpeta abierta y los proyectos pasan con el scroll (js/folder.js, data-deck) */
+.fd-deck .fd-paper{transition:box-shadow .3s!important;will-change:transform,opacity}
+.fd-deck .fd-papers{clip-path:inset(-100vh -100vw 3px -100vw)}
+.trabajos.pg.fd-pinned{height:calc(100svh + var(--n,7)*46svh);padding:0}
+.trabajos.pg.fd-pinned .pg-wrap{position:sticky;top:0;height:100svh;box-sizing:border-box;justify-content:flex-start;
+ padding:calc(var(--navh,58px) + 30px) clamp(14px,3vw,32px) 24px;gap:clamp(6px,1.2vh,14px)}
+.trabajos.pg.fd-pinned .fd-sec{width:100%;padding:0}
+@media(max-width:600px){.fd-deck .fd-paper small{display:none}}

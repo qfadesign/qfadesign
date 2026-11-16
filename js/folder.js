@@ -4,6 +4,7 @@
         </div>
    Props (como data-*): mode (flap) · variant (solid | glass) · layout (spread) · color · paper-color · tab-position (left | right)
    · open-on (click | hover) · size · frost (0–1) · tilt (0–1) · speed · bounce (0–1) · peek · intro · draggable · zoom-on-click · theme (dark | light)
+   · deck (true): la carpeta queda abierta y fija en pantalla y los proyectos van pasando con el scroll (home)
    También: Folder.init(el, { onItemClick(item, index) { ... } }) — si devolvés false, no navega. */
 (() => {
   const num = (v, d) => (v === undefined || v === '' || isNaN(+v)) ? d : +v;
@@ -25,6 +26,9 @@
     }, extra || {});
     const items = [...el.querySelectorAll(':scope > a')];
     if (!items.length) return;
+    const deckOn = bool(d.deck, false) && !quieto && items.length > 1; // modo "pasar con el scroll"
+    let deckA = 0, deckGo = () => {}; const poses = [];
+    if (deckOn) o.draggable = false;
     const label = d.label || 'Carpeta', sub = d.sublabel || items.length + ' elementos';
 
     el.dataset.variant = o.variant; el.dataset.tabPosition = o.tabPosition; el.dataset.theme = o.theme; el.dataset.draggable = String(o.draggable);
@@ -58,6 +62,7 @@
     el.classList.add('fd-ok');
     const hint = el.parentElement.querySelector('.fd-hint');
     if (hint && d.href) hint.textContent = canHover ? 'Hacé clic en un proyecto, o en la carpeta para ver todo el portfolio' : 'Tocá un proyecto, o la carpeta para ver todo el portfolio';
+    if (hint && deckOn) hint.textContent = canHover ? 'Scrolleá para ver cada proyecto · clic en uno para entrar, o en la carpeta para ver todo' : 'Deslizá para ver cada proyecto · tocá uno para entrar, o la carpeta para ver todo';
     else if (hint) hint.textContent = o.openOn === 'hover' && canHover ? 'Pasá el mouse por la carpeta y elegí un proyecto' : (canHover ? 'Hacé clic en la carpeta y elegí un proyecto' : 'Tocá la carpeta y elegí un proyecto');
 
     // ---- layout: abanico (spread) ----
@@ -82,7 +87,7 @@
         a.style.setProperty('--cy', (o.peek ? -8 * s * (1 - norm * norm) : ph * 0.45).toFixed(1) + 'px');
         a.style.setProperty('--cr', (o.peek ? norm * o.tilt * 4 : 0).toFixed(2) + 'deg');
       });
-      el.style.marginTop = Math.round(ph * 0.5 + lift + 28 * s) + 'px';
+      el.style.marginTop = Math.round(ph * 0.5 + lift + 28 * s + (deckOn ? ph * 0.22 : 0)) + 'px';
       repintar();
     }
     layout();
@@ -92,7 +97,7 @@
     let t;
     const setTab = v => items.forEach(a => a.tabIndex = v ? 0 : -1);
     const abrir = () => { clearTimeout(t); el.classList.add('open'); front.setAttribute('aria-expanded', 'true'); setTab(true); };
-    const cerrar = () => { clearTimeout(t); el.classList.remove('open'); front.setAttribute('aria-expanded', 'false'); setTab(false); const x = tinte(); if (x) x.classList.remove('on'); };
+    const cerrar = () => { if (deckOn) return; clearTimeout(t); el.classList.remove('open'); front.setAttribute('aria-expanded', 'false'); setTab(false); const x = tinte(); if (x) x.classList.remove('on'); };
     if (o.openOn === 'hover' && canHover) {
       el.addEventListener('mouseenter', abrir);
       el.addEventListener('mouseleave', () => { clearTimeout(t); t = setTimeout(cerrar, 180); });
@@ -174,6 +179,10 @@
       a.addEventListener('click', e => {
         if (a.dataset.fdGo) { delete a.dataset.fdGo; return; } // segundo paso: ya hizo zoom, que navegue (anim.js)
         if (moved) { e.preventDefault(); e.stopPropagation(); return; }
+        if (deckOn) { // solo entra la hoja del medio; las de los costados llevan el scroll hasta ellas
+          if (Math.abs(i - deckA) > 0.6) { e.preventDefault(); e.stopPropagation(); deckGo(i); return; }
+          const q = poses[i]; if (q) { a.style.setProperty('--x', q.x.toFixed(1) + 'px'); a.style.setProperty('--y', q.y.toFixed(1) + 'px'); a.style.setProperty('--rot', '0deg'); }
+        }
         if (!el.classList.contains('open')) { e.preventDefault(); e.stopPropagation(); return; }
         if (!ir(a, i)) { e.preventDefault(); e.stopPropagation(); return; }
         if (o.zoomOnClick && !quieto && !zoomed) {
@@ -194,7 +203,7 @@
 
     // ---- intro con scroll: las hojas salen desde adentro de la carpeta y se abren en abanico ----
     // (con prefers-reduced-motion o intro="false" la carpeta queda cerrada y se abre con clic)
-    const scrub = o.intro && !quieto;
+    const scrub = o.intro && !quieto && !deckOn;
     let latched = !scrub, auto = null, rafId = 0;
     const clamp = v => Math.max(0, Math.min(1, v));
     const lerp = (a, b, k) => a + (b - a) * k;
@@ -246,6 +255,61 @@
         const paso = now => { if (latched) return; auto = clamp((now - t0) / (2400 / o.speed)); if (auto >= 1) { auto = null; latch(); } else { pintar(auto); requestAnimationFrame(paso); } };
         setTimeout(() => requestAnimationFrame(paso), 350);
       } else { cur = p0; pintar(p0); }
+    }
+
+    // ---- modo deck: carpeta abierta y fija; los proyectos pasan de a uno con el scroll ----
+    if (deckOn) {
+      const sec = el.closest('.pg') || el.parentElement, n = items.length;
+      sec.classList.add('fd-pinned'); sec.style.setProperty('--n', n);
+      el.classList.add('fd-deck'); abrir();
+      const IN = 0.1, OUT = 0.92; // tramo inicial (salen de la carpeta) y tramo final (queda el último)
+      let g = { s: 1, pw: 138, ph: 178, step: 150, avail: 600 }, cur = null, rid = 0, tintIdx = -1;
+      const medirDeck = () => {
+        const s = parseFloat(getComputedStyle(el).getPropertyValue('--s')) || o.size;
+        const pw = items[0].offsetWidth, ph = items[0].offsetHeight;
+        const avail = Math.min(el.parentElement.clientWidth || innerWidth, innerWidth) - 24;
+        g = { s, pw, ph, avail, step: Math.min(pw * 0.98, Math.max(pw * 0.4, (avail - pw * 1.3) / 4.4)) };
+      };
+      const prog = () => { const tot = sec.offsetHeight - innerHeight; return tot > 0 ? clamp(-sec.getBoundingClientRect().top / tot) : 0; };
+      deckGo = i => {
+        const tot = sec.offsetHeight - innerHeight, top = scrollY + sec.getBoundingClientRect().top;
+        scrollTo({ top: top + (IN + (OUT - IN) * (i / (n - 1))) * tot, behavior: 'smooth' });
+      };
+      function pintarDeck(p) {
+        const e = suave(clamp(p / IN)), A = (n - 1) * clamp((p - IN) / (OUT - IN));
+        deckA = A;
+        const { s, pw, ph, step } = g, lift = 26 * s, tilt = o.tilt * 7;
+        items.forEach((a, i) => {
+          const dd = i - A, ad = Math.abs(dd), k = Math.max(0, 1 - ad), t = Math.min(1, ad / 2.4);
+          const x = dd * step + Math.sign(dd) * Math.min(1, ad) * pw * 0.2;
+          const y = -(ph * 0.36 + lift * (1 - t * t)) - ph * 0.31 * k;
+          const rot = Math.max(-2.4, Math.min(2.4, dd)) * tilt, sc = 0.9 + 0.4 * k;
+          const op = clamp(1 - (ad - 1.7) / 0.7, 0, 1);
+          poses[i] = { x, y, rot };
+          a.style.transform = 'translate(' + lerp(0, x, e).toFixed(1) + 'px,' + lerp(ph * 0.45, y, e).toFixed(1) + 'px) rotate(' + (rot * e).toFixed(2) + 'deg) scale(' + lerp(0.94, sc, e).toFixed(3) + ')';
+          a.style.opacity = lerp(1, op, e).toFixed(3);
+          a.style.zIndex = String(100 - Math.round(ad * 10));
+          a.style.pointerEvents = (op > 0.35 && e > 0.9) ? 'auto' : 'none';
+        });
+        // el fondo toma el color del proyecto que está al frente mientras la sección está en pantalla
+        const r = sec.getBoundingClientRect(), x = tinte(), idx = Math.round(A);
+        const visible = r.top < innerHeight * 0.4 && r.bottom > innerHeight * 0.6 && e > 0.5;
+        if (x) {
+          if (visible && (idx !== tintIdx || !x.classList.contains('on')) && items[idx].dataset.c) { x.style.setProperty('--tc', items[idx].dataset.c); x.classList.add('on'); tintIdx = idx; }
+          else if (!visible && tintIdx !== -1) { x.classList.remove('on'); tintIdx = -1; }
+        }
+      }
+      repintar = () => { medirDeck(); pintarDeck(cur === null ? prog() : cur); };
+      const seguirDeck = () => {
+        rid = 0; const t = prog();
+        if (cur === null) cur = t; else { cur += (t - cur) * 0.14; if (Math.abs(t - cur) < 0.0008) cur = t; }
+        pintarDeck(cur);
+        if (cur !== t) rid = requestAnimationFrame(seguirDeck);
+      };
+      const pedirDeck = () => { if (!rid) rid = requestAnimationFrame(seguirDeck); };
+      addEventListener('scroll', pedirDeck, { passive: true }); addEventListener('resize', pedirDeck);
+      medirDeck(); cur = prog(); pintarDeck(cur);
+      addEventListener('pageshow', () => { cur = null; pedirDeck(); });
     }
   }
 

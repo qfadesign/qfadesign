@@ -1,6 +1,6 @@
 /* "Un poco de qfadesign": la sección se queda fija (sticky) y, mientras scrolleás, las fotos cambian de a una.
    Cada foto nueva entra con una cortina que sube (o baja si scrolleás para atrás), tapando a la anterior,
-   que se corre un poco. Las barras de abajo marcan en qué foto estás y se pueden tocar. */
+   que se corre un poco. Sin barras de progreso abajo de la foto. */
 (function(){
   const box=document.getElementById('so-fotos');
   if(!box)return;
@@ -8,21 +8,13 @@
   const N=fs.length;
   if(N<2)return;
   const sec=box.closest('.sobre')||box;
-  const bars=[...sec.querySelectorAll('.so-b')];
   const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const DUR=1000,EASE='cubic-bezier(.76,0,.24,1)';
+  const DUR=700,EASE='cubic-bezier(.76,0,.24,1)';
   sec.style.setProperty('--n',N);
 
   let cur=0,t=false,tm=0;
   fs.forEach((f,i)=>{f.classList.toggle('on',i===0)});
-  pintarBarras();
 
-  function pintarBarras(){
-    bars.forEach((b,i)=>{
-      b.classList.toggle('on',i===cur);b.classList.toggle('past',i<cur);
-      if(i===cur)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');
-    });
-  }
   // cuando la foto nueva ya tapó todo, se sueltan las anteriores
   function limpiar(){
     fs.forEach((f,i)=>{
@@ -37,7 +29,7 @@
     prev.classList.remove('on');prev.classList.add('under');
     fs.forEach((f,j)=>{if(j!==i&&j!==cur&&f.classList.contains('on'))f.classList.replace('on','under')});
     nueva.classList.remove('under');nueva.classList.add('on');
-    cur=i;pintarBarras();
+    cur=i;
     clearTimeout(tm);
     if(still){limpiar();return}
     const desde=dir>0?'inset(100% 0 0 0)':'inset(0 0 100% 0)';
@@ -52,11 +44,6 @@
     const p=Math.max(0,Math.min(.9999,-sec.getBoundingClientRect().top/total));
     ir(Math.floor(p*N));
   }
-  bars.forEach((b,i)=>b.addEventListener('click',()=>{
-    const total=sec.offsetHeight-innerHeight;
-    const y=scrollY+sec.getBoundingClientRect().top+((i+.5)/N)*total;
-    scrollTo({top:y,behavior:still?'auto':'smooth'});
-  }));
   addEventListener('scroll',()=>{if(!t){t=true;requestAnimationFrame(calc)}},{passive:true});
   addEventListener('resize',calc);
   calc();
