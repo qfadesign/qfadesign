@@ -21,7 +21,7 @@
 .pf-on .pf-cards{display:block;overflow:visible;padding:0;position:absolute;inset:0}
 /* --h = cuánto "se muestra" la ficha (0 → 1 al pasar el mouse); se anima sola y la usa el transform que arma js/home-secciones.js */
 @property --h{syntax:'<number>';inherits:false;initial-value:0}
-.pf-on .pf-c{--h:0;--W:min(clamp(200px,26vw,290px),calc((100svh - 330px)*.8));position:absolute;left:50%;top:50%;width:var(--W);height:calc(var(--W)*1.28);margin:calc(var(--W)*-.64) 0 0 calc(var(--W)*-.5);z-index:2;will-change:transform;pointer-events:none;transition:--h .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
+.pf-on .pf-c{--h:0;--W:min(clamp(200px,26vw,290px),calc((100svh - 330px)*.8));position:absolute;left:50%;top:50%;width:var(--W);height:calc(var(--W)*1.2);margin:calc(var(--W)*-.6) 0 0 calc(var(--W)*-.5);z-index:2;will-change:transform;pointer-events:none;transition:--h .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
 .pf-on .pf-c.go{pointer-events:auto}
 /* al pasar el mouse (o con el teclado) la ficha sube al frente, se endereza, crece un poco y brilla con el color de su marca; el fondo cambia con el mismo color (ver .tinte) */
 .pf-on .pf-c.go:hover,.pf-on .pf-c:focus-visible{--h:1;z-index:60!important;box-shadow:0 34px 70px color-mix(in srgb,var(--c,#0b75f4) 55%,transparent),0 14px 34px rgba(0,0,0,.5);outline:none}

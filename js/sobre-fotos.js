@@ -1,6 +1,7 @@
-/* "Un poco de qfadesign": la sección se queda fija (sticky) y, mientras scrolleás, las fotos cambian de a una.
-   Cada foto nueva entra con una cortina que sube (o baja si scrolleás para atrás), tapando a la anterior,
-   que se corre un poco. Sin barras de progreso abajo de la foto. */
+/* "Un poco de qfadesign": la sección se queda fija (sticky) y las fotos van pasando mientras scrolleás.
+   Ahora el paso está atado al scroll (no es una animación con tiempo): cada foto nueva entra con una cortina que sube
+   a medida que scrolleás, y la anterior se corre y se oscurece un poco. El recorrido es corto (ver css/home-nuevo.css)
+   y si scrolleás rápido o volvés atrás, las fotos siempre están en el lugar que corresponde. */
 (function(){
   const box=document.getElementById('so-fotos');
   if(!box)return;
@@ -9,42 +10,26 @@
   if(N<2)return;
   const sec=box.closest('.sobre')||box;
   const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const DUR=700,EASE='cubic-bezier(.76,0,.24,1)';
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),ease=k=>k*k*(3-2*k);
   sec.style.setProperty('--n',N);
+  fs.forEach((f,i)=>{f.style.zIndex=i+1}); // cada foto nueva tapa a la anterior
 
-  let cur=0,t=false,tm=0;
-  fs.forEach((f,i)=>{f.classList.toggle('on',i===0)});
-
-  // cuando la foto nueva ya tapó todo, se sueltan las anteriores
-  function limpiar(){
-    fs.forEach((f,i)=>{
-      if(i===cur)return;
-      f.getAnimations().forEach(a=>a.cancel());
-      f.classList.remove('on','under');
-    });
-  }
-  function ir(i){
-    if(i===cur)return;
-    const dir=i>cur?1:-1,prev=fs[cur],nueva=fs[i];
-    prev.classList.remove('on');prev.classList.add('under');
-    fs.forEach((f,j)=>{if(j!==i&&j!==cur&&f.classList.contains('on'))f.classList.replace('on','under')});
-    nueva.classList.remove('under');nueva.classList.add('on');
-    cur=i;
-    clearTimeout(tm);
-    if(still){limpiar();return}
-    const desde=dir>0?'inset(100% 0 0 0)':'inset(0 0 100% 0)';
-    nueva.animate([{clipPath:desde,transform:'scale(1.16)'},{clipPath:'inset(0)',transform:'scale(1)'}],{duration:DUR,easing:EASE});
-    prev.animate([{transform:'translateY(0) scale(1)'},{transform:`translateY(${dir>0?-7:7}%) scale(1.06)`}],{duration:DUR,easing:EASE,fill:'forwards'});
-    tm=setTimeout(limpiar,DUR+60);
-  }
-  function calc(){
+  let t=false;
+  function dibujar(){
     t=false;
     const total=sec.offsetHeight-innerHeight;
     if(total<=0)return;
-    const p=Math.max(0,Math.min(.9999,-sec.getBoundingClientRect().top/total));
-    ir(Math.floor(p*N));
+    const p=clamp(-sec.getBoundingClientRect().top/total,0,1),q=p*(N-1);
+    fs.forEach((f,i)=>{
+      let e=i===0?1:clamp(q-(i-1),0,1),l=i===N-1?0:clamp(q-i,0,1); // e: cuánto entró · l: cuánto se fue (la tapó la siguiente)
+      if(still){e=Math.round(e);l=Math.round(l)}else{e=ease(e);l=ease(l)}
+      f.style.clipPath='inset('+((1-e)*100).toFixed(2)+'% 0 0 0)';
+      f.style.transform='translateY('+(-6*l).toFixed(2)+'%) scale('+((1.12-.12*e)*(1+.06*l)).toFixed(4)+')';
+      f.style.filter=l>0?'brightness('+(1-.4*l).toFixed(3)+')':'';
+    });
   }
-  addEventListener('scroll',()=>{if(!t){t=true;requestAnimationFrame(calc)}},{passive:true});
-  addEventListener('resize',calc);
-  calc();
+  const pedir=()=>{if(!t){t=true;requestAnimationFrame(dibujar)}};
+  addEventListener('scroll',pedir,{passive:true});
+  addEventListener('resize',pedir);addEventListener('load',pedir);
+  dibujar();
 })();

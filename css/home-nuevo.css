@@ -8,7 +8,7 @@
 
 /* ---------- 1) SOBRE ---------- */
 html body .sobre{display:block;position:relative;max-width:none;margin:0;padding:0;
- height:calc(100svh + (var(--n,5) - 1)*42svh)}
+ height:calc(100svh + (var(--n,5) - 1)*24svh)}
 html body .sobre .so-in{position:sticky;top:0;height:100svh;box-sizing:border-box;max-width:1360px;margin:0 auto;
  display:grid;grid-template-columns:minmax(0,560px) auto;justify-content:center;align-items:center;
  column-gap:clamp(32px,6vw,96px);padding:calc(var(--navh,58px) + 20px) clamp(20px,4vw,48px) 28px}
@@ -27,7 +27,7 @@ html body .sobre .so-ph img.f.under{z-index:1}
 html body .sobre .so-ph img.f.on{z-index:2}
 
 @media(max-width:900px){
- html body .sobre{height:calc(100svh + (var(--n,5) - 1)*36svh)}
+ html body .sobre{height:calc(100svh + (var(--n,5) - 1)*20svh)}
  html body .sobre .so-in{grid-template-columns:minmax(0,1fr);justify-items:center;align-content:center;row-gap:18px;
   padding-top:calc(var(--navh,58px) + 14px);padding-bottom:18px}
  html body .sobre .txt{max-width:520px;justify-self:center}
