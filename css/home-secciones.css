@@ -109,3 +109,7 @@
 
 /* home: el botón queda cerca de las fichas y de la sección que sigue */
 body .pf2+.mas{margin:8px 0 clamp(16px,3svh,32px)}
+
+/* aire: Jueguitos · Recursos · Herramientas no quedan pegados a los bordes de la pantalla (arriba/abajo lo da js/home-secciones.js con --exs; acá los costados) */
+.ex-on .ex-p{scale:var(--exs,1)}
+@media(max-width:900px){.ex-on .ex-p{inset:0 clamp(16px,4.5vw,24px)}.hx-gm{margin-left:-20px}}

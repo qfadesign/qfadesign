@@ -121,10 +121,13 @@
     /* la caja que queda fija mide lo mismo que el contenido más un poco de aire: así no hay vacío antes ni después */
     var exLayout = function () {
       ew = innerWidth; eh = innerHeight;
-      var vh = innerHeight, navp = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--navh')) || 58) + 14, pad = clamp(vh * .05, 24, 56), h = 0;
+      var vh = innerHeight, navp = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--navh')) || 58) + 14, pad = clamp(vh * .07, 28, 72), gap = clamp(vh * .06, 28, 56), h = 0, s = 1;
       ps.forEach(function (p) { p.classList.add('meas'); h = Math.max(h, p.offsetHeight); p.classList.remove('meas'); });
-      EH = Math.min(h + 2 * pad, vh - navp); T0 = Math.max(navp, (vh - EH) / 2);
-      ex.style.setProperty('--exh', EH.toFixed(0) + 'px'); ex.style.setProperty('--ext', T0.toFixed(0) + 'px');
+      /* aire arriba y abajo: la caja nunca llega al borde de la pantalla; si el contenido no entra con ese aire, se achica un poco (hasta 82%) */
+      var avail = vh - navp - gap;
+      if (h + 2 * pad > avail) s = clamp((avail - 2 * pad) / h, .82, 1);
+      EH = Math.min(h * s + 2 * pad, avail); T0 = Math.max(navp, (vh - EH) / 2);
+      ex.style.setProperty('--exh', EH.toFixed(0) + 'px'); ex.style.setProperty('--ext', T0.toFixed(0) + 'px'); ex.style.setProperty('--exs', s.toFixed(3));
     };
     /* cada bloque se mueve según la POSICIÓN del scroll (no con un cambio de clase + transición con tiempo):
        aparece, se queda completo un buen rato y se va, y si scrolleás rápido nada llega tarde ni se queda a medias */
