@@ -1,0 +1,13 @@
+/* qfadesign — bajadas (texto debajo del título) de las páginas internas.
+   Más anchas, y con palabras clave en bold para que no quede todo igual. */
+html body .lead{max-width:min(100%,46em);text-wrap:pretty}
+html body .lead strong{font-weight:800;font-style:normal;opacity:1;color:#fff;letter-spacing:-.005em}
+/* Herramientas: la bajada es liviana (300), el bold contrasta más */
+html body.f-herramientas .lead{max-width:min(100%,50ch)}
+html body.f-herramientas .lead strong{font-weight:700}
+html body.f-herramientas .ph .lead{max-width:min(100%,46em);text-wrap:balance}
+/* Páginas centradas con sticker: el bloque más ancho sigue centrado */
+html body .ph .lead{margin-inline:auto}
+html body .hp-h .lead,html body .pr-h .lead{margin-inline:0}
+html body .pr-h:has(.logo) .lead{margin-inline:auto}
+@media(max-width:640px){html body .lead{max-width:100%}}
