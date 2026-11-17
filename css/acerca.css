@@ -228,3 +228,88 @@ html body.f-acerca .quien-foto{margin:0;max-width:none;width:min(100%,380px)}
 
 /* en celular la foto de "Sobre mí" no se muestra: ocupa mucho lugar */
 @media(max-width:760px){html body.f-acerca .quien-r{display:none}}
+
+
+/* ============================================================
+   NEGRITAS en los textos largos (palabras clave con <strong>)
+   ============================================================ */
+html body.f-acerca :is(.ah-a p,.quien-t p,.svc-x p,.dc p) strong{font-weight:700;color:#fff}
+/* el primer párrafo de "Sobre mí" era todo en negrita: pasa a normal para que se noten las palabras clave */
+html body.f-acerca .quien-t p:first-child{font-weight:400}
+
+
+/* ============================================================
+   CELULAR: todo más chico y compacto (solo hasta 760px; la versión de compu no cambia)
+   ============================================================ */
+@media(max-width:760px){
+  /* hero */
+  html body.f-acerca .ah{margin-top:4px}
+  html body.f-acerca .ah-bg.st-h1 img{width:72%}
+  html body.f-acerca .ah-lany{height:calc(clamp(400px,104vw,520px) + var(--lany-ext))}
+  html body.f-acerca .ah-a.vid h2,html body.f-acerca .ah-a h2{font-size:clamp(17px,5vw,20px);line-height:1.1}
+  html body.f-acerca .ah-a p{font-size:14px;margin-top:8px}
+  html body.f-acerca .ah-chips{margin-top:12px;gap:6px clamp(20px,6vw,40px)}
+  html body.f-acerca .ah-chips li,html body.f-acerca .ah-chips li:first-child{font-size:12px}
+
+  /* secciones: menos aire y títulos más chicos */
+  html body.f-acerca .sec{margin-top:44px}
+  html body.f-acerca .sec>h2{font-size:clamp(24px,7.2vw,30px);margin-bottom:16px}
+  html body.f-acerca .banda{padding:30px 18px;margin-top:4px}
+  html body.f-acerca .banda p{font-size:clamp(18px,5.4vw,22px);max-width:24ch}
+
+  /* sobre mí */
+  html body.f-acerca .quien-g{gap:14px}
+  html body.f-acerca .quien-t p{font-size:14.5px;line-height:1.5;margin-bottom:.8em}
+  html body.f-acerca .quien-t p:first-child{font-size:16.5px;line-height:1.4}
+  html body.f-acerca .quien-t .quien-d{margin-top:16px}
+  html body.f-acerca .quien-d div{padding:10px 0}
+  html body.f-acerca .quien-d dt{font-size:10.5px;margin-bottom:5px}
+  html body.f-acerca .quien-d dd{font-size:14px}
+
+  /* servicios */
+  html body.f-acerca .svc-l li{padding:14px 0;row-gap:6px}
+  html body.f-acerca .svc-x h3{font-size:clamp(20px,6vw,24px)}
+  html body.f-acerca .svc-x p{font-size:13.5px;line-height:1.4}
+
+  /* trabajos destacados */
+  html body.f-acerca .dest-g{gap:26px}
+  html body.f-acerca .dc-i{border-radius:16px}
+  html body.f-acerca .dc-c{margin-top:12px;font-size:10.5px}
+  html body.f-acerca .dc h3{font-size:clamp(22px,6.4vw,26px);margin-top:6px}
+  html body.f-acerca .dc p{font-size:13.5px;margin-top:8px}
+  html body.f-acerca .dc-v{font-size:13px;margin-top:10px}
+  html body.f-acerca .dest-f{margin-top:24px}
+
+  /* aplicaciones */
+  html body.f-acerca .apps-col{padding:12px 0;gap:8px}
+  html body.f-acerca .nivel{font-size:11px}
+  html body.f-acerca .app{gap:8px;padding:4px 12px 4px 4px;font-size:13px}
+  html body.f-acerca .ico{width:26px;height:26px;font-size:11px}
+
+  /* foto del sillón y cierre */
+  html body.f-acerca .foto-band p{font-size:clamp(17px,5vw,21px)}
+  html body.f-acerca .cta h2{font-size:clamp(23px,6.8vw,28px)}
+  html body.f-acerca .cta .fila{gap:10px;margin-top:20px}
+  html body.f-acerca .btn{font-size:14.5px;padding:12px 22px 13px;border-radius:14px}
+
+  /* pie */
+  html body.f-acerca .firma{font-size:12.5px}
+}
+
+
+/* ============================================================
+   CELULAR: menos texto (en compu se ve todo igual)
+   Queda lo esencial: títulos, frase del hero, datos clave y proyectos.
+   Para recuperar alguno, borrá su línea.
+   ============================================================ */
+@media(max-width:760px){
+  html body.f-acerca .ah-a p{display:none}                           /* hero: solo el titular */
+  html body.f-acerca .quien-t p:nth-of-type(2){display:none}          /* sobre mí: solo el primer párrafo */
+  html body.f-acerca .quien-d div:last-child{display:none}            /* sobre mí: sin "Contacto" (ya está el botón abajo) */
+  html body.f-acerca .quien-d div:nth-last-child(2){border-bottom:1px solid rgba(255,255,255,.3)}
+  html body.f-acerca .svc-x p{display:none}                           /* servicios: solo los títulos */
+  html body.f-acerca .svc-l li{padding:16px 0}
+  html body.f-acerca .svc-x h3{font-size:clamp(22px,6.4vw,26px)}
+  html body.f-acerca .dc p{display:none}                              /* destacados: sin descripción, queda rubro + nombre */
+  html body.f-acerca .dest-g{gap:22px}
+}
