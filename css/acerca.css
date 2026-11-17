@@ -313,3 +313,91 @@ html body.f-acerca .quien-t p:first-child{font-weight:400}
   html body.f-acerca .dc p{display:none}                              /* destacados: sin descripción, queda rubro + nombre */
   html body.f-acerca .dest-g{gap:22px}
 }
+
+/* ============================================================
+   CELULAR (hasta 760px): Sobre mí sin "Especialidad" ni "También hago" (queda solo Contacto);
+   Mis servicios: cada servicio más liviano y más chico que el título de la sección (la compu no cambia)
+   ============================================================ */
+@media(max-width:760px){
+  html body.f-acerca .quien-d div:not(:last-child){display:none}
+  html body.f-acerca .svc-x h3{font-family:var(--f);font-weight:700;font-style:italic;font-size:clamp(17px,5vw,20px);letter-spacing:0}
+}
+
+/* ============================================================
+   CELULAR (hasta 760px): todo el contenido de Acerca de centrado.
+   La frase "Para mí, diseñar es..." usa todo el ancho de la pantalla (ya no se limita a 4 renglones).
+   ============================================================ */
+@media(max-width:760px){
+  /* hero */
+  html body.f-acerca .ah-a.vid{text-align:center;margin-inline:auto}
+  html body.f-acerca .ah-chips{display:flex;flex-wrap:wrap;justify-content:center;margin-inline:auto;gap:6px clamp(16px,5vw,28px)}
+  html body.f-acerca .ah-chips li,html body.f-acerca .ah-chips li:first-child{text-align:center}
+
+  /* frase: más ancha, que fluya según la pantalla */
+  html body.f-acerca .banda{padding:30px 12px}
+  html body.f-acerca .banda p{max-width:none;width:100%;font-size:clamp(19px,5.9vw,25px);line-height:1.14;text-wrap:balance}
+
+  /* sobre mí y mis servicios: se quedan alineados a la izquierda (título incluido) */
+  html body.f-acerca :is(.quien,.svc)>h2{text-align:left}
+
+  /* trabajos destacados */
+  html body.f-acerca .dc{align-items:center;text-align:center}
+  html body.f-acerca .dc-i{width:100%}
+  html body.f-acerca .dest-f{text-align:center;display:flex;justify-content:center}
+
+  /* aplicaciones */
+  html body.f-acerca .apps-col{justify-items:center;text-align:center}
+  html body.f-acerca .app-list{justify-content:center;margin-inline:0}
+
+  /* sección con la foto y la frase final */
+  html body.f-acerca .foto-band .vid{text-align:center}
+
+  /* títulos de las demás secciones */
+  html body.f-acerca .sec:not(.quien):not(.svc)>h2{text-align:center}
+
+  /* cierre */
+  html body.f-acerca .cta{text-align:center}
+  html body.f-acerca .cta h2{margin-inline:auto}
+  html body.f-acerca .fila{justify-content:center}
+}
+
+/* botón del título (lo agrega js/acerca-servicios.js solo en celular); en compu se ve como el texto de siempre */
+html body.f-acerca .svc-b{display:block;width:100%;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-align:inherit;cursor:inherit}
+html body.f-acerca .svc-m{display:none}
+/* ============================================================
+   CELULAR (hasta 760px): "Mis servicios" con la estética de la web.
+   · sin números; nombre en cursiva Bold (un escalón menos que los títulos)
+   · botón redondo (+) que al abrir se pega como sticker crema y pasa a X (igual que el menú)
+   · al abrir: tarjeta de vidrio teñida con el color del proyecto, definición y portadas en abanico (como en compu al pasar el mouse)
+   La compu no cambia.
+   ============================================================ */
+@media(max-width:760px){
+  html body.f-acerca .svc-l{display:block;border-bottom:1px solid rgba(255,255,255,.3)}
+  html body.f-acerca .svc-l li,html body.f-acerca .svc-l li:last-child{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr);align-items:start;column-gap:0;row-gap:0;padding:0;border-top:1px solid rgba(255,255,255,.3);border-bottom:0;text-align:left;--c:#0b75f4}
+  /* tarjeta de vidrio (no mueve nada: va por detrás, apenas más grande que la fila) */
+  html body.f-acerca .svc-l li::after{content:"";position:absolute;z-index:-1;inset:4px -10px 4px -10px;border-radius:22px;pointer-events:none;opacity:0;scale:.98;
+    background:linear-gradient(135deg,color-mix(in srgb,var(--c) 55%,transparent),color-mix(in srgb,var(--c) 14%,transparent) 70%);
+    border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 14px 30px rgba(0,0,0,.18);
+    -webkit-backdrop-filter:blur(12px) saturate(1.3);backdrop-filter:blur(12px) saturate(1.3);transition:opacity .35s,scale .45s cubic-bezier(.34,1.3,.64,1)}
+  html body.f-acerca .svc-l li.abierto::after{opacity:1;scale:1}
+  /* nombre */
+  html body.f-acerca .svc-x h3{grid-column:1;grid-row:1;font-family:var(--f);font-weight:700;font-style:italic;font-size:clamp(20px,5.8vw,24px);line-height:1.05;letter-spacing:-.01em;text-align:left}
+  html body.f-acerca .svc-b{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;min-height:56px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  html body.f-acerca .svc-n{position:relative}
+  html body.f-acerca .svc-l li.abierto .svc-n{background:linear-gradient(var(--crema,#f9fbf2),var(--crema,#f9fbf2)) 0 96%/100% .09em no-repeat;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  /* botón redondo */
+  html body.f-acerca .svc-m{display:block;position:relative;flex:0 0 30px;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.4);transition:background .3s,border-color .3s,rotate .45s cubic-bezier(.34,1.56,.64,1)}
+  html body.f-acerca .svc-m::before,html body.f-acerca .svc-m::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;margin:-1px 0 0 -6px;border-radius:2px;background:#fff;transition:background .3s}
+  html body.f-acerca .svc-m::after{rotate:90deg}
+  html body.f-acerca .svc-l li.abierto .svc-m{rotate:135deg;background:var(--crema,#f9fbf2);border-color:var(--crema,#f9fbf2)}
+  html body.f-acerca .svc-l li.abierto .svc-m::before,html body.f-acerca .svc-l li.abierto .svc-m::after{background:var(--azul,#0b75f4)}
+  html body.f-acerca .svc-b:focus-visible{outline:2px solid var(--crema,#f9fbf2);outline-offset:2px;border-radius:8px}
+  /* definición y portadas: cerradas por defecto */
+  html body.f-acerca .svc-x p{display:block;grid-column:1;grid-row:2;max-height:0;margin:0;padding-right:4px;overflow:hidden;opacity:0;font-size:14px;line-height:1.45;text-align:left;justify-self:start;max-width:none;transition:max-height .45s cubic-bezier(.2,.8,.2,1),opacity .3s,margin .3s}
+  html body.f-acerca .svc-l li.abierto .svc-x p{max-height:9em;opacity:1;margin:0 0 12px}
+  html body.f-acerca .svc-ph{grid-column:1;grid-row:3;display:flex;align-items:center;max-height:0;overflow:hidden;opacity:0;padding-left:0;transition:max-height .45s cubic-bezier(.2,.8,.2,1),opacity .3s .1s,margin .3s}
+  html body.f-acerca .svc-l li.abierto .svc-ph{max-height:90px;opacity:1;margin:0 0 16px}
+  html body.f-acerca .svc-ph img{flex:0 0 auto;width:84px;aspect-ratio:4/3;object-fit:cover;margin-left:-14px;border-radius:12px;border:1px solid rgba(255,255,255,.55);box-shadow:0 10px 22px rgba(0,0,0,.35);rotate:var(--r,0deg);translate:0 var(--y,0);transform-origin:50% 100%}
+  html body.f-acerca .svc-ph img:first-child{margin-left:0}
+}
+@media(max-width:760px) and (prefers-reduced-motion:reduce){html body.f-acerca .svc-x p,html body.f-acerca .svc-ph,html body.f-acerca .svc-l li::after,html body.f-acerca .svc-m{transition:none}}
