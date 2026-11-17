@@ -441,6 +441,32 @@
       });
     }
 
+    /* el ranking se ve siempre al final de la partida: también mientras todavía no se guardó el puntaje (formulario o pregunta previa) */
+    function listaAbajo(){
+      var cont = el('div', 'rank-previa');
+      cont.appendChild(el('p', 'rank-previa-t', d.semanal ? 'Así va el ranking de la semana' : 'Así va el ranking'));
+      var info = estado('Cargando el ranking…');
+      cont.appendChild(info);
+      cuerpo.appendChild(cont);
+      (d.semanal ? rpc('top_semanal', { p_juego: d.juego, p_atras: 0, p_limite: 10 }) : rpc('top_ranking', { p_juego: d.juego, p_modo: d.modo, p_limite: 10 })).then(function(filas){
+        if (!cont.isConnected) return;
+        info.remove();
+        if (!filas || !filas.length) { cont.appendChild(estado(d.semanal ? 'Todavía no hay puntajes esta semana. Sé el primero.' : 'Todavía no hay puntajes. Sé el primero.')); return; }
+        var ol = el('ol', 'rank-lista');
+        filas.forEach(function(f){
+          var li = el('li');
+          li.appendChild(el('span', 'rank-nom', f.apodo + '#' + f.tag));
+          li.appendChild(el('span', 'rank-pts', f.puntaje + ' pts'));
+          ol.appendChild(li);
+        });
+        cont.appendChild(ol);
+      }).catch(function(){
+        if (!cont.isConnected) return;
+        info.textContent = 'No pudimos cargar el ranking ahora. Probá de nuevo en un rato.';
+        info.className = 'rank-msg rank-error';
+      });
+    }
+
     function formulario(aviso){
       cuerpo.textContent = '';
       if (aviso) cuerpo.appendChild(estado(aviso, true));
@@ -463,6 +489,7 @@
       ver.type = 'button';
       ver.addEventListener('click', function(){ mostrarTop(null, null); });
       cuerpo.appendChild(ver);
+      listaAbajo();
 
       function enviar(){
         var apodo = limpiarApodo(input.value);
@@ -624,6 +651,7 @@
       no.addEventListener('click', function(){ formulario(); });
       fila.appendChild(si); fila.appendChild(no);
       cuerpo.appendChild(fila);
+      listaAbajo();
     }
 
     var s0 = sesion;

@@ -294,7 +294,8 @@ header h1.dd-h1{display:block!important;margin:0 auto!important;padding:0!import
 
   setUserColor({r:128,g:128,b:128});
   const hecho=D.racha().hoy;
-  if(hecho) mostrarFinal(hecho); else pintarInicio();
+  /* ranking.js se carga con defer: si ya jugó hoy, esperamos a que esté listo para poder mostrar el ranking en el resultado */
+  if(hecho){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>mostrarFinal(hecho)); else mostrarFinal(hecho); } else pintarInicio();
 })();
 </script>
 <style id="embebido">.embebido html,html.embebido,html.embebido body{background:transparent!important;min-height:0!important;height:auto!important}html.embebido body>*{min-height:0!important}html.embebido .volver{display:none!important}</style>
