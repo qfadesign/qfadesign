@@ -14,3 +14,73 @@ html body.f-contacto .cn-brief{padding:clamp(20px,2.4vw,30px) 0 0;margin-top:cla
 
 /* el formulario va adentro de una pastilla con el mismo look que la barra de navegación (vidrio oscuro, borde fino y esquinas redondeadas) */
 html body.f-contacto form.vid{padding:clamp(24px,3vw,40px);border:1px solid rgba(255,255,255,.2);border-radius:32px;background:rgba(0,0,0,.22);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);box-shadow:0 10px 30px rgba(0,0,0,.22)}
+
+/* FORMULARIO GUIADO: preguntas con opciones para elegir (tipo form). Las opciones usan el mismo look que los chips de la web:
+   azul oscuro en reposo y crema con texto azul cuando están elegidas. */
+html body.f-contacto form.gf{gap:clamp(22px,2.6vw,30px)}
+.gf-intro{margin:0;font-size:clamp(15px,1.25vw,17px);line-height:1.5;max-width:46ch}
+.gf-intro strong{font-family:var(--fh);font-style:italic;font-weight:900}
+.gf-q{margin:0;padding:0;border:0;min-width:0;display:grid;gap:12px}
+.gf-q legend{display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:center;padding:0;margin:0 0 12px;float:left;width:100%}
+.gf-q legend+*{clear:both}
+.gf-n{grid-row:1/3;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--crema);color:var(--azul-f);font-family:var(--fh);font-style:italic;font-weight:900;font-size:15px;line-height:1}
+.gf-t{font-family:var(--fh);font-style:italic;font-weight:900;font-size:clamp(18px,1.6vw,21px);line-height:1.15}
+.gf-q small{grid-column:2;font-size:13.5px;line-height:1.35;opacity:.8}
+.gf-ops{display:flex;flex-wrap:wrap;gap:8px}
+html body.f-contacto .gf .gf-op{position:relative;display:block;gap:0;font-weight:400;font-style:normal;font-size:inherit}
+html body.f-contacto .gf .gf-op input{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;opacity:0;cursor:pointer;z-index:1;border-radius:12px}
+.gf-op span{display:block;padding:10px 16px 11px;border-radius:12px;background:var(--nav);color:var(--crema);font-family:var(--fh);font-style:italic;font-weight:900;font-size:clamp(15px,1.25vw,17px);line-height:1.15;border:2px solid transparent;transition:background .2s,color .2s,scale .25s cubic-bezier(.34,1.56,.64,1),border-color .2s}
+.gf-op:hover span{border-color:rgba(255,255,255,.55)}
+.gf-op input:checked+span{background:var(--crema);color:var(--azul-f);border-color:var(--crema)}
+.gf-op:active span{scale:.97}
+html body.f-contacto .gf .gf-op input:focus-visible{outline:0;box-shadow:none}
+.gf-op input:focus-visible+span{outline:3px solid #fff;outline-offset:3px}
+.gf-q .gf-area{min-height:110px}
+html body.f-contacto .gf .gf-campo{gap:8px;font-size:16px}
+.gf-datos{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.gf-resp{margin-top:2px}
+.gf-ig[hidden]{display:none}
+@media(max-width:560px){.gf-datos{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.gf-op span{transition:none}}
+
+/* DESPLEGABLES: cada pregunta ocupa una sola línea y muestra a la derecha lo que se fue eligiendo */
+html body.f-contacto form.gf{gap:12px}
+.gf-intro{margin-bottom:6px}
+.gf-acc{gap:0;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);transition:background .2s,border-color .2s}
+.gf-acc[open]{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.4)}
+.gf-acc>summary{list-style:none;display:grid;grid-template-columns:auto 1fr auto;column-gap:12px;align-items:center;padding:12px 16px;cursor:pointer;border-radius:18px}
+.gf-acc>summary::-webkit-details-marker{display:none}
+.gf-acc>summary:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.gf-acc .gf-n{grid-row:1/3;transition:background .2s,color .2s}
+.gf-acc.gf-hecho .gf-n{background:var(--azul);color:#fff}
+.gf-acc .gf-t{grid-column:2;grid-row:1;font-size:clamp(16px,1.4vw,19px)}
+.gf-res{grid-column:2;grid-row:2;min-width:0;text-align:left;font-size:13.5px;line-height:1.25;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gf-acc.gf-hecho .gf-res{opacity:1;font-weight:700;color:var(--crema)}
+.gf-acc[open] .gf-res{display:none}.gf-acc[open] .gf-n{grid-row:1}
+.gf-flecha{grid-column:3;grid-row:1/3;width:9px;height:9px;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;rotate:45deg;translate:0 -2px;transition:rotate .25s cubic-bezier(.34,1.56,.64,1)}
+.gf-acc[open] .gf-flecha{rotate:225deg;translate:0 2px}
+.gf-cuerpo{padding:2px 16px 16px;display:grid;gap:12px}
+.gf-ayuda{margin:0;font-size:13.5px;line-height:1.35;opacity:.8}
+.gf-acc .gf-area{min-height:96px}
+
+/* el pregunta 6 (datos) queda siempre abierta */
+fieldset.gf-q{padding:4px 2px 0}
+/* BRIEF: tarjeta visible arriba del formulario */
+.gf-brief{display:flex;align-items:center;justify-content:space-between;gap:14px 20px;flex-wrap:wrap;padding:16px 18px;border-radius:18px;background:var(--crema);color:var(--nav);text-decoration:none;margin-bottom:6px;transition:scale .25s cubic-bezier(.34,1.56,.64,1)}
+.gf-brief:hover{scale:1.01}
+.gf-brief:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.gf-brief-txt{display:grid;gap:3px;flex:1 1 240px}
+.gf-brief-t{font-family:var(--fh);font-style:italic;font-weight:900;font-size:clamp(17px,1.5vw,20px);line-height:1.1;color:var(--azul-f)}
+.gf-brief-p{font-size:14px;line-height:1.35}
+.gf-brief-b{flex:none;padding:11px 18px 12px;border-radius:12px;background:var(--azul);color:#fff;font-family:var(--fh);font-style:italic;font-weight:900;font-size:16px;line-height:1.1;transition:background .2s}
+.gf-brief:hover .gf-brief-b{background:var(--azul-f)}
+
+/* BRIEF: en PC va a la derecha, afuera del formulario; en celular queda arriba del formulario */
+.gf-brief-d{display:none}
+@media(min-width:861px){
+ .gf-brief-m{display:none}
+ .gf-brief-d{display:flex;margin:clamp(24px,3vw,38px) 0 0}
+}
+
+/* nombre, mail y detalles con las puntas más redondeadas (como en la ventana flotante) */
+html body.f-contacto form.gf input:not([type=checkbox]):not([type=radio]):not(.hp),html body.f-contacto form.gf textarea{border-radius:22px;padding-inline:20px}

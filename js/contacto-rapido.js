@@ -1,7 +1,8 @@
 /* qfadesign — Contacto rápido: al tocar "Contacto" en la barra se abre una ventana flotante en el medio de la pantalla
-   con un mini formulario para dejar la consulta sin salir de la página (se envía igual que el de /contacto, con Formspree),
-   y abajo otras formas rápidas: mail, copiar mail, redes. La página /contacto sigue existiendo para poder compartirla
-   (link adentro de la ventana; con ctrl/cmd + clic o clic del medio en "Contacto" abre la página normal).
+   con un mini formulario para dejar la consulta sin salir de la página (se envía con Formspree, igual que el de /contacto).
+   Abajo: para quien necesita ayuda para contar lo que necesita, un botón que lleva a la página de Contacto (que lo guía
+   con opciones y preguntas) y, después, otras formas rápidas (mail, Instagram, copiar mail) (con ctrl/cmd + clic o clic del medio
+   en "Contacto" abre esa página directo). El brief sigue estando en Herramientas.
    En la propia página de Contacto no hace nada (ya estás ahí). */
 (function(){
   'use strict';
@@ -20,7 +21,7 @@
     '<img class="cr-yo" src="'+base+'img/stickers/titulo-contacto.svg" alt="Contacto" width="453.24" height="98.03">'+
     '<button class="cr-x" type="button" aria-label="Cerrar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>'+
     '<div class="cr-in">'+
-     '<p class="cr-p"><strong>Hablemos.</strong> Contame tu idea y te respondo por mail lo antes posible.</p>'+
+     '<p class="cr-p"><strong>Contacto rápido.</strong> Dejame tu mail y una consulta corta, y te respondo lo antes posible.</p>'+
      '<form class="cr-f" novalidate>'+
       '<input class="cr-hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">'+
       '<div class="cr-fila">'+
@@ -31,13 +32,14 @@
       '<button class="cr-enviar" type="submit">Enviar consulta</button>'+
       '<p class="cr-aviso" role="status" aria-live="polite"></p>'+
      '</form>'+
+     '<div class="cr-ayuda"><p class="cr-ayuda-t">¿Necesitás ayuda para contarme lo que necesitás?</p><a class="cr-ayuda-b" href="'+pagina+'">Armar mi consulta con opciones <span aria-hidden="true">→</span></a></div>'+
      '<div class="cr-otras"><span class="cr-o">O escribime por</span>'+
       '<div class="cr-bs">'+
        '<a href="mailto:'+MAIL+'">Mail</a>'+
        '<a href="https://www.instagram.com/qfadesign/" target="_blank" rel="noopener">Instagram</a>'+
+       '<button class="cr-copiar" type="button" aria-live="polite">Copiar mail</button>'+
       '</div>'+
      '</div>'+
-     '<div class="cr-pie"><a href="'+base+'herramienta/brief">Armar un brief</a><span aria-hidden="true">·</span><button class="cr-copiar" type="button" aria-live="polite">Copiar mail</button><span aria-hidden="true">·</span><a class="cr-pag" href="'+pagina+'">Página de contacto <span aria-hidden="true">→</span></a></div>'+
     '</div>'+
    '</div>';
   document.body.appendChild(ov);

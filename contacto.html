@@ -44,19 +44,58 @@
 <nav aria-label="Principal"><a href="./" aria-label="qfadesign, inicio"><img src="img/Marca_qfadesign_blanco.svg" alt="qfadesign" width="231.23" height="51.58" data-ar></a><button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button><ul id="menu"><li><a href="acerca" data-t="Acerca de">Acerca de</a></li><li><a href="portfolio" data-t="Portfolio">Portfolio</a></li><li><a href="herramientas" data-t="Herramientas">Herramientas</a></li><li><a href="jueguitos" data-t="Jueguitos">Jueguitos</a></li><li><a href="recursos" data-t="Recursos">Recursos</a></li><li><a href="contacto" data-t="Contacto" aria-current=page>Contacto</a></li></ul></nav>
 <main id="contenido" tabindex="-1">
 <header class="ph"><h1 class="st-h1"><img src="img/stickers/titulo-contacto.svg" alt="Hablemos: contacto" width="453.24" height="98.03" style="--vw:453.24"></h1>
-<p class="lead">¿Tenés una idea y no sabés por dónde empezar? <strong>Contame tu consulta</strong> y <strong>te respondo por mail</strong>.</p></header>
+<p class="lead">¿Tenés una idea y no sabés cómo contarla? <strong>Elegí las opciones</strong> que mejor te representen y <strong>yo te respondo</strong>.</p></header>
 <div class="cn">
- <form class="form vid" id="consulta" novalidate>
+ <form class="form vid gf" id="consulta" novalidate>
   <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-  <label>Nombre<input name="nombre" type="text" autocomplete="name" required placeholder="Tu nombre"></label>
-  <label>Tu mail<input name="email" type="email" autocomplete="email" required placeholder="nombre@correo.com"></label>
-  <label>Consulta<textarea name="mensaje" required placeholder="Contame qué necesitás (logo, identidad, redes, motion, packaging…), para quién es y si tenés una fecha en mente."></textarea></label>
+  <p class="gf-intro"><strong>Elegí lo que más se parezca a tu caso.</strong> No hace falta responder todo: con tu nombre, tu mail y una opción ya puedo entender por dónde empezar.</p>
+  <a class="gf-brief gf-brief-m" href="herramienta/brief"><span class="gf-brief-txt"><span class="gf-brief-t">¿Preferís contarme todo con más detalle?</span><span class="gf-brief-p">Armá tu <strong>brief</strong>: 8 preguntas simples sobre tu marca. Lo bajás en PDF o me lo mandás, y así entiendo mejor tu proyecto.</span></span><span class="gf-brief-b">Armar mi brief <span aria-hidden="true">→</span></span></a>
+  <details class="gf-q gf-acc" data-q="necesita" open><summary><span class="gf-n" aria-hidden="true">1</span><span class="gf-t">¿Qué necesitás?</span><span class="gf-res" aria-live="polite"></span><span class="gf-flecha" aria-hidden="true"></span></summary><div class="gf-cuerpo"><p class="gf-ayuda">Podés marcar más de una.</p>
+   <div class="gf-ops">
+    <label class="gf-op"><input type="checkbox" name="necesita" value="Logo"><span>Logo</span></label>
+    <label class="gf-op"><input type="checkbox" name="necesita" value="Identidad de marca"><span>Identidad de marca</span></label>
+    <label class="gf-op"><input type="checkbox" name="necesita" value="Redes sociales"><span>Redes sociales</span></label>
+    <label class="gf-op"><input type="checkbox" name="necesita" value="Packaging"><span>Packaging</span></label>
+    <label class="gf-op"><input type="checkbox" name="necesita" value="Motion graphics"><span>Motion graphics</span></label>
+    <label class="gf-op"><input type="checkbox" name="necesita" value="Diseño editorial"><span>Diseño editorial</span></label>
+    <label class="gf-op"><input type="checkbox" name="necesita" value="Web"><span>Web</span></label>
+    <label class="gf-op"><input type="checkbox" name="necesita" value="Otra cosa / no lo sé"><span>Otra cosa / no lo sé</span></label>
+   </div></div></details>
+  <details class="gf-q gf-acc" data-q="etapa"><summary><span class="gf-n" aria-hidden="true">2</span><span class="gf-t">¿En qué punto está tu proyecto?</span><span class="gf-res" aria-live="polite"></span><span class="gf-flecha" aria-hidden="true"></span></summary><div class="gf-cuerpo"><p class="gf-ayuda">Elegí la que más se parezca.</p>
+   <div class="gf-ops">
+    <label class="gf-op"><input type="radio" name="etapa" value="Recién empieza"><span>Recién empieza</span></label>
+    <label class="gf-op"><input type="radio" name="etapa" value="Ya existe y quiero renovarlo"><span>Ya existe y quiero renovarlo</span></label>
+    <label class="gf-op"><input type="radio" name="etapa" value="Necesito piezas puntuales"><span>Necesito piezas puntuales</span></label>
+    <label class="gf-op"><input type="radio" name="etapa" value="No lo sé"><span>No lo sé</span></label>
+   </div></div></details>
+  <details class="gf-q gf-acc" data-q="plazo"><summary><span class="gf-n" aria-hidden="true">3</span><span class="gf-t">¿Para cuándo lo necesitás?</span><span class="gf-res" aria-live="polite"></span><span class="gf-flecha" aria-hidden="true"></span></summary><div class="gf-cuerpo"><p class="gf-ayuda">Si hay una fecha puntual, contámela abajo.</p>
+   <div class="gf-ops">
+    <label class="gf-op"><input type="radio" name="plazo" value="Urgente (menos de 5 días hábiles)"><span>Urgente (menos de 5 días hábiles)</span></label>
+    <label class="gf-op"><input type="radio" name="plazo" value="En 2 a 4 semanas"><span>En 2 a 4 semanas</span></label>
+    <label class="gf-op"><input type="radio" name="plazo" value="En 1 a 3 meses"><span>En 1 a 3 meses</span></label>
+    <label class="gf-op"><input type="radio" name="plazo" value="Sin apuro"><span>Sin apuro</span></label>
+   </div></div></details>
+  <details class="gf-q gf-acc" data-q="presupuesto"><summary><span class="gf-n" aria-hidden="true">4</span><span class="gf-t">¿Tenés un presupuesto en mente?</span><span class="gf-res" aria-live="polite"></span><span class="gf-flecha" aria-hidden="true"></span></summary><div class="gf-cuerpo"><p class="gf-ayuda">Me ayuda a proponerte algo realista.</p>
+   <div class="gf-ops">
+    <label class="gf-op"><input type="radio" name="presupuesto" value="Todavía no, necesito que me orientes"><span>Todavía no, necesito que me orientes</span></label>
+    <label class="gf-op"><input type="radio" name="presupuesto" value="Tengo un monto o rango definido"><span>Tengo un monto o rango definido</span></label>
+    <label class="gf-op"><input type="radio" name="presupuesto" value="Ya armé uno en la calculadora"><span>Ya armé uno en la calculadora</span></label>
+   </div></div></details>
+  <details class="gf-q gf-acc" data-q="mensaje"><summary><span class="gf-n" aria-hidden="true">5</span><span class="gf-t">¿Querés contarme algo más?</span><span class="gf-res" aria-live="polite"></span><span class="gf-flecha" aria-hidden="true"></span></summary><div class="gf-cuerpo"><p class="gf-ayuda">Opcional: tu idea, referencias, links, una fecha puntual…</p>
+   <textarea class="gf-area" name="mensaje" aria-label="Detalles" placeholder="Ej.: es una panadería de barrio, quiero un logo cálido y artesanal para el lanzamiento de marzo."></textarea>
+  </div></details>
+  <fieldset class="gf-q"><legend><span class="gf-n" aria-hidden="true">6</span><span class="gf-t">¿A dónde te respondo?</span><small>Así sé cómo escribirte.</small></legend>
+   <div class="gf-datos">
+    <label class="gf-campo">Nombre<input name="nombre" type="text" autocomplete="name" required placeholder="Tu nombre"></label>
+    <label class="gf-campo">Tu mail<input name="email" type="email" autocomplete="email" required placeholder="nombre@correo.com"></label>
+   </div>
+  </fieldset>
   <button class="b-env" type="submit"><span>Enviar consulta</span><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M5 13l5 5 11-11"></path></svg></button>
   <p style="font-size:13px;opacity:.75;margin-top:12px">Al enviar tu consulta aceptás la <a href="privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:3px">política de privacidad</a>.</p>
   <p class="aviso" id="aviso" role="status"></p>
  </form>
  <div><a class="mail" href="mailto:qfadesignn@gmail.com">qfadesignn@gmail.com</a>
- <div class="cn-brief"><h2 class="cn-brief-t">¿No sabés cómo contarme tu idea?</h2><p>Armá un <strong>brief</strong>: un resumen corto de lo que necesitás, con qué hace tu marca, a quién le habla y para cuándo lo querés. Son 8 preguntas simples, no hace falta saber de diseño, y me ayuda a entender tu proyecto para responderte mejor.</p><a class="btn cn-brief-b" href="herramienta/brief">Armar mi brief <span aria-hidden="true">→</span></a></div>
+ <a class="gf-brief gf-brief-d" href="herramienta/brief"><span class="gf-brief-txt"><span class="gf-brief-t">¿Preferís contarme todo con más detalle?</span><span class="gf-brief-p">Armá tu <strong>brief</strong>: 8 preguntas simples sobre tu marca. Lo bajás en PDF o me lo mandás, y así entiendo mejor tu proyecto.</span></span><span class="gf-brief-b">Armar mi brief <span aria-hidden="true">→</span></span></a>
  <p class="cn-redes">También en redes</p>
  <div class="pills"><a href="https://www.instagram.com/qfadesign/" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@qfadesign" target="_blank" rel="noopener">Tiktok</a><a href="https://www.behance.net/facundocruz5" target="_blank" rel="noopener">Behance</a><a href="https://www.linkedin.com/in/facundo-cruz-19a581303/" target="_blank" rel="noopener">LinkedIn</a></div></div>
 </div>

@@ -333,22 +333,22 @@ html.cr-bloq{overflow:hidden}
 #cr .cr-aviso.ok{padding:10px 14px;border-radius:14px;background:rgba(11,117,244,.25);border:1px solid rgba(11,117,244,.6);font-weight:700}
 #cr .cr-f.cr-listo label,#cr .cr-f.cr-listo .cr-enviar{display:none}
 /* otras formas, centradas */
-#cr .cr-otras{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 12px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(11,117,244,.55);font-size:14px}
+#cr .cr-otras{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 12px;margin-top:16px;font-size:14px}
 #cr .cr-o{flex:0 0 auto;text-align:left;opacity:.85;font-weight:700}
 #cr .cr-bs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 #cr .cr-otras a,#cr .cr-copiar{padding:7px 13px;border-radius:99px;border:1px solid rgba(255,255,255,.28);background:transparent;color:#fff;font:inherit;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;transition:background .2s,border-color .2s}
 #cr .cr-otras a:hover,#cr .cr-otras a:focus-visible,#cr .cr-copiar:hover,#cr .cr-copiar:focus-visible{background:#0b75f4;border-color:#0b75f4}
 #cr .cr-copiar.ok{background:#0b75f4;border-color:#0b75f4}
-#cr .cr-pie{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 10px;margin-top:14px;font-size:14px;opacity:.95}
-#cr .cr-pie a{color:inherit;text-decoration:underline;text-decoration-color:#0b75f4;text-decoration-thickness:2px;text-underline-offset:4px}
-#cr .cr-pie a:hover{color:#4ea0ff}
-#cr .cr-pie .cr-copiar{padding:0;border:0;border-radius:0;background:none;font:inherit;font-size:14px;font-weight:400;color:inherit;text-decoration:underline;text-decoration-color:#0b75f4;text-decoration-thickness:2px;text-underline-offset:4px;cursor:pointer}
-#cr .cr-pie .cr-copiar:hover,#cr .cr-pie .cr-copiar:focus-visible,#cr .cr-pie .cr-copiar.ok{background:none;border:0;color:#4ea0ff}
-#cr .cr-pag{font-family:var(--fh,inherit);font-style:italic;font-weight:900}
+/* ayuda: para quien no sabe cómo contar lo que necesita, botón que lleva a la página de Contacto (guiada con opciones) */
+#cr .cr-ayuda{display:grid;gap:10px;margin-top:24px}
+#cr .cr-ayuda-t{margin:0;font-size:14px;line-height:1.35;font-weight:700;opacity:.95;text-wrap:balance}
+#cr .cr-ayuda-b{display:block;padding:13px 18px 14px;border-radius:12px;background:var(--crema,#f9fbf2);color:var(--azul-f,#0a5cc0);font-family:var(--fh,inherit);font-weight:900;font-style:italic;font-size:17px;line-height:1.1;text-decoration:none;transition:scale .25s cubic-bezier(.34,1.56,.64,1),background .2s,color .2s}
+#cr .cr-ayuda-b:hover,#cr .cr-ayuda-b:focus-visible{scale:1.02;background:#fff}
+#cr .cr-ayuda-b span{display:inline-block;transition:translate .25s cubic-bezier(.34,1.56,.64,1)}#cr .cr-ayuda-b:hover span,#cr .cr-ayuda-b:focus-visible span{translate:4px 0}
 #cr .cr-x{position:absolute;z-index:3;top:14px;right:14px;width:36px;height:36px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:transparent;color:#fff;cursor:pointer;transition:background .2s,border-color .2s,rotate .35s cubic-bezier(.34,1.56,.64,1)}
 #cr .cr-x svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
 #cr .cr-x:hover,#cr .cr-x:focus-visible{background:#0b75f4;border-color:#0b75f4;rotate:90deg}
 #cr a:focus-visible,#cr button:focus-visible{outline:2px solid #0b75f4;outline-offset:3px}
-@media(max-width:480px){#cr{padding:12px}#cr .cr-fila{grid-template-columns:1fr}#cr .cr-yo{left:-6px}#cr .cr-pie{gap:8px 18px}#cr .cr-pie>span{display:none}}
+@media(max-width:480px){#cr{padding:12px}#cr .cr-fila{grid-template-columns:1fr}#cr .cr-yo{left:-6px}}
 @media(max-height:640px){#cr .cr-yo{display:none}#cr .cr-v{margin-top:0}#cr .cr-in{max-height:calc(100dvh - 40px)}}
-@media(prefers-reduced-motion:reduce){#cr,#cr .cr-v,#cr .cr-x,#cr .cr-enviar{transition:opacity .01s,visibility 0s!important;transform:none!important;scale:none!important;rotate:none!important}}
+@media(prefers-reduced-motion:reduce){#cr,#cr .cr-v,#cr .cr-x,#cr .cr-enviar,#cr .cr-ayuda-b,#cr .cr-ayuda-b span{transition:opacity .01s,visibility 0s!important;transform:none!important;scale:none!important;rotate:none!important}}

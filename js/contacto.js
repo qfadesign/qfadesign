@@ -10,14 +10,59 @@
   const aviso = document.getElementById('aviso');
   const boton = form.querySelector('button[type=submit]');
   let enviando = false;
+  // Desplegables: se abre uno a la vez, cada uno muestra lo elegido y, al elegir una opción única, pasa a la siguiente pregunta
+  const acc = [...form.querySelectorAll('details.gf-acc')];
+  const resumen = (d) => {
+    const q = d.dataset.q;
+    let t = '';
+    if (q === 'mensaje') t = form.mensaje.value.trim().replace(/\s+/g, ' ');
+    else t = marcadas(q).join(' · ');
+    d.querySelector('.gf-res').textContent = t || 'Sin elegir';
+    d.classList.toggle('gf-hecho', !!t);
+  };
+  const refrescar = () => acc.forEach(resumen);
+  acc.forEach((d) => d.addEventListener('toggle', () => {
+    if (d.open) acc.forEach((o) => { if (o !== d) o.open = false; });
+  }));
+  form.addEventListener('change', (e) => {
+    const d = e.target.closest && e.target.closest('details.gf-acc');
+    if (!d) return;
+    resumen(d);
+    if (e.target.type === 'radio') {
+      setTimeout(() => {
+        const sig = acc[acc.indexOf(d) + 1];
+        if (sig) sig.open = true; else d.open = false;
+      }, 280);
+    }
+  });
+  form.mensaje.addEventListener('input', () => resumen(form.mensaje.closest('details')));
 
   const decir = (txt, tipo) => {
     aviso.className = 'aviso' + (tipo ? ' ' + tipo : '');
     aviso.textContent = txt;
   };
+  // Junta lo que se eligió en las preguntas y lo que se escribió, en un mensaje ordenado para el mail
+  const marcadas = (n) => [...form.querySelectorAll(`input[name="${n}"]:checked`)].map((i) => i.value);
+  const respuestas = () => {
+    const r = {
+      necesita: marcadas('necesita').join(', '),
+      etapa: marcadas('etapa')[0] || '',
+      plazo: marcadas('plazo')[0] || '',
+      presupuesto: marcadas('presupuesto')[0] || '',
+      detalles: form.mensaje.value.trim(),
+    };
+    const l = [];
+    if (r.necesita) l.push('Necesita: ' + r.necesita);
+    if (r.etapa) l.push('Punto del proyecto: ' + r.etapa);
+    if (r.plazo) l.push('Plazo: ' + r.plazo);
+    if (r.presupuesto) l.push('Presupuesto: ' + r.presupuesto);
+    if (r.detalles) l.push('', 'Detalles:', r.detalles);
+    r.texto = l.join('\n');
+    return r;
+  };
   const mailto = () => {
     const asunto = 'Consulta de ' + form.nombre.value.trim() + ' · qfadesign.com';
-    const cuerpo = `${form.mensaje.value.trim()}\n\n— ${form.nombre.value.trim()}\n${form.email.value.trim()}`;
+    const cuerpo = `${respuestas().texto}\n\n— ${form.nombre.value.trim()}\n${form.email.value.trim()}`;
     return `mailto:${DESTINO}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
   };
   const planB = (msg) => {
@@ -39,11 +84,11 @@
     const campos = [
       [form.nombre, !form.nombre.value.trim(), 'Escribí tu nombre.'],
       [form.email, !/^\S+@\S+\.\S+$/.test(form.email.value.trim()), 'Revisá tu mail, parece que le falta algo.'],
-      [form.mensaje, !form.mensaje.value.trim(), 'Contame un poco tu consulta.'],
+      [form.querySelector('details.gf-acc'), !(marcadas('necesita').length || form.mensaje.value.trim()), 'Elegí qué necesitás o contame un poco tu consulta.'],
     ];
-    campos.forEach(([c, mal]) => c.setAttribute('aria-invalid', mal ? 'true' : 'false'));
+    campos.forEach(([c, mal]) => c.setAttribute && c.tagName !== 'DETAILS' && c.setAttribute('aria-invalid', mal ? 'true' : 'false'));
     const mal = campos.find(([, m]) => m);
-    if (mal) { decir(mal[2], 'err'); mal[0].focus(); return; }
+    if (mal) { decir(mal[2], 'err'); if (mal[0].tagName === 'DETAILS') mal[0].open = true; (mal[0].tagName === 'DETAILS' ? mal[0].querySelector('input') : mal[0]).focus(); return; }
 
     enviando = true;
     let exito = false;
@@ -54,14 +99,14 @@
     const ctrl = new AbortController();
     const corte = setTimeout(() => ctrl.abort(), 15000);
     try {
-      const nombre = form.nombre.value.trim(), email = form.email.value.trim(), mensaje = form.mensaje.value.trim();
+      const R = respuestas(), nombre = form.nombre.value.trim(), email = form.email.value.trim(), mensaje = R.texto;
       const asuntoMail = 'Consulta de ' + nombre + ' · qfadesign.com';
       const url = FORMSPREE_ID
         ? 'https://formspree.io/f/' + encodeURIComponent(FORMSPREE_ID)
         : 'https://formsubmit.co/ajax/' + encodeURIComponent(DESTINO);
       // _subject es el campo que Formspree y FormSubmit usan como asunto del mail (lleva el nombre de quien escribe)
       const cuerpo = FORMSPREE_ID
-        ? { name: nombre, email, message: mensaje, _subject: asuntoMail, _replyto: email, _gotcha: '' }
+        ? { name: nombre, email, message: mensaje, necesita: R.necesita, etapa: R.etapa, plazo: R.plazo, presupuesto: R.presupuesto, _subject: asuntoMail, _replyto: email, _gotcha: '' }
         : { name: nombre, email, message: mensaje, _subject: asuntoMail, _template: 'table', _captcha: 'false', _honey: '' };
       const r = await fetch(url, {
         method: 'POST',
@@ -72,7 +117,8 @@
       const data = await r.json().catch(() => ({}));
       if (r.ok && (data.ok === true || String(data.success) === 'true')) {
         form.reset();
-        campos.forEach(([c]) => c.removeAttribute('aria-invalid'));
+        campos.forEach(([c]) => c.removeAttribute && c.removeAttribute('aria-invalid'));
+        setTimeout(() => { refrescar(); acc.forEach((d, i) => { d.open = i === 0; }); }, 0);
         exito = true;
         decir('¡Listo! Recibí tu consulta y te respondo por mail lo antes posible.', 'ok');
       } else {
@@ -92,4 +138,5 @@
       }
     }
   });
+  refrescar();
 })();
