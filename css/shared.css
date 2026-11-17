@@ -298,3 +298,57 @@ html.qst-in.t-in body>*:not(nav){translate:0 0!important;filter:none!important}
  nav ul{--fs:15px}
 }
 @media(min-width:761px) and (prefers-reduced-motion:reduce){nav ul li:nth-child(6) a{transition:none!important}}
+
+/* ============================================================
+   CONTACTO RÁPIDO (js/contacto-rapido.js): al tocar "Contacto" en la barra se abre una ventana flotante en el medio de la pantalla,
+   negra transparente con detalles azules, y el sticker "contacto" pegado al borde de arriba. Tiene un mini formulario
+   (se envía sin salir de la página) y otras formas rápidas: mail, copiar mail, Instagram. La página /contacto sigue existiendo (link adentro).
+   ============================================================ */
+#cr{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.3);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .25s ease,visibility 0s .25s}
+#cr.cr-on{opacity:1;visibility:visible;transition-delay:0s}
+html.cr-bloq{overflow:hidden}
+#cr .cr-v{position:relative;box-sizing:border-box;width:min(460px,100%);margin-top:clamp(40px,7vh,56px);color:#fff;text-align:center;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.14);border-radius:32px;box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(11,117,244,.18);outline:0;transform:translateY(14px) scale(.94);transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+#cr.cr-on .cr-v{transform:none}
+#cr .cr-in{max-height:calc(100dvh - clamp(40px,7vh,56px) - 40px);overflow:auto;padding:clamp(30px,4.4vw,36px) clamp(20px,3.4vw,30px) clamp(18px,3vw,24px);border-radius:32px}
+/* sticker "contacto" pegado al borde de arriba, a la izquierda */
+#cr .cr-yo{position:absolute;z-index:2;left:-16px;bottom:calc(100% - 22px);width:clamp(140px,40%,184px);height:auto;rotate:-6deg;transform-origin:50% 100%;pointer-events:none;filter:var(--st-sombra)}
+#cr .cr-p{margin:0 0 16px;padding-right:42px;text-align:left;font-size:15.5px;line-height:1.4;opacity:.92;text-wrap:pretty}
+#cr .cr-p strong{font-family:var(--fh,inherit);font-style:italic;font-weight:900}
+/* formulario */
+#cr .cr-f{display:grid;gap:12px;margin:0}
+#cr .cr-fila{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#cr .cr-f label{display:grid;gap:5px;text-align:left;font-size:13px;font-weight:700;opacity:.95}
+#cr .cr-f input:not(.cr-hp),#cr .cr-f textarea{text-align:left;width:100%;box-sizing:border-box;padding:11px 14px;font:inherit;font-size:16px;font-weight:400;color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);border-radius:14px;outline:0;resize:none;overflow:hidden;min-height:44px;transition:border-color .2s,background .2s,box-shadow .2s}
+#cr .cr-f textarea{min-height:84px}
+#cr .cr-f ::placeholder{color:rgba(255,255,255,.45)}
+#cr .cr-f input:focus,#cr .cr-f textarea:focus{border-color:#0b75f4;background:rgba(11,117,244,.1);box-shadow:0 0 0 3px rgba(11,117,244,.32)}
+#cr .cr-f [aria-invalid=true]{border-color:#ff8a78}
+#cr .cr-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+#cr .cr-enviar{padding:14px 20px 15px;border:0;border-radius:12px;background:#0b75f4;color:#fff;font-family:var(--fh,inherit);font-weight:900;font-style:italic;font-size:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 24px rgba(11,117,244,.35);cursor:pointer;transition:scale .25s cubic-bezier(.34,1.56,.64,1),background .2s,opacity .2s}
+#cr .cr-enviar:hover,#cr .cr-enviar:focus-visible{scale:1.02;background:#2b88ff}
+#cr .cr-enviar:disabled{opacity:.65;cursor:progress;scale:1}
+#cr .cr-aviso{margin:0;font-size:14px;line-height:1.35}
+#cr .cr-aviso:empty{display:none}
+#cr .cr-aviso.err{color:#ffb4a8}#cr .cr-aviso.err a{color:inherit;text-underline-offset:3px}
+#cr .cr-aviso.ok{padding:10px 14px;border-radius:14px;background:rgba(11,117,244,.25);border:1px solid rgba(11,117,244,.6);font-weight:700}
+#cr .cr-f.cr-listo label,#cr .cr-f.cr-listo .cr-enviar{display:none}
+/* otras formas, centradas */
+#cr .cr-otras{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 12px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(11,117,244,.55);font-size:14px}
+#cr .cr-o{flex:0 0 auto;text-align:left;opacity:.85;font-weight:700}
+#cr .cr-bs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+#cr .cr-otras a,#cr .cr-copiar{padding:7px 13px;border-radius:99px;border:1px solid rgba(255,255,255,.28);background:transparent;color:#fff;font:inherit;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;transition:background .2s,border-color .2s}
+#cr .cr-otras a:hover,#cr .cr-otras a:focus-visible,#cr .cr-copiar:hover,#cr .cr-copiar:focus-visible{background:#0b75f4;border-color:#0b75f4}
+#cr .cr-copiar.ok{background:#0b75f4;border-color:#0b75f4}
+#cr .cr-pie{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 10px;margin-top:14px;font-size:14px;opacity:.95}
+#cr .cr-pie a{color:inherit;text-decoration:underline;text-decoration-color:#0b75f4;text-decoration-thickness:2px;text-underline-offset:4px}
+#cr .cr-pie a:hover{color:#4ea0ff}
+#cr .cr-pie .cr-copiar{padding:0;border:0;border-radius:0;background:none;font:inherit;font-size:14px;font-weight:400;color:inherit;text-decoration:underline;text-decoration-color:#0b75f4;text-decoration-thickness:2px;text-underline-offset:4px;cursor:pointer}
+#cr .cr-pie .cr-copiar:hover,#cr .cr-pie .cr-copiar:focus-visible,#cr .cr-pie .cr-copiar.ok{background:none;border:0;color:#4ea0ff}
+#cr .cr-pag{font-family:var(--fh,inherit);font-style:italic;font-weight:900}
+#cr .cr-x{position:absolute;z-index:3;top:14px;right:14px;width:36px;height:36px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:transparent;color:#fff;cursor:pointer;transition:background .2s,border-color .2s,rotate .35s cubic-bezier(.34,1.56,.64,1)}
+#cr .cr-x svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+#cr .cr-x:hover,#cr .cr-x:focus-visible{background:#0b75f4;border-color:#0b75f4;rotate:90deg}
+#cr a:focus-visible,#cr button:focus-visible{outline:2px solid #0b75f4;outline-offset:3px}
+@media(max-width:480px){#cr{padding:12px}#cr .cr-fila{grid-template-columns:1fr}#cr .cr-yo{left:-6px}#cr .cr-pie{gap:8px 18px}#cr .cr-pie>span{display:none}}
+@media(max-height:640px){#cr .cr-yo{display:none}#cr .cr-v{margin-top:0}#cr .cr-in{max-height:calc(100dvh - 40px)}}
+@media(prefers-reduced-motion:reduce){#cr,#cr .cr-v,#cr .cr-x,#cr .cr-enviar{transition:opacity .01s,visibility 0s!important;transform:none!important;scale:none!important;rotate:none!important}}
