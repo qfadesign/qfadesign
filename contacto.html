@@ -84,10 +84,15 @@
   <details class="gf-q gf-acc" data-q="mensaje"><summary><span class="gf-n" aria-hidden="true">5</span><span class="gf-t">¿Querés contarme algo más?</span><span class="gf-res" aria-live="polite"></span><span class="gf-flecha" aria-hidden="true"></span></summary><div class="gf-cuerpo"><p class="gf-ayuda">Opcional: tu idea, referencias, links, una fecha puntual…</p>
    <textarea class="gf-area" name="mensaje" aria-label="Detalles" placeholder="Ej.: es una panadería de barrio, quiero un logo cálido y artesanal para el lanzamiento de marzo."></textarea>
   </div></details>
-  <fieldset class="gf-q"><legend><span class="gf-n" aria-hidden="true">6</span><span class="gf-t">¿A dónde te respondo?</span><small>Así sé cómo escribirte.</small></legend>
+  <fieldset class="gf-q"><legend><span class="gf-n" aria-hidden="true">6</span><span class="gf-t">¿A dónde te respondo?</span><small>Elegí por dónde preferís que te escriba.</small></legend>
+   <div class="gf-ops gf-resp" role="radiogroup" aria-label="Por dónde querés que te responda">
+    <label class="gf-op"><input type="radio" name="respuesta" value="Mail" checked><span>Mail</span></label>
+    <label class="gf-op"><input type="radio" name="respuesta" value="Instagram"><span>Instagram</span></label>
+   </div>
    <div class="gf-datos">
     <label class="gf-campo">Nombre<input name="nombre" type="text" autocomplete="name" required placeholder="Tu nombre"></label>
-    <label class="gf-campo">Tu mail<input name="email" type="email" autocomplete="email" required placeholder="nombre@correo.com"></label>
+    <label class="gf-campo gf-c-mail">Tu mail<input name="email" type="email" autocomplete="email" required placeholder="nombre@correo.com"></label>
+    <label class="gf-campo gf-c-ig" hidden>Tu usuario de Instagram<input name="instagram" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="@tuusuario"></label>
    </div>
   </fieldset>
   <button class="b-env" type="submit"><span>Enviar consulta</span><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M5 13l5 5 11-11"></path></svg></button>

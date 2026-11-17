@@ -10,6 +10,17 @@
   const aviso = document.getElementById('aviso');
   const boton = form.querySelector('button[type=submit]');
   let enviando = false;
+  // Pregunta 6: según elijas Mail o Instagram, se muestra (y se pide) uno u otro casillero
+  const cMail = form.querySelector('.gf-c-mail'), cIg = form.querySelector('.gf-c-ig');
+  const porIg = () => (form.querySelector('input[name="respuesta"]:checked') || {}).value === 'Instagram';
+  const aplicarRespuesta = () => {
+    const ig = porIg();
+    cMail.hidden = ig; cIg.hidden = !ig;
+    form.email.required = !ig; form.instagram.required = ig;
+    form.email.removeAttribute('aria-invalid'); form.instagram.removeAttribute('aria-invalid');
+  };
+  form.querySelectorAll('input[name="respuesta"]').forEach((i) => i.addEventListener('change', aplicarRespuesta));
+  const usuarioIg = () => form.instagram.value.trim().replace(/^@+/, '');
   // Desplegables: se abre uno a la vez, cada uno muestra lo elegido y, al elegir una opción única, pasa a la siguiente pregunta
   const acc = [...form.querySelectorAll('details.gf-acc')];
   const resumen = (d) => {
@@ -51,7 +62,7 @@
       presupuesto: marcadas('presupuesto')[0] || '',
       detalles: form.mensaje.value.trim(),
     };
-    const l = [];
+    const l = ['Responder por: ' + (porIg() ? 'Instagram (@' + usuarioIg() + ')' : 'Mail')];
     if (r.necesita) l.push('Necesita: ' + r.necesita);
     if (r.etapa) l.push('Punto del proyecto: ' + r.etapa);
     if (r.plazo) l.push('Plazo: ' + r.plazo);
@@ -62,7 +73,7 @@
   };
   const mailto = () => {
     const asunto = 'Consulta de ' + form.nombre.value.trim() + ' · qfadesign.com';
-    const cuerpo = `${respuestas().texto}\n\n— ${form.nombre.value.trim()}\n${form.email.value.trim()}`;
+    const cuerpo = `${respuestas().texto}\n\n— ${form.nombre.value.trim()}\n${porIg() ? '@' + usuarioIg() + ' (Instagram)' : form.email.value.trim()}`;
     return `mailto:${DESTINO}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
   };
   const planB = (msg) => {
@@ -83,7 +94,9 @@
 
     const campos = [
       [form.nombre, !form.nombre.value.trim(), 'Escribí tu nombre.'],
-      [form.email, !/^\S+@\S+\.\S+$/.test(form.email.value.trim()), 'Revisá tu mail, parece que le falta algo.'],
+      porIg()
+        ? [form.instagram, !/^[A-Za-z0-9._]{1,30}$/.test(usuarioIg()), 'Revisá tu usuario de Instagram, por ejemplo @tuusuario.']
+        : [form.email, !/^\S+@\S+\.\S+$/.test(form.email.value.trim()), 'Revisá tu mail, parece que le falta algo.'],
       [form.querySelector('details.gf-acc'), !(marcadas('necesita').length || form.mensaje.value.trim()), 'Elegí qué necesitás o contame un poco tu consulta.'],
     ];
     campos.forEach(([c, mal]) => c.setAttribute && c.tagName !== 'DETAILS' && c.setAttribute('aria-invalid', mal ? 'true' : 'false'));
@@ -99,14 +112,14 @@
     const ctrl = new AbortController();
     const corte = setTimeout(() => ctrl.abort(), 15000);
     try {
-      const R = respuestas(), nombre = form.nombre.value.trim(), email = form.email.value.trim(), mensaje = R.texto;
+      const R = respuestas(), ig = porIg(), nombre = form.nombre.value.trim(), email = ig ? '' : form.email.value.trim(), mensaje = R.texto;
       const asuntoMail = 'Consulta de ' + nombre + ' · qfadesign.com';
       const url = FORMSPREE_ID
         ? 'https://formspree.io/f/' + encodeURIComponent(FORMSPREE_ID)
         : 'https://formsubmit.co/ajax/' + encodeURIComponent(DESTINO);
       // _subject es el campo que Formspree y FormSubmit usan como asunto del mail (lleva el nombre de quien escribe)
       const cuerpo = FORMSPREE_ID
-        ? { name: nombre, email, message: mensaje, necesita: R.necesita, etapa: R.etapa, plazo: R.plazo, presupuesto: R.presupuesto, _subject: asuntoMail, _replyto: email, _gotcha: '' }
+        ? { name: nombre, email, message: mensaje, necesita: R.necesita, etapa: R.etapa, plazo: R.plazo, presupuesto: R.presupuesto, responder_por: ig ? 'Instagram' : 'Mail', instagram: ig ? '@' + usuarioIg() : '', _subject: asuntoMail, _replyto: email, _gotcha: '' }
         : { name: nombre, email, message: mensaje, _subject: asuntoMail, _template: 'table', _captcha: 'false', _honey: '' };
       const r = await fetch(url, {
         method: 'POST',
@@ -118,9 +131,9 @@
       if (r.ok && (data.ok === true || String(data.success) === 'true')) {
         form.reset();
         campos.forEach(([c]) => c.removeAttribute && c.removeAttribute('aria-invalid'));
-        setTimeout(() => { refrescar(); acc.forEach((d, i) => { d.open = i === 0; }); }, 0);
+        setTimeout(() => { aplicarRespuesta(); refrescar(); acc.forEach((d, i) => { d.open = i === 0; }); }, 0);
         exito = true;
-        decir('¡Listo! Recibí tu consulta y te respondo por mail lo antes posible.', 'ok');
+        decir(ig ? '¡Listo! Recibí tu consulta y te escribo por Instagram lo antes posible.' : '¡Listo! Recibí tu consulta y te respondo por mail lo antes posible.', 'ok');
       } else {
         planB('No pude enviar la consulta desde acá.');
       }

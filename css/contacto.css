@@ -84,3 +84,7 @@ fieldset.gf-q{padding:4px 2px 0}
 
 /* nombre, mail y detalles con las puntas más redondeadas (como en la ventana flotante) */
 html body.f-contacto form.gf input:not([type=checkbox]):not([type=radio]):not(.hp),html body.f-contacto form.gf textarea{border-radius:22px;padding-inline:20px}
+
+/* pregunta 6: Mail o Instagram; según lo elegido cambia el casillero de abajo */
+.gf-resp{margin-bottom:2px}
+.gf-datos [hidden]{display:none}
