@@ -6,7 +6,7 @@
   var mq=window.matchMedia('(max-width:760px)');
   var items=[].slice.call(document.querySelectorAll('.svc-l li'));
   if(!items.length)return;
-  var PJ={arbol:'#e8783c',bleko:'#f56446',dulcemente:'#f57896',miga:'#2f8cff',ros:'#7d41ff',trazo:'#28cdff',f1:'#eb2837'};
+  var PJ={arbol:'#e8783c',bleko:'#f56446',dulcemente:'#f57896',miga:'#2f8cff',ros:'#7d41ff',trazo:'#28cdff',f1:'#eb2837','web-miga':'#2f8cff','web-qfa':'#0b75f4'};
   function portadas(li){
     if(li.querySelector('.svc-ph'))return;
     var ks=(li.getAttribute('data-p')||'').split(',').filter(function(k){return PJ[k]});

@@ -12,7 +12,7 @@
     [...row.children].forEach(s=>{const i=new Image();i.src='img/marcas/'+s.dataset.l+'.svg'}); // logos listos para el título
   }
   // servicios: al pasar por cada fila, el fondo toma el color del proyecto y salen sus portadas siguiendo al cursor
-  const PJ={arbol:['img/arbol.webp','#e8783c'],bleko:['img/bleko.webp','#f56446'],dulcemente:['img/dulcemente.webp','#f57896'],miga:['img/miga.webp','#2f8cff'],ros:['img/ros.webp','#7d41ff'],trazo:['img/trazo.webp','#28cdff'],f1:['img/f1.webp','#eb2837']};
+  const PJ={arbol:['img/arbol.webp','#e8783c'],bleko:['img/bleko.webp','#f56446'],dulcemente:['img/dulcemente.webp','#f57896'],miga:['img/miga.webp','#2f8cff'],ros:['img/ros.webp','#7d41ff'],trazo:['img/trazo.webp','#28cdff'],f1:['img/f1.webp','#eb2837'],'web-miga':['img/web-miga.webp','#2f8cff'],'web-qfa':['img/web-qfa.webp','#0b75f4']};
   const sv=document.querySelectorAll('.sv li[data-p],.qh .vid[data-p],.svc-l li[data-p]');
   if(sv.length&&fine){
     const tinte=document.createElement('div');tinte.className='tinte';tinte.setAttribute('aria-hidden','true');document.body.prepend(tinte);
