@@ -267,7 +267,7 @@ html.qst-in.t-in body>*:not(nav){translate:0 0!important;filter:none!important}
  nav ul li:nth-child(5){grid-column:6}
  /* Contacto: sticker a la derecha, adentro de la burbuja */
  nav ul li:nth-child(6){grid-column:7;justify-self:end;margin:0}
- nav ul li:nth-child(6) a{--fs:21px;--k:1.15;--tt:var(--tb);display:block;width:calc(var(--sw)*var(--fs)*var(--k));height:calc(var(--sh)*var(--fs)*var(--k));color:transparent;text-shadow:none;rotate:-3deg;
+ nav ul li:nth-child(6) a{--fs:21px;--k:1.15;--tt:var(--tb);display:block;width:calc(var(--sw)*var(--fs)*var(--k));height:calc(var(--sh)*var(--fs)*var(--k));color:transparent;text-shadow:none;rotate:0deg;
   transition:color .2s ease,scale .3s cubic-bezier(.34,1.56,.64,1),rotate .3s cubic-bezier(.34,1.56,.64,1)}
  nav ul li:nth-child(6) a::before{opacity:1;scale:1}
  nav ul li:nth-child(6) a:hover,nav ul li:nth-child(6) a:focus-visible{--tt:var(--tn);scale:1.1;rotate:1deg}
