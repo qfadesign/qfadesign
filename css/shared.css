@@ -307,7 +307,7 @@ html.qst-in.t-in body>*:not(nav){translate:0 0!important;filter:none!important}
 #cr{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.3);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .25s ease,visibility 0s .25s}
 #cr.cr-on{opacity:1;visibility:visible;transition-delay:0s}
 html.cr-bloq{overflow:hidden}
-#cr .cr-v{position:relative;box-sizing:border-box;width:min(460px,100%);margin-top:clamp(40px,7vh,56px);color:#fff;text-align:center;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.14);border-radius:32px;box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(11,117,244,.18);outline:0;transform:translateY(14px) scale(.94);transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+#cr .cr-v{position:relative;box-sizing:border-box;width:min(460px,100%);margin-top:clamp(40px,7vh,56px);color:#fff;text-align:center;background:rgba(0,0,0,.78);-webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3);border:1px solid rgba(255,255,255,.14);border-radius:32px;box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(11,117,244,.18);outline:0;transform:translateY(14px) scale(.94);transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
 #cr.cr-on .cr-v{transform:none}
 #cr .cr-in{max-height:calc(100dvh - clamp(40px,7vh,56px) - 40px);overflow:auto;padding:clamp(30px,4.4vw,36px) clamp(20px,3.4vw,30px) clamp(18px,3vw,24px);border-radius:32px}
 /* sticker "contacto" pegado al borde de arriba, a la izquierda */
