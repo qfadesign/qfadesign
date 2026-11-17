@@ -11,7 +11,7 @@ document.documentElement.classList.add('js');
   const flag=(k,v)=>{try{v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){}};
 
   // stickers de título de las páginas de la barra: al ir a una, el sticker aparece grande en el centro; ya en la página nueva vuela hasta su lugar y se pega como título
-  const STK={acerca:['titulo-acerca',493.04,102.69,0],portfolio:['portfolio',445.32,124.86,1],herramientas:['titulo-herramientas',672.35,107.44,0],jueguitos:['jueguitos',488.7,126.74,1],contacto:['titulo-contacto',453.24,98.03,0],recursos:['recursos',444.23,81.77,1]}; // [archivo, ancho, alto, fondo negro]
+  const STK={acerca:['titulo-acerca',493.04,102.69,0],portfolio:['portfolio',445.32,124.86,1],herramientas:['herramientas',672.35,107.44,1],jueguitos:['jueguitos',488.7,126.74,1],contacto:['titulo-contacto',453.24,98.03,0],recursos:['recursos',444.23,81.77,1]}; // [archivo, ancho, alto, fondo negro]
   const SH0='drop-shadow(0 26px 16px rgba(0,0,0,.42)) drop-shadow(0 4px 6px rgba(0,0,0,.3))',SH1='drop-shadow(0 1px 0 rgba(0,0,0,.3)) drop-shadow(0 4px 6px rgba(0,0,0,.38))';
   const cartel=(u,w,h)=>{const i=new Image();i.className='qst';i.alt='';i.decoding='sync';i.setAttribute('aria-hidden','true');i.style.cssText='--qw:'+w+';--qa:'+(w/h);i.src=u;root.appendChild(i);return i};
   const volar=el=>{

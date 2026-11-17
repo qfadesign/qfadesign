@@ -1,0 +1,4 @@
+/* qfadesign — Herramientas (índice): degradé base negro, igual que Portfolio */
+body.f-herramientas:not([class*="f-h-"]){--fondo:#000;--g:radial-gradient(55vw 38vw at 100% 18%,rgba(11,117,244,.22),transparent 66%),radial-gradient(44vw 24vw at 0% 62%,rgba(8,71,163,.32),transparent 70%),radial-gradient(40vw 22vw at 90% 96%,rgba(11,117,244,.14),transparent 66%),linear-gradient(#000,#000)}
+body.f-herramientas:not([class*="f-h-"]) nav ul a{--tt:var(--tb)}
+body.f-herramientas:not([class*="f-h-"]) #nav-burbuja,body.f-herramientas:not([class*="f-h-"]) #nav-burbuja .nb-punta{background:rgba(10,10,10,.78)}
