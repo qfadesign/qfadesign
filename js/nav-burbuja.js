@@ -13,6 +13,9 @@
   };
   var nav=document.querySelector('nav');
   if(!nav||!window.matchMedia)return;
+  // al scrollear, el vidrio de la barra se oscurece un poco (CSS: nav.nav-scroll)
+  var sc=function(){nav.classList.toggle('nav-scroll',(window.pageYOffset||document.documentElement.scrollTop||0)>40)};
+  sc();window.addEventListener('scroll',sc,{passive:true});
   var mq=window.matchMedia('(min-width:761px) and (hover:hover)');
   var links=[].slice.call(nav.querySelectorAll('ul a'));
   if(!links.length)return;
