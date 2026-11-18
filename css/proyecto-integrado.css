@@ -101,3 +101,24 @@
 .f-ros{--fondo:#0b0620;--g:radial-gradient(90vw 66vw at 94% 0%,rgba(125,65,255,.85),transparent 64%),radial-gradient(55vw 42vw at -5% 98%,rgba(95,235,45,.28),transparent 62%),radial-gradient(55vw 45vw at -5% 40%,rgba(40,20,110,.7),transparent 62%),linear-gradient(#2a1568,#0b0620)}
 .f-trazo{--fondo:#052250;--g:radial-gradient(90vw 62vw at 50% -8%,rgba(40,205,255,.75),transparent 64%),radial-gradient(55vw 45vw at 104% 72%,rgba(2,30,100,.85),transparent 62%),radial-gradient(50vw 36vw at -5% 85%,rgba(60,140,255,.4),transparent 60%),linear-gradient(#0b6fd0,#052250)}
 .f-f1{--fondo:#070b1a;--g:radial-gradient(90vw 66vw at 95% 0%,rgba(235,40,55,.75),transparent 64%),radial-gradient(55vw 45vw at -5% 52%,rgba(2,25,90,.9),transparent 60%),radial-gradient(50vw 36vw at 92% 94%,rgba(70,160,255,.3),transparent 60%),linear-gradient(#4a0c15,#070b1a)}
+
+/* PRIMERA PARTE · grilla de 12 columnas compartida por el encabezado y la presentación
+   izquierda (col. 1-7): logo y texto principal · derecha (col. 8-12): bajada, "Qué incluye" y links
+   Todo con el mismo borde izquierdo; en celu queda en una sola columna */
+.pr-intro .pr-tags::before{content:"Qué incluye";flex:0 0 100%;margin-bottom:6px;font:900 italic 15px/1.2 var(--fh);opacity:.85}
+html body .pr-h .pr-t{text-align:center}
+html body .pr-h .pr-t .logo{margin-inline:auto}
+html body header.pr-h>p.lead{margin-top:clamp(14px,2vw,22px);max-width:34em;text-wrap:pretty}
+@media(min-width:900px){
+  html body header.pr-h,html body .pr-intro{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(16px,2vw,32px);align-items:start}
+  html body header.pr-h>.pr-t{grid-column:1 / -1;grid-row:1;margin:clamp(18px,2.6vw,32px) 0 0}
+  html body header.pr-h>p.lead{grid-column:8 / -1;grid-row:1;align-self:end;margin:0 0 clamp(4px,.8vw,12px);max-width:none}
+  html body .pr-intro>.pr-about{grid-column:1 / span 7;grid-row:1 / span 2}
+  html body .pr-intro>.pr-tags{grid-column:8 / -1;grid-row:1;margin:0}
+  html body .pr-intro>.pr-links{grid-column:8 / -1;grid-row:2;margin-top:clamp(16px,2vw,24px)}
+}
+
+/* Logos anchos un poco más chicos y bajada alineada a la izquierda con "Qué incluye" */
+html body .pr-h .pr-t .logo.m{width:clamp(170px,32vw,380px)}
+html body .pr-h .pr-t .logo.w{width:clamp(210px,42vw,500px)}
+html body header.pr-h{text-align:center}
