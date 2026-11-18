@@ -76,3 +76,28 @@
 .pr-tags li{padding:5px 13px 6px;font-size:14px;font-weight:700;line-height:1.2;background:none;border:1px solid rgba(255,255,255,.4);opacity:.94}
 @media(min-width:1100px){.pr-inc .pr-tags{flex-wrap:wrap}}
 
+
+/* PROYECTOS: textos e imágenes en un solo recorrido (sin cajas ni desplegables) */
+.pr-h+.pr-intro{margin-top:clamp(26px,4vw,48px)}
+.pr-about{margin:0;max-width:62ch;font-size:clamp(16px,1.45vw,20px);line-height:1.55;text-wrap:pretty}
+.pr-about strong{font-weight:700;color:#fff}
+.pr-intro .pr-tags{margin:clamp(18px,2.2vw,28px) 0 0}
+.pr-intro .pr-links{margin-top:clamp(16px,2vw,24px)}
+.pr-intro~.pr-portada{margin-top:clamp(22px,3vw,40px)}
+.pr-tx{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(10px,2.4vw,40px);align-items:baseline;margin:clamp(28px,4.4vw,64px) 0 clamp(2px,.6vw,8px)}
+.pr-tx h2{margin:0;font-size:clamp(22px,2.6vw,38px);line-height:1.05}
+.pr-tx p{margin:0;max-width:56ch;font-size:clamp(16px,1.4vw,20px);line-height:1.55}
+.pr-tx-s{display:block;margin-top:clamp(14px,2.2vw,30px)}
+.pr-tx-s p{max-width:60ch;color:rgba(255,255,255,.9)}
+.pr-tx-s strong{color:#fff}
+.pr-after{display:flex;flex-direction:column;gap:0;margin-top:clamp(4px,1vw,12px)}
+@media(max-width:760px){.pr-tx{grid-template-columns:1fr;gap:8px}}
+
+/* FONDO: el degradé sale de la paleta de cada marca */
+.f-arbol{--fondo:#120804;--g:radial-gradient(90vw 66vw at 95% 0%,rgba(232,120,60,.8),transparent 64%),radial-gradient(60vw 50vw at -5% 58%,rgba(70,30,12,.85),transparent 62%),radial-gradient(50vw 38vw at 100% 94%,rgba(150,170,172,.32),transparent 62%),linear-gradient(#3a1a0a,#120804)}
+.f-bleko{--fondo:#16080a;--g:radial-gradient(90vw 66vw at 4% 0%,rgba(245,100,70,.8),transparent 64%),radial-gradient(60vw 48vw at 105% 55%,rgba(110,28,22,.75),transparent 62%),radial-gradient(50vw 36vw at 35% 100%,rgba(255,200,120,.26),transparent 60%),linear-gradient(#4a1710,#16080a)}
+.f-dulcemente{--fondo:#1c0e12;--g:radial-gradient(90vw 66vw at 94% 0%,rgba(245,120,150,.78),transparent 64%),radial-gradient(60vw 48vw at -5% 60%,rgba(92,46,34,.85),transparent 62%),radial-gradient(50vw 36vw at 70% 100%,rgba(255,225,200,.26),transparent 60%),linear-gradient(#4a2230,#1c0e12)}
+.f-miga{--fondo:#1a1008;--g:radial-gradient(85vw 62vw at 6% 0%,rgba(60,140,255,.75),transparent 64%),radial-gradient(70vw 54vw at 104% 72%,rgba(120,56,22,.85),transparent 64%),radial-gradient(50vw 36vw at 20% 100%,rgba(8,60,150,.55),transparent 60%),linear-gradient(160deg,#0a4aa8,#1a1008 85%)}
+.f-ros{--fondo:#0b0620;--g:radial-gradient(90vw 66vw at 94% 0%,rgba(125,65,255,.85),transparent 64%),radial-gradient(55vw 42vw at -5% 98%,rgba(95,235,45,.28),transparent 62%),radial-gradient(55vw 45vw at -5% 40%,rgba(40,20,110,.7),transparent 62%),linear-gradient(#2a1568,#0b0620)}
+.f-trazo{--fondo:#052250;--g:radial-gradient(90vw 62vw at 50% -8%,rgba(40,205,255,.75),transparent 64%),radial-gradient(55vw 45vw at 104% 72%,rgba(2,30,100,.85),transparent 62%),radial-gradient(50vw 36vw at -5% 85%,rgba(60,140,255,.4),transparent 60%),linear-gradient(#0b6fd0,#052250)}
+.f-f1{--fondo:#070b1a;--g:radial-gradient(90vw 66vw at 95% 0%,rgba(235,40,55,.75),transparent 64%),radial-gradient(55vw 45vw at -5% 52%,rgba(2,25,90,.9),transparent 60%),radial-gradient(50vw 36vw at 92% 94%,rgba(70,160,255,.3),transparent 60%),linear-gradient(#4a0c15,#070b1a)}
