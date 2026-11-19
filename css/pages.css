@@ -218,7 +218,7 @@ h2{font-weight:900;font-style:italic;line-height:1;font-family:var(--fh)}
 
 /* layout: servicios + resumen */
 .cp-lay{display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,28vw,340px);gap:clamp(16px,2vw,28px);align-items:start}
-.cp-cat{border-radius:22px;border:1px solid rgba(255,255,255,.38);background:rgba(255,255,255,.08);margin-bottom:12px;overflow:hidden;transition:background .25s}
+.cp-cat{border-radius:22px;border:1px solid rgba(255,255,255,.38);background:rgba(255,255,255,.08);margin-bottom:12px;overflow:hidden;overflow:clip;transition:background .25s}
 .cp-chd{margin:0;font-size:inherit}
 .cp-ch{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px clamp(16px,2vw,24px);color:#fff}
 .cp-ch:focus-visible{outline:3px solid #fff;outline-offset:-5px}
@@ -315,7 +315,7 @@ h2{font-weight:900;font-style:italic;line-height:1;font-family:var(--fh)}
 @media(prefers-reduced-motion:reduce){.cp-fuentes summary::after{transition:none}}
 
 @media(max-width:860px){
- .cp-lay{grid-template-columns:1fr}
+ .cp-lay{grid-template-columns:minmax(0,1fr)}
  .cp-res{position:static;max-height:none;overflow:visible}
  .cp-res .cp-tot{display:none}
  .cp-main{position:relative}
