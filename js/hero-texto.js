@@ -9,6 +9,7 @@
   if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
 
   // OPCIÓN DEL TITULAR (se puede cambiar acá o definiendo window.qfaHeroOpcion antes de este script):
+  //  (por defecto 'qfa')
   //  'sticker' = el titular entra normal con "Facundo" y al final se pega el sticker de qfadesign, torcido, tapando el nombre
   //  'qfa'     = dice "Facundo" y después "CUNDO" se va y entra la Q: queda "QFA"
   var OPCION=window.qfaHeroOpcion==='sticker'?'sticker':'qfa';
@@ -66,7 +67,7 @@
   function place(){
     if(!st)return;
     var tr=el.getBoundingClientRect(),wr=stWord.getBoundingClientRect(),fs=parseFloat(getComputedStyle(el).fontSize)||40;
-    var w=wr.width*1.2;st.style.setProperty('--sw',w.toFixed(1)+'px');
+    var w=wr.width*1.0;st.style.setProperty('--sw',w.toFixed(1)+'px');
     var h=st.offsetHeight;
     st.style.setProperty('--sl',(wr.left-tr.left+wr.width/2-w/2).toFixed(1)+'px');
     st.style.setProperty('--st',(wr.top-tr.top+wr.height/2+.05*fs-h/2).toFixed(1)+'px');

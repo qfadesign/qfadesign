@@ -21,8 +21,9 @@
 .titular.tx-go .hw-p{animation:tx-podium var(--tx-dur) ease-in-out var(--tx-d) both}
 .titular.tx-go .hl{animation:tx-letra .85s ease-in-out calc(var(--tx-d) + .3s + var(--c,0)*.02s) both}
 
-@keyframes tx-sube{from{translate:0 118%;rotate:6deg}to{translate:0 0;rotate:0deg}}
-@keyframes tx-podium{0%,45%{opacity:1}100%{opacity:0;scale:calc(var(--sx,1)*1.04) 1}}
+@keyframes tx-sube{from{translate:0 118%;rotate:6deg;opacity:0}55%{opacity:1}to{translate:0 0;rotate:0deg;opacity:1}}
+/* arranque suave: la capa azul fina entra con fundido y desenfoque que se aclara (sin bordes duros) y después se desvanece */
+@keyframes tx-podium{0%{opacity:0;filter:blur(8px)}30%{opacity:1;filter:blur(0)}45%{opacity:1;filter:blur(0)}100%{opacity:0;filter:blur(3px);scale:calc(var(--sx,1)*1.04) 1}}
 @keyframes tx-letra{0%{opacity:0;color:var(--azul,#0b75f4)}35%{opacity:1;color:var(--azul,#0b75f4)}100%{opacity:1;color:#fff}}
 @keyframes tx-opa{from{opacity:0}to{opacity:1}}
 
@@ -58,7 +59,7 @@
 .titular.tx-b{position:relative}
 .qfa-sticker{position:absolute;left:0;top:0;z-index:3;display:block;width:var(--sw,5em);pointer-events:none;filter:var(--st-sombra,drop-shadow(0 6px 12px rgba(0,0,0,.45)));
  translate:var(--sl,0px) var(--st,0px);rotate:-3deg;transform-origin:50% 50%;opacity:0}
-.qfa-sticker img{display:block;width:100%;height:auto;max-width:none;transform:scaleY(1.2)}
+.qfa-sticker img{display:block;width:100%;height:auto;max-width:none}
 .titular.tx-b.tx-go .qfa-sticker{animation:tx-pega .5s cubic-bezier(.3,.7,.3,1) calc(var(--d0,0s) + 3s) both}
 @keyframes tx-pega{0%{opacity:0;scale:1.9;rotate:11deg}50%{opacity:1;scale:.92;rotate:-9deg}75%{scale:1.04;rotate:-3deg}100%{opacity:1;scale:1;rotate:-3deg}}
 /* tiempos de esta opción: el titular termina antes (no hay cambio de palabra), así que línea, bajada y botones entran antes */
