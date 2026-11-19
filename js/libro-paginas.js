@@ -148,10 +148,10 @@
       ns=clamp(ns,0,maxS);if(ns===s)return;
       const from=s,fwd=ns>from;s=ns;cur=firstOf(s);peeked=null;
       const ks=[];for(let k=Math.min(from,ns);k<Math.max(from,ns);k++)ks.push(k);if(!fwd)ks.reverse();
-      const step=reduce?0:Math.min(110,900/ks.length),base=ks.length>1?820:DUR;let end=0;
+      const n=ks.length,step=reduce||n<2?0:Math.min(110,560/(n-1)),base=n>2?600:n>1?820:DUR;let end=0;
       ks.forEach((k,i)=>{
         const sh=sheets[k];sh.style.removeProperty('--sh');sh.style.zIndex=300+(fwd?maxS-k:k);
-        const d=flip(sh,rest(k),base,i*step),tot=i*step+d;end=Math.max(end,tot);
+        const d=flip(sh,rest(k),n>2?base*(1+.4*Math.pow(i/(n-1),2)):base,i*step),tot=i*step+d;end=Math.max(end,tot);
         sh.style.setProperty('--vd',d+'ms');sh.style.setProperty('--vl',(i*step)+'ms');sh.classList.add('vol');
         setTimeout(()=>{if(sh._an)return;sh.classList.remove('vol');sh.style.zIndex=zFinal(k)},tot+60);
       });
