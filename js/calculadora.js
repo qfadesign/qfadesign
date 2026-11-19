@@ -19,6 +19,9 @@
 
   var CATEGORIAS = [
     { id: "marca", name: "Identidad de marca", items: [
+      { id: "vectorizacion-logo", name: "Vectorización de logo / marca", desc: "Rehago tu logo desde una imagen, foto o boceto en vectores limpios, para imprimir o ampliar sin perder calidad. Entrego en AI, SVG, PDF y PNG, en color y en blanco y negro.", unit: "por logo", baseArs: 55000, qty: true },
+      { id: "variantes-logo", name: "Variantes de logo", desc: "Versión horizontal, vertical, isotipo y monocromática, con fondo claro y oscuro, para que tu marca funcione en cualquier lugar.", unit: "por proyecto", baseArs: 90000 },
+      { id: "guia-uso-marca", name: "Mini guía de uso de marca", desc: "Un documento corto con tus colores, tipografías, tamaños mínimos y usos correctos e incorrectos del logo, sobre una identidad que ya existe.", unit: "por proyecto", baseArs: 120000 },
       { id: "branding-emprendedores", name: "Branding para emprendedores", desc: "Logotipo, paleta y tipografías, patrones básicos, mini guía de marca y archivos editables. Para ideas que están arrancando y quieren verse profesionales desde el primer día.", unit: "por proyecto", baseArs: 460000 },
       { id: "rediseno-imagen", name: "Rediseño de imagen", desc: "Logo e isotipo, manual de identidad, análisis de competencia y aplicaciones listas para redes. Para marcas que crecieron y ya no se ven reflejadas en su imagen.", unit: "por proyecto", baseArs: 610000 },
       { id: "identidad-completa", name: "Identidad visual completa", desc: "Rediseño de imagen, aplicaciones de marca, plantillas para redes y usos correctos e incorrectos. Para marcas consolidadas que quieren ser coherentes en todos lados.", unit: "por proyecto", baseArs: 870000 }
@@ -27,7 +30,15 @@
       { id: "kit-redes", name: "Kit de plantillas para redes", desc: "Plantillas editables para feed, historias y destacadas, para que publiques con coherencia.", unit: "por proyecto", baseArs: 250000 },
       { id: "pieza-unica", name: "Pieza gráfica única", desc: "Flyer, invitación, placa u otra pieza suelta, pensada para comunicar de verdad.", unit: "por pieza", baseArs: 34000, qty: true },
       { id: "pitch-deck", name: "Presentación / pitch deck", desc: "Hasta 15 diapositivas diseñadas a medida para contar tu idea con claridad.", unit: "por proyecto", baseArs: 230000 },
-      { id: "papeleria", name: "Papelería institucional", desc: "Tarjetas, membrete y firma de email, sobre una identidad que ya existe.", unit: "por proyecto", baseArs: 150000 }
+      { id: "papeleria", name: "Papelería institucional", desc: "Tarjetas, membrete y firma de email, sobre una identidad que ya existe.", unit: "por proyecto", baseArs: 150000 },
+      { id: "etiqueta-packaging", name: "Etiqueta o packaging", desc: "Diseño de etiqueta, caja o bolsa para tu producto, con el archivo listo para pasar a imprenta.", unit: "por proyecto", baseArs: 140000 },
+      { id: "carta-menu", name: "Carta o menú", desc: "Menú para gastronomía, ordenado y fácil de leer, en versión para imprimir y para compartir en pantalla.", unit: "por proyecto", baseArs: 120000 },
+      { id: "folleto", name: "Folleto o tríptico", desc: "Pieza impresa de varias caras para presentar tu propuesta, con la información bien jerarquizada.", unit: "por proyecto", baseArs: 110000 },
+      { id: "infografia", name: "Infografía", desc: "Datos y procesos explicados con diseño claro, para redes, presentaciones o impresión.", unit: "por pieza", baseArs: 80000, qty: true }
+    ] },
+    { id: "motion", name: "Motion y video", items: [
+      { id: "animacion-logo", name: "Animación de logo", desc: "Tu logo en movimiento, de unos segundos, para intros de video, redes y firmas. Entrego en MP4 y con fondo transparente.", unit: "por logo", baseArs: 110000 },
+      { id: "reel-corto", name: "Edición de video corto", desc: "Edición de un reel o video vertical con ritmo, texto en pantalla y música, a partir de tu material.", unit: "por video", baseArs: 95000, qty: true }
     ] },
     { id: "cm", name: "Community management", items: [
       { id: "cm-basica", name: "Gestión básica de redes", desc: "8 piezas al mes, calendario de contenido y subida a redes.", unit: "por mes", baseArs: 340000, qty: true },
@@ -46,6 +57,8 @@
     ] },
     { id: "extras", name: "Extras", items: [
       { id: "consultoria", name: "Consultoría por hora", desc: "Revisión, feedback o asesoría puntual sobre tu marca o tu proyecto.", unit: "por hora", baseArs: 54000, qty: true },
+      { id: "adaptacion-formatos", name: "Adaptación a otros formatos", desc: "Llevo una pieza ya diseñada a otro tamaño o formato: de feed a historia, de afiche a banner, etc.", unit: "por pieza", baseArs: 14000, qty: true },
+      { id: "archivos-imprenta", name: "Preparación de archivos para imprenta", desc: "Reviso y dejo tu archivo listo para imprimir: sangrado, modo de color, resolución y tipografías.", unit: "por archivo", baseArs: 20000, qty: true },
       { id: "revision-extra", name: "Ronda de revisión extra", desc: "Una tanda adicional de cambios fuera de las incluidas.", unit: "por unidad", baseArs: 38000, qty: true }
     ] }
   ];
