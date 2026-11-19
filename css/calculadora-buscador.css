@@ -1,0 +1,37 @@
+/* qfadesign — buscador de la calculadora de precios ("Elegí lo que necesitás").
+   Sin caja: una línea fina (como el resto de Herramientas), ideas rápidas y el aviso de resultados.
+   Ojo: en esta web --v-fondo, --v-luz y --v-borde valen "none/transparent" (botones.css), por eso acá no se usan. */
+.cp-bus{margin:0 0 clamp(14px,1.6vw,20px)}
+.cp-bus-in{display:flex;align-items:center;gap:12px;padding:0 2px;min-height:56px;border:0;border-bottom:1px solid rgba(255,255,255,.45);border-radius:0;background:none;color:#fff;}
+.cp-bus-in:focus-within,.cp-bus-in *:focus,.cp-bus-in *:focus-visible{outline:none!important;box-shadow:none!important}
+.cp-bus-lupa{flex:none;opacity:.85}
+.cp-bus input{all:unset;box-sizing:border-box;flex:1;min-width:0;padding:14px 0;font-family:var(--f);font-size:17px;line-height:1.2;color:#fff;cursor:text;-webkit-tap-highlight-color:transparent}
+.cp-bus input,.cp-bus input:focus,.cp-bus input:focus-visible,.cp-bus input:-webkit-autofill{outline:none!important;box-shadow:none!important;background:transparent!important;-webkit-box-shadow:0 0 0 100px transparent inset!important;-webkit-text-fill-color:#fff;caret-color:#fff}
+.cp-bus input::placeholder{color:rgba(255,255,255,.72);opacity:1}
+.cp-bus input::-webkit-search-cancel-button,.cp-bus input::-webkit-search-decoration{display:none;-webkit-appearance:none}
+.cp-bus-x{all:unset;box-sizing:border-box;flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.45);color:#fff;cursor:pointer;transition:background-color .2s,color .2s}
+.cp-bus-x[hidden]{display:none}
+.cp-bus-x:focus,.cp-bus-x:focus-visible{outline:none}
+.cp-bus-sug{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.cp-bus-chip{all:unset;box-sizing:border-box;cursor:pointer;padding:7px 15px 8px;border-radius:99px;border:1px solid rgba(255,255,255,.4);font-family:var(--fh);font-weight:900;font-style:italic;font-size:14px;line-height:1.1;color:#fff;transition:background-color .2s,color .2s,transform .2s}
+.cp-bus-chip:focus,.cp-bus-chip:focus-visible{outline:none}
+.cp-bus-n{margin:12px 2px 0;min-height:1.3em;font-size:13.5px;line-height:1.35;color:rgba(255,255,255,.8)}
+.cp-bus-vacio{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:0;padding:20px 2px;border-top:1px solid rgba(255,255,255,.3);font-size:15px;line-height:1.4}
+.cp-bus-vacio[hidden]{display:none}
+.cp-bus-ver{all:unset;box-sizing:border-box;cursor:pointer;font-family:var(--fh);font-weight:900;font-style:italic;text-decoration:underline;text-underline-offset:3px}
+.cp-bus-ver:focus,.cp-bus-ver:focus-visible{outline:none}
+.cp-bus-off{display:none!important}
+@media(max-width:560px){
+ .cp-bus-in{min-height:52px}
+ .cp-bus-sug{flex-wrap:nowrap;overflow-x:auto;margin-right:calc(-1 * clamp(16px,4vw,24px));padding-right:16px;scrollbar-width:none}
+ .cp-bus-sug::-webkit-scrollbar{display:none}
+ .cp-bus-chip{flex:none}
+}
+@media(prefers-reduced-motion:reduce){.cp-bus-chip,.cp-bus-in,.cp-bus-x{transition:none}}
+/* botón flotante: aparece al scrollear por los servicios con una búsqueda activa */
+.cp-bus-flota{position:sticky;top:92px;z-index:4;height:0;display:flex;justify-content:center;pointer-events:none}
+.cp-bus-flota-b{all:unset;box-sizing:border-box;pointer-events:auto;cursor:pointer;display:inline-flex;align-items:center;gap:8px;padding:10px 18px 11px;border-radius:99px;background:var(--tc,#25d18e);color:#04130c;font-family:var(--fh);font-weight:900;font-style:italic;font-size:14px;line-height:1.1;box-shadow:0 10px 24px rgba(0,0,0,.35);-webkit-tap-highlight-color:transparent;animation:cpFlota .25s cubic-bezier(.2,.8,.2,1)}
+.cp-bus-flota-b[hidden]{display:none}
+@keyframes cpFlota{from{opacity:0;translate:0 -8px}to{opacity:1;translate:0 0}}
+@media(max-width:860px){.cp-bus-flota{top:80px}}
+@media(prefers-reduced-motion:reduce){.cp-bus-flota-b{animation:none}}

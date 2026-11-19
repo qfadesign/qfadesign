@@ -68,6 +68,10 @@
   var filas = [];      // { item, row, chk, qEl, nEl, ars, usd }
   var cats = [];       // { cat, count }
   var clienteBtns = [];
+  var urgBox = null;   // bloque "Entrega urgente"
+  var terminos = [];   // palabras de la búsqueda activa (vacío = sin filtrar)
+  var flotar = null;   // muestra/oculta el botón flotante "Borrar búsqueda"
+  var guardado = null; // categorías abiertas antes de buscar, para restaurarlas al borrar
 
   function $(id) { return document.getElementById(id); }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
@@ -174,7 +178,7 @@
       bd.appendChild(inner);
       box.appendChild(bd);
       wrap.appendChild(box);
-      cats.push({ cat: cat, count: btn.querySelector(".cp-count") });
+      cats.push({ cat: cat, count: btn.querySelector(".cp-count"), box: box, btn: btn, n: 0 });
     });
 
     var urg = el("div", "cp-cat cp-urg");
@@ -188,6 +192,170 @@
       urg.querySelector("input").click();
     });
     wrap.appendChild(urg);
+    urgBox = urg;
+  }
+
+  /* ---- Buscador: filtra servicios por nombre, descripción y palabras de uso común ---- */
+  var SUGERENCIAS = ["Logo", "Redes", "Flyer", "Video", "Web", "Menú", "Imprenta"];
+  var PALABRAS = {
+    "vectorizacion-logo": "vectorizar vector redibujar isologo imagotipo logotipo marca ilustrator",
+    "variantes-logo": "versiones horizontal vertical isotipo monocromatico blanco negro fondo oscuro",
+    "guia-uso-marca": "manual brandbook colores tipografias paleta normas",
+    "branding-emprendedores": "branding marca nueva emprender emprendimiento identidad logotipo paleta",
+    "rediseno-imagen": "rebranding renovar actualizar marca logo manual competencia",
+    "identidad-completa": "identidad visual branding manual aplicaciones coherencia",
+    "kit-redes": "instagram feed historias stories destacadas plantillas templates canva posteos",
+    "pieza-unica": "flyer afiche poster invitacion placa volante gacetilla cartel banner post",
+    "pitch-deck": "presentacion powerpoint ppt slides diapositivas keynote inversores",
+    "papeleria": "tarjeta tarjetas personales membrete firma mail email hoja carta sobre",
+    "etiqueta-packaging": "packaging envase caja bolsa etiquetas producto empaque rotulo frasco",
+    "carta-menu": "menu restaurante bar cafe gastronomia carta digital",
+    "folleto": "triptico diptico brochure catalogo flyer impreso",
+    "infografia": "datos grafico explicar proceso esquema diagrama",
+    "animacion-logo": "motion logo animado animar intro after effects video",
+    "reel-corto": "video reels tiktok shorts edicion editar montaje vertical",
+    "cm-basica": "community manager redes sociales instagram tiktok facebook contenido posteos mensual",
+    "cm-estandar": "community manager redes sociales instagram tiktok facebook contenido posteos mensual",
+    "cm-intensiva": "community manager redes sociales instagram tiktok facebook contenido posteos historias mensual",
+    "planificacion": "calendario editorial copy contenido estrategia ideas redes",
+    "landing": "pagina web una pagina wix framer webflow sin codigo",
+    "ecommerce": "tienda online tiendanube tienda nube tiendup empretienda vender comercio electronico",
+    "landing-codigo": "pagina web html css javascript programada a mano",
+    "web-codigo": "sitio web institucional paginas programacion a medida desarrollo",
+    "mantenimiento-web": "cambios actualizar soporte abono mensual",
+    "consultoria": "asesoria asesoramiento feedback revision consejo reunion mentoria",
+    "adaptacion-formatos": "redimensionar tamano formato feed historia banner afiche adaptar",
+    "archivos-imprenta": "imprimir impresion sangrado cmyk pdf imprenta resolucion",
+    "revision-extra": "cambios correcciones ajustes ronda"
+  };
+  var PALABRAS_URGENTE = "urgente urgencia rapido apuro express entrega plazo";
+
+  function norm(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+  function palabras(q) {
+    return norm(q).split(/[^a-z0-9]+/).filter(function (t) { return t.length > 1; }).map(function (t) {
+      return t.length > 3 && t.charAt(t.length - 1) === "s" ? t.slice(0, -1) : t; // "logos" encuentra "logo"
+    });
+  }
+
+  function buscar(q) {
+    var antes = terminos.length > 0;
+    terminos = palabras(q);
+    var activa = terminos.length > 0, total = 0, fuera = 0;
+    if (activa && !antes) guardado = cats.map(function (c) { return c.btn.getAttribute("aria-expanded") === "true"; });
+
+    filas.forEach(function (f) {
+      if (!f.pajar) f.pajar = norm(f.item.name + " " + f.item.desc + " " + (PALABRAS[f.item.id] || ""));
+      var cat = cats.filter(function (c) { return c.cat.items.indexOf(f.item) > -1; })[0];
+      var pj = cat ? f.pajar + " " + norm(cat.cat.name) : f.pajar;
+      var ok = !activa || terminos.every(function (t) { return pj.indexOf(t) > -1; });
+      f.row.classList.toggle("cp-bus-off", !ok);
+      f.ok = ok;
+      if (ok) total++; else if (estado.sel[f.item.id]) fuera++;
+    });
+
+    cats.forEach(function (c, i) {
+      c.n = c.cat.items.filter(function (it) { return filas.filter(function (f) { return f.item === it; })[0].ok; }).length;
+      c.box.classList.toggle("cp-bus-off", activa && c.n === 0);
+      if (!activa && !antes) return; // no había búsqueda: no se toca lo que la persona abrió
+      var abierta = activa ? c.n > 0 : (guardado ? guardado[i] : false);
+      c.box.classList.toggle("open", abierta);
+      c.btn.setAttribute("aria-expanded", abierta ? "true" : "false");
+    });
+    if (!activa) guardado = null;
+
+    if (urgBox) {
+      var pu = norm(PALABRAS_URGENTE);
+      urgBox.classList.toggle("cp-bus-off", activa && !terminos.every(function (t) { return pu.indexOf(t) > -1; }));
+    }
+
+    var n = $("cpBusN"), v = $("cpBusVacio");
+    var urgVisible = urgBox && !urgBox.classList.contains("cp-bus-off") && activa;
+    var hay = total > 0 || urgVisible;
+    if (v) { v.hidden = !activa || hay; if (activa && !hay) v.querySelector("span").textContent = "No encontré servicios para “" + q.trim() + "”. Probá con otra palabra, por ejemplo logo, flyer, reel o web."; }
+    if (n) {
+      var txt = "";
+      if (activa && hay && !total) txt = "La entrega urgente es un adicional: se suma al total de tu presupuesto.";
+      else if (activa && hay) {
+        txt = total + (total === 1 ? " servicio encontrado" : " servicios encontrados");
+        if (fuera) txt += " · " + fuera + (fuera === 1 ? " elegido queda fuera" : " elegidos quedan fuera") + " de esta búsqueda, pero siguen en tu presupuesto";
+      } else if (activa) txt = "Sin resultados";
+      n.textContent = txt;
+    }
+    actualizar();
+    if (flotar) flotar();
+  }
+
+  function armarBuscador() {
+    var wrap = $("cpCats");
+    var bus = el("div", "cp-bus");
+    bus.setAttribute("role", "search");
+    bus.innerHTML =
+      '<label class="sr-only" for="cpBus">Buscar un servicio</label>' +
+      '<div class="cp-bus-in">' +
+        '<svg class="cp-bus-lupa" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>' +
+        '<input id="cpBus" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search" maxlength="60" placeholder="Buscá lo que necesitás: logo, flyer, reel, web…" aria-controls="cpCats">' +
+        '<button class="cp-bus-x" type="button" id="cpBusX" aria-label="Borrar búsqueda" hidden><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg></button>' +
+      '</div>' +
+      '<div class="cp-bus-sug" id="cpBusSug" role="group" aria-label="Ideas para buscar"></div>' +
+      '<p class="cp-bus-n" id="cpBusN" role="status" aria-live="polite"></p>';
+    wrap.insertBefore(bus, wrap.firstChild);
+
+    var inp = $("cpBus"), x = $("cpBusX"), sug = $("cpBusSug"), chips = [];
+    SUGERENCIAS.forEach(function (t) {
+      var b = el("button", "cp-bus-chip", t);
+      b.type = "button";
+      b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", function () {
+        var ya = norm(inp.value) === norm(t);
+        inp.value = ya ? "" : t;
+        sync();
+        inp.focus({ preventScroll: true });
+      });
+      chips.push({ b: b, t: t });
+      sug.appendChild(b);
+    });
+
+    var vacio = el("p", "cp-bus-vacio");
+    vacio.id = "cpBusVacio";
+    vacio.hidden = true;
+    vacio.appendChild(el("span"));
+    var ver = el("button", "cp-bus-ver", "Ver todos los servicios");
+    ver.type = "button";
+    ver.addEventListener("click", function () { inp.value = ""; sync(); inp.focus({ preventScroll: true }); });
+    vacio.appendChild(ver);
+    bus.parentNode.insertBefore(vacio, bus.nextSibling);
+
+    /* Al scrollear por los servicios con una búsqueda activa, la barra queda arriba y fuera de vista:
+       aparece un botón flotante para borrarla sin tener que volver. */
+    var flota = el("div", "cp-bus-flota");
+    var fb = el("button", "cp-bus-flota-b",
+      '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg><span>Borrar búsqueda</span>');
+    fb.type = "button";
+    fb.hidden = true;
+    flota.appendChild(fb);
+    bus.parentNode.insertBefore(flota, bus.nextSibling);
+    var barraVisible = true;
+    flotar = function () { fb.hidden = !(terminos.length > 0 && !barraVisible); };
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (es) { barraVisible = es[es.length - 1].isIntersecting; flotar(); }).observe(bus.querySelector(".cp-bus-in"));
+    }
+    fb.addEventListener("click", function () {
+      inp.value = ""; sync();
+      var quieto = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (bus.scrollIntoView) bus.scrollIntoView({ block: "center", behavior: quieto ? "auto" : "smooth" });
+    });
+
+    function sync() {
+      x.hidden = !inp.value;
+      chips.forEach(function (c) { c.b.setAttribute("aria-pressed", norm(inp.value.trim()) === norm(c.t) ? "true" : "false"); });
+      buscar(inp.value);
+    }
+    inp.addEventListener("input", sync);
+    inp.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && inp.value) { e.preventDefault(); inp.value = ""; sync(); }
+      else if (e.key === "Enter") e.preventDefault();
+    });
+    x.addEventListener("click", function () { inp.value = ""; sync(); inp.focus({ preventScroll: true }); });
   }
 
   /* ---- Actualizar pantalla ---- */
@@ -210,7 +378,7 @@
 
     cats.forEach(function (c) {
       var n = c.cat.items.filter(function (it) { return estado.sel[it.id]; }).length;
-      c.count.textContent = n ? n + (n > 1 ? " elegidos" : " elegido") : c.cat.items.length + " servicios";
+      c.count.textContent = terminos.length ? c.n + (c.n === 1 ? " resultado" : " resultados") : n ? n + (n > 1 ? " elegidos" : " elegido") : c.cat.items.length + " servicios";
     });
 
     resumen();
@@ -368,6 +536,7 @@
 
   armarClientes();
   armarCategorias();
+  armarBuscador();
   armarPdf();
   armarBorrar();
   armarFuentes();
