@@ -1,0 +1,47 @@
+/* ============================================================
+   HERO (inicio): luz azul en los botones al pasar el mouse.
+   · Una luz azul sigue al cursor por dentro del botón y el borde se enciende cerca del cursor (js/hero-botones-luz.js pasa la posición en --lx / --ly).
+   · Alrededor sale un resplandor azul suave. Reemplaza el barrido blanco de siempre.
+   · Con teclado (Tab) y al tocar en celu la luz queda centrada. Con "reducir movimiento" no sigue al cursor.
+   Va al final de todos los estilos a propósito (por eso usa !important donde botones.css pisa). Para volver atrás: sacá este <link> y el <script src="js/hero-botones-luz.js"> de index.html.
+   ============================================================ */
+html body .hero .intro .acciones .btn{
+ --luz:90,170,255;
+ transition:transform .18s ease-out,scale .35s cubic-bezier(.34,1.56,.64,1),color .25s,background-color .3s,box-shadow .45s ease,border-color .35s ease,text-shadow .35s ease!important}
+
+/* la luz que sigue al cursor */
+html body .hero .intro .acciones .btn::before{
+ content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;opacity:0;
+ background:radial-gradient(150px circle at var(--lx,50%) var(--ly,50%),rgba(var(--luz),.95) 0,rgba(11,117,244,.6) 38%,rgba(11,117,244,0) 78%);
+ transition:opacity .4s ease}
+
+/* el borde que se enciende cerca del cursor (antes era el barrido blanco) */
+html body .hero .intro .acciones .btn::after,
+html body .hero .intro .acciones .btn:hover::after,
+html body .hero .intro .acciones .btn:focus-visible::after,
+html body .hero .intro .acciones .btn:not(.claro)::after,
+html body .hero .intro .acciones .btn:not(.claro):hover::after,
+html body .hero .intro .acciones .btn.claro::after,
+html body .hero .intro .acciones .btn.claro:hover::after{
+ content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;padding:1.5px;
+ translate:0 0!important;animation:none!important;opacity:0;transition:opacity .4s ease!important;
+ background:radial-gradient(110px circle at var(--lx,50%) var(--ly,50%),#cfe6ff 0,rgba(var(--luz),.85) 40%,rgba(var(--luz),0) 78%)!important;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+ mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+
+/* encendido: mouse encima, foco con teclado o dedo apoyado */
+html body .hero .intro .acciones .btn:focus-visible,
+html body .hero .intro .acciones .btn:active{
+ border-color:rgba(130,190,255,.6)!important;text-shadow:0 0 16px rgba(var(--luz),.85)!important;
+ box-shadow:0 0 0 1px rgba(var(--luz),.25),0 0 22px rgba(11,117,244,.55),0 10px 56px rgba(11,117,244,.38)!important}
+html body .hero .intro .acciones .btn:focus-visible::before,html body .hero .intro .acciones .btn:active::before,
+html body .hero .intro .acciones .btn:focus-visible::after,html body .hero .intro .acciones .btn:active::after{opacity:1!important}
+@media(hover:hover){
+ html body .hero .intro .acciones .btn:hover{
+  border-color:rgba(130,190,255,.6)!important;text-shadow:0 0 16px rgba(var(--luz),.85)!important;
+  box-shadow:0 0 0 1px rgba(var(--luz),.25),0 0 22px rgba(11,117,244,.55),0 10px 56px rgba(11,117,244,.38)!important}
+ html body .hero .intro .acciones .btn:hover::before,html body .hero .intro .acciones .btn:hover::after{opacity:1!important}
+}
+@media(prefers-reduced-motion:reduce){
+ html body .hero .intro .acciones .btn,html body .hero .intro .acciones .btn::before,html body .hero .intro .acciones .btn::after{transition-duration:.01s!important}
+}
