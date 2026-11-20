@@ -3,6 +3,8 @@
    Abajo: para quien necesita ayuda para contar lo que necesita, un botón que lleva a la página de Contacto (que lo guía
    con opciones y preguntas) y, después, otras formas rápidas (mail, Instagram, copiar mail) (con ctrl/cmd + clic o clic del medio
    en "Contacto" abre esa página directo). El brief sigue estando en Herramientas.
+   Además de la barra, abre la misma ventana cualquier botón con el atributo data-abrir-contacto (los de "Hablemos de tu proyecto"
+   de Inicio, Acerca y las páginas de proyecto); conservan su href a /contacto por si no hay JS o se abre con ctrl/cmd + clic.
    En la propia página de Contacto no hace nada (ya estás ahí). */
 (function(){
   'use strict';
@@ -70,7 +72,8 @@
     if(previo&&previo.focus)previo.focus();
   }
 
-  links.forEach(function(a){
+  var disparadores=links.concat([].slice.call(document.querySelectorAll('[data-abrir-contacto]')));
+  disparadores.forEach(function(a){
     a.addEventListener('click',function(e){
       // ctrl/cmd/shift/alt o clic del medio: se comporta como un link normal (abre la página)
       if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
