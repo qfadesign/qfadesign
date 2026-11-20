@@ -113,3 +113,8 @@ body .pf2+.mas{margin:8px 0 clamp(16px,3svh,32px)}
 /* aire: Jueguitos · Recursos · Herramientas no quedan pegados a los bordes de la pantalla (arriba/abajo lo da js/home-secciones.js con --exs; acá los costados) */
 .ex-on .ex-p{scale:var(--exs,1)}
 @media(max-width:900px){.ex-on .ex-p{inset:0 clamp(16px,4.5vw,24px)}.hx-gm{margin-left:-20px}}
+
+/* FIX botón "Ver todo el portfolio" (home): el resplandor (::before) de cada panel de Herramientas / Jueguitos / Recursos sobresale 12% hacia arriba y,
+   como el panel está posicionado, quedaba POR ENCIMA del botón y se comía los clics. Ahora el resplandor no recibe clics y el botón queda por encima. */
+.ex-p::before{pointer-events:none}
+body .pf2+.mas{position:relative;z-index:5}
