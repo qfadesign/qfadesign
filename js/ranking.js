@@ -271,6 +271,21 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarPuerta);
   else iniciarPuerta();
 
+  /* selector "Del día | De la semana" (Concepto del día) */
+  function selectorDiaSemana(actual, alElegir){
+    var g = el('div', 'rank-vista');
+    g.setAttribute('role', 'group');
+    g.setAttribute('aria-label', 'Qué ranking ver');
+    [['dia', 'Del día'], ['semana', 'De la semana']].forEach(function(o){
+      var b = el('button', 'rank-vista-b', o[1]);
+      b.type = 'button';
+      b.setAttribute('aria-pressed', o[0] === actual ? 'true' : 'false');
+      b.addEventListener('click', function(){ if (o[0] !== actual) alElegir(o[0]); });
+      g.appendChild(b);
+    });
+    return g;
+  }
+
   function montar(ref, d){
     if (!activo() || !ref || !ref.parentNode) return;
     var viejo = ref.parentNode.querySelector('.rank-box');
@@ -281,13 +296,30 @@
     ref.parentNode.insertBefore(box, ref);
 
     var cabecera = el('div', 'rank-cab');
-    cabecera.appendChild(el('span', 'rank-tag', d.semanal ? 'Ranking de la semana' : 'Ranking'));
+    var tagEl = el('span', 'rank-tag', d.semanal ? 'Ranking de la semana' : 'Ranking');
+    cabecera.appendChild(tagEl);
     cabecera.appendChild(el('strong', 'rank-tit', d.titulo));
     var cuerpo = el('div', 'rank-cuerpo');
     box.appendChild(cabecera);
     box.appendChild(cuerpo);
 
     function vivo(){ return box.isConnected; }
+
+    /* Concepto del día: con alternar:true se elige entre el ranking del día y el de la semana (arranca en el semanal) */
+    var vista = 'semana';
+    function semanalAhora(){ return !!d.semanal && !(d.alternar && vista === 'dia'); }
+    function rotular(){ tagEl.textContent = semanalAhora() ? 'Ranking de la semana' : (d.alternar ? 'Ranking del día' : 'Ranking'); }
+    function pedirTop(lim){
+      return semanalAhora()
+        ? rpc('top_semanal', { p_juego: d.juego, p_atras: 0, p_limite: lim })
+        : rpc('top_ranking', { p_juego: d.juego, p_modo: d.modo, p_limite: lim });
+    }
+    function vacioTxt(){
+      return semanalAhora() ? 'Todavía no hay puntajes esta semana. Sé el primero.' : (d.alternar ? 'Todavía no hay puntajes hoy. Sé el primero.' : 'Todavía no hay puntajes. Sé el primero.');
+    }
+    function selectorVista(alCambiar){
+      return selectorDiaSemana(vista, function(v){ vista = v; rotular(); alCambiar(); });
+    }
 
     /* recuerda en este navegador que el puntaje de esta partida ya se guardó, para no volver a preguntar al entrar de nuevo */
     var LSE = 'qfa-rank-enviado';
@@ -353,7 +385,8 @@
     }
 
     function mostrarTop(yo, mejor, pinNuevo, extra){
-      (d.semanal ? rpc('top_semanal', { p_juego: d.juego, p_atras: 0, p_limite: 10 }) : rpc('top_ranking', { p_juego: d.juego, p_modo: d.modo, p_limite: 10 })).then(function(filas){
+      rotular();
+      pedirTop(10).then(function(filas){
         if (!vivo()) return;
         cuerpo.textContent = '';
         if (yo) {
@@ -366,8 +399,9 @@
           if (yo.pin && pinNuevo) cuerpo.appendChild(cajaDatos(yo, pinNuevo));
           else if (yo.pin) cuerpo.appendChild(el('p', 'rank-msg', 'Para recuperar tu nombre en otro dispositivo necesitás tu apodo, tu código de identificación (#' + yo.tag + ') y tu contraseña de 4 dígitos.'));
         }
+        if (d.alternar && d.semanal) cuerpo.appendChild(selectorVista(function(){ mostrarTop(yo, mejor, pinNuevo, extra); }));
         if (!filas || !filas.length) {
-          cuerpo.appendChild(estado(d.semanal ? 'Todavía no hay puntajes esta semana. Sé el primero.' : 'Todavía no hay puntajes. Sé el primero.'));
+          cuerpo.appendChild(estado(vacioTxt()));
         } else {
           var ol = el('ol', 'rank-lista');
           filas.forEach(function(f){
@@ -444,14 +478,15 @@
     /* el ranking se ve siempre al final de la partida: también mientras todavía no se guardó el puntaje (formulario o pregunta previa) */
     function listaAbajo(){
       var cont = el('div', 'rank-previa');
-      cont.appendChild(el('p', 'rank-previa-t', d.semanal ? 'Así va el ranking de la semana' : 'Así va el ranking'));
+      cont.appendChild(el('p', 'rank-previa-t', semanalAhora() ? 'Así va el ranking de la semana' : (d.alternar ? 'Así va el ranking del día' : 'Así va el ranking')));
+      if (d.alternar && d.semanal) cont.appendChild(selectorVista(function(){ cont.remove(); listaAbajo(); }));
       var info = estado('Cargando el ranking…');
       cont.appendChild(info);
       cuerpo.appendChild(cont);
-      (d.semanal ? rpc('top_semanal', { p_juego: d.juego, p_atras: 0, p_limite: 10 }) : rpc('top_ranking', { p_juego: d.juego, p_modo: d.modo, p_limite: 10 })).then(function(filas){
+      pedirTop(10).then(function(filas){
         if (!cont.isConnected) return;
         info.remove();
-        if (!filas || !filas.length) { cont.appendChild(estado(d.semanal ? 'Todavía no hay puntajes esta semana. Sé el primero.' : 'Todavía no hay puntajes. Sé el primero.')); return; }
+        if (!filas || !filas.length) { cont.appendChild(estado(vacioTxt())); return; }
         var ol = el('ol', 'rank-lista');
         filas.forEach(function(f){
           var li = el('li');
@@ -675,6 +710,8 @@
     var juego = box.getAttribute('data-juego');
     var modo = box.getAttribute('data-modo') || 'Estándar';
     var semanal = box.hasAttribute('data-semanal');
+    var alternar = semanal && box.hasAttribute('data-alternar'); /* permite elegir entre el ranking del día y el semanal */
+    var vista = 'semana';
     var wrap = box.closest ? box.closest('.inicio') : null;
     if (!activo()) { box.remove(); if (wrap) wrap.classList.add('sin-rank'); return; }
     var yo = leer();
@@ -682,18 +719,28 @@
     function cargar(){
       box.textContent = '';
       box.classList.remove('abierto');
-      var etiqueta = el('span', 'rank-tag', semanal ? (atras ? 'Semana pasada' : 'Los 3 mejores de la semana') : 'Los 3 mejores');
+      var hoyF = box.getAttribute('data-modo') || (window.QFAConcepto && QFAConcepto.hoy ? QFAConcepto.hoy() : null);
+      var dia = alternar && vista === 'dia' && !!hoyF;
+      function rotulo(abierto){
+        if (abierto) return 'Ranking completo';
+        if (dia) return 'Los 3 mejores de hoy';
+        return semanal ? (atras ? 'Semana pasada' : 'Los 3 mejores de la semana') : 'Los 3 mejores';
+      }
+      var etiqueta = el('span', 'rank-tag', rotulo(false));
       box.appendChild(etiqueta);
+      if (alternar) box.appendChild(selectorDiaSemana(vista, function(v){ vista = v; atras = 0; cargar(); }));
       var cuerpo = el('div', 'rank-podio-cuerpo');
       box.appendChild(cuerpo);
       cuerpo.appendChild(el('p', 'rank-msg', 'Cargando…'));
-      var pedido = semanal
-        ? rpc('top_semanal', { p_juego: juego, p_atras: atras, p_limite: 50 })
-        : rpc('top_ranking', { p_juego: juego, p_modo: modo, p_limite: 50 });
+      var pedido = dia
+        ? rpc('top_ranking', { p_juego: juego, p_modo: hoyF, p_limite: 50 })
+        : semanal
+          ? rpc('top_semanal', { p_juego: juego, p_atras: atras, p_limite: 50 })
+          : rpc('top_ranking', { p_juego: juego, p_modo: modo, p_limite: 50 });
       pedido.then(function(filas){
         cuerpo.textContent = '';
         if (!filas || !filas.length) {
-          cuerpo.appendChild(el('p', 'rank-msg', semanal && atras ? 'La semana pasada no hubo puntajes.' : 'Todavía no hay puntajes. Podés ser el primero.'));
+          cuerpo.appendChild(el('p', 'rank-msg', dia ? 'Hoy todavía no hay puntajes. Podés ser el primero.' : (semanal && atras ? 'La semana pasada no hubo puntajes.' : 'Todavía no hay puntajes. Podés ser el primero.')));
         } else {
           var ol = el('ol', 'rank-podio');
           ol.id = 'rank-lista-' + juego;
@@ -715,12 +762,12 @@
               var abierto = box.classList.toggle('abierto');
               btn.setAttribute('aria-expanded', abierto ? 'true' : 'false');
               btn.textContent = abierto ? 'Ver solo el top 3 ↑' : 'Ver ranking completo ↓';
-              etiqueta.textContent = abierto ? 'Ranking completo' : (semanal ? (atras ? 'Semana pasada' : 'Los 3 mejores de la semana') : 'Los 3 mejores');
+              etiqueta.textContent = rotulo(abierto);
             });
             cuerpo.appendChild(btn);
           }
         }
-        if (semanal) {
+        if (semanal && !dia) {
           var cambio = el('button', 'rank-link rank-ver', atras ? 'Volver a esta semana' : 'Ver la semana pasada');
           cambio.type = 'button';
           cambio.addEventListener('click', function(){ atras = atras ? 0 : 1; cargar(); });

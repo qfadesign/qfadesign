@@ -243,3 +243,12 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .rank-quien-nota[hidden]{display:none}
 .rank-quien-in{margin-top:4px}
 .primary:disabled{opacity:.4;cursor:not-allowed;filter:saturate(.6)}
+
+/* selector "Del día | De la semana" del ranking de Concepto del día */
+.rank-vista{display:flex;width:fit-content;max-width:100%;gap:4px;margin:12px 0 4px;padding:3px;border-radius:99px;border:1px solid rgba(255,255,255,.3)}
+.rank-vista-b{all:unset;box-sizing:border-box;cursor:pointer;padding:7px 15px 8px;border-radius:99px;font-family:var(--fh);font-weight:900;font-style:italic;font-size:13px;line-height:1.1;color:#fff;transition:background-color .2s,color .2s;-webkit-tap-highlight-color:transparent}
+.rank-vista-b:hover{background:rgba(255,255,255,.14)}
+.rank-vista-b[aria-pressed=true]{background:#f9fbf2;color:#0a5cc0;cursor:default}
+.rank-vista-b:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.rank-box .rank-vista{margin:0 0 12px}
+@media(prefers-reduced-motion:reduce){.rank-vista-b{transition:none}}

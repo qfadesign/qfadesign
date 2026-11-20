@@ -180,7 +180,7 @@ body:has(#startScreen[hidden]) img[src*="signo"]{display:none!important}
 <div class="cd-racha" id="ddRacha"></div>
 <p class="cd-nota" id="ddNota"></p>
 <div class="actions-inicio"><button class="primary" type="button" id="startBtn">Jugar el concepto de hoy</button></div></div>
-<aside class="rank-top" data-rank-top data-juego="concepto" data-semanal aria-label="Los 3 mejores de la semana"></aside></div></div>
+<aside class="rank-top" data-rank-top data-juego="concepto" data-semanal data-alternar aria-label="Ranking de Concepto del día"></aside></div></div>
 <div id="gameContent" style="display:none">
 <div class="top-info"><span id="roundText"></span><p class="consigna" id="consigna"></p><span class="score" id="scoreText">0 pts</span></div>
 <div class="cd-grid" id="cdGrid" role="grid" aria-label="Tus intentos"></div>
@@ -682,7 +682,7 @@ body:has(#startScreen[hidden]) img[src*="signo"]{display:none!important}
     const btn = $("cdCopiar");
     btn.onclick = () => copiar(textoResultado()).then(bien => { btn.textContent = bien ? "¡Copiado! Pegalo donde quieras" : "No se pudo copiar"; setTimeout(() => { btn.textContent = "Copiar mi resultado"; }, 2600); });
     const caja = $("shareBox"); caja.innerHTML = "";
-    if (window.QFARanking) QFARanking.montar(caja, { juego: "concepto", modo: fecha, titulo: "Concepto del día", puntos: est.p, semanal: true });
+    if (window.QFARanking) QFARanking.montar(caja, { juego: "concepto", modo: fecha, titulo: "Concepto del día", puntos: est.p, semanal: true, alternar: true });
     if (window.QFAResultado) {
       const [, m, d] = fecha.split("-");
       QFAResultado.montar(caja, () => ({ juego: "Concepto del día", puntos: est.p, detalle: [["FECHA", d + "/" + m], ["INTENTOS", (est.ok ? est.n : "X") + "/" + MAX], ["PISTA", est.pista ? "Sí" : "No"], ["RACHA", dias(Q.racha().actual)]] }));
