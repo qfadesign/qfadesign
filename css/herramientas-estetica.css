@@ -1,0 +1,65 @@
+/* qfadesign — Herramientas (índice): estética plana y con color propio por herramienta.
+   Sin vidrio (las capas viejas de pages.css lo dejaban pasar por especificidad), cada tarjeta usa su --c,
+   todas oscuras y al pasar el mouse se llenan con su color. */
+html body.f-herramientas:not([class*="f-h-"]){--tile:#0d0d10;--tile-b:rgba(255,255,255,.1)}
+
+/* tarjetas: planas, oscuras, sin blur ni brillos */
+html body.f-herramientas:not([class*="f-h-"]) .tl{
+ background:var(--tile);color:#fff;border:1px solid var(--tile-b);border-radius:24px;
+ -webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none;
+ transition:background .28s,color .28s,border-color .28s,transform .35s cubic-bezier(.2,.8,.2,1)}
+html body.f-herramientas:not([class*="f-h-"]) .tl .tl-ic{
+ background:var(--c);color:#0a0a0a;border:0;box-shadow:none;
+ transition:background .28s,color .28s,rotate .45s cubic-bezier(.34,1.56,.64,1)}
+html body.f-herramientas:not([class*="f-h-"]) .tl .tl-tag{
+ background:none;box-shadow:none;rotate:0deg;padding:0;border-radius:0;color:var(--c);
+ font-size:10.5px;letter-spacing:.09em;transition:color .28s}
+html body.f-herramientas:not([class*="f-h-"]) .tl .tl-tag::before{background:var(--c);box-shadow:none;width:7px;height:7px;transition:background .28s}
+html body.f-herramientas:not([class*="f-h-"]) .tl .tl-t{font-size:clamp(22px,2.2vw,29px);line-height:1;letter-spacing:-.02em}
+html body.f-herramientas:not([class*="f-h-"]) .tl .tl-d{font-weight:400;opacity:.62;transition:opacity .28s}
+
+/* hover / foco / tarjeta activa: se llena con su color */
+html body.f-herramientas:not([class*="f-h-"]) .tl:hover,
+html body.f-herramientas:not([class*="f-h-"]) .tl:focus-visible,
+html body.f-herramientas:not([class*="f-h-"]) .tl.tl-on{
+ background:var(--c);border-color:var(--c);color:#0a0a0a;box-shadow:none;transform:translateY(-4px)}
+html body.f-herramientas:not([class*="f-h-"]) .tl:hover .tl-ic,
+html body.f-herramientas:not([class*="f-h-"]) .tl:focus-visible .tl-ic,
+html body.f-herramientas:not([class*="f-h-"]) .tl.tl-on .tl-ic{background:#0a0a0a;color:var(--c);rotate:-8deg}
+html body.f-herramientas:not([class*="f-h-"]) .tl:hover .tl-tag,
+html body.f-herramientas:not([class*="f-h-"]) .tl:focus-visible .tl-tag,
+html body.f-herramientas:not([class*="f-h-"]) .tl.tl-on .tl-tag{color:#0a0a0a;background:none}
+html body.f-herramientas:not([class*="f-h-"]) .tl:hover .tl-tag::before,
+html body.f-herramientas:not([class*="f-h-"]) .tl:focus-visible .tl-tag::before,
+html body.f-herramientas:not([class*="f-h-"]) .tl.tl-on .tl-tag::before{background:#0a0a0a}
+html body.f-herramientas:not([class*="f-h-"]) .tl:hover .tl-d,
+html body.f-herramientas:not([class*="f-h-"]) .tl:focus-visible .tl-d,
+html body.f-herramientas:not([class*="f-h-"]) .tl.tl-on .tl-d{opacity:.85}
+html body.f-herramientas:not([class*="f-h-"]) .tl:focus-visible{outline:3px solid #fff;outline-offset:4px}
+
+/* la principal (PDF): oscura como las otras, solo con el título más grande */
+html body.f-herramientas:not([class*="f-h-"]) .tl.tl-main .tl-t{font-size:clamp(30px,4vw,54px);letter-spacing:-.03em}
+html body.f-herramientas:not([class*="f-h-"]) .tl.tl-main .tl-d{opacity:.7}
+html body.f-herramientas:not([class*="f-h-"]) .tl.tl-main:hover .tl-d,
+html body.f-herramientas:not([class*="f-h-"]) .tl.tl-main:focus-visible .tl-d{opacity:.85}
+
+/* "Links": mismo lenguaje, plano */
+html body.f-herramientas:not([class*="f-h-"]) .hl{background:var(--tile);border:1px solid var(--tile-b);border-radius:24px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+html body.f-herramientas:not([class*="f-h-"]) .hl:hover,
+html body.f-herramientas:not([class*="f-h-"]) .hl.open{background:#141418}
+html body.f-herramientas:not([class*="f-h-"]) .hl.hl-sub{background:none;border-radius:18px}
+html body.f-herramientas:not([class*="f-h-"]) .hl-i{background:#fff;border:0;box-shadow:none}
+html body.f-herramientas:not([class*="f-h-"]) .hl-i::before,
+html body.f-herramientas:not([class*="f-h-"]) .hl-i::after{background:#0a0a0a}
+html body.f-herramientas:not([class*="f-h-"]) .hl-btn:hover .hl-i{background:var(--azul)}
+html body.f-herramientas:not([class*="f-h-"]) .hl-btn:hover .hl-i::before,
+html body.f-herramientas:not([class*="f-h-"]) .hl-btn:hover .hl-i::after{background:#fff}
+
+@media(max-width:640px){
+ html body.f-herramientas:not([class*="f-h-"]) .tl{border-radius:20px}
+ html body.f-herramientas:not([class*="f-h-"]) .tl .tl-t{hyphens:manual;overflow-wrap:break-word}
+ html body.f-herramientas:not([class*="f-h-"]) #hgs .tl:last-child:nth-child(even){grid-column:1/-1}
+ html body.f-herramientas:not([class*="f-h-"]) .tl .tl-t{font-size:clamp(19px,5.6vw,23px)}
+ html body.f-herramientas:not([class*="f-h-"]) .tl.tl-main .tl-t{font-size:clamp(28px,8.4vw,36px)}
+}
+@media(prefers-reduced-motion:reduce){html body.f-herramientas:not([class*="f-h-"]) .tl,html body.f-herramientas:not([class*="f-h-"]) .tl *{transition:none!important}}
