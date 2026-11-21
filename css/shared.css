@@ -176,7 +176,7 @@ footer{position:relative;z-index:1;background:none;color:#fff;overflow:hidden}
 .f-h-convertidor{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(40,205,255,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(40,205,255,.34),transparent 62%),linear-gradient(#0a5cc0,#0847a3)}
 .f-h-unidades{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(255,122,61,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(255,122,61,.34),transparent 62%),linear-gradient(#b4531f,#7d3512)}
 .f-h-brief{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(138,91,255,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(138,91,255,.34),transparent 62%),linear-gradient(#4a23b8,#2a1180)}
-.f-h-pdf{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(255,79,94,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(255,79,94,.34),transparent 62%),linear-gradient(#b3202f,#7a1420)}
+.f-h-pdf{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(255,43,58,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(255,43,58,.34),transparent 62%),linear-gradient(#c4101e,#7a0a14)}
 .f-h-imprenta{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(150,190,20,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(150,190,20,.34),transparent 62%),linear-gradient(#4d6a0a,#2b3d06)}
 .f-h-qr{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(0,200,180,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(0,200,180,.34),transparent 62%),linear-gradient(#0a6f66,#05413b)}
 .f-h-simulador{--g:radial-gradient(85vw 62vw at 95% 4%,rgba(226,75,255,.72),transparent 64%),radial-gradient(55vw 45vw at -5% 60%,rgba(3,40,120,.8),transparent 60%),radial-gradient(50vw 35vw at 100% 92%,rgba(226,75,255,.34),transparent 62%),linear-gradient(#7a1c9c,#4a0f66)}
@@ -238,6 +238,7 @@ html.qst-in.t-in body>*:not(nav){translate:0 0!important;filter:none!important}
 #nav-burbuja.nb-on{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition-delay:0s}
 #nav-burbuja.nb-nueva{transition-property:opacity,transform,visibility}
 #nav-burbuja .nb-d{font-family:var(--f);font-weight:300;font-size:14.5px;line-height:1.4;color:rgba(255,255,255,.88)}
+#nav-burbuja.nb-frase .nb-d{font-weight:500;font-style:italic;font-size:15.5px;line-height:1.35;color:#fff} /* frase del logo qfadesign */
 #nav-burbuja .nb-punta{position:absolute;top:-6px;left:var(--nb-punta,50%);width:12px;height:12px;margin-left:-6px;background:rgba(6,33,77,.74);border-left:1px solid rgba(255,255,255,.22);border-top:1px solid rgba(255,255,255,.22);border-top-left-radius:3px;rotate:45deg;transition:left .28s cubic-bezier(.4,0,.2,1)}
 :is(.f-portfolio,.f-jueguitos,.f-juegos) #nav-burbuja,body:is(.f-portfolio,.f-jueguitos,.f-juegos) #nav-burbuja{background:rgba(10,10,10,.78)}
 :is(.f-portfolio,.f-jueguitos,.f-juegos) #nav-burbuja .nb-punta{background:rgba(10,10,10,.78)}

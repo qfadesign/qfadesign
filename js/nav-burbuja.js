@@ -1,5 +1,6 @@
 /* qfadesign — burbuja bajo la barra de navegación: al pasar el mouse (o con el foco del teclado)
    por una página del menú aparece una burbuja de vidrio con un resumen de lo que hay ahí.
+   Al pasar el mouse por el logo qfadesign aparece una frase sobre diseño (cambia cada vez, sin repetir la anterior).
    Solo en pantallas con mouse; en el celu el menú (hamburguesa) sigue igual. */
 (function(){
   'use strict';
@@ -11,6 +12,23 @@
     recursos:{d:'Paneles y extensiones para After Effects, Illustrator y Photoshop, con guía en español.'},
     contacto:{d:'Contame tu proyecto: escribime por mail o por redes y lo charlamos.'}
   };
+  // frases del logo: se elige una al azar cada vez que se pasa el mouse (nunca la misma dos veces seguidas)
+  var FRASES=[
+    'Diseñar es elegir qué se queda y qué se va.',
+    'Si todo grita, nada se escucha.',
+    'Lo simple no es fácil: es lo que queda después de sacar lo que sobra.',
+    'Una marca es lo que dicen de vos cuando no estás.',
+    'El espacio en blanco también es una decisión.',
+    'Un buen diseño no se nota: se entiende.',
+    'Detrás de cada logo hay alguien que cambió la tipografía diez veces.',
+    'Cada pixel fue una decisión. Casi todos, a propósito.',
+    'La tipografía es la voz de una marca.',
+    'Mirá lo cotidiano dos veces: ahí se esconde el diseño.',
+    'Una idea clara vale más que mil efectos.',
+    'Hecho con mucho mate y paciencia.'
+  ];
+  var ultima=-1;
+  function fraseNueva(){var i;do{i=Math.floor(Math.random()*FRASES.length)}while(FRASES.length>1&&i===ultima);ultima=i;return FRASES[i]}
   var nav=document.querySelector('nav');
   if(!nav||!window.matchMedia)return;
   // al scrollear, el vidrio de la barra se oscurece un poco (CSS: nav.nav-scroll)
@@ -19,6 +37,9 @@
   var mq=window.matchMedia('(min-width:761px) and (hover:hover)');
   var links=[].slice.call(nav.querySelectorAll('ul a'));
   if(!links.length)return;
+  // el logo es el link de la barra que está fuera de la lista del menú
+  var logo=[].slice.call(nav.querySelectorAll('a')).filter(function(a){return !a.closest('ul')})[0]||null;
+  if(logo)links.push(logo);
 
   var b=document.createElement('div');
   b.id='nav-burbuja';b.setAttribute('role','tooltip');b.setAttribute('aria-hidden','true');
@@ -39,11 +60,13 @@
   }
 
   function abrir(a){
-    var k=clave(a);if(!k||!mq.matches||nav.classList.contains('abierto'))return;
+    var esLogo=(a===logo),k=esLogo?'logo':clave(a);if(!k||!mq.matches||nav.classList.contains('abierto'))return;
     clearTimeout(cerrar);
+    if(actual===a&&abierta){colocar();return} // ya está abierta para este link (ej.: mouse + foco): no cambiar la frase
     if(actual&&actual!==a)actual.removeAttribute('aria-describedby');
     actual=a;
-    dd.textContent=TEXTOS[k].d;
+    dd.textContent=esLogo?fraseNueva():TEXTOS[k].d;
+    b.classList.toggle('nb-frase',esLogo);
     a.setAttribute('aria-describedby','nav-burbuja');
     b.setAttribute('aria-hidden','false');
     colocar();
