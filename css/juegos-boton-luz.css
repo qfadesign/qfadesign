@@ -56,3 +56,21 @@ html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec
  html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec)::before,
  html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec)::after{transition-duration:.01s!important}
 }
+
+/* ============================================================
+   RANKING · "¿SOS ESA PERSONA O NO?" (js/ranking.js)
+   Antes los dos botones (el de "sí" y el de "soy otra persona") se veían igual: dos píldoras negras.
+   Ahora el principal (.rank-guardar) se destaca: sólido y blanco, con letras negras y un aro suave;
+   el otro (.rank-sec) queda de apoyo: transparente, con borde fino y letras más apagadas.
+   Aplica en la pregunta de antes de jugar ("Soy X#1234" / "Soy otra persona"), en la de después de la partida
+   ("Sí, guardar mi puntaje" / "No, soy otra persona") y en "¿Cómo querés jugar?".
+   Al pasar el mouse o con el teclado vuelve el efecto de luz de arriba (botón negro con resplandor azul).
+   Para volver atrás: borrá este bloque.
+   ============================================================ */
+html body .rank-quien-bt .rank-guardar:not(:disabled):not(:hover):not(:focus-visible):not(:active){
+ background:#fff!important;color:#000!important;border-color:#fff!important;
+ font-weight:900;
+ box-shadow:0 0 0 4px rgba(255,255,255,.22),0 10px 28px rgba(0,0,0,.3)!important}
+html body .rank-quien-bt .rank-sec:not(:disabled):not(:hover):not(:focus-visible):not(:active){
+ background:transparent!important;color:rgba(255,255,255,.82)!important;
+ border-color:rgba(255,255,255,.34)!important;font-weight:600}
