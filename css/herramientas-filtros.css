@@ -1,0 +1,42 @@
+/* qfadesign — Herramientas (índice): filtros por tipo, etiquetas con sentido y descripciones más legibles.
+   Va al final de los estilos de la página. Para volver atrás: sacá este <link> y el <script src="js/herramientas-filtros.js">
+   de herramientas.html (las etiquetas de las tarjetas son texto del HTML). */
+
+/* ---- filtros: botones planos, como el resto de la web ---- */
+.hf{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:640px;margin:clamp(18px,2.4vw,28px) auto 0;padding:0 16px}
+.hf+.hf-live+.hgs{margin-top:clamp(16px,2.2vw,24px)}
+.hf-b{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 18px;border-radius:99px;border:1px solid rgba(255,255,255,.24);background:transparent;color:rgba(255,255,255,.82);
+ font-family:var(--fh);font-weight:900;font-style:italic;font-size:14px;line-height:1;letter-spacing:-.005em;
+ transition:background-color .25s,color .25s,border-color .25s,scale .3s cubic-bezier(.34,1.56,.64,1)}
+.hf-b:hover{border-color:rgba(255,255,255,.7);color:#fff}
+.hf-b:active{scale:.96}
+.hf-b:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.hf-b[aria-pressed="true"]{background:#fff;color:#000;border-color:#fff}
+.hf-live{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:640px){.hf{gap:6px}.hf-b{padding:8px 14px;font-size:13px}}
+
+/* ---- las que no coinciden se esconden; las que quedan entran con un movimiento corto ---- */
+#hgs .tl[hidden]{display:none!important}
+@keyframes hfIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+#hgs .tl.hf-in{animation:hfIn .4s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--k,0)*45ms)}
+@media(prefers-reduced-motion:reduce){#hgs .tl.hf-in{animation:none}}
+
+/* ---- descripciones: más contraste y apenas más grandes (antes quedaban grises y chicas) ---- */
+html body.f-herramientas:not([class*="f-h-"]) .tl:not(:hover):not(:focus-visible):not(.tl-on) .tl-d{opacity:.82}
+html body.f-herramientas:not([class*="f-h-"]) .tl.tl-main:not(:hover):not(:focus-visible):not(.tl-on) .tl-d{opacity:.86}
+html body.f-herramientas:not([class*="f-h-"]) .tl .tl-d{font-size:clamp(13px,1.05vw,14.5px)}
+html body.f-herramientas:not([class*="f-h-"]) .tl.tl-main .tl-d{font-size:clamp(14.5px,1.3vw,18px)}
+
+/* ---- con un filtro puesto, las tarjetas que quedan se centran (en la grilla de 3 columnas quedaban pegadas a la izquierda) ---- */
+#hgs.hf-f{display:flex;flex-wrap:wrap;justify-content:center;--hg:clamp(12px,1.6vw,20px);gap:var(--hg)}
+#hgs.hf-f .tl{flex:none;width:min(290px,calc((100% - 2*var(--hg))/3))}
+@media(max-width:640px){#hgs.hf-f .tl{width:calc((100% - var(--hg))/2)}}
+@media(max-width:380px){#hgs.hf-f .tl{width:100%}}
+
+/* ---- con un filtro puesto, la de PDF deja de ser la franja ancha y pasa a ser un cuadrado igual a las otras ---- */
+#hgs.hf-f .tl.tl-main{aspect-ratio:1;flex-direction:column;align-items:stretch;justify-content:space-between;gap:12px;padding:clamp(16px,1.8vw,22px)}
+#hgs.hf-f .tl.tl-main .tl-top{flex:initial;flex-direction:row;width:auto;align-items:flex-start;justify-content:space-between;gap:8px}
+#hgs.hf-f .tl.tl-main .tl-ic{width:clamp(46px,5vw,60px)}
+#hgs.hf-f .tl.tl-main .tl-t{font-size:clamp(22px,2.2vw,29px);letter-spacing:-.02em}
+#hgs.hf-f .tl.tl-main .tl-d{max-width:none;margin-top:6px;font-size:clamp(13px,1.05vw,14.5px);opacity:.82}
+@media(max-width:640px){#hgs.hf-f .tl.tl-main{padding:14px;gap:8px}#hgs.hf-f .tl.tl-main .tl-t{font-size:clamp(19px,5.6vw,23px)}}
