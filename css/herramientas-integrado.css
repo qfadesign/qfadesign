@@ -3,19 +3,19 @@
    · sin cajas grandes: el índice es una lista con líneas finas y cada herramienta se apoya directo sobre el fondo */
 
 /* 1. FONDO: igual que al pasar el mouse en el índice: negro con el color de cada herramienta */
-.f-h-calculadora{--tc:#25d18e}
-.f-h-paletas{--tc:#ff5fa8}
-.f-h-contraste{--tc:#ffc233}
-.f-h-convertidor{--tc:#28cdff}
-.f-h-unidades{--tc:#ff7a3d}
-.f-h-brief{--tc:#8a5bff}
-.f-h-pdf{--tc:#ff2b3a}
-.f-h-imprenta{--tc:#c6f135}
-.f-h-qr{--tc:#00e0c6}
-.f-h-simulador{--tc:#e24bff}
+.f-h-calculadora{--tc:#00e676}
+.f-h-paletas{--tc:#ff2e93}
+.f-h-contraste{--tc:#ffd000}
+.f-h-convertidor{--tc:#1e90ff}
+.f-h-unidades{--tc:#ff6a00}
+.f-h-brief{--tc:#7c3cff}
+.f-h-pdf{--tc:#ff1f2e}
+.f-h-imprenta{--tc:#b6ff00}
+.f-h-qr{--tc:#00f0d0}
+.f-h-simulador{--tc:#e01bff}
 :is(.f-h-calculadora,.f-h-paletas,.f-h-contraste,.f-h-convertidor,.f-h-unidades,.f-h-brief,.f-h-pdf,.f-h-imprenta,.f-h-qr,.f-h-simulador){
  --fondo:#000;
- --g:radial-gradient(75vw 55vw at 92% 0%,color-mix(in srgb,var(--tc) 78%,transparent),transparent 66%),radial-gradient(60vw 45vw at 2% 100%,color-mix(in srgb,var(--tc) 40%,transparent),transparent 66%),linear-gradient(#050505,#000)}
+ --g:radial-gradient(75vw 55vw at 92% 0%,color-mix(in srgb,var(--tc) 92%,transparent),transparent 66%),radial-gradient(60vw 45vw at 2% 100%,color-mix(in srgb,var(--tc) 58%,transparent),transparent 66%),linear-gradient(#050505,#000)}
 
 /* 3. CADA HERRAMIENTA: sin panel azul grande, apoyada directo sobre el fondo */
 .f-herramientas .md.md-pg{background:none;border:0;box-shadow:none;border-radius:0;margin-top:clamp(18px,2.4vw,30px)}
@@ -131,11 +131,11 @@ textarea.qr-in{resize:vertical;min-height:84px}
 input:focus-visible+.qr-file,.qr-file:has(+input:focus-visible){outline:3px solid #fff;outline-offset:3px}
 .qr-cont{word-break:break-word}
 .qr-badge{display:inline-block;margin:14px 0 0;padding:7px 16px 8px;border-radius:99px;background:rgba(255,255,255,.18);font-family:var(--fh);font-weight:900;font-style:italic;font-size:clamp(15px,1.3vw,17px)}
-.qr-badge.qr-ok{background:#25d18e;color:#04321f}.qr-badge.qr-warn{background:#ffc233;color:#3a2a00}.qr-badge.qr-bad{background:#ff6b6b;color:#3d0505}
+.qr-badge.qr-ok{background:#00e676;color:#04321f}.qr-badge.qr-warn{background:#ffd000;color:#3a2a00}.qr-badge.qr-bad{background:#ff6b6b;color:#3d0505}
 .qr-chk{list-style:none;margin:12px 0 4px;padding:0;display:grid;gap:8px}
 .qr-chk li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;align-items:start;font-size:clamp(14px,1.15vw,15.5px);line-height:1.4}
 .qr-ic{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;font-weight:900;font-size:14px;color:#0b1b33;background:#fff}
-.qr-ok .qr-ic{background:#25d18e}.qr-warn .qr-ic{background:#ffc233}.qr-bad .qr-ic{background:#ff6b6b}.qr-info .qr-ic{background:#cfe0ff}
+.qr-ok .qr-ic{background:#00e676}.qr-warn .qr-ic{background:#ffd000}.qr-bad .qr-ic{background:#ff6b6b}.qr-info .qr-ic{background:#cfe0ff}
 .qr-prev .cv-acc{margin-top:14px}
 @media(max-width:900px){.qr-grid{grid-template-columns:minmax(0,1fr)}.qr-prev{position:static}}
 
@@ -154,7 +154,7 @@ input:focus-visible+.qr-file,.qr-file:has(+input:focus-visible){outline:3px soli
 .ip-l{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .ip-it{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start;padding:12px 16px 13px 12px;border-radius:18px;background:#fff;color:var(--nav);box-shadow:var(--plato)}
 .ip-it .ip-ic,.ip-lg .ip-ic{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;font-style:normal;font-weight:900;font-size:15px;color:#0b1b33;background:#cfe0ff}
-.ip-ok .ip-ic,.ip-lg span:nth-child(1) .ip-ic{background:#25d18e}.ip-warn .ip-ic,.ip-lg span:nth-child(2) .ip-ic{background:#ffc233}.ip-bad .ip-ic,.ip-lg span:nth-child(3) .ip-ic{background:#ff6b6b}.ip-man .ip-ic,.ip-lg span:nth-child(4) .ip-ic{background:#d9c2ff}
+.ip-ok .ip-ic,.ip-lg span:nth-child(1) .ip-ic{background:#00e676}.ip-warn .ip-ic,.ip-lg span:nth-child(2) .ip-ic{background:#ffd000}.ip-bad .ip-ic,.ip-lg span:nth-child(3) .ip-ic{background:#ff6b6b}.ip-man .ip-ic,.ip-lg span:nth-child(4) .ip-ic{background:#d9c2ff}
 .ip-t{margin:0;font-weight:800;font-size:clamp(15px,1.3vw,17px);line-height:1.3}
 .ip-st{display:inline-block;margin-left:6px;padding:1px 9px 2px;border-radius:99px;background:#eaf0fb;font-size:12px;font-weight:800;vertical-align:1px}
 .ip-bad .ip-st{background:#ffd9d9;color:#7a1b1b}.ip-warn .ip-st{background:#fff0c9;color:#5a4200}.ip-ok .ip-st{background:#d3f6e5;color:#0a4b2c}.ip-man .ip-st{background:#ece2ff;color:#3f2a7a}
