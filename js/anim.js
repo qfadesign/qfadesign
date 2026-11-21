@@ -6,7 +6,9 @@ document.documentElement.classList.add('js');
   if(self!==top||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
   const OSCURAS=['','index','portfolio','herramientas','jueguitos','recursos','pack-de-3','pack-de-4','pack-de-5','pack-after','pack-illustrator','qfatype','qfamotion','qfasubtitulos','qfatransition','qfasound','qfabrandboard','qfaexport','qfacolor','qfaphoto','ahorcado','adivina-el-color','adivina-la-tipografia']; // fondo base negro
   const AZULES=['acerca','contacto','404','proyecto-arbol','proyecto-bleko','proyecto-dulcemente','proyecto-miga','proyecto-ros','proyecto-trazo','proyecto-f1','calculadora-de-precios','generador-de-paletas','contraste-de-color','convertidor-de-imagenes','conversor-de-unidades','brief','comprimir-pdf','preparador-para-imprenta','generador-de-qr','simulador-de-publicaciones']; // fondo base azul
-  const PJB={'proyecto-bleko':'#82301b','proyecto-dulcemente':'#7a1c40','proyecto-ros':'#14073d','proyecto-f1':'#5a0710','calculadora-de-precios':'#07493a','generador-de-paletas':'#7a1c4c','contraste-de-color':'#6b4a05','conversor-de-unidades':'#7d3512','brief':'#2a1180'}; // fondo de cada proyecto mientras cambia la página
+  const PJB={'proyecto-bleko':'#82301b','proyecto-dulcemente':'#7a1c40','proyecto-ros':'#14073d','proyecto-f1':'#5a0710'}; // fondo de cada proyecto mientras cambia la página
+  const MODO='velo'; // transición al entrar a una herramienta: 'velo' (el color aparece y se desvanece) · 'glow' (resplandor, sin tapar la pantalla) · 'circulo' (el color se expande desde donde tocaste)
+  const TC={'comprimir-pdf':'#ff1f2e','calculadora-de-precios':'#00e676','generador-de-qr':'#00f0d0','generador-de-paletas':'#ff2e93','contraste-de-color':'#ffd000','convertidor-de-imagenes':'#1e90ff','conversor-de-unidades':'#ff6a00','brief':'#7c3cff','preparador-para-imprenta':'#b6ff00','simulador-de-publicaciones':'#e01bff'}; // color de cada herramienta (el mismo de su tarjeta en Herramientas)
   const seg=p=>p.replace(/\/+$/,'').split('/').pop().replace(/\.html$/,'');
   const flag=(k,v)=>{try{v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){}};
 
@@ -41,10 +43,20 @@ document.documentElement.classList.add('js');
     o.animate([{left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px',opacity:1},Object.assign({opacity:1,offset:.78},R),Object.assign({opacity:0},R)],{duration:950,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'}).onfinish=fin;
   };
 
+  // herramienta: el color de la tarjeta se expande desde donde tocaste hasta cubrir la pantalla; en la página nueva se recoge hacia la esquina de luz de la herramienta
+  const tinta=(c,clip)=>{const o=document.createElement('div');o.className='qtc';o.setAttribute('aria-hidden','true');o.style.cssText='position:fixed;inset:0;z-index:41;pointer-events:none;background-color:'+c+';background-image:linear-gradient(135deg,'+c+',color-mix(in srgb,'+c+' 55%,#000));clip-path:'+clip;root.appendChild(o);return o};
+  const volarTc=o=>{
+    const fin=()=>{o.remove();root.style.background=''};
+    if(!o.animate){fin();return}
+    if(MODO==='velo'){o.animate([{opacity:1},{opacity:0}],{duration:650,easing:'ease-out',fill:'forwards'}).onfinish=fin;return}
+    const x=innerWidth*.92,R=Math.hypot(innerWidth,innerHeight)+20;
+    o.animate([{clipPath:'circle('+R+'px at '+x+'px 0px)'},{clipPath:'circle(0px at '+x+'px 0px)'}],{duration:850,delay:60,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'}).onfinish=fin;
+  };
+
   // 1) página que llega: arranca invisible (la barra no) y, cuando está lista, el degradé y el contenido aparecen suave
   const navT=((performance.getEntriesByType&&performance.getEntriesByType('navigation')[0])||{}).type,histo=navT==='back_forward'||navT==='reload'; // con "atrás", "adelante" o recargar no hay transición
   let vino=false,st=null;try{const t=+sessionStorage.getItem('qfa-t')||0;vino=!histo&&Date.now()-t<8000;st=JSON.parse(sessionStorage.getItem('qfa-st')||'null');sessionStorage.removeItem('qfa-st')}catch(e){} // la bandera vale 8 s: una vieja que quedó guardada no cuenta
-  flag('qfa-t',null);if(!vino){st=null;flag('qfa-pj',null)}
+  flag('qfa-t',null);if(!vino){st=null;flag('qfa-pj',null);flag('qfa-tc',null)}
   if(!(st&&st.u&&st.s===seg(location.pathname)))st=null;
   if(vino&&!root.classList.contains('con-intro')){
     root.classList.add('vino','t-in','t-wait');
@@ -53,10 +65,11 @@ document.documentElement.classList.add('js');
     const po=pj&&pj.s===seg(location.pathname)?pjCartel(pj):null;
     if(po){root.classList.add('qst-in');root.style.background=PJB[pj.s]||'#0847a3'} // el mismo sticker grande que quedó en el centro de la página anterior
     if(el){root.classList.add('qst-in');root.style.background=st.o?'#000':'#0847a3'}
-    const hb=!po&&!el&&PJB[seg(location.pathname)]; // herramienta: entra desde el color de su tarjeta
-    if(hb)root.style.background=hb;
+    let tc=null;try{tc=JSON.parse(sessionStorage.getItem('qfa-tc')||'null');sessionStorage.removeItem('qfa-tc')}catch(e){}
+    const to=!po&&!el&&tc&&tc.s===seg(location.pathname)&&TC[tc.s]&&MODO!=='glow'?tinta(TC[tc.s],MODO==='velo'?'none':'circle('+(Math.hypot(innerWidth,innerHeight)+20)+'px at '+innerWidth*.92+'px 0px)'):null; // herramienta: llega cubierta con el color de su tarjeta
+    if(to)root.style.background=TC[tc.s];
     let listo=false;
-    const abrir=()=>{if(listo)return;listo=true;if(el)volar(el);if(po)volarPj(po);if(hb)setTimeout(()=>{root.style.background=''},700);root.classList.remove('t-in','t-wait')};
+    const abrir=()=>{if(listo)return;listo=true;if(el)volar(el);if(po)volarPj(po);if(to)volarTc(to);root.classList.remove('t-in','t-wait')};
     addEventListener('DOMContentLoaded',()=>{
       Promise.race([document.fonts?document.fonts.ready:0,new Promise(r=>setTimeout(r,600))]).then(()=>requestAnimationFrame(abrir));
     });
@@ -64,7 +77,7 @@ document.documentElement.classList.add('js');
   }
 
   let irA=0;
-  const limpiar=()=>{root.classList.remove('sale','t-in','t-wait','qst-in');root.style.background='';document.querySelectorAll('.qst,.qpj').forEach(n=>n.remove());flag('qfa-st',null);flag('qfa-pj',null);flag('qfa-t',null);if(document.body)document.body.style.removeProperty('--fondo')};
+  const limpiar=()=>{root.classList.remove('sale','t-in','t-wait','qst-in');root.style.background='';document.querySelectorAll('.qst,.qpj,.qtc').forEach(n=>n.remove());flag('qfa-st',null);flag('qfa-pj',null);flag('qfa-tc',null);flag('qfa-t',null);if(document.body)document.body.style.removeProperty('--fondo')};
   // 2) página que se va: al tocar un link interno se desvanece y recién ahí cambia de página
   document.addEventListener('click',e=>{
     if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
@@ -79,7 +92,7 @@ document.documentElement.classList.add('js');
     }
     e.preventDefault();
     root.classList.add('sale');
-    if(document.body)document.body.style.setProperty('--fondo',oscura?'#000':(PJB[s]||'#0847a3'));
+    if(document.body)document.body.style.setProperty('--fondo',oscura?'#000':(TC[s]?(MODO==='glow'?'#000':TC[s]):(PJB[s]||'#0847a3')));
     flag('qfa-t',String(Date.now()));
     let espera=320;
     const pjc=a.closest('.pj,.pg-s,.fd-paper'),pim=pjc&&pjc.querySelector('img'),hoja=pjc&&pjc.classList.contains('fd-paper'),pr=pim&&(hoja?pim:pjc).getBoundingClientRect(),rad=hoja?'6px':'28px';
@@ -90,6 +103,17 @@ document.documentElement.classList.add('js');
       root.appendChild(o);
       o.animate([{left:pr.left+'px',top:pr.top+'px',width:pr.width+'px',height:pr.height+'px',borderRadius:rad},{left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px'}],{duration:520,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'});
       flag('qfa-pj',JSON.stringify({s,u,p}));espera=560;
+    }
+    if(TC[s]&&espera===320&&root.animate&&MODO!=='glow'){ // herramienta: el color de su tarjeta cubre la pantalla (en 'glow' alcanza con el desvanecido de siempre)
+      if(MODO==='velo'){
+        const o=tinta(TC[s],'none');o.style.opacity=0;
+        o.animate([{opacity:0},{opacity:1}],{duration:300,easing:'ease-out',fill:'forwards'});espera=340;
+      }else{
+        const r=a.getBoundingClientRect();let x=e.clientX,y=e.clientY;if(!e.detail||(!x&&!y)){x=r.left+r.width/2;y=r.top+r.height/2}
+        const R=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y))+20,c0='circle(0px at '+x+'px '+y+'px)';
+        tinta(TC[s],c0).animate([{clipPath:c0},{clipPath:'circle('+R+'px at '+x+'px '+y+'px)'}],{duration:520,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'});espera=560;
+      }
+      flag('qfa-tc',JSON.stringify({s}));
     }
     const k=STK[s];
     if(k&&!a.hash&&root.animate){ // página de la barra: sticker grande en el centro (se pega como título en la página nueva)
