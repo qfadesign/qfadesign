@@ -1,0 +1,58 @@
+/* ============================================================
+   JUEGOS: los botones de los juegos con el mismo estilo y efecto que los botones del hero.
+   · Reposo: píldora negra con borde fino y letras blancas (igual que los botones del hero).
+   · Mouse encima: una luz azul sigue al cursor por dentro del botón, el borde se enciende cerca del cursor
+     y sale un resplandor azul alrededor (la posición la pasa js/hero-botones-luz.js en --lx / --ly).
+   · Con teclado (Tab) y al tocar en celu la luz queda centrada. Con "reducir movimiento" no sigue al cursor.
+   Botones que toma: .primary (Empezar, Siguiente, Enviar, Compartir…), .play-again (Jugar de nuevo), .cd-copiar,
+   .res-bajar y los del ranking (.rank-guardar, .rank-sec).
+   Va después de hero-botones-luz.css a propósito (juegos.css usa !important). Para volver atrás: sacá este <link> de las páginas de juegos.
+   ============================================================ */
+
+/* reposo = botones del hero */
+html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec){
+ --luz:90,170,255;
+ position:relative;overflow:hidden;isolation:isolate;
+ background:#000!important;color:#fff!important;
+ border:1px solid rgba(255,255,255,.2)!important;border-radius:99px!important;
+ box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;text-shadow:none;
+ transition:transform .18s ease-out,scale .35s cubic-bezier(.34,1.56,.64,1),color .25s,background-color .3s,box-shadow .45s ease,border-color .35s ease,text-shadow .35s ease!important}
+
+/* la luz que sigue al cursor */
+html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec)::before{
+ content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;opacity:0;
+ background:radial-gradient(150px circle at var(--lx,50%) var(--ly,50%),rgba(var(--luz),.95) 0,rgba(11,117,244,.6) 38%,rgba(11,117,244,0) 78%);
+ transition:opacity .4s ease}
+
+/* el borde que se enciende cerca del cursor */
+html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec)::after{
+ content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;padding:1.5px;
+ translate:0 0!important;animation:none!important;opacity:0;transition:opacity .4s ease!important;
+ background:radial-gradient(110px circle at var(--lx,50%) var(--ly,50%),#fff 0,rgba(var(--luz),.9) 40%,rgba(var(--luz),0) 78%)!important;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+ mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+
+/* encendido: foco con teclado o dedo apoyado */
+html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec):not(:disabled):focus-visible,
+html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec):not(:disabled):active{
+ color:#fff!important;border-color:rgba(130,190,255,.6)!important;text-shadow:0 0 16px rgba(var(--luz),.85)!important;
+ box-shadow:0 0 0 1px rgba(var(--luz),.25),0 0 22px rgba(11,117,244,.55),0 10px 56px rgba(11,117,244,.38)!important;outline:none}
+html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec):not(:disabled):focus-visible::before,
+html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec):not(:disabled):active::before,
+html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec):not(:disabled):focus-visible::after,
+html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec):not(:disabled):active::after{opacity:1!important}
+html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec):not(:disabled):active{scale:.97}
+
+/* encendido: mouse encima */
+@media(hover:hover){
+ html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec):not(:disabled):hover{
+  background:#000!important;color:#fff!important;scale:1;border-color:rgba(130,190,255,.6)!important;text-shadow:0 0 16px rgba(var(--luz),.85)!important;
+  box-shadow:0 0 0 1px rgba(var(--luz),.25),0 0 22px rgba(11,117,244,.55),0 10px 56px rgba(11,117,244,.38)!important}
+ html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec):not(:disabled):hover::before,
+ html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec):not(:disabled):hover::after{opacity:1!important}
+}
+@media(prefers-reduced-motion:reduce){
+ html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec),
+ html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec)::before,
+ html body :is(.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec)::after{transition-duration:.01s!important}
+}

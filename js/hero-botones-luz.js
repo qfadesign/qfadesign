@@ -2,7 +2,7 @@
    así la luz azul lo sigue. Con "reducir movimiento" la luz queda centrada. */
 (function(){
   if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-  function boton(e){return e.target&&e.target.closest?e.target.closest('.btn'):null}
+  function boton(e){return e.target&&e.target.closest?e.target.closest('.btn,.primary,.play-again,.cd-copiar,.res-bajar,.rank-guardar,.rank-sec'):null}
   function pos(e){
     var b=boton(e);if(!b)return;
     var r=b.getBoundingClientRect();
