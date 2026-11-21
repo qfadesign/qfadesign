@@ -13,7 +13,7 @@
 .hf-b:focus-visible{outline:2px solid #fff;outline-offset:3px}
 .hf-b[aria-pressed="true"]{background:#fff;color:#000;border-color:#fff}
 .hf-live{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media(max-width:640px){.hf{gap:6px}.hf-b{padding:8px 14px;font-size:13px}}
+@media(max-width:640px){.hf{gap:6px;padding:0 10px}.hf-b{padding:8px 12px;font-size:13px}}
 
 /* ---- las que no coinciden se esconden; las que quedan entran con un movimiento corto ---- */
 #hgs .tl[hidden]{display:none!important}
@@ -39,4 +39,6 @@ html body.f-herramientas:not([class*="f-h-"]) .tl.tl-main .tl-d{font-size:clamp(
 #hgs.hf-f .tl.tl-main .tl-ic{width:clamp(46px,5vw,60px)}
 #hgs.hf-f .tl.tl-main .tl-t{font-size:clamp(22px,2.2vw,29px);letter-spacing:-.02em}
 #hgs.hf-f .tl.tl-main .tl-d{max-width:none;margin-top:6px;font-size:clamp(13px,1.05vw,14.5px);opacity:.82}
-@media(max-width:640px){#hgs.hf-f .tl.tl-main{padding:14px;gap:8px}#hgs.hf-f .tl.tl-main .tl-t{font-size:clamp(19px,5.6vw,23px)}}
+@media(max-width:640px){#hgs.hf-f .tl.tl-main{padding:14px;gap:8px}#hgs.hf-f .tl.tl-main .tl-t{font-size:clamp(16px,4.7vw,23px);overflow-wrap:normal;word-break:normal}}
+@media(max-width:380px){#hgs.hf-f .tl.tl-main{aspect-ratio:auto}#hgs.hf-f .tl.tl-main .tl-t{font-size:clamp(22px,6.4vw,26px)}}
+@media(max-width:400px){.hf{gap:5px;padding:0 8px}.hf-b{padding:8px 10px;font-size:12.5px}}

@@ -11,7 +11,7 @@
     let k=0;
     grilla.classList.toggle('hf-f',f!=='todas');
     cards.forEach(c=>{
-      const ver=f==='todas'||c.dataset.g===f;
+      const ver=f==='todas'||c.dataset.g.split(' ').indexOf(f)>-1; // una tarjeta puede estar en más de un grupo (ej.: "archivos destacados")
       c.hidden=!ver;
       c.classList.remove('hf-in');
       if(ver&&!reduce){c.style.setProperty('--k',k);void c.offsetWidth;c.classList.add('hf-in');}
