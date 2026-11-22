@@ -1,0 +1,224 @@
+{
+ "b-base": [
+  "cookies.css",
+  "shared.css"
+ ],
+ "b-404": [
+  "pages.css",
+  "anim.css",
+  "botones.css",
+  "musica.css",
+  "hero-botones-luz.css"
+ ],
+ "b-acerca": [
+  "pages.css",
+  "anim.css",
+  "botones.css",
+  "acerca.css",
+  "lanyard.css",
+  "musica.css",
+  "hero-botones-luz.css"
+ ],
+ "b-legal": [
+  "pages.css",
+  "anim.css",
+  "botones.css",
+  "musica.css"
+ ],
+ "b-legal-2": [
+  "hero-botones-luz.css"
+ ],
+ "b-contacto": [
+  "pages.css",
+  "anim.css",
+  "botones.css",
+  "contacto.css",
+  "musica.css",
+  "bajadas.css",
+  "hero-botones-luz.css"
+ ],
+ "b-herramienta": [
+  "pages.css",
+  "anim.css",
+  "utilidad.css",
+  "botones.css",
+  "musica.css",
+  "herramientas-integrado.css",
+  "herramientas-tipo.css",
+  "herramientas-foco.css",
+  "herramientas-lectura.css",
+  "desplegable.css",
+  "bajadas.css",
+  "hero-botones-luz.css"
+ ],
+ "b-calculadora-de-precios": [
+  "pages.css",
+  "anim.css",
+  "utilidad.css",
+  "botones.css",
+  "musica.css",
+  "herramientas-integrado.css",
+  "herramientas-tipo.css",
+  "herramientas-foco.css",
+  "herramientas-lectura.css",
+  "desplegable.css",
+  "bajadas.css",
+  "calculadora-buscador.css",
+  "hero-botones-luz.css"
+ ],
+ "b-convertidor-de-imagenes": [
+  "pages.css",
+  "anim.css",
+  "utilidad.css",
+  "botones.css",
+  "musica.css",
+  "herramientas-integrado.css",
+  "herramientas-tipo.css",
+  "herramientas-foco.css",
+  "herramientas-lectura.css",
+  "desplegable.css",
+  "convertidor-ws.css",
+  "bajadas.css",
+  "hero-botones-luz.css"
+ ],
+ "b-simulador-de-publicaciones": [
+  "pages.css",
+  "anim.css",
+  "utilidad.css",
+  "botones.css",
+  "musica.css",
+  "herramientas-integrado.css",
+  "herramientas-tipo.css",
+  "herramientas-foco.css",
+  "herramientas-lectura.css",
+  "desplegable.css",
+  "simulador-publicaciones.css",
+  "bajadas.css",
+  "hero-botones-luz.css"
+ ],
+ "b-herramientas": [
+  "pages.css",
+  "anim.css",
+  "botones.css",
+  "herramientas-fx.css",
+  "musica.css",
+  "herramientas-integrado.css",
+  "herramientas-tipo.css",
+  "herramientas-lectura.css",
+  "bajadas.css",
+  "herramientas-negro.css",
+  "herramientas-estetica.css",
+  "hero-botones-luz.css",
+  "herramientas-filtros.css"
+ ],
+ "b-index": [
+  "anim.css",
+  "portfolio-fx.css",
+  "home-fx.css",
+  "musica.css",
+  "botones.css",
+  "home-recursos.css",
+  "hero-nike.css",
+  "home-nuevo.css",
+  "hero-texto.css",
+  "home-secciones.css",
+  "home-responsive.css",
+  "hero-botones-luz.css"
+ ],
+ "b-juego": [
+  "cookies.css"
+ ],
+ "b-juego-2": [
+  "shared.css",
+  "juegos.css",
+  "botones.css",
+  "musica.css",
+  "desplegable.css",
+  "hero-botones-luz.css",
+  "juegos-boton-luz.css"
+ ],
+ "b-concepto-del-dia": [
+  "shared.css",
+  "juegos.css",
+  "botones.css",
+  "musica.css",
+  "desplegable.css"
+ ],
+ "b-concepto-del-dia-2": [
+  "hero-botones-luz.css",
+  "juegos-boton-luz.css"
+ ],
+ "b-jueguitos": [
+  "pages.css",
+  "anim.css",
+  "botones.css",
+  "tinte-hover.css",
+  "musica.css",
+  "bajadas.css",
+  "hero-botones-luz.css"
+ ],
+ "b-portfolio": [
+  "pages.css",
+  "anim.css",
+  "portfolio-fx.css",
+  "musica.css",
+  "folder.css",
+  "botones.css",
+  "bajadas.css",
+  "hero-botones-luz.css"
+ ],
+ "b-proyecto": [
+  "pages.css",
+  "anim.css",
+  "portfolio-fx.css",
+  "musica.css",
+  "botones.css",
+  "volver-portfolio.css",
+  "proyecto-integrado.css",
+  "bajadas.css",
+  "hero-botones-luz.css"
+ ],
+ "b-proyecto-bleko": [
+  "pages.css",
+  "anim.css",
+  "portfolio-fx.css",
+  "musica.css",
+  "botones.css",
+  "volver-portfolio.css",
+  "proyecto-integrado.css",
+  "libro-paginas.css",
+  "bajadas.css",
+  "hero-botones-luz.css"
+ ],
+ "b-proyecto-miga": [
+  "pages.css",
+  "anim.css",
+  "portfolio-fx.css",
+  "musica.css",
+  "botones.css",
+  "volver-portfolio.css",
+  "proyecto-integrado.css",
+  "miga-telefono.css",
+  "bajadas.css",
+  "hero-botones-luz.css"
+ ],
+ "b-recurso": [
+  "pages.css",
+  "anim.css",
+  "botones.css",
+  "musica.css",
+  "recursos.css",
+  "bajadas.css",
+  "hero-botones-luz.css"
+ ],
+ "b-recursos": [
+  "pages.css",
+  "anim.css",
+  "botones.css",
+  "tinte-hover.css",
+  "musica.css",
+  "recursos.css",
+  "bajadas.css",
+  "hero-botones-luz.css"
+ ]
+}

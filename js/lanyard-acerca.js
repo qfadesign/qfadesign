@@ -5,7 +5,19 @@
    Para cambiar textos y colores tocá solo lo que está dentro de CONFIG y TEXTO. */
 (function () {
   var host = document.getElementById('lanyard');
-  if (!host || !window.Lanyard) return;
+  if (!host) return;
+
+  /* La librería de la tarjeta pesa ~575 KB: se baja recién cuando la página terminó de cargar (mientras tanto se ve la foto de siempre),
+     así no frena al resto de los scripts. Si ya estaba cargada, arranca directo. */
+  function cargarLib(listo) {
+    var ruta = ((document.currentScript && document.currentScript.src) || '').replace(/[^\/]*$/, '') + 'vendor/lanyard.js';
+    var bajar = function () { var s = document.createElement('script'); s.src = ruta; s.onload = listo; document.head.appendChild(s); };
+    var idle = function () { if ('requestIdleCallback' in window) requestIdleCallback(bajar, { timeout: 1500 }); else setTimeout(bajar, 300); };
+    if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, { once: true });
+  }
+  if (window.Lanyard) iniciar(); else cargarLib(function () { if (window.Lanyard) iniciar(); });
+
+  function iniciar() {
 
   /* ---------- CONFIG ---------- */
   var CONFIG = {
@@ -185,4 +197,5 @@
     });
     if (inst) window.__lanyard = inst;
   });
+  }
 })();

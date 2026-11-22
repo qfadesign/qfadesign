@@ -80,7 +80,6 @@
   .rc-chip[aria-pressed="true"]{background:transparent;color:#fff;font-weight:800}
   .rc-chip[aria-pressed="true"]::after{content:"\2713";color:#5fb0ff;font-weight:900}
 }
-}
 @media(prefers-reduced-motion:reduce){.rc-chip,.rc-sel-f{transition:none}}
 
 /* video de instalación (recursos y cada recurso) */
