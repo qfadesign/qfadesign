@@ -40,7 +40,8 @@
 .lv.on{opacity:1;scale:1}.lv img{width:100%;height:100%;object-fit:cover;display:block}
 /* cursor propio */
 /* transición tarjeta → proyecto */
-.qpj{position:fixed;z-index:41;pointer-events:none;background-size:cover;background-repeat:no-repeat;overflow:hidden}
+.qpj{position:fixed;inset:0;z-index:41;pointer-events:none;overflow:hidden}
+.qpj-l{position:fixed;left:50%;top:50%;z-index:42;max-width:none;pointer-events:none;transform-origin:50% 50%;will-change:transform}.qpj-l.b{filter:brightness(0) invert(1)}
 /* páginas de proyecto */
 .lt{display:inline-block;animation:lt 1s cubic-bezier(.16,.9,.2,1) calc(.75s + var(--i)*.05s) both}
 @keyframes lt{from{opacity:0;translate:0 70%;rotate:7deg}to{opacity:1;translate:0 0;rotate:0deg}}

@@ -6,7 +6,7 @@ document.documentElement.classList.add('js');
   if(self!==top||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
   const OSCURAS=['','index','portfolio','herramientas','jueguitos','recursos','pack-de-3','pack-de-4','pack-de-5','pack-after','pack-illustrator','qfatype','qfamotion','qfasubtitulos','qfatransition','qfasound','qfabrandboard','qfaexport','qfacolor','qfaphoto','ahorcado','adivina-el-color','adivina-la-tipografia']; // fondo base negro
   const AZULES=['acerca','contacto','404','proyecto-arbol','proyecto-bleko','proyecto-dulcemente','proyecto-miga','proyecto-ros','proyecto-trazo','proyecto-f1','calculadora-de-precios','generador-de-paletas','contraste-de-color','convertidor-de-imagenes','conversor-de-unidades','brief','comprimir-pdf','preparador-para-imprenta','generador-de-qr','simulador-de-publicaciones']; // fondo base azul
-  const PJB={'proyecto-bleko':'#82301b','proyecto-dulcemente':'#7a1c40','proyecto-ros':'#14073d','proyecto-f1':'#5a0710'}; // fondo de cada proyecto mientras cambia la página
+  const PJB={'proyecto-arbol':'#3a1a0a','proyecto-bleko':'#82301b','proyecto-dulcemente':'#7a1c40','proyecto-miga':'#0a4aa8','proyecto-ros':'#14073d','proyecto-trazo':'#0b6fd0','proyecto-f1':'#5a0710'}; // fondo de cada proyecto mientras cambia la página
   const MODO='velo'; // transición al entrar a una herramienta: 'velo' (el color aparece y se desvanece) · 'glow' (resplandor, sin tapar la pantalla) · 'circulo' (el color se expande desde donde tocaste)
   const TC={'comprimir-pdf':'#ff1f2e','calculadora-de-precios':'#00e676','generador-de-qr':'#00f0d0','generador-de-paletas':'#ff2e93','contraste-de-color':'#ffd000','convertidor-de-imagenes':'#1e90ff','conversor-de-unidades':'#ff6a00','brief':'#7c3cff','preparador-para-imprenta':'#b6ff00','simulador-de-publicaciones':'#e01bff'}; // color de cada herramienta (el mismo de su tarjeta en Herramientas)
   const seg=p=>p.replace(/\/+$/,'').split('/').pop().replace(/\.html$/,'');
@@ -32,15 +32,27 @@ document.documentElement.classList.add('js');
     ],{duration:820,fill:'forwards'}).onfinish=fin;
   };
 
-  // tarjeta del portfolio → proyecto: la imagen se agranda hasta ocupar la pantalla y, en la página nueva, se achica hasta quedar como portada
-  const pjCartel=d=>{const o=document.createElement('div');o.className='qpj';o.style.cssText='left:0;top:0;width:'+innerWidth+'px;height:'+innerHeight+'px;background-image:url('+d.u+');background-position:'+d.p;root.appendChild(o);return o};
-  const volarPj=o=>{
-    const t=document.querySelector('.pr-portada'),fin=()=>{o.remove();root.style.background=''};
-    if(!t||!o.animate){fin();return}
-    scrollTo(0,0);const b=t.getBoundingClientRect();
-    if(b.top>innerHeight*.6){o.animate([{opacity:1},{opacity:1,offset:.35},{opacity:0}],{duration:850,easing:'ease-out',fill:'forwards'}).onfinish=fin;return} // la portada queda más abajo: la imagen grande se desvanece
-    const R={left:b.left+'px',top:b.top+'px',width:b.width+'px',height:b.height+'px',borderRadius:'34px'};
-    o.animate([{left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px',opacity:1},Object.assign({opacity:1,offset:.78},R),Object.assign({opacity:0},R)],{duration:950,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'}).onfinish=fin;
+  // degradé de cada proyecto (el mismo que tiene de fondo su página) y proporción de su marca [ancho, alto]
+  const PJG={'arbol': 'radial-gradient(90vw 66vw at 95% 0%,rgba(232,120,60,.8),transparent 64%),radial-gradient(60vw 50vw at -5% 58%,rgba(70,30,12,.85),transparent 62%),radial-gradient(50vw 38vw at 100% 94%,rgba(150,170,172,.32),transparent 62%),linear-gradient(#3a1a0a,#120804)', 'bleko': 'radial-gradient(90vw 66vw at 4% 0%,rgba(245,100,70,.8),transparent 64%),radial-gradient(60vw 48vw at 105% 55%,rgba(110,28,22,.75),transparent 62%),radial-gradient(50vw 36vw at 35% 100%,rgba(255,200,120,.26),transparent 60%),linear-gradient(#4a1710,#16080a)', 'dulcemente': 'radial-gradient(90vw 66vw at 94% 0%,rgba(245,120,150,.78),transparent 64%),radial-gradient(60vw 48vw at -5% 60%,rgba(92,46,34,.85),transparent 62%),radial-gradient(50vw 36vw at 70% 100%,rgba(255,225,200,.26),transparent 60%),linear-gradient(#4a2230,#1c0e12)', 'miga': 'radial-gradient(85vw 62vw at 6% 0%,rgba(60,140,255,.75),transparent 64%),radial-gradient(70vw 54vw at 104% 72%,rgba(120,56,22,.85),transparent 64%),radial-gradient(50vw 36vw at 20% 100%,rgba(8,60,150,.55),transparent 60%),linear-gradient(160deg,#0a4aa8,#1a1008 85%)', 'ros': 'radial-gradient(90vw 66vw at 94% 0%,rgba(125,65,255,.85),transparent 64%),radial-gradient(55vw 42vw at -5% 98%,rgba(95,235,45,.28),transparent 62%),radial-gradient(55vw 45vw at -5% 40%,rgba(40,20,110,.7),transparent 62%),linear-gradient(#2a1568,#0b0620)', 'trazo': 'radial-gradient(90vw 62vw at 50% -8%,rgba(40,205,255,.75),transparent 64%),radial-gradient(55vw 45vw at 104% 72%,rgba(2,30,100,.85),transparent 62%),radial-gradient(50vw 36vw at -5% 85%,rgba(60,140,255,.4),transparent 60%),linear-gradient(#0b6fd0,#052250)', 'f1': 'radial-gradient(90vw 66vw at 95% 0%,rgba(235,40,55,.75),transparent 64%),radial-gradient(55vw 45vw at -5% 52%,rgba(2,25,90,.9),transparent 60%),radial-gradient(50vw 36vw at 92% 94%,rgba(70,160,255,.3),transparent 60%),linear-gradient(#4a0c15,#070b1a)'};
+  const PJM={"arbol": [876.26, 331.76], "bleko": [539.83, 530.37], "dulcemente": [666.38, 238.25], "miga": [473.14, 202.94], "ros": [752.51, 269.63], "trazo": [705.83, 152.6], "f1": [840.75, 177.83]};
+  // tarjeta del portfolio → proyecto: el degradé con los colores del proyecto crece desde la tarjeta hasta cubrir la pantalla y la marca se agranda en el centro;
+  // en la página nueva el degradé se funde con el fondo de la página y la marca se achica hasta quedar como título
+  const pjAncho=m=>Math.min(root.clientWidth*.8,640,root.clientHeight*.4*m[0]/m[1]);
+  const pjCartel=(s,base)=>{
+    const n=s.replace('proyecto-',''),g=PJG[n],m=PJM[n];if(!g||!m)return null;
+    const W=pjAncho(m),H=W*m[1]/m[0],o=document.createElement('div');o.className='qpj';o.setAttribute('aria-hidden','true');o.style.background=g;
+    const l=new Image();l.className='qpj-l'+(n==='f1'?' b':'');l.alt='';l.decoding='sync';l.setAttribute('aria-hidden','true');
+    l.style.cssText='width:'+W+'px;height:'+H+'px;margin:'+(-H/2)+'px 0 0 '+(-W/2)+'px';l.src=new URL('img/marcas/'+n+'.svg',base||location.href).href;
+    root.appendChild(o);root.appendChild(l);return{o,l,W,H};
+  };
+  const volarPj=ov=>{
+    const{o,l,W}=ov,real=document.querySelector('.pr-t .logo');
+    const fin=()=>{o.remove();l.remove();if(real){real.style.animation='';real.style.visibility=''}root.style.background=''};
+    if(!real||!o.animate){[o,l].forEach(x=>x.animate?x.animate([{opacity:1},{opacity:0}],{duration:400,fill:'forwards'}):0);setTimeout(fin,420);return}
+    scrollTo(0,0);real.style.animation='none';real.style.visibility='hidden'; // la marca de la página espera escondida hasta que la grande aterriza
+    const b=real.getBoundingClientRect(),dx=b.left+b.width/2-root.clientWidth/2,dy=b.top+b.height/2-root.clientHeight/2,k=b.width/W;
+    l.animate([{transform:'translate(0,0) scale(1)'},{transform:'translate('+dx+'px,'+dy+'px) scale('+k+')'}],{duration:900,delay:80,easing:'cubic-bezier(.65,0,.2,1)',fill:'forwards'}).onfinish=fin;
+    o.animate([{opacity:1},{opacity:1,offset:.3},{opacity:0}],{duration:900,delay:80,easing:'ease-out',fill:'forwards'});
   };
 
   // herramienta: el color de la tarjeta se expande desde donde tocaste hasta cubrir la pantalla; en la página nueva se recoge hacia la esquina de luz de la herramienta
@@ -62,7 +74,7 @@ document.documentElement.classList.add('js');
     root.classList.add('vino','t-in','t-wait');
     const el=st?cartel(st.u,st.w,st.h):null;
     let pj=null;try{pj=JSON.parse(sessionStorage.getItem('qfa-pj')||'null');sessionStorage.removeItem('qfa-pj')}catch(e){}
-    const po=pj&&pj.s===seg(location.pathname)?pjCartel(pj):null;
+    const po=pj&&pj.s===seg(location.pathname)?pjCartel(pj.s):null;
     if(po){root.classList.add('qst-in');root.style.background=PJB[pj.s]||'#0847a3'} // el mismo sticker grande que quedó en el centro de la página anterior
     if(el){root.classList.add('qst-in');root.style.background=st.o?'#000':'#0847a3'}
     let tc=null;try{tc=JSON.parse(sessionStorage.getItem('qfa-tc')||'null');sessionStorage.removeItem('qfa-tc')}catch(e){}
@@ -77,7 +89,7 @@ document.documentElement.classList.add('js');
   }
 
   let irA=0;
-  const limpiar=()=>{root.classList.remove('sale','t-in','t-wait','qst-in');root.style.background='';document.querySelectorAll('.qst,.qpj,.qtc').forEach(n=>n.remove());flag('qfa-st',null);flag('qfa-pj',null);flag('qfa-tc',null);flag('qfa-t',null);if(document.body)document.body.style.removeProperty('--fondo')};
+  const limpiar=()=>{root.classList.remove('sale','t-in','t-wait','qst-in');root.style.background='';document.querySelectorAll('.qst,.qpj,.qpj-l,.qtc').forEach(n=>n.remove());flag('qfa-st',null);flag('qfa-pj',null);flag('qfa-tc',null);flag('qfa-t',null);if(document.body)document.body.style.removeProperty('--fondo')};
   // 2) página que se va: al tocar un link interno se desvanece y recién ahí cambia de página
   document.addEventListener('click',e=>{
     if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
@@ -96,14 +108,14 @@ document.documentElement.classList.add('js');
     flag('qfa-t',String(Date.now()));
     let espera=320;
     const pjc=a.closest('.pj,.pg-s,.fd-paper'),pim=pjc&&pjc.querySelector('img'),hoja=pjc&&pjc.classList.contains('fd-paper'),pr=pim&&(hoja?pim:pjc).getBoundingClientRect(),rad=hoja?'6px':'28px';
-    if(hoja){espera=300} // hoja de la carpeta: ya hizo su propio zoom, sin imagen gigante
-    else if(pr&&pr.width>60&&root.animate){ // tarjeta del portfolio: la imagen se agranda hasta ocupar la pantalla
-      const u=pim.currentSrc||pim.src,p=getComputedStyle(pim).objectPosition,o=document.createElement('div');
-      o.className='qpj';o.style.cssText='left:'+pr.left+'px;top:'+pr.top+'px;width:'+pr.width+'px;height:'+pr.height+'px;border-radius:'+rad+';background-image:url('+u+');background-position:'+p;
-      root.appendChild(o);
-      o.animate([{left:pr.left+'px',top:pr.top+'px',width:pr.width+'px',height:pr.height+'px',borderRadius:rad},{left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px'}],{duration:520,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'});
-      flag('qfa-pj',JSON.stringify({s,u,p}));espera=560;
-    }
+    const ov=pr&&pr.width>60&&root.animate&&/^proyecto-/.test(s)?pjCartel(s,a.href):null;
+    if(ov){ // tarjeta u hoja del portfolio: el degradé del proyecto crece desde ahí hasta cubrir la pantalla y la marca se agranda en el centro
+      const cw=root.clientWidth,ch=root.clientHeight,cx=pr.left+pr.width/2-cw/2,cy=pr.top+pr.height/2-ch/2;
+      const c0='inset('+Math.round(pr.top)+'px '+Math.round(cw-pr.right)+'px '+Math.round(ch-pr.bottom)+'px '+Math.round(pr.left)+'px round '+rad+')',c1='inset(0px 0px 0px 0px round 0px)',D=620,E='cubic-bezier(.7,0,.2,1)';
+      ov.o.animate([{clipPath:c0},{clipPath:c1}],{duration:D,easing:E,fill:'forwards'});
+      ov.l.animate([{transform:'translate('+cx+'px,'+cy+'px) scale('+Math.min(pr.width*.5,ov.W)/ov.W+')',opacity:0},{opacity:1,offset:.3},{transform:'translate(0,0) scale(1)',opacity:1}],{duration:D,easing:E,fill:'forwards'});
+      flag('qfa-pj',JSON.stringify({s}));espera=D+40;
+    }else if(hoja){espera=300} // hoja de la carpeta: ya hizo su propio zoom
     if(TC[s]&&espera===320&&root.animate&&MODO!=='glow'){ // herramienta: el color de su tarjeta cubre la pantalla (en 'glow' alcanza con el desvanecido de siempre)
       if(MODO==='velo'){
         const o=tinta(TC[s],'none');o.style.opacity=0;
