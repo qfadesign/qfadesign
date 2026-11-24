@@ -8,7 +8,7 @@
   if(h&&lg){
     const txt=h.textContent.trim(),i=new Image();
     i.className='logo '+lg[2];i.alt='';i.width=lg[0];i.height=lg[1];i.src='img/marcas/'+m[1]+'.svg';
-    h.setAttribute('aria-label',txt);h.textContent='';h.appendChild(i);
+    h.setAttribute('aria-label',txt);h.textContent='';h.appendChild(i);h.classList.add('pr-t-logo'); // la marca ya tiene su propia animación de entrada
   }else if(h&&!still){
     const txt=h.textContent;h.setAttribute('aria-label',txt);h.textContent='';
     [...txt].forEach((ch,i)=>{if(ch===' '){h.appendChild(document.createTextNode(' '));return}const s=document.createElement('span');s.className='lt';s.setAttribute('aria-hidden','true');s.style.setProperty('--i',i);s.textContent=ch;h.appendChild(s)});

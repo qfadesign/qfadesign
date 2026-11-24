@@ -47,7 +47,7 @@ document.documentElement.classList.add('js');
   };
   const volarPj=ov=>{
     const{o,l,W}=ov,real=document.querySelector('.pr-t .logo');
-    const fin=()=>{o.remove();l.remove();if(real){real.style.animation='';real.style.visibility=''}root.style.background=''};
+    const fin=()=>{o.remove();l.remove();if(real){real.style.visibility=''}root.style.background=''}; // la marca real queda con animation:none: si se reiniciara, desaparecería un rato y volvería a animarse
     if(!real||!o.animate){[o,l].forEach(x=>x.animate?x.animate([{opacity:1},{opacity:0}],{duration:400,fill:'forwards'}):0);setTimeout(fin,420);return}
     scrollTo(0,0);real.style.animation='none';real.style.visibility='hidden'; // la marca de la página espera escondida hasta que la grande aterriza
     const b=real.getBoundingClientRect(),dx=b.left+b.width/2-root.clientWidth/2,dy=b.top+b.height/2-root.clientHeight/2,k=b.width/W;

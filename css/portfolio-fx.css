@@ -120,3 +120,5 @@
 /* el filtro oculta con [hidden]; la vista lista le pone display:flex a .pj y lo pisaba, por eso no filtraba */
 .pjs .pj[hidden],.pjs.lista .pj[hidden]{display:none!important}
 .pjs.lista .pj:last-child:not([hidden]){border-bottom:1px solid rgba(255,255,255,.28)}
+/* título con la marca del proyecto: una sola animación (la de .logo); el h1 no se anima aparte */
+.pr-t.pr-t-logo{animation:none}
