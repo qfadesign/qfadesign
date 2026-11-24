@@ -107,14 +107,20 @@ document.documentElement.classList.add('js');
     if(document.body)document.body.style.setProperty('--fondo',oscura?'#000':(TC[s]?(MODO==='glow'?'#000':TC[s]):(PJB[s]||'#0847a3')));
     flag('qfa-t',String(Date.now()));
     let espera=320;
-    const pjc=a.closest('.pj,.pg-s,.fd-paper'),pim=pjc&&pjc.querySelector('img'),hoja=pjc&&pjc.classList.contains('fd-paper'),pr=pim&&(hoja?pim:pjc).getBoundingClientRect(),rad=hoja?'6px':'28px';
+    const pjc=a.closest('.pj,.pg-s,.fd-paper,.pf-c,.dc'),pim=pjc&&pjc.querySelector('img'),hoja=pjc&&pjc.classList.contains('fd-paper'),pr=pim&&(hoja?pim:pjc).getBoundingClientRect(),rr=pjc&&parseFloat(getComputedStyle(hoja?pim:pjc).borderTopLeftRadius),rad=hoja?'6px':(rr>0?Math.round(rr)+'px':'28px'); // tarjeta del portfolio, de la home o de Acerca: el degradé nace de la que se tocó, con su mismo redondeo
     const ov=pr&&pr.width>60&&root.animate&&/^proyecto-/.test(s)?pjCartel(s,a.href):null;
     if(ov){ // tarjeta u hoja del portfolio: el degradé del proyecto crece desde ahí hasta cubrir la pantalla y la marca se agranda en el centro
       const cw=root.clientWidth,ch=root.clientHeight,cx=pr.left+pr.width/2-cw/2,cy=pr.top+pr.height/2-ch/2;
-      const c0='inset('+Math.round(pr.top)+'px '+Math.round(cw-pr.right)+'px '+Math.round(ch-pr.bottom)+'px '+Math.round(pr.left)+'px round '+rad+')',c1='inset(0px 0px 0px 0px round 0px)',D=620,E='cubic-bezier(.7,0,.2,1)';
+      const c0='inset('+Math.round(pr.top)+'px '+Math.round(cw-pr.right)+'px '+Math.round(ch-pr.bottom)+'px '+Math.round(pr.left)+'px round '+rad+')',c1='inset(0px 0px 0px 0px round 0px)',D=760,E='cubic-bezier(.72,0,.16,1)';
+      // la foto de la tarjeta viaja dentro del degradé y se disuelve despacio: así el color no "pisa" la foto de golpe (la página que se va se desvanece, la foto queda hasta que el degradé la cubre)
+      const fo=(pjc.querySelector('.alt')||pim),cs=getComputedStyle(fo),ph=new Image(),conFoto=pjc.matches('.pj,.pg-s,.fd-paper')&&getComputedStyle(pim).display!=='none'; // la foto viaja solo si ocupa toda la tarjeta (no en la vista Lista ni en tarjetas con texto)
+      ph.alt='';ph.src=fo.currentSrc||fo.src;
+      ph.style.cssText='position:absolute;max-width:none;left:'+pr.left+'px;top:'+pr.top+'px;width:'+pr.width+'px;height:'+pr.height+'px;object-fit:'+(cs.objectFit||'cover')+';object-position:'+(cs.objectPosition||'50% 50%');
+      if(conFoto){ov.o.appendChild(ph);ph.animate([{opacity:1},{opacity:1,offset:.18},{opacity:0}],{duration:D*.6,easing:'ease-out',fill:'forwards'})}
       ov.o.animate([{clipPath:c0},{clipPath:c1}],{duration:D,easing:E,fill:'forwards'});
-      ov.l.animate([{transform:'translate('+cx+'px,'+cy+'px) scale('+Math.min(pr.width*.5,ov.W)/ov.W+')',opacity:0},{opacity:1,offset:.3},{transform:'translate(0,0) scale(1)',opacity:1}],{duration:D,easing:E,fill:'forwards'});
-      flag('qfa-pj',JSON.stringify({s}));espera=D+40;
+      // la marca aparece cuando el degradé ya va ganando pantalla, se pasa un poquito de tamaño y se asienta (termina igual que en la página nueva)
+      ov.l.animate([{transform:'translate('+cx+'px,'+cy+'px) scale('+Math.min(pr.width*.5,ov.W)/ov.W+')',opacity:0},{opacity:1,offset:.38},{transform:'translate(0,0) scale(1.04)',opacity:1,offset:.84},{transform:'translate(0,0) scale(1)',opacity:1}],{duration:D,delay:60,easing:E,fill:'both'});
+      flag('qfa-pj',JSON.stringify({s}));espera=D+110;
     }else if(hoja){espera=300} // hoja de la carpeta: ya hizo su propio zoom
     if(TC[s]&&espera===320&&root.animate&&MODO!=='glow'){ // herramienta: el color de su tarjeta cubre la pantalla (en 'glow' alcanza con el desvanecido de siempre)
       if(MODO==='velo'){
