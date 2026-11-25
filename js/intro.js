@@ -1,7 +1,8 @@
 /* Pantalla de entrada del inicio: arranca TODO en negro; de a poco el fondo se va tiñendo con el degradé azul de la marca y el "qfadesign" va
    apareciendo en negro en el centro. Después las letras se abren como una ventana (se ve la web por adentro) y un zoom hacia adentro de las
    letras hasta que aparece la web completa.
-   Se muestra una vez por visita (sessionStorage). Se salta con un click. No corre si la persona prefiere menos movimiento. */
+   Se muestra una vez por visita (sessionStorage). Se salta con un click. No corre si la persona prefiere menos movimiento.
+   Tiempos ~35% más rápidos. Si la web tarda en cargar, la espera no queda congelada: la luz sigue moviéndose, las letras "respiran" y aparece una línea finita de progreso. */
 (()=>{
   const root=document.documentElement;
   let salto=matchMedia('(prefers-reduced-motion:reduce)').matches||!!location.hash;
@@ -20,10 +21,16 @@
 
   // el azul de la marca ya no es plano: degradé diagonal + una luz celeste que cruza la pantalla + una sombra profunda que va en sentido contrario
   const RM=Math.max(vw,vh);
-  const DEFS='<linearGradient id="qfa-b" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0b75f4"/><stop offset=".45" stop-color="#05337a"/><stop offset="1" stop-color="#010409"/></linearGradient>'+
-    '<radialGradient id="qfa-l" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="'+RM*.75+'"><stop offset="0" stop-color="#3fa0ff" stop-opacity=".4"/><stop offset=".45" stop-color="#0b75f4" stop-opacity=".18"/><stop offset="1" stop-color="#0b75f4" stop-opacity="0"/></radialGradient>'+
-    '<radialGradient id="qfa-d" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="'+RM*.65+'"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>';
-  const CAPAS='<rect width="'+vw+'" height="'+vh+'" fill="#000"/><g id="qfa-az" opacity="0">'+['qfa-b','qfa-l','qfa-d'].map(id=>'<rect width="'+vw+'" height="'+vh+'" fill="url(#'+id+')"/>').join('')+'</g>';
+  let GRANO='';try{const cv=document.createElement('canvas');cv.width=cv.height=128;const x=cv.getContext('2d'),d=x.createImageData(128,128);for(let i=0;i<d.data.length;i+=4){const v=Math.random()*255;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=16}x.putImageData(d,0,0);GRANO=cv.toDataURL()}catch(e){}
+  const DEFS='<linearGradient id="qfa-b" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0b75f4"/><stop offset=".14" stop-color="#0a64d2"/><stop offset=".3" stop-color="#0849a6"/><stop offset=".46" stop-color="#05317a"/><stop offset=".62" stop-color="#032050"/><stop offset=".78" stop-color="#021029"/><stop offset=".92" stop-color="#010611"/><stop offset="1" stop-color="#010409"/></linearGradient>'+
+    // luz celeste suave (muchas paradas = sin escalones) que cruza la pantalla, y una sombra profunda en sentido contrario
+    '<radialGradient id="qfa-l" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="'+RM*.85+'"><stop offset="0" stop-color="#3fa0ff" stop-opacity=".5"/><stop offset=".2" stop-color="#2f8cff" stop-opacity=".36"/><stop offset=".42" stop-color="#1a76f6" stop-opacity=".19"/><stop offset=".65" stop-color="#0b75f4" stop-opacity=".07"/><stop offset="1" stop-color="#0b75f4" stop-opacity="0"/></radialGradient>'+
+    '<radialGradient id="qfa-d" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="'+RM*.7+'"><stop offset="0" stop-color="#000" stop-opacity=".62"/><stop offset=".35" stop-color="#000" stop-opacity=".38"/><stop offset=".7" stop-color="#000" stop-opacity=".1"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>'+
+    // viñeta: oscurece los bordes y deja el centro (donde está la marca) más vivo
+    '<radialGradient id="qfa-v" gradientUnits="userSpaceOnUse" cx="'+vw/2+'" cy="'+vh/2+'" r="'+RM*.78+'"><stop offset=".35" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>'+
+    // grano finito: evita las bandas del degradé y le da textura
+    '<pattern id="qfa-n" width="128" height="128" patternUnits="userSpaceOnUse"><image width="128" height="128" href="'+GRANO+'"/></pattern>';
+  const CAPAS='<rect width="'+vw+'" height="'+vh+'" fill="#000"/><g id="qfa-az" opacity="0">'+['qfa-b','qfa-l','qfa-d','qfa-v','qfa-n'].map(id=>'<rect width="'+vw+'" height="'+vh+'" fill="url(#'+id+')"/>').join('')+'</g>';
 
   const c=document.createElement('div');c.className='carga';c.setAttribute('aria-hidden','true');
   c.innerHTML='<svg width="100%" height="100%" viewBox="0 0 '+vw+' '+vh+'" preserveAspectRatio="none"><defs>'+
@@ -35,13 +42,18 @@
   root.classList.add('cargando','pausa','con-intro');
   root.appendChild(c);
   const g=c.querySelector('#qfa-g'),go=c.querySelector('#qfa-o'),az=c.querySelector('#qfa-az'),gl=c.querySelector('#qfa-l'),gd=c.querySelector('#qfa-d');
-  const tinte=t=>{const p=Math.min(1,t/3400),e=p*p*(3-2*p),w=Math.sin(t/700)*.04;
-    gl.setAttribute('cx',vw*(.05+.9*e));gl.setAttribute('cy',vh*(1-.95*e+w));
-    gd.setAttribute('cx',vw*(.95-.9*e));gd.setAttribute('cy',vh*(.95*e-w))};
+  const tinte=t=>{const p=Math.min(1,t/2300),e=p*p*(3-2*p),w=Math.sin(t/700)*.04,v=Math.max(0,Math.min(1,(t-2300)/600)), // v: tras el degradé, la luz sigue paseando suave (por si la espera se alarga)
+      dx=Math.sin(t/1100)*.05*v,dy=Math.cos(t/1300)*.04*v;
+    gl.setAttribute('cx',vw*(.05+.9*e+dx));gl.setAttribute('cy',vh*(1-.95*e+w+dy));
+    gd.setAttribute('cx',vw*(.95-.9*e-dx));gd.setAttribute('cy',vh*(.95*e-w-dy))};
   tinte(0);
   // z = zoom alrededor del punto (cx,cy)
   const set=(z,cx,cy)=>{const s=b*z,m='matrix('+s+' 0 0 '+s+' '+(cx*(1-z)+z*tx)+' '+(cy*(1-z)+z*ty)+')';g.setAttribute('transform',m);go.setAttribute('transform',m)};
   set(.9,vw/2,vh/2);
+  // línea finita de progreso debajo de la marca: solo aparece si la web todavía está cargando cuando termina la animación
+  const LW=Math.min(W0*.5,280),LY=ty+428.28*b+Math.max(22,vh*.04);
+  c.querySelector('svg').insertAdjacentHTML('beforeend','<g id="qfa-p" opacity="0"><rect x="'+(vw-LW)/2+'" y="'+LY+'" width="'+LW+'" height="2" rx="1" fill="#fff" fill-opacity=".16"/><rect id="qfa-pf" x="'+(vw-LW)/2+'" y="'+LY+'" width="0" height="2" rx="1" fill="#fff" fill-opacity=".85"/></g>');
+  const pg=c.querySelector('#qfa-p'),pf=c.querySelector('#qfa-pf');
 
   let fin=false;
   const terminar=()=>{if(fin&&!c.isConnected)return;fin=true;root.classList.remove('cargando','pausa');c.remove()};
@@ -49,10 +61,13 @@
   addEventListener('pageshow',e=>{if(e.persisted)terminar()});
   setTimeout(terminar,8000); // por las dudas
 
-  const NEGRO=300,T1=2000,HOLD=250,T2=1700,ABRE=600; // negro puro, el azul se va formando (T1), pausa con las letras, la ventana se abre (ABRE) y el zoom (T2)
+  const NEGRO=200,T1=1300,HOLD=100,T2=1150,ABRE=420; // negro puro, el azul se va formando (T1), pausa con las letras, la ventana se abre (ABRE) y el zoom (T2)
   const salida=t=>1-Math.pow(1-t,4),zoom=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-  let listo=document.readyState==='complete',t0=null,zs=null,libre=false;
-  addEventListener('load',()=>{listo=true});setTimeout(()=>{listo=true},3500);
+  let listo=false,t0=null,zs=null,libre=false,tw=null,pr=0;
+  const ok=()=>{listo=true};
+  const foto=new Image();foto.onload=foto.onerror=()=>{(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(ok,ok)};foto.src='img/hero-silla.jpg';
+  if(foto.complete&&foto.naturalWidth)foto.onload();
+  addEventListener('load',ok);setTimeout(ok,3000);
   const frame=now=>{
     if(fin)return;
     if(t0===null)t0=now;
@@ -60,9 +75,15 @@
     tinte(t);
     const a=Math.min(1,Math.max(0,(t-NEGRO)/(T1-NEGRO)));az.setAttribute('opacity',a*a*(3-2*a)); // el degradé azul aparece de a poco
     if(t<T1)set(.9+.1*salida(t/T1),vw/2,vh/2);
-    else if(t<T1+HOLD||!listo)set(1,vw/2,vh/2);
+    else if(t<T1+HOLD)set(1,vw/2,vh/2);
+    else if(!listo){ // la web todavía carga: las letras respiran y la línea avanza sola (nunca llega al final hasta que carga de verdad)
+      if(tw===null)tw=now;const k=now-tw;
+      set(1+.014*Math.sin(k/380),vw/2,vh/2);
+      pg.setAttribute('opacity',String(Math.min(1,k/350)));
+      pr+=(.86-pr)*.035;pf.setAttribute('width',String(LW*pr));
+    }
     else{
-      if(zs===null)zs=now;
+      if(zs===null){zs=now;if(tw!==null){pf.setAttribute('width',String(LW));pg.style.transition='opacity .25s';pg.setAttribute('opacity','0')}}
       {const k=Math.min(1,(now-zs)/ABRE);go.setAttribute('opacity',String(1-k*k*(3-2*k)))} // las letras negras se disuelven y dejan ver la web
       const u=Math.min(Math.max((now-zs-ABRE*.45)/T2,0),1);
       set(Math.pow(K,zoom(u)),px,py);
