@@ -122,3 +122,5 @@ html body header.pr-h>p.lead{margin-top:clamp(14px,2vw,22px);max-width:34em;text
 html body .pr-h .pr-t .logo.m{width:clamp(170px,32vw,380px)}
 html body .pr-h .pr-t .logo.w{width:clamp(210px,42vw,500px)}
 html body header.pr-h{text-align:center}
+/* cierre de cada proyecto: línea hacia la calculadora de precios */
+.pr-cta-n{margin:clamp(16px,2vw,24px) 0 0;font-size:clamp(14px,1.2vw,16px);line-height:1.4;opacity:.92}.pr-cta-n a{font-weight:700;text-decoration:underline;text-underline-offset:4px}.pr-cta-n a:hover,.pr-cta-n a:focus-visible{opacity:.75}
