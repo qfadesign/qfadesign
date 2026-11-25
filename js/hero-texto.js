@@ -46,7 +46,7 @@
         p.textContent=game?'':t;p.setAttribute('aria-hidden','true');
         i.appendChild(f);i.appendChild(p);w.appendChild(i);frag.appendChild(w);
         words.push({w:w,f:f,p:p,game:game});
-        if(gameIdx>=0&&n-1>gameIdx)w.style.setProperty('--gx','1.5s');
+        if(gameIdx>=0&&n-1>gameIdx)w.style.setProperty('--gx','1s');
         // corte de renglón solo en celu: después de la palabra con coma y después de la primera palabra de .sub
         if(/,$/.test(t)||(node.classList&&node.classList.contains('sub')&&!node.querySelector('.br-m'))){
           var br=document.createElement('br');br.className='br-m';frag.appendChild(br);

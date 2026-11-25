@@ -6,8 +6,10 @@
    Para volver atrás: sacá este <link> y el <script src="js/hero-texto.js"> de index.html.
    ============================================================ */
 .hero .intro .titular.tx-pre{animation:none}
-.titular.tx-pre .hw{position:relative;display:inline-block;vertical-align:top;overflow:hidden;
- padding:.24em 0 .14em;margin:-.24em 0 -.14em;--tx-d:calc(var(--d0,0s) + .5s + var(--i,0)*.09s + var(--gx,0s));--tx-dur:calc(.3s + var(--n,6)*.02s + .55s)}
+.titular.tx-pre .hw{position:relative;display:inline-block;vertical-align:top;
+ /* máscara: recorta abajo (de ahí sube la palabra) pero deja respirar arriba y a los costados, así la capa fina azul no se corta al agrandarse y desvanecerse */
+ clip-path:inset(-.2em -.6em 0 -.25em);
+ padding:.24em 0 .14em;margin:-.24em 0 -.14em;--tx-d:calc(var(--d0,0s) + .3s + var(--i,0)*.06s + var(--gx,0s));--tx-dur:calc(.2s + var(--n,6)*.015s + .4s)}
 .titular.tx-pre .hw-i{position:relative;display:inline-block;will-change:translate,rotate;translate:0 118%;rotate:6deg;transform-origin:0 100%}
 .titular.tx-pre .hw-f{display:inline-block}
 .titular.tx-pre .hl{opacity:0}
@@ -16,10 +18,10 @@
 .titular.tx-pre .br-m{display:none}
 
 /* 1) la palabra sube inclinada desde la máscara y se endereza */
-.titular.tx-go .hw-i{animation:tx-sube .9s cubic-bezier(.16,1,.3,1) var(--tx-d) both}
+.titular.tx-go .hw-i{animation:tx-sube .65s cubic-bezier(.16,1,.3,1) var(--tx-d) both}
 /* 2) la capa fina azul (Podium) se estira y se desvanece mientras 3) las letras blancas se revelan una tras otra */
 .titular.tx-go .hw-p{animation:tx-podium var(--tx-dur) ease-in-out var(--tx-d) both}
-.titular.tx-go .hl{animation:tx-letra .85s ease-in-out calc(var(--tx-d) + .3s + var(--c,0)*.02s) both}
+.titular.tx-go .hl{animation:tx-letra .6s ease-in-out calc(var(--tx-d) + .2s + var(--c,0)*.014s) both}
 
 @keyframes tx-sube{from{translate:0 118%;rotate:6deg;opacity:0}55%{opacity:1}to{translate:0 0;rotate:0deg;opacity:1}}
 /* arranque suave: la capa azul fina entra con fundido y desenfoque que se aclara (sin bordes duros) y después se desvanece */
@@ -35,23 +37,23 @@
 .titular.tx-pre .gq{max-width:0}
 .titular.tx-pre .gc{max-width:var(--wc,3em)}
 .titular.tx-pre .gi{display:inline-block}
-.titular.tx-go .gc{animation:tx-cundo .6s cubic-bezier(.65,0,.25,1) calc(var(--tx-d) + 1.5s) both}
-.titular.tx-go .gq{animation:tx-q .6s cubic-bezier(.65,0,.25,1) calc(var(--tx-d) + 1.5s) both}
-.titular.tx-go .gq .hl{animation:tx-opa .35s ease-out calc(var(--tx-d) + 1.7s) both}
+.titular.tx-go .gc{animation:tx-cundo .45s cubic-bezier(.65,0,.25,1) calc(var(--tx-d) + 1s) both}
+.titular.tx-go .gq{animation:tx-q .45s cubic-bezier(.65,0,.25,1) calc(var(--tx-d) + 1s) both}
+.titular.tx-go .gq .hl{animation:tx-opa .25s ease-out calc(var(--tx-d) + 1.15s) both}
 @keyframes tx-cundo{from{max-width:var(--wc,3em);opacity:1}to{max-width:0;opacity:0}}
 @keyframes tx-q{from{max-width:0}to{max-width:var(--wq,1em)}}
 
 /* bajada y botones entran DESPUÉS del titular, uno detrás de otro (antes aparecían a la vez y le robaban protagonismo) */
 .hero .intro:has(.titular.tx-pre){animation:none}
-.hero .intro .titular.tx-pre~.bajada{animation:tx-entra .9s cubic-bezier(.2,.8,.2,1) calc(var(--d0,0s) + 3.4s) both}
-.hero .intro .titular.tx-pre~.acciones .btn:nth-of-type(1){animation:tx-entra .8s cubic-bezier(.2,.8,.2,1) calc(var(--d0,0s) + 3.6s) both}
-.hero .intro .titular.tx-pre~.acciones .btn:nth-of-type(2){animation:tx-entra .8s cubic-bezier(.2,.8,.2,1) calc(var(--d0,0s) + 3.72s) both}
+.hero .intro .titular.tx-pre~.bajada{animation:tx-entra .65s cubic-bezier(.2,.8,.2,1) calc(var(--d0,0s) + 2.3s) both}
+.hero .intro .titular.tx-pre~.acciones .btn:nth-of-type(1){animation:tx-entra .6s cubic-bezier(.2,.8,.2,1) calc(var(--d0,0s) + 2.45s) both}
+.hero .intro .titular.tx-pre~.acciones .btn:nth-of-type(2){animation:tx-entra .6s cubic-bezier(.2,.8,.2,1) calc(var(--d0,0s) + 2.55s) both}
 @keyframes tx-entra{from{opacity:0;translate:0 16px}to{opacity:1;translate:0 0}}
 
 /* detalle final: una línea azul se dibuja bajo "Comunicación Visual." cuando terminan de entrar las palabras */
 .titular.tx-pre .sub{position:relative;width:fit-content}
 .titular.tx-pre .sub::after{content:"";position:absolute;left:0;right:0;bottom:-.06em;height:.075em;border-radius:99px;background:var(--azul,#0b75f4);box-shadow:0 0 14px rgba(11,117,244,.8);transform-origin:0 50%;scale:0 1}
-.titular.tx-go .sub::after{animation:tx-linea .8s cubic-bezier(.2,.85,.2,1) calc(var(--d0,0s) + 3.4s) both}
+.titular.tx-go .sub::after{animation:tx-linea .6s cubic-bezier(.2,.85,.2,1) calc(var(--d0,0s) + 2.3s) both}
 @keyframes tx-linea{from{scale:0 1}to{scale:1 1}}
 
 /* OPCIÓN "sticker": el titular entra normal y, cuando ya está todo, se pega el sticker de qfadesign (torcido) tapando "Facundo,".
@@ -60,13 +62,13 @@
 .qfa-sticker{position:absolute;left:0;top:0;z-index:3;display:block;width:var(--sw,5em);pointer-events:none;filter:var(--st-sombra,drop-shadow(0 6px 12px rgba(0,0,0,.45)));
  translate:var(--sl,0px) var(--st,0px);rotate:-3deg;transform-origin:50% 50%;opacity:0}
 .qfa-sticker img{display:block;width:100%;height:auto;max-width:none}
-.titular.tx-b.tx-go .qfa-sticker{animation:tx-pega .5s cubic-bezier(.3,.7,.3,1) calc(var(--d0,0s) + 3s) both}
+.titular.tx-b.tx-go .qfa-sticker{animation:tx-pega .4s cubic-bezier(.3,.7,.3,1) calc(var(--d0,0s) + 2s) both}
 @keyframes tx-pega{0%{opacity:0;scale:1.9;rotate:11deg}50%{opacity:1;scale:.92;rotate:-9deg}75%{scale:1.04;rotate:-3deg}100%{opacity:1;scale:1;rotate:-3deg}}
 /* tiempos de esta opción: el titular termina antes (no hay cambio de palabra), así que línea, bajada y botones entran antes */
-.titular.tx-b.tx-go .sub::after{animation-delay:calc(var(--d0,0s) + 2.2s)}
-.hero .intro .titular.tx-pre.tx-b~.bajada{animation-delay:calc(var(--d0,0s) + 2.3s)}
-.hero .intro .titular.tx-pre.tx-b~.acciones .btn:nth-of-type(1){animation-delay:calc(var(--d0,0s) + 2.5s)}
-.hero .intro .titular.tx-pre.tx-b~.acciones .btn:nth-of-type(2){animation-delay:calc(var(--d0,0s) + 2.64s)}
+.titular.tx-b.tx-go .sub::after{animation-delay:calc(var(--d0,0s) + 1.5s)}
+.hero .intro .titular.tx-pre.tx-b~.bajada{animation-delay:calc(var(--d0,0s) + 1.6s)}
+.hero .intro .titular.tx-pre.tx-b~.acciones .btn:nth-of-type(1){animation-delay:calc(var(--d0,0s) + 1.75s)}
+.hero .intro .titular.tx-pre.tx-b~.acciones .btn:nth-of-type(2){animation-delay:calc(var(--d0,0s) + 1.85s)}
 
 @media(max-width:760px){
  .titular.tx-pre .br-m{display:inline}
