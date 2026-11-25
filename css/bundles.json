@@ -176,7 +176,8 @@
   "volver-portfolio.css",
   "proyecto-integrado.css",
   "bajadas.css",
-  "hero-botones-luz.css"
+  "hero-botones-luz.css",
+  "proyecto-editorial.css"
  ],
  "b-proyecto-bleko": [
   "pages.css",
@@ -188,7 +189,8 @@
   "proyecto-integrado.css",
   "libro-paginas.css",
   "bajadas.css",
-  "hero-botones-luz.css"
+  "hero-botones-luz.css",
+  "proyecto-editorial.css"
  ],
  "b-proyecto-miga": [
   "pages.css",
@@ -200,7 +202,8 @@
   "proyecto-integrado.css",
   "miga-telefono.css",
   "bajadas.css",
-  "hero-botones-luz.css"
+  "hero-botones-luz.css",
+  "proyecto-editorial.css"
  ],
  "b-recurso": [
   "pages.css",
