@@ -1,0 +1,136 @@
+/* qfadesign — Herramientas (cada herramienta): botones y desplegables con la estética del resto de la web.
+   Mismo lenguaje que el índice de Herramientas: fichas planas y oscuras, línea fina, píldoras en los botones y esquinas bien redondeadas en las fichas
+   y el color de cada herramienta (--tc) que aparece al pasar el mouse, al elegir o al abrir.
+   Va al FINAL de todo (después de hero-botones-luz.css). Para volver atrás: sacá este archivo de css/bundles.json y corré scripts/build-css.py. */
+
+body.f-herramientas{--hb-linea:rgba(255,255,255,.26);--hb-linea-fuerte:rgba(255,255,255,.8);--hb-ficha:rgba(8,8,10,.78);--hb-r:99px;--hb-c:18px}
+
+/* =========================================================
+   1. BOTONES PRINCIPALES (.btn): bloque sólido, píldora redondeada; al pasar el mouse se llena con el color de la herramienta
+   ========================================================= */
+html body.f-herramientas .btn{
+ border-radius:var(--hb-r);background:#fff;color:#0a0a0a;border:1px solid #fff;box-shadow:none;
+ -webkit-backdrop-filter:none;backdrop-filter:none;letter-spacing:-.005em}
+html body.f-herramientas .btn::before{background:radial-gradient(150px circle at var(--lx,50%) var(--ly,50%),color-mix(in srgb,var(--tc) 100%,#fff 0%) 0,color-mix(in srgb,var(--tc) 70%,transparent) 45%,transparent 80%)}
+html body.f-herramientas .btn::after{background:radial-gradient(110px circle at var(--lx,50%) var(--ly,50%),#fff 0,color-mix(in srgb,var(--tc) 80%,transparent) 45%,transparent 80%)!important}
+@media(hover:hover){
+ html body.f-herramientas .btn:hover:not(:disabled){color:#0a0a0a!important;border-color:var(--tc)!important;text-shadow:none!important;box-shadow:0 0 0 1px var(--tc),0 10px 30px color-mix(in srgb,var(--tc) 40%,transparent)!important;transform:translateY(-2px)}
+}
+html body.f-herramientas .btn:focus-visible,html body.f-herramientas .btn:active{color:#0a0a0a!important;border-color:var(--tc)!important;text-shadow:none!important;box-shadow:0 0 0 1px var(--tc),0 8px 24px color-mix(in srgb,var(--tc) 40%,transparent)!important}
+html body.f-herramientas .btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+html body.f-herramientas .btn:disabled,html body.f-herramientas .btn[aria-disabled="true"]{background:transparent;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.2);box-shadow:none!important;transform:none;cursor:not-allowed;opacity:1}
+html body.f-herramientas .btn:disabled::before,html body.f-herramientas .btn:disabled::after{opacity:0!important}
+/* el botón secundario (.claro) y el azul (.negro) también quedan en la misma familia */
+html body.f-herramientas :is(.btn.claro,.btn.negro){background:transparent;color:#fff;border:1px solid var(--hb-linea-fuerte)}
+html body.f-herramientas :is(.btn.claro,.btn.negro):hover:not(:disabled){color:#fff!important}
+
+/* =========================================================
+   2. BOTONES SECUNDARIOS Y OPCIONES: planos, con línea fina. Elegido = se llena con el color de la herramienta
+   ========================================================= */
+html body.f-herramientas :is(.chip,.hp-otras a,.cp-mep-p,.ct-pill,.br-op,.cp-borrar,.cv-d,.cv-x,.ct-swap,.ct-reset,.enlaces a:not(.t),.br-ex,.br-atras,.br-ed){
+ border-radius:var(--hb-r);background:transparent;color:rgba(255,255,255,.88);border:1px solid var(--hb-linea);box-shadow:none;
+ -webkit-backdrop-filter:none;backdrop-filter:none;
+ transition:background-color .25s,color .25s,border-color .25s,transform .3s cubic-bezier(.34,1.56,.64,1)}
+html body.f-herramientas :is(.chip,.hp-otras a,.cp-mep-p,.ct-pill,.br-op,.cp-borrar,.cv-d,.cv-x,.ct-swap,.ct-reset,.br-ex,.br-atras,.br-ed):hover:not(:disabled){
+ background:transparent;color:#fff;border-color:var(--hb-linea-fuerte);transform:translateY(-2px)}
+html body.f-herramientas :is(.chip,.hp-otras a,.cp-mep-p,.ct-pill,.br-op,.cp-borrar,.cv-d,.cv-x,.ct-swap,.ct-reset,.br-ex,.br-atras,.br-ed):active:not(:disabled){transform:scale(.97)}
+html body.f-herramientas :is(.chip,.br-op,.cp-mep-p,.pd-op)[aria-pressed="true"],
+html body.f-herramientas :is(.chip,.br-op,.cp-mep-p).on,
+html body.f-herramientas :is(.chip,.br-op,.cp-mep-p)[aria-pressed="true"]:hover{
+ background:var(--tc);color:#0a0a0a;border-color:var(--tc);transform:none}
+html body.f-herramientas :is(.chip,.br-op,.cp-mep-p,.hp-otras a,.cv-d,.cv-x,.cp-borrar,.ct-swap,.ct-reset):focus-visible{outline:2px solid #fff;outline-offset:3px}
+html body.f-herramientas :is(.chip,.br-op,.cp-borrar,.cv-d,.cv-x):disabled{opacity:.4;cursor:not-allowed;transform:none}
+/* acciones que llevan a otra parte (descargar, usar, salir a otra herramienta): al pasar el mouse se llenan con blanco */
+html body.f-herramientas :is(.hp-otras a,.cv-d):hover:not(:disabled){background:#fff;color:#0a0a0a;border-color:#fff}
+html body.f-herramientas .cv-x:hover:not(:disabled){background:#fff;color:#7a1b1b;border-color:#fff}
+html body.f-herramientas .cp-borrar:hover:not(:disabled){background:#fff;color:#0a0a0a;border-color:#fff}
+html body.f-herramientas :is(.chip,.br-op) {padding-top:8px;padding-bottom:9px}
+
+/* opciones grandes (herramientas de PDF) y clientes de la calculadora: ficha plana con línea; elegida = color de la herramienta */
+html body.f-herramientas :is(.pd-op,.cp-cli){background:var(--hb-ficha);border:1px solid var(--hb-linea);border-radius:22px;box-shadow:none;color:#fff;
+ transition:background-color .25s,border-color .25s,color .25s,transform .3s cubic-bezier(.2,.8,.2,1)}
+html body.f-herramientas :is(.pd-op,.cp-cli):hover:not([aria-disabled="true"]){background:var(--hb-ficha);border-color:var(--hb-linea-fuerte);transform:translateY(-2px)}
+html body.f-herramientas :is(.pd-op[aria-pressed="true"],.cp-cli.on){background:var(--tc);border-color:var(--tc);color:#0a0a0a;box-shadow:none;transform:none}
+html body.f-herramientas :is(.pd-op[aria-pressed="true"],.cp-cli.on) :is(b,span,strong,small){color:#0a0a0a}
+html body.f-herramientas .pd-op[aria-pressed="true"] small{color:#3a0a0a}
+
+/* selector de calidad / formato en cuadradito (convertidor) */
+html body.f-herramientas .cv-sw{border-radius:14px;border:1px solid var(--hb-linea);box-shadow:none}
+html body.f-herramientas .cv-sw:hover{border-color:var(--hb-linea-fuerte)}
+
+/* =========================================================
+   3. CAMPOS: misma esquina que los botones
+   ========================================================= */
+html body.f-herramientas :is(.qr-in,.ct-in input[type=text],.cv-px input,.cp-pdf input,.un-otra input){border-radius:var(--hb-c);box-shadow:none;border:1px solid transparent}
+html body.f-herramientas :is(.qr-in,.ct-in input[type=text],.cv-px input,.cp-pdf input,.un-otra input):focus-visible{outline:2px solid var(--tc);outline-offset:2px}
+
+/* =========================================================
+   4. DESPLEGABLES (.dsp): ficha plana y oscura con línea fina; el título manda y la flecha va en un cuadradito
+   ========================================================= */
+html body.f-herramientas .dsp{
+ background:var(--hb-ficha);border:1px solid var(--hb-linea);border-radius:24px;box-shadow:none;
+ -webkit-backdrop-filter:none;backdrop-filter:none;
+ padding:clamp(10px,1.2vw,14px) clamp(14px,1.8vw,20px);
+ transition:border-color .3s,background-color .3s}
+html body.f-herramientas .dsp:hover{border-color:var(--hb-linea-fuerte)}
+html body.f-herramientas .dsp[open]{border-color:color-mix(in srgb,var(--tc) 75%,#fff 0%);background:rgba(8,8,10,.88)}
+html body.f-herramientas .dsp>summary{min-height:36px;gap:14px}
+html body.f-herramientas .dsp .dsp-t{font-size:clamp(16px,1.4vw,19px);letter-spacing:-.01em}
+/* flecha: cuadradito con la flecha adentro; abierto se llena con el color de la herramienta */
+html body.f-herramientas .dsp>summary::after{
+ content:"";flex:none;box-sizing:border-box;width:30px;height:30px;border:1px solid var(--hb-linea);border-radius:50%;
+ background:
+  linear-gradient(currentColor,currentColor) 50% 50%/10px 2px no-repeat,
+  linear-gradient(currentColor,currentColor) 50% 50%/2px 10px no-repeat;
+ transform:none;transition:background-color .25s,color .25s,border-color .25s,transform .3s cubic-bezier(.2,.8,.2,1)}
+html body.f-herramientas .dsp:hover>summary::after{border-color:var(--hb-linea-fuerte)}
+html body.f-herramientas .dsp[open]>summary::after{
+ transform:none;background:
+  linear-gradient(#0a0a0a,#0a0a0a) 50% 50%/10px 2px no-repeat,
+  linear-gradient(#0a0a0a,#0a0a0a) 50% 50%/0 0 no-repeat;
+ background-color:var(--tc);border-color:var(--tc)}
+html body.f-herramientas .dsp>summary:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:14px}
+html body.f-herramientas .dsp[open]>summary{margin-bottom:clamp(10px,1.2vw,14px)}
+/* etiquetas de valor y contadores dentro de la cabecera */
+html body.f-herramientas :is(.dsp-v,.ip-cnt){border-radius:99px;background:rgba(255,255,255,.1);border:1px solid var(--hb-linea);font-weight:700}
+html body.f-herramientas .ip-cnt-ok{background:color-mix(in srgb,var(--tc) 85%,transparent);border-color:var(--tc);color:#0a0a0a}
+/* los pasos numerados del desplegable también en cuadradito */
+html body.f-herramientas ol.dsp-l li::before{border-radius:50%;background:rgba(255,255,255,.1);border-color:var(--hb-linea)}
+
+/* Calculadora: categorías y fuentes como desplegables de la misma familia (antes eran solo líneas) */
+html body.f-herramientas :is(.cp-cat,.cp-fuentes){background:var(--hb-ficha);border:1px solid var(--hb-linea);border-radius:24px;margin-bottom:10px;overflow:hidden;transition:border-color .3s}
+html body.f-herramientas :is(.cp-cat,.cp-fuentes):last-of-type{border-bottom:1px solid var(--hb-linea)}
+html body.f-herramientas :is(.cp-cat,.cp-fuentes):hover{border-color:var(--hb-linea-fuerte)}
+html body.f-herramientas :is(.cp-cat,.cp-fuentes)[open]{border-color:var(--tc)}
+html body.f-herramientas .cp-ch,html body.f-herramientas .cp-fuentes summary{padding:12px 16px}
+html body.f-herramientas .cp-row{padding-left:16px;padding-right:16px}
+html body.f-herramientas .cp-fuentes{margin-top:clamp(18px,2vw,26px)}
+
+/* Brief: la explicación también como ficha */
+html body.f-herramientas .br-que{background:var(--hb-ficha);border:1px solid var(--hb-linea);border-radius:24px;padding:clamp(16px,2vw,24px)}
+
+@media(prefers-reduced-motion:reduce){
+ html body.f-herramientas :is(.btn,.chip,.br-op,.pd-op,.cp-cli,.hp-otras a,.dsp,.dsp>summary::after){transition:none}
+ html body.f-herramientas :is(.btn,.chip,.br-op,.pd-op,.cp-cli,.hp-otras a):hover{transform:none}
+}
+
+/* ajustes finos: campos con swatch/medida, botón de PDF apagado y acciones chicas */
+html body.f-herramientas :is(.ct-in,.un-fila input,.un-otra,.cv-px){--ct-r:var(--hb-r)}
+html body.f-herramientas :is(.ct-in input[type=text],.un-fila input){border-radius:99px}
+html body.f-herramientas .ct-in{border-radius:99px}
+html body.f-herramientas .cp-pdf .btn:disabled,html body.f-herramientas .cp-pdf .btn[disabled]{background:transparent;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.22);opacity:1}
+html body.f-herramientas .cp-pdf .btn:not(:disabled){background:#fff;color:#0a0a0a}
+html body.f-herramientas .cp-pdf .btn::after{background:radial-gradient(110px circle at var(--lx,50%) var(--ly,50%),#fff 0,color-mix(in srgb,var(--tc) 80%,transparent) 45%,transparent 80%)!important}
+
+/* buscador de la calculadora: sugerencias, borrar y botón flotante en la misma familia */
+html body.f-herramientas .cp-bus-chip{border-radius:var(--hb-r);border:1px solid var(--hb-linea);font-style:normal;font-weight:700;font-family:var(--f);font-size:15px;color:rgba(255,255,255,.9);transition:background-color .25s,color .25s,border-color .25s,transform .3s cubic-bezier(.34,1.56,.64,1)}
+html body.f-herramientas .cp-bus-chip:hover{border-color:var(--hb-linea-fuerte);color:#fff;transform:translateY(-2px)}
+html body.f-herramientas .cp-bus-chip:active{transform:scale(.97)}
+html body.f-herramientas .cp-bus-chip:focus-visible{outline:2px solid #fff;outline-offset:3px}
+html body.f-herramientas .cp-bus-x{border-radius:50%;border-color:var(--hb-linea)}
+html body.f-herramientas .cp-bus-x:hover{background:#fff;color:#0a0a0a;border-color:#fff}
+html body.f-herramientas .cp-bus-flota-b{border-radius:var(--hb-r);background:var(--tc);color:#0a0a0a;font-style:normal}
+
+/* botón "Descargar presupuesto en PDF" (b-peel): apagado = hueco; listo = blanco */
+html body.f-herramientas .cp-pdf .b-peel:disabled{background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.28);opacity:1}
+html body.f-herramientas .cp-pdf .b-peel:not(:disabled){background:#fff;color:#0a0a0a}

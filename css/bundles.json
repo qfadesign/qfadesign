@@ -49,7 +49,8 @@
   "herramientas-lectura.css",
   "desplegable.css",
   "bajadas.css",
-  "hero-botones-luz.css"
+  "hero-botones-luz.css",
+  "herramientas-botones.css"
  ],
  "b-calculadora-de-precios": [
   "pages.css",
@@ -64,7 +65,8 @@
   "desplegable.css",
   "bajadas.css",
   "calculadora-buscador.css",
-  "hero-botones-luz.css"
+  "hero-botones-luz.css",
+  "herramientas-botones.css"
  ],
  "b-convertidor-de-imagenes": [
   "pages.css",
@@ -79,7 +81,8 @@
   "desplegable.css",
   "convertidor-ws.css",
   "bajadas.css",
-  "hero-botones-luz.css"
+  "hero-botones-luz.css",
+  "herramientas-botones.css"
  ],
  "b-simulador-de-publicaciones": [
   "pages.css",
@@ -94,7 +97,8 @@
   "desplegable.css",
   "simulador-publicaciones.css",
   "bajadas.css",
-  "hero-botones-luz.css"
+  "hero-botones-luz.css",
+  "herramientas-botones.css"
  ],
  "b-herramientas": [
   "pages.css",
