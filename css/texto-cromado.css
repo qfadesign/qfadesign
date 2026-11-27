@@ -1,0 +1,55 @@
+/* qfadesign — Texto cromado (Herramientas). Se suma después de b-herramienta.css */
+.f-h-cromo{--tc:#38d0ff}
+.f-h-cromo{--fondo:#000;--g:radial-gradient(75vw 55vw at 92% 0%,color-mix(in srgb,var(--tc) 92%,transparent),transparent 66%),radial-gradient(60vw 45vw at 2% 100%,color-mix(in srgb,var(--tc) 58%,transparent),transparent 66%),linear-gradient(#050505,#000)}
+.cr-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr);gap:clamp(22px,4vw,52px);align-items:start}
+.cr-prev{position:sticky;top:96px}
+.cr-lienzo{display:block;width:100%;max-width:560px;height:auto;border-radius:22px;background:#000;box-shadow:var(--plato);outline:1px solid rgba(255,255,255,.22);outline-offset:-1px}
+.cr-lienzo.transp{background:repeating-conic-gradient(#1b1b1b 0 25%,#2a2a2a 0 50%) 0 0/18px 18px}
+.cr-prev .cv-acc{margin-top:16px}
+.cr-prev .btn:disabled{opacity:.5;cursor:wait}
+.cr-msg{min-height:1.4em;margin:10px 0 0;font-size:14px;opacity:.92}
+#crCtl .pd-paso+.pd-paso{margin-top:clamp(22px,3vw,34px)}
+#crCtl .dsp{margin-top:12px}
+#crCtl .pd-paso+.dsp{margin-top:clamp(22px,3vw,34px)}
+.cr-g+.cr-g,.cr-g+.cr-file{margin-top:18px}
+.cr-dsp .cv-l,.cr-dsp .pd-hint{color:#fff}
+.cr-dsp>.cr-g,.cr-dsp>.cr-r{margin-top:14px}
+.cr-dsp>summary+.cr-g,.cr-dsp>summary+.cr-r{margin-top:0}
+.cr-g .cv-l,.cr-r .cv-l{display:flex;justify-content:space-between;gap:10px}
+.cr-r .cv-l b{font-family:var(--f);font-weight:400;font-style:normal;opacity:.85}
+.cr-r input[type=range]{width:100%;accent-color:#fff;cursor:pointer;height:26px}
+.cr-r[hidden]{display:none}
+.cr-ta{resize:vertical;min-height:70px;font-size:18px}
+.cr-pal{display:flex;flex-wrap:wrap;gap:10px}
+.cr-sw{width:42px;height:42px;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);box-shadow:inset 0 1px 0 rgba(255,255,255,.5);cursor:pointer;padding:0;transition:transform .2s,box-shadow .2s}
+.cr-sw:hover{transform:translateY(-2px)}
+.cr-sw[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 3px #000,0 0 0 5px #fff}
+.cr-sw:focus-visible,.cr-file:focus-within .chip{outline:3px solid #fff;outline-offset:3px}
+.cr-file{display:inline-block;margin-top:12px;cursor:pointer}
+@media(max-width:900px){.cr-grid{grid-template-columns:minmax(0,1fr)}.cr-prev{position:static}}
+@media(prefers-reduced-motion:reduce){.cr-sw{transition:none}}
+
+/* ---- Marca / imagen subida y buscador de Google Fonts ---- */
+#crCtl [hidden]{display:none!important}
+.cr-blk{margin-top:16px}
+.cr-blk .cr-g{margin-top:18px}
+.cr-drop{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;text-align:center;padding:clamp(22px,4vw,36px) 18px;border-radius:18px;border:2px dashed rgba(255,255,255,.55);cursor:pointer;transition:background .2s,border-color .2s}
+.cr-drop:hover,.cr-drop.on,.cr-drop:focus-within{background:rgba(255,255,255,.12);border-color:#fff}
+.cr-drop-t{font-family:var(--fh);font-weight:900;font-size:clamp(18px,1.8vw,22px)}
+.cr-drop-s{font-size:14px;opacity:.9}
+.cr-img-info{min-height:1.3em;margin:10px 0 0;font-size:14px}
+.cr-img-quitar{margin-top:14px}
+.cr-gf{margin-top:22px}
+.cr-gf .cv-l{display:block;margin-bottom:8px}
+.cr-gf-in{width:100%}
+.cr-gf-cat{margin-top:12px}
+.cr-gf-lista{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px;max-height:380px;overflow-y:auto;overscroll-behavior:contain}
+.cr-gf-it{display:flex;justify-content:space-between;align-items:center;gap:14px;width:100%;text-align:left;padding:11px 16px 12px}
+.cr-gf-n{font-size:22px;line-height:1.2;font-weight:400;font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.cr-gf-it small{flex:none;font-size:12px;opacity:.75;font-family:var(--f);font-weight:700;font-style:normal}
+.cr-gf-prueba .cr-gf-n{font-family:var(--f);font-weight:700;font-size:16px}
+.cr-gf-vacio{font-size:14px;opacity:.9;padding:6px 2px}
+.cr-gf-mas{margin-top:10px}
+.cr-gf-sel{min-height:1.3em;margin:12px 0 0;font-weight:700}
+.cr-gf-w{margin-top:10px!important}
+@media(prefers-reduced-motion:reduce){.cr-drop{transition:none}}
