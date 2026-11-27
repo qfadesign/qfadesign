@@ -53,3 +53,14 @@
 .cr-gf-sel{min-height:1.3em;margin:12px 0 0;font-weight:700}
 .cr-gf-w{margin-top:10px!important}
 @media(prefers-reduced-motion:reduce){.cr-drop{transition:none}}
+
+/* ---- Paso 1 desplegable ---- */
+#crCtl>.dsp:first-child{margin-top:0}
+#crCtl .dsp+.pd-paso{margin-top:clamp(22px,3vw,34px)}
+.cr-dsp-n .dsp-t{display:flex;align-items:center;gap:12px;font-size:clamp(20px,2vw,26px)}
+.cr-dsp-n .pd-n{font-style:normal}
+
+/* ---- Ajustes prestablecidos ---- */
+.cr-pre-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.cr-pre{display:flex;align-items:center;gap:10px;text-align:left;justify-content:flex-start}
+.cr-pre-sw{flex:none;width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}

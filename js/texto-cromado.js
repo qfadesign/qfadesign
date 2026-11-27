@@ -300,8 +300,36 @@
     l.querySelector('b').textContent = i.value; r.appendChild(l); r.appendChild(i); parent.appendChild(r); return r;
   }
 
+  /* ---- 0. Ajustes prestablecidos ---- */
+  var PRE = [
+    { n: 'Y2K clásico', o: { size: 92, style: 'liquido', pal: 'plata', peso: 22, relieve: 60, reflejos: 80, brillo: 70, glow: 30, destellos: 4, bg: 'negro', seed: 3 } },
+    { n: 'Mercurio', o: { size: 92, style: 'liquido', pal: 'plata', peso: 30, relieve: 85, reflejos: 125, brillo: 60, glow: 14, destellos: 2, bg: 'negro', seed: 11 } },
+    { n: 'Oro líquido', o: { size: 92, style: 'liquido', pal: 'oro', peso: 26, relieve: 65, reflejos: 90, brillo: 78, glow: 42, destellos: 5, bg: 'negro', seed: 7 } },
+    { n: 'Cromo azul 3D', o: { size: 92, style: 'cromo', pal: 'qfa', peso: 20, relieve: 70, reflejos: 95, brillo: 65, glow: 30, destellos: 3, prof: 62, bg: 'azul', seed: 5 } },
+    { n: 'Hielo ártico', o: { size: 92, style: 'cristal', pal: 'hielo', peso: 18, relieve: 45, reflejos: 70, brillo: 82, glow: 45, destellos: 6, bg: 'azul', seed: 21 } },
+    { n: 'Chicle rosa', o: { size: 92, style: 'liquido', pal: 'rosa', peso: 32, track: 2, relieve: 55, reflejos: 105, brillo: 72, glow: 58, destellos: 6, bg: 'negro', seed: 14 } },
+    { n: 'Ácido tóxico', o: { size: 92, style: 'cromo', pal: 'acido', peso: 24, relieve: 78, reflejos: 85, brillo: 70, glow: 62, destellos: 4, prof: 55, bg: 'negro', seed: 9 } },
+    { n: 'Atardecer', o: { size: 92, style: 'cristal', pal: 'costa', peso: 20, arch: 22, relieve: 40, reflejos: 95, brillo: 75, glow: 55, destellos: 7, bg: 'negro', seed: 33 } },
+    { n: 'Retro en arco', o: { size: 92, style: 'cromo', pal: 'oro', peso: 28, arch: 45, slant: -8, relieve: 68, reflejos: 80, brillo: 70, glow: 35, destellos: 3, prof: 52, bg: 'negro', seed: 17 } },
+    { n: 'Neón cristal', o: { size: 92, style: 'cristal', pal: 'rosa', peso: 14, relieve: 35, reflejos: 60, brillo: 92, glow: 88, destellos: 8, bg: 'negro', seed: 27 } },
+    { n: 'Velocidad', o: { size: 92, style: 'liquido', pal: 'plata', peso: 26, slant: -16, rot: -5, track: 3, relieve: 72, reflejos: 100, brillo: 68, glow: 25, destellos: 5, bg: 'azul', seed: 4 } },
+    { n: 'Brillo suave', o: { size: 92, style: 'liquido', pal: 'hielo', peso: 12, relieve: 30, reflejos: 55, brillo: 50, glow: 18, destellos: 1, bg: 'negro', seed: 2 } }
+  ];
+  var PRE_KEYS = ['style', 'pal', 'size', 'peso', 'track', 'slant', 'arch', 'rot', 'relieve', 'reflejos', 'brillo', 'glow', 'destellos', 'prof', 'bg', 'seed'];
+  var dPre = dsp('Ajustes prestablecidos', true), pg = el('div', 'cr-pre-grid'); pg.setAttribute('role', 'group'); pg.setAttribute('aria-label', 'Ajustes prestablecidos');
+  PRE.forEach(function (pr) {
+    var c = PAL[pr.o.pal].c, b = el('button', 'chip cr-pre', '<span class="cr-pre-sw" aria-hidden="true" style="background:linear-gradient(160deg,' + c[2] + ',' + c[3] + ' 45%,' + c[1] + ')"></span><span>' + pr.n + '</span>');
+    b.type = 'button';
+    b.onclick = function () {
+      PRE_KEYS.forEach(function (key) { st[key] = pr.o[key] !== undefined ? pr.o[key] : DEF[key]; });
+      keepMsg = 'Aplicado: ' + pr.n + '.'; sync(); draw();
+    };
+    pg.appendChild(b);
+  });
+  dPre.appendChild(pg);
+
   /* ---- 1. Qué cromar ---- */
-  var d1 = paso(1, 'Elegí qué querés cromar');
+  var d1 = dsp('<span class="pd-n" aria-hidden="true">1</span>Elegí qué querés cromar', true); d1.classList.add('cr-dsp-n');
   chips('src', CHIPS.src[1], d1, '');
   /* 1a. texto */
   var tb = el('div', 'cr-blk'); tb.dataset.src = 'text'; d1.appendChild(tb);
